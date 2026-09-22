@@ -40047,11 +40047,17 @@
                 // Use clean base URL without query params or hash fragments
                 const cleanRedirectUrl = window.location.origin + window.location.pathname;
 
+                const oauthOptions = { redirectTo: cleanRedirectUrl };
+                if (provider === 'facebook') {
+                    // Ask for the profile first: some Facebook apps reject an
+                    // email-only request with "needs at least one supported
+                    // permission". public_profile is always valid; email stays.
+                    oauthOptions.scopes = 'public_profile email';
+                }
+
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: provider,
-                    options: {
-                        redirectTo: cleanRedirectUrl
-                    }
+                    options: oauthOptions
                 });
                 if (error) throw error;
             } catch (e) {

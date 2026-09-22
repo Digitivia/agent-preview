@@ -495,6 +495,13 @@
                 "input_ph": "Type a message…",
                 "send": "Send message",
                 "footnote": "Demo with scripted replies — sign up to deploy your own AI agent.",
+                "glimpse_title": "Sample view — your dashboard after one conversation",
+                "glimpse_inbox_t": "Inbox",
+                "glimpse_inbox_d": "WhatsApp chat answered in seconds",
+                "glimpse_crm_t": "CRM",
+                "glimpse_crm_d": "New lead scored and assigned",
+                "glimpse_orders_t": "Orders",
+                "glimpse_orders_d": "COD confirmation queued",
                 "t_cartiva_1_in": "Do you deliver to New Cairo? Is the vitamin C serum good for oily skin?",
                 "t_cartiva_1_out": "Yes — delivery to New Cairo takes 2–3 days with cash on delivery. The vitamin C serum is oil-free, so it suits oily skin. Want me to confirm the order and send updates on WhatsApp?",
                 "t_cartiva_2_in": "Yes, please confirm it.",
@@ -2489,6 +2496,13 @@
                 "input_ph": "اكتب رسالة…",
                 "send": "إرسال الرسالة",
                 "footnote": "عرض بردود جاهزة — سجّل لتشغيل وكيلك الخاص.",
+                "glimpse_title": "عرض توضيحي — لوحتك بعد محادثة واحدة",
+                "glimpse_inbox_t": "الصندوق",
+                "glimpse_inbox_d": "محادثة واتساب تم الرد عليها في ثوانٍ",
+                "glimpse_crm_t": "العملاء",
+                "glimpse_crm_d": "عميل جديد تم تقييمه وإسناده",
+                "glimpse_orders_t": "الطلبات",
+                "glimpse_orders_d": "تأكيد الدفع عند الاستلام جاهز",
                 "t_cartiva_1_in": "عندكم توصيل للتجمع؟ وسيروم فيتامين سي مناسب للبشرة الدهنية؟",
                 "t_cartiva_1_out": "أيوه — التوصيل للتجمع خلال ٢-٣ أيام والدفع عند الاستلام. سيروم فيتامين سي خالٍ من الزيوت ومناسب للبشرة الدهنية. تحب أأكد الأوردر وأبعتلك التحديثات على واتساب؟",
                 "t_cartiva_2_in": "تمام، أكده لو سمحت.",
@@ -9887,6 +9901,16 @@
         #lp-demo [role="tab"] { min-height: 44px; min-width: 44px; touch-action: manipulation; }
         #lp-demo [role="tab"]:focus-visible { outline: 2px solid var(--sp-focus, #7fd3d5); outline-offset: 2px; }
         #lp-demo-input { min-height: 44px; box-sizing: border-box; }
+        .lp-glimpse { max-width: 640px; margin: 1.6rem auto 0; text-align: start; }
+        .lp-glimpse-head { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 0.7rem; text-align: center; }
+        [dir="rtl"] .lp-glimpse-head { letter-spacing: 0; }
+        .lp-glimpse-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+        .lp-glimpse-card { display: flex; gap: 10px; align-items: flex-start; padding: 0.9rem 1rem; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+        .lp-glimpse-card svg { flex: none; color: var(--theme-color); margin-top: 2px; }
+        .lp-glimpse-card b { display: block; font-size: 0.82rem; color: var(--text-primary); }
+        .lp-glimpse-card small { font-size: 0.74rem; color: var(--text-secondary); line-height: 1.45; }
+        :root[data-theme="light"] .lp-glimpse-card { background: #ffffff; border-color: rgba(15,23,42,0.09); box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+        @media (max-width: 600px) { .lp-glimpse-grid { grid-template-columns: 1fr; } }
         .lp-demo-badge {
             display: inline-flex; align-items: center; gap: 8px;
             font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -9903,6 +9927,12 @@
         .lp-demo-bubble-out { align-self: flex-end; background: var(--theme-color); color: #fff; border-radius: 14px 14px 4px 14px; }
         [dir="rtl"] .lp-demo-bubble-out { border-radius: 14px 14px 14px 4px; }
         :root[data-theme="light"] .lp-demo-bubble-in { background: rgba(15,23,42,0.06); }
+        .lp-demo-panel { max-width: 420px; margin: 0 auto; border-radius: 18px; overflow: hidden; background: var(--sp-surface, #10151d); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 60px rgba(0,0,0,0.28); }
+        :root[data-theme="light"] .lp-demo-panel { background: #ffffff; border-color: rgba(15,23,42,0.09); box-shadow: 0 24px 60px rgba(15,23,42,0.12); }
+        .lp-demo-foot { padding: 10px 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 8px; }
+        :root[data-theme="light"] .lp-demo-foot { border-top-color: rgba(15,23,42,0.08); }
+        .lp-demo-field { flex: 1; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); font-size: 0.85rem; outline: none; font-family: inherit; }
+        :root[data-theme="light"] .lp-demo-field { background: rgba(15,23,42,0.04); border-color: rgba(15,23,42,0.1); }
         .lp-demo-note {
             align-self: stretch; text-align: start; font-size: 0.72rem; line-height: 1.5;
             color: var(--text-secondary); border-top: 1px dashed rgba(127,211,213,0.35);
@@ -10098,6 +10128,13 @@
             text-align: center; font-size: 1rem; color: var(--text-secondary);
             max-width: 550px; margin: 0 auto 2.5rem; line-height: 1.5;
         }
+        /* Editorial rhythm: these two sections lead start-aligned to break the
+           centered-title monotony; grids underneath stay put. */
+        .lp-align-start .lp-section-title, .lp-align-start .lp-section-sub { text-align: start; }
+        .lp-align-start .lp-section-sub { margin-inline: 0; }
+        /* Hairline separation where sections used to bleed together. */
+        #lp-features, #lp-pricing, #lp-faq { border-top: 1px solid rgba(127,211,213,0.16); padding-top: 3rem !important; }
+        :root[data-theme="light"] #lp-features, :root[data-theme="light"] #lp-pricing, :root[data-theme="light"] #lp-faq { border-top-color: rgba(15,23,42,0.09); }
         .lp-features-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
@@ -34247,7 +34284,7 @@
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true" style="vertical-align:-0.15em;margin-inline-end:5px;"><path d="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.62l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.1 7.1 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.65 8.86a.5.5 0 0 0 .12.62l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.62l1.92 3.32c.12.22.38.3.6.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.63-.94l2.39.96c.22.08.48 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.62l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 15.5 12 3.5 3.5 0 0 1 12 15.5z"/></svg><span data-i18n="landing_demo.tab_opsy">Opsy · Services</span>
                 </button>
             </div>
-            <div style="max-width:420px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);background:#0a0a14;">
+            <div class="lp-demo-panel">
                 <!-- Chat Header -->
                 <div id="lp-demo-header" style="padding:14px 18px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;gap:10px;transition:background 0.3s;">
                     <div id="demo-orb-header" style="width:36px;height:36px;flex-shrink:0;"></div>
@@ -34259,13 +34296,30 @@
                 <!-- Chat Messages -->
                 <div id="lp-demo-messages" role="log" aria-live="polite" aria-label="Demo conversation" style="padding:16px;min-height:220px;max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
                 <!-- Chat Input -->
-                <div style="padding:10px 14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;">
+                <div class="lp-demo-foot">
                     <input type="text" id="lp-demo-input" data-i18n-placeholder="landing_demo.input_ph" placeholder="Type a message…" aria-label="Type a message" onkeydown="if(event.key==='Enter')sendDemoMessage()"
-                        style="flex:1;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary);font-size:0.85rem;outline:none;">
+                        class="lp-demo-field">
                     <button type="button" id="lp-demo-send" onclick="sendDemoMessage()" aria-label="Send message" style="width:44px;height:44px;flex:none;border-radius:50%;background:var(--theme-color);border:none;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
                 </div>
             </div>
             <div style="margin-top:0.8rem;font-size:0.72rem;color:var(--text-secondary);" data-i18n="landing_demo.footnote">Demo with scripted replies — sign up to deploy your own AI agent.</div>
+            <div class="lp-glimpse" aria-label="Sample dashboard view">
+                <div class="lp-glimpse-head" data-i18n="landing_demo.glimpse_title">Sample view — your dashboard after one conversation</div>
+                <div class="lp-glimpse-grid">
+                    <div class="lp-glimpse-card">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg>
+                        <div><b data-i18n="landing_demo.glimpse_inbox_t">Inbox</b><small data-i18n="landing_demo.glimpse_inbox_d">WhatsApp chat answered in seconds</small></div>
+                    </div>
+                    <div class="lp-glimpse-card">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <div><b data-i18n="landing_demo.glimpse_crm_t">CRM</b><small data-i18n="landing_demo.glimpse_crm_d">New lead scored and assigned</small></div>
+                    </div>
+                    <div class="lp-glimpse-card">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M7 18a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm10 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM7.16 14.26l.03-.12.9-1.64h7.45a2 2 0 0 0 1.75-1.03l3.58-6.49L19.13 4l-3.58 6.5H8.53L4.27 1.5H1v2h2l3.6 7.59-1.35 2.44A1.99 1.99 0 0 0 7 16.5h12v-2H7.42a.25.25 0 0 1-.26-.24z"/></svg>
+                        <div><b data-i18n="landing_demo.glimpse_orders_t">Orders</b><small data-i18n="landing_demo.glimpse_orders_d">COD confirmation queued</small></div>
+                    </div>
+                </div>
+            </div>
         </section>
         <script>
         (function() {
@@ -34518,7 +34572,7 @@
         </section>
 
         <!-- Why Choose Digitivia -->
-        <section style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
+        <section class="lp-align-start" style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
             <h2 class="lp-section-title" data-i18n="landing_why.title">Why Digitivia?</h2>
             <p class="lp-section-sub" data-i18n="landing_why.sub">Not a generic bot — an agent trained on your business, supervised by you.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1.2rem;">
@@ -34620,7 +34674,7 @@
 
 
         <!-- Features: capabilities grouped by user outcome -->
-        <section class="lp-features" id="lp-features">
+        <section class="lp-features lp-align-start" id="lp-features">
             <h2 class="lp-section-title" data-i18n="landing_caps.title">Everything you need in one place</h2>
             <p class="lp-section-sub" data-i18n="landing_caps.sub">Four outcomes, one platform — across WhatsApp, Messenger, Instagram, Telegram, and your website.</p>
             <div class="lp-features-grid">

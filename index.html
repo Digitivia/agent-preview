@@ -358,6 +358,25 @@
                 "stores_soon": "Google Play and App Store versions are on the way.",
                 "hero_btn": "Install the app"
             },
+            "landing_hero": {
+                "eyebrow": "AI-Powered Customer Engagement Platform",
+                "title_a": "Your AI Agents Handle",
+                "title_grad": "Every Customer",
+                "title_b": "On Every Channel, 24/7",
+                "rotator_prefix": "Live now on",
+                "sub": "Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, your website — and more channels coming. Capture leads automatically, manage orders, and let AI handle support while you grow.",
+                "cta_primary": "Start Automating Now",
+                "cta_secondary": "See How It Works",
+                "trust": "Loved by growing businesses across MENA",
+                "toggle_cartiva": "Cartiva · Ecom",
+                "toggle_opsy": "Opsy · Services",
+                "chat_status": "Online · replies instantly",
+                "input_ph": "Ask anything…",
+                "feat1_t": "Lead captured",
+                "feat1_d": "New WhatsApp lead → CRM",
+                "feat2_t": "Order confirmed",
+                "feat2_d": "Cash on delivery · Cairo"
+            },
             "legal": {
                 "links": {
                     "privacy": "Privacy Policy",
@@ -2126,6 +2145,25 @@
                 "ios_text": "اضغط على زر المشاركة في Safari، ثم اختر \"إضافة إلى الشاشة الرئيسية\".",
                 "stores_soon": "نسختا Google Play و App Store في الطريق.",
                 "hero_btn": "ثبّت التطبيق"
+            },
+            "landing_hero": {
+                "eyebrow": "منصة التفاعل مع العملاء بالذكاء الاصطناعي",
+                "title_a": "وكلاء الذكاء الاصطناعي يتعاملون مع",
+                "title_grad": "كل عميل",
+                "title_b": "على كل قناة، على مدار الساعة",
+                "rotator_prefix": "يعمل الآن على",
+                "sub": "انشر وكلاء ذكاء اصطناعي أذكياء عبر واتساب وماسنجر وإنستغرام وتيليجرام وموقعك — والمزيد قادم. التقط العملاء المحتملين تلقائياً، وأدر الطلبات، ودع الذكاء الاصطناعي يتولى الدعم بينما تنمو.",
+                "cta_primary": "ابدأ الأتمتة الآن",
+                "cta_secondary": "شاهد كيف يعمل",
+                "trust": "محبوب من الشركات النامية في المنطقة",
+                "toggle_cartiva": "كارتيفا · متاجر",
+                "toggle_opsy": "أوبسي · خدمات",
+                "chat_status": "متصل · يرد فوراً",
+                "input_ph": "اسأل أي شيء…",
+                "feat1_t": "تم التقاط عميل",
+                "feat1_d": "عميل واتساب جديد → CRM",
+                "feat2_t": "تم تأكيد الطلب",
+                "feat2_d": "الدفع عند الاستلام · القاهرة"
             },
             "legal": {
                 "links": {
@@ -9324,6 +9362,79 @@
             margin-left: 2px; animation: lp-blink 0.8s step-end infinite; vertical-align: text-bottom;
         }
         @keyframes lp-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ===== Premium hero (lpx-) — 2026 split hero + live chat mock ===== */
+        .lpx-hero { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 2rem; position: relative; }
+        .lpx-aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .lpx-aurora span { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; }
+        .lpx-aurora span:nth-child(1) { width: 480px; height: 480px; top: -160px; inset-inline-start: -120px; background: radial-gradient(circle, var(--theme-color), transparent 70%); animation: lpx-drift 14s ease-in-out infinite alternate; }
+        .lpx-aurora span:nth-child(2) { width: 420px; height: 420px; top: -100px; inset-inline-end: -100px; background: radial-gradient(circle, #a78bfa, transparent 70%); animation: lpx-drift 18s ease-in-out infinite alternate-reverse; }
+        @keyframes lpx-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(40px,30px) scale(1.12); } }
+        :root[data-theme="light"] .lpx-aurora span { opacity: 0.22; }
+        .lpx-grid { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2.5rem; align-items: center; text-align: start; }
+        .lpx-copy h1 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); font-weight: 800; line-height: 1.15; margin: 0 0 1rem; color: var(--text-primary); }
+        .lpx-rotator { font-size: clamp(0.95rem, 2vw, 1.1rem); font-weight: 700; color: var(--theme-color); min-height: 1.6em; margin-bottom: 0.4rem; }
+        .lpx-copy > p { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-secondary); line-height: 1.65; margin: 0 0 1.6rem; max-width: 34rem; }
+        .lpx-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1.1rem; }
+        .lpx-ctas .lp-btn { padding: 0.8rem 1.9rem; font-size: 1rem; }
+        .lpx-trust { display: flex; align-items: center; gap: 10px; margin-bottom: 0.4rem; }
+        .lpx-avatars { display: flex; }
+        .lpx-avatars span { width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 800; color: #fff; border: 2px solid var(--bg-primary, #0b0f14); margin-inline-end: -8px; }
+        .lpx-trust small { color: var(--text-secondary); font-size: 0.8rem; }
+        .lpx-stars { color: #fbbf24; letter-spacing: 2px; font-size: 0.8rem; }
+        /* Phone / chat mock */
+        .lpx-visual { position: relative; display: flex; justify-content: center; }
+        .lpx-phone { width: min(340px, 100%); border-radius: 26px; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 30px 80px rgba(0,0,0,0.35); }
+        :root[data-theme="light"] .lpx-phone { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.07); box-shadow: 0 24px 60px rgba(15,23,42,0.12); }
+        .lpx-phone-head { display: flex; align-items: center; gap: 10px; padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 0.8rem; }
+        :root[data-theme="light"] .lpx-phone-head { border-color: rgba(0,0,0,0.07); }
+        .lpx-phone-head b { display: block; font-size: 0.88rem; color: var(--text-primary); }
+        .lpx-phone-head small { font-size: 0.72rem; color: #10b981; font-weight: 600; }
+        .lpx-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: lp-blink 1.5s ease-in-out infinite; }
+        .lpx-toggle { display: flex; gap: 6px; margin-bottom: 0.8rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 999px; padding: 4px; }
+        :root[data-theme="light"] .lpx-toggle { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.06); }
+        .lpx-toggle button { flex: 1; border: 0; cursor: pointer; border-radius: 999px; padding: 7px 4px; font-size: 0.74rem; font-weight: 700; background: transparent; color: var(--text-secondary); transition: all 0.25s ease; }
+        .lpx-toggle button.on-cartiva { background: rgba(249,115,22,0.16); color: #f97316; }
+        .lpx-toggle button.on-opsy { background: rgba(59,130,246,0.16); color: #3b82f6; }
+        .lpx-chat { display: flex; flex-direction: column; gap: 8px; min-height: 220px; max-height: 260px; overflow: hidden; }
+        .lpx-msg { max-width: 85%; padding: 8px 12px; border-radius: 14px; font-size: 0.8rem; line-height: 1.45; animation: lpx-pop 0.35s ease; }
+        @keyframes lpx-pop { from { opacity: 0; transform: translateY(8px) scale(0.97); } to { opacity: 1; transform: none; } }
+        .lpx-msg.in { align-self: flex-start; background: rgba(255,255,255,0.08); color: var(--text-primary); border-start-start-radius: 4px; }
+        .lpx-msg.out { align-self: flex-end; background: var(--theme-color); color: #fff; border-start-end-radius: 4px; }
+        :root[data-theme="light"] .lpx-msg.in { background: rgba(0,0,0,0.05); }
+        .lpx-typing { align-self: flex-start; display: inline-flex; gap: 4px; padding: 10px 14px; border-radius: 14px; border-start-start-radius: 4px; background: rgba(255,255,255,0.08); }
+        .lpx-typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--text-secondary); animation: lpx-tp 1s ease-in-out infinite; }
+        .lpx-typing i:nth-child(2) { animation-delay: 0.15s; } .lpx-typing i:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes lpx-tp { 0%, 100% { opacity: 0.3; transform: none; } 50% { opacity: 1; transform: translateY(-3px); } }
+        .lpx-input { display: flex; align-items: center; gap: 8px; margin-top: 0.8rem; padding: 9px 12px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09); font-size: 0.78rem; color: var(--text-secondary); }
+        :root[data-theme="light"] .lpx-input { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.07); }
+        .lpx-float { position: absolute; display: flex; align-items: center; gap: 8px; padding: 9px 13px; border-radius: 14px; font-size: 0.72rem; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); box-shadow: 0 14px 40px rgba(0,0,0,0.3); animation: lpx-float 4s ease-in-out infinite; white-space: nowrap; }
+        :root[data-theme="light"] .lpx-float { background: rgba(255,255,255,0.92); border-color: rgba(0,0,0,0.06); box-shadow: 0 14px 34px rgba(15,23,42,0.12); }
+        .lpx-float b { display: block; color: var(--text-primary); font-size: 0.74rem; }
+        .lpx-float small { color: var(--text-secondary); }
+        .lpx-float.f1 { top: 8%; inset-inline-end: -8px; }
+        .lpx-float.f2 { bottom: 10%; inset-inline-start: -14px; animation-delay: 2s; }
+        @keyframes lpx-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .lpx-bento { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.9rem; margin-top: 2.2rem; }
+        .lpx-bento .lp-stat { padding: 1.1rem 0.8rem !important; border-radius: 18px !important; text-align: center; }
+        /* Logo marquee */
+        .lpx-marquee { overflow: hidden; max-width: 800px; margin: 0 auto; padding: 0 2rem 3rem; text-align: center; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+        .lpx-marquee-track { display: flex; align-items: center; gap: 1.5rem; width: max-content; animation: lpx-scroll 30s linear infinite; }
+        .lpx-marquee:hover .lpx-marquee-track { animation-play-state: paused; }
+        @keyframes lpx-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        [dir="rtl"] .lpx-marquee-track { animation-name: lpx-scroll-rtl; }
+        @keyframes lpx-scroll-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+        @media (max-width: 900px) {
+            .lpx-grid { grid-template-columns: 1fr; text-align: center; }
+            .lpx-copy > p { margin-inline: auto; }
+            .lpx-ctas, .lpx-trust { justify-content: center; }
+            .lpx-float.f1 { inset-inline-end: 0; } .lpx-float.f2 { inset-inline-start: 0; }
+            .lpx-bento { grid-template-columns: repeat(2, 1fr); }
+            .lpx-bento .lp-stat:last-child { grid-column: span 2; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .lpx-aurora span, .lpx-float, .lpx-marquee-track { animation: none !important; }
+        }
 
         /* Smooth parallax depth */
         .lp-parallax-slow { will-change: transform; }
@@ -33475,33 +33586,124 @@
         </nav>
 
         <!-- Hero -->
-        <section class="lp-hero">
-            <div id="lp-hero-avatars" style="display:flex;align-items:center;justify-content:center;gap:1.5rem;margin-bottom:1rem;">
-                <div style="text-align:center;">
-                    <div id="lp-hero-cartiva"></div>
-                    <div style="font-size:0.72rem;font-weight:700;color:#f97316;margin-top:4px;">Cartiva AI</div>
-                    <div style="font-size:0.6rem;color:var(--text-secondary);">Ecommerce</div>
+        <section class="lp-hero lpx-hero">
+            <div class="lpx-aurora" aria-hidden="true"><span></span><span></span></div>
+            <div class="lpx-grid">
+                <div class="lpx-copy">
+                    <div class="lp-hero-badge" data-i18n="landing_hero.eyebrow">AI-Powered Customer Engagement Platform</div>
+                    <h1><span data-i18n="landing_hero.title_a">Your AI Agents Handle</span> <span class="lp-gradient-text" data-i18n="landing_hero.title_grad">Every Customer</span><br><span data-i18n="landing_hero.title_b">On Every Channel, 24/7</span></h1>
+                    <div class="lpx-rotator"><span data-i18n="landing_hero.rotator_prefix">Live now on</span> <b id="lpx-rotator">WhatsApp</b><span class="lp-cursor"></span></div>
+                    <p data-i18n="landing_hero.sub">Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, your website — and more channels coming. Capture leads automatically, manage orders, and let AI handle support while you grow.</p>
+                    <div class="lpx-ctas">
+                        <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" data-i18n="landing_hero.cta_primary">Start Automating Now</button>
+                        <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" data-i18n="landing_hero.cta_secondary">See How It Works</button>
+                        <button id="lp-install-btn" onclick="triggerPwaInstall()" class="lp-btn lp-btn-outline" style="display:none;" data-i18n="install_app.hero_btn">Install the app</button>
+                    </div>
+                    <div class="lpx-trust">
+                        <div class="lpx-avatars" aria-hidden="true"><span style="background:#f97316">MM</span><span style="background:#3b82f6">SK</span><span style="background:#10b981">LA</span><span style="background:#a78bfa">+9</span></div>
+                        <div><div class="lpx-stars">★★★★★</div><small data-i18n="landing_hero.trust">Loved by growing businesses across MENA</small></div>
+                    </div>
+                    <p style="margin-top:0.4rem;font-size:0.8rem;color:var(--text-secondary);opacity:0.85;" data-i18n="install_app.stores_soon">Google Play and App Store versions are on the way.</p>
                 </div>
-                <div style="font-size:1.5rem;color:var(--text-secondary);opacity:0.3;font-weight:300;">×</div>
-                <div style="text-align:center;">
-                    <div id="lp-hero-opsy"></div>
-                    <div style="font-size:0.72rem;font-weight:700;color:#3b82f6;margin-top:4px;">Opsy AI</div>
-                    <div style="font-size:0.6rem;color:var(--text-secondary);">Services</div>
+                <div class="lpx-visual">
+                    <div class="lpx-phone lp-glass">
+                        <div class="lpx-phone-head">
+                            <div id="lpx-avatar"></div>
+                            <div style="flex:1;"><b id="lpx-agent-name">Cartiva AI</b><small data-i18n="landing_hero.chat_status">Online · replies instantly</small></div>
+                            <span class="lpx-dot"></span>
+                        </div>
+                        <div class="lpx-toggle" role="tablist" aria-label="Agent preview">
+                            <button id="lpx-tab-cartiva" class="on-cartiva" onclick="lpxSwitch('cartiva')" data-i18n="landing_hero.toggle_cartiva">Cartiva · Ecom</button>
+                            <button id="lpx-tab-opsy" onclick="lpxSwitch('opsy')" data-i18n="landing_hero.toggle_opsy">Opsy · Services</button>
+                        </div>
+                        <div class="lpx-chat" id="lpx-chat" aria-live="polite"></div>
+                        <div class="lpx-input"><span style="flex:1" data-i18n="landing_hero.input_ph">Ask anything…</span><span style="color:var(--theme-color);font-weight:800;">↑</span></div>
+                    </div>
+                    <div class="lpx-float f1"><span style="font-size:1rem;">🎯</span><div><b data-i18n="landing_hero.feat1_t">Lead captured</b><small data-i18n="landing_hero.feat1_d">New WhatsApp lead → CRM</small></div></div>
+                    <div class="lpx-float f2"><span style="font-size:1rem;">📦</span><div><b data-i18n="landing_hero.feat2_t">Order confirmed</b><small data-i18n="landing_hero.feat2_d">Cash on delivery · Cairo</small></div></div>
                 </div>
             </div>
             <script>
-                var _hc=document.getElementById('lp-hero-cartiva');if(_hc&&window.cartivaBag)_hc.innerHTML=cartivaBag('idle',80);
-                var _hop=document.getElementById('lp-hero-opsy');if(_hop&&window.opsyGearOrb)_hop.innerHTML=opsyGearOrb('idle',80);
+            (function() {
+                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                var isAR = (document.documentElement.lang || 'en').indexOf('ar') === 0;
+                // Channel rotator
+                var channels = isAR ? ['واتساب','ماسنجر','إنستغرام','تيليجرام','موقعك'] : ['WhatsApp','Messenger','Instagram','Telegram','Website Chat'];
+                var rot = document.getElementById('lpx-rotator'), ci = 0;
+                window.lpxMsgs = null;
+                if (rot && !reduce) setInterval(function(){ ci = (ci+1) % channels.length; rot.textContent = channels[ci]; }, 2200);
+                // Chat mock loop
+                var scripts = {
+                    cartiva: isAR ? [
+                        {t:'in', x:'عندكم توصيل للتجمع؟ 🚚'},
+                        {t:'out', x:'أيوه! التوصيل خلال ٢-٣ أيام، والدفع عند الاستلام ✅ تحب أأكد الأوردر؟'},
+                        {t:'in', x:'تمام، أكده 👍'}
+                    ] : [
+                        {t:'in', x:'Do you deliver to New Cairo? 🚚'},
+                        {t:'out', x:'Yes! 2–3 day delivery with cash on delivery ✅ Want me to confirm your order?'},
+                        {t:'in', x:'Yes please 👍'}
+                    ],
+                    opsy: isAR ? [
+                        {t:'in', x:'عايز أحجز كشف أسنان بكرة 🦷'},
+                        {t:'out', x:'أكيد! متاح بكرة ٥م و ٧م — أنسب ميعاد ليك إمتى؟'},
+                        {t:'in', x:'٥م مناسب 👌'}
+                    ] : [
+                        {t:'in', x:'I need a dental checkup tomorrow 🦷'},
+                        {t:'out', x:'Of course! 5pm and 7pm are open — which suits you?'},
+                        {t:'in', x:'5pm works 👌'}
+                    ]
+                };
+                var mode = 'cartiva', chat = document.getElementById('lpx-chat');
+                function avatar(st, sz){ return (mode==='cartiva' ? window.cartivaBag : window.opsyGearOrb)(st||'idle', sz||44); }
+                function paintHead(){
+                    var a = document.getElementById('lpx-avatar');
+                    if (a && window.cartivaBag) a.innerHTML = avatar('idle');
+                    var n = document.getElementById('lpx-agent-name');
+                    if (n) n.textContent = mode==='cartiva' ? 'Cartiva AI' : 'Opsy AI';
+                    var tc = document.getElementById('lpx-tab-cartiva'), to = document.getElementById('lpx-tab-opsy');
+                    if (tc && to){ tc.className = mode==='cartiva' ? 'on-cartiva' : ''; to.className = mode==='opsy' ? 'on-opsy' : ''; }
+                }
+                window.lpxSwitch = function(m){ mode = m; paintHead(); play(true); };
+                var timers = [];
+                function play(now){
+                    if (!chat) return;
+                    timers.forEach(clearTimeout); timers = [];
+                    chat.innerHTML = ''; paintHead();
+                    if (reduce){ scripts[mode].forEach(function(m){ var d=document.createElement('div'); d.className='lpx-msg '+m.t; d.textContent=m.x; chat.appendChild(d); }); return; }
+                    var delay = now ? 200 : 1200, i = 0;
+                    function step(){
+                        if (i >= scripts[mode].length){ timers.push(setTimeout(function(){ play(true); }, 6000)); return; }
+                        var m = scripts[mode][i];
+                        var tp = document.createElement('div'); tp.className = 'lpx-typing'; tp.innerHTML = '<i></i><i></i><i></i>';
+                        chat.appendChild(tp);
+                        timers.push(setTimeout(function(){
+                            tp.remove();
+                            var d = document.createElement('div'); d.className = 'lpx-msg ' + m.t; d.textContent = m.x;
+                            chat.appendChild(d); i++; timers.push(setTimeout(step, 900));
+                        }, m.t === 'out' ? 1100 : 700));
+                    }
+                    timers.push(setTimeout(step, delay));
+                }
+                document.addEventListener('visibilitychange', function(){ if (!document.hidden) play(true); });
+                if (window.cartivaBag) { paintHead(); play(false); }
+                else { var iv = setInterval(function(){ if (window.cartivaBag){ clearInterval(iv); paintHead(); play(false); } }, 300); }
+                // Animated stat count-up (keeps live-count updater intact)
+                var counted = false;
+                function countUp(){
+                    if (counted) return; counted = true;
+                    document.querySelectorAll('#lp-stats-strip .lp-stat-num').forEach(function(el){
+                        if (el.id === 'lp-live-count') return;
+                        var raw = el.textContent.trim(), num = parseFloat(raw.replace(/[^0-9.]/g,'')), suf = raw.replace(/[0-9.]/g,'');
+                        if (isNaN(num) || reduce) return;
+                        var t0 = null;
+                        function fr(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/1400, 1); el.textContent = Math.round(num * (1-Math.pow(1-p,3))) + suf; if (p < 1) requestAnimationFrame(fr); }
+                        requestAnimationFrame(fr);
+                    });
+                }
+                var so = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ countUp(); so.disconnect(); } }); }, {threshold: 0.3});
+                var ss = document.getElementById('lp-stats-strip'); if (ss) so.observe(ss);
+            })();
             </script>
-            <div class="lp-hero-badge">AI-Powered Customer Engagement Platform</div>
-            <h1>Your AI Agents Handle <span class="lp-gradient-text">Every Customer</span><br>On Every Channel, 24/7</h1>
-            <p>Deploy intelligent AI agents across WhatsApp, Messenger, Instagram, Telegram, your website — and more channels coming. Capture leads automatically, manage orders, and let AI handle support while you grow.</p>
-            <div class="lp-hero-ctas">
-                <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2rem;font-size:1rem;">Start Automating Now</button>
-                <button onclick="scrollToFeatures()" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;">See How It Works</button>
-                <button id="lp-install-btn" onclick="triggerPwaInstall()" class="lp-btn lp-btn-outline" style="display:none;padding:0.75rem 2rem;font-size:1rem;" data-i18n="install_app.hero_btn">Install the app</button>
-            </div>
-            <p style="margin-top:0.75rem;font-size:0.8rem;color:var(--text-secondary);opacity:0.85;" data-i18n="install_app.stores_soon">Google Play and App Store versions are on the way.</p>
 
             <!-- Channel Chips -->
             <div class="lp-channels">
@@ -33539,7 +33741,7 @@
             </div>
 
             <!-- Social Proof Stats (Live Data) -->
-            <div class="lp-stats" id="lp-stats-strip" style="border:none;padding:1.5rem 0;gap:1rem;">
+            <div class="lp-stats lpx-bento" id="lp-stats-strip" style="border:none;padding:0;gap:0.9rem;">
                 <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
                     <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg></div>
                     <div class="lp-stat-num" style="font-size:2rem;">1M+</div>
@@ -33572,7 +33774,7 @@
         </section>
 
         <!-- Partner Logos -->
-        <section style="max-width:800px;margin:0 auto;padding:0 2rem 3rem;text-align:center;">
+        <section class="lpx-marquee">
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;">Powering Your Growth With</div>
             <style>
                 .lp-logo-item { display:flex;align-items:center;gap:8px;padding:10px 20px;cursor:default;transition:all 0.3s ease;filter:grayscale(1) brightness(0.7);opacity:0.5; }
@@ -33580,7 +33782,7 @@
                 :root[data-theme="light"] .lp-logo-item { filter:grayscale(1) brightness(1.2);opacity:0.4; }
                 :root[data-theme="light"] .lp-logo-item:hover { filter:grayscale(0) brightness(1);opacity:1; }
             </style>
-            <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
+            <div class="lpx-marquee-track" id="lpx-logos" style="display:flex;align-items:center;gap:1.5rem;">
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/anthropic/D97757" alt="Anthropic" width="24" height="24"><span style="font-size:1rem;font-weight:700;color:#D97757;">Anthropic</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="Meta" width="28" height="28"><span style="font-size:1rem;font-weight:700;color:#0082FB;">Meta</span></div>
                 <div class="lp-logo-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="#10A37F"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg><span style="font-size:1rem;font-weight:700;color:#10A37F;">OpenAI</span></div>
@@ -33594,6 +33796,7 @@
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/hostinger/673DE6" alt="Hostinger" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:#673DE6;">Hostinger</span></div>
                 <div class="lp-logo-item"><img src="https://cdn.simpleicons.org/google/4285F4" alt="Google" width="22" height="22"><span style="font-size:1rem;font-weight:700;color:#4285F4;">Google</span></div>
             </div>
+            <script>(function(){var t=document.getElementById('lpx-logos');if(t&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)t.innerHTML+=t.innerHTML;})();</script>
         </section>
 
         <!-- Why Choose Digitivia -->

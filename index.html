@@ -9762,6 +9762,16 @@
         @keyframes lp-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* ===== Premium hero (lpx-) — 2027 split hero + live chat mock ===== */
+        /* Display type: self-hosted Cairo Bold subset (14KB, Arabic+Latin, CSP
+           font-src 'self' clean). Headings only; body stays system for
+           long-form readability. fonts/ ships with the repo and the preview. */
+        @font-face {
+            font-family: 'Cairo Display';
+            src: url('/assets/Cairo-Bold-Arabic-Latin-Subset-CmT3OXcU.woff2') format('woff2');
+            font-weight: 700; font-style: normal; font-display: swap;
+        }
+        #landing-page h1, #landing-page .lp-section-title { font-family: 'Cairo Display', 'Segoe UI', system-ui, Tahoma, sans-serif; letter-spacing: -0.01em; }
+        #landing-page .lp-stat-num, #landing-page .lp-price-amount { font-variant-numeric: tabular-nums; }
         /* Signature elements: (1) dual-agent orange/blue keylines, (2) ledger-style
            proof strip. No aurora blobs, no glass-everywhere, no violet gradients. */
         .lpx-hero { width: 100%; max-width: 1200px; margin: 0 auto; padding: 4rem 2rem 2rem; position: relative; overflow: clip; box-sizing: border-box; }
@@ -10054,6 +10064,17 @@
         #lp-sticky-cta .lp-btn { width: 100%; padding: 0.8rem; font-size: 1rem; }
         :root[data-theme="light"] #lp-sticky-cta { background: rgba(255,255,255,0.92); border-top-color: #e2e8f0; }
         @media (max-width: 767px) { #lp-sticky-cta.show { display: block; } }
+        /* Final CTA: deep ink panel — the page's mood anchor. Static, solid,
+           readable in both themes without a theme override. */
+        .lp-final-panel { max-width: 880px; margin: 0 auto; padding: 3rem 2rem; border-radius: 24px;
+            background: linear-gradient(160deg, #0e3a3c 0%, #0b2426 70%); color: #f2f7f7;
+            border: 1px solid rgba(127,211,213,0.22); box-shadow: 0 30px 80px rgba(11,36,38,0.35); }
+        #landing-page .lp-final-panel p, #landing-page .lp-final-panel small { color: #f2f7f7; }
+        .lp-final-panel .lp-btn-primary { background: #e8f4f4; color: #0b2426; }
+        .lp-final-panel .lp-btn-primary:hover { filter: brightness(1.05); }
+        .lp-btn-ghostlight { background: transparent; color: #e8f4f4; border: 1.5px solid rgba(232,244,244,0.5); }
+        .lp-btn-ghostlight:hover { background: rgba(232,244,244,0.1); }
+        @media (max-width: 600px) { .lp-final-panel { padding: 2.2rem 1.2rem; border-radius: 20px; } }
         .lp-nav-logo { font-size: 1.05rem; font-weight: 800; color: var(--theme-color); letter-spacing: 0.2px; white-space: nowrap; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
         [dir="rtl"] .lp-nav-logo { letter-spacing: 0; }
         .lp-nav-links { display: flex; gap: 4px; align-items: center; }
@@ -10384,7 +10405,8 @@
         .sentiment-summary-bar .seg-urgent { background: #f59e0b; }
 
         /* ====== LIGHT THEME OVERRIDES ====== */
-        :root[data-theme="light"] #landing-page { background: #f8fafc; background-image: radial-gradient(circle at 50% 30%, rgba(91,174,176,0.08) 0%, transparent 60%); }
+        :root[data-theme="light"] #landing-page { background: #eef3f7; background-image: radial-gradient(circle at 50% 22%, rgba(91,174,176,0.12) 0%, transparent 55%); }
+        :root[data-theme="light"] #landing-page .lp-glimpse-card, :root[data-theme="light"] #landing-page .lp-demo-panel { box-shadow: 0 24px 60px rgba(15,23,42,0.1); }
         :root[data-theme="light"] .lp-feature-card,
         :root[data-theme="light"] .lp-price-card,
         :root[data-theme="light"] .lp-trust-badge,
@@ -34972,14 +34994,16 @@
 
         <!-- CTA -->
         <section class="lp-hero" style="padding-top:0;padding-bottom:2rem;">
-            <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:var(--text-primary);margin-bottom:1rem;" data-i18n="landing_final.title">Never miss another customer message.</h2>
-            <p style="color:var(--text-secondary);margin-bottom:0.5rem;" data-i18n="landing_final.sub">Connect a channel, configure your agent, go live.</p>
-            <p style="color:var(--text-secondary);margin-bottom:1.5rem;font-size:0.85rem;" data-i18n="landing_hero.obj_price">Plans from $79/mo · export or delete your data anytime.</p>
+            <div class="lp-final-panel">
+            <h2 style="font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;margin-bottom:1rem;" data-i18n="landing_final.title">Never miss another customer message.</h2>
+            <p style="opacity:0.82;margin-bottom:0.5rem;" data-i18n="landing_final.sub">Connect a channel, configure your agent, go live.</p>
+            <p style="opacity:0.7;margin-bottom:1.5rem;font-size:0.85rem;" data-i18n="landing_hero.obj_price">Plans from $79/mo · export or delete your data anytime.</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
                 <button type="button" onclick="showLandingSignup()" class="lp-btn lp-btn-primary" style="padding:0.75rem 2.5rem;font-size:1rem;" data-i18n="landing_final.cta">Start Free</button>
-                <button type="button" onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-outline" style="padding:0.75rem 2rem;font-size:1rem;" data-i18n="landing_final.secondary">Chat on WhatsApp</button>
+                <button type="button" onclick="window.open('https://wa.me/201211400092','_blank')" class="lp-btn lp-btn-ghostlight" style="padding:0.75rem 2rem;font-size:1rem;" data-i18n="landing_final.secondary">Chat on WhatsApp</button>
             </div>
-            <small class="lpx-micro" style="text-align:center;" data-i18n="landing_hero.cta_micro">Start free · guided setup · Arabic + English</small>
+            <small class="lpx-micro" style="text-align:center;opacity:0.75;" data-i18n="landing_hero.cta_micro">Start free · guided setup · Arabic + English</small>
+            </div>
         </section>
 
         <div id="lp-sticky-cta" hidden>

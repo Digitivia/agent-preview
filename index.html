@@ -40049,15 +40049,12 @@
 
                 const oauthOptions = { redirectTo: cleanRedirectUrl };
                 if (provider === 'facebook') {
-                    // Our Meta app ("Digitivia AI Agent", 875686618745863) is a
-                    // Business app: it signs people in through Facebook Login for
-                    // Business, which takes a login configuration, never a list of
-                    // permissions. Sent without one, Facebook stops at "This app
-                    // needs at least one supported permission" whatever the scopes.
-                    // Configuration 1067992732879096: user access token, email
-                    // (public_profile is always included). Supabase forwards
-                    // queryParams to Facebook's dialog unchanged.
-                    oauthOptions.queryParams = { config_id: '1067992732879096' };
+                    // Sign-in uses its own Consumer Meta app (896072060104300, set in
+                    // Supabase Auth > Providers > Facebook), with classic Facebook
+                    // Login: plain permissions, no login configuration. The Business
+                    // app (875686618745863) stays for Messenger, Instagram and
+                    // WhatsApp; its Login for Business cannot ask for email alone.
+                    oauthOptions.scopes = 'public_profile email';
                 }
 
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({

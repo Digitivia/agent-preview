@@ -40049,10 +40049,15 @@
 
                 const oauthOptions = { redirectTo: cleanRedirectUrl };
                 if (provider === 'facebook') {
-                    // Ask for the profile first: some Facebook apps reject an
-                    // email-only request with "needs at least one supported
-                    // permission". public_profile is always valid; email stays.
-                    oauthOptions.scopes = 'public_profile email';
+                    // Our Meta app ("Digitivia AI Agent", 875686618745863) is a
+                    // Business app: it signs people in through Facebook Login for
+                    // Business, which takes a login configuration, never a list of
+                    // permissions. Sent without one, Facebook stops at "This app
+                    // needs at least one supported permission" whatever the scopes.
+                    // Configuration 1067992732879096: user access token, email
+                    // (public_profile is always included). Supabase forwards
+                    // queryParams to Facebook's dialog unchanged.
+                    oauthOptions.queryParams = { config_id: '1067992732879096' };
                 }
 
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({

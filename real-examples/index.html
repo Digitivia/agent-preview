@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Real sign-in screens</title>
+<style>
+  :root {
+    --ground: #f3f4f9; --card: #ffffff; --ink: #131034; --body: #4a5166; --line: #e2e4ee;
+    --brand: #241668; --accent: #2a8184; --warn-bg: #fff4e5; --warn-line: #f0c988; --warn-ink: #6b4a05;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0f1115; --card: #171a20; --ink: #e9edf3; --body: #aab1bd; --line: #2a2f38;
+      --brand: #b9a8ff; --accent: #5baeb0; --warn-bg: #2a2210; --warn-line: #5a4210; --warn-ink: #e8c877;
+    }
+  }
+  body { background: var(--ground); color: var(--ink); font: 15px/1.6 -apple-system, "Segoe UI", system-ui, Roboto, sans-serif; margin: 0; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 10px; }
+  .lede { color: var(--body); margin: 0 0 20px; max-width: 72ch; }
+  .verdict { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-ink); border-radius: 12px; padding: 16px 20px; margin: 0 0 32px; font-size: 0.95rem; }
+  .verdict strong { display: block; margin-bottom: 6px; font-size: 1rem; }
+  h2 { font-size: 1.05rem; margin: 40px 0 14px; padding-top: 8px; border-top: 1px solid var(--line); color: var(--body); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .card img { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--line); background: #eee; }
+  .card .meta { padding: 12px 14px; }
+  .card .name { font-weight: 700; margin: 0 0 2px; }
+  .card a { color: var(--accent); font-size: 0.82rem; word-break: break-all; }
+  .card .note { margin: 6px 0 0; font-size: 0.82rem; color: var(--body); }
+  .full { grid-column: 1 / -1; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>What real sign-in screens actually look like</h1>
+  <p class="lede">Live screenshots taken just now, unedited, of the actual sign-in pages of products widely regarded as well designed. Nothing here was mocked up or invented; every image is that product's real page at the URL underneath it.</p>
+
+  <div class="verdict">
+    <strong>The pattern, across all nine:</strong>
+    Not one of them puts a logo wall, trust bar, or any animated/glass/gradient decoration on the sign-in screen itself. The form sits alone on a plain background, small brand mark, nothing competing with it. The one product here that does show customer logos near a sign-in flow (Retool) puts them in a completely separate zone, below an illustration, as flat black wordmarks with zero color, zero motion, zero styling &mdash; not the hero of the screen, a quiet footnote to it.
+  </div>
+
+  <h2>Sign-in screens with zero decoration</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="notion-login.png" alt="Notion sign-in page">
+      <div class="meta"><p class="name">Notion</p><a href="https://www.notion.so/login" target="_blank" rel="noopener">notion.so/login</a><p class="note">Wordmark, heading, one input, provider grid. Nothing else.</p></div>
+    </div>
+    <div class="card">
+      <img src="vercel-login.png" alt="Vercel sign-in page">
+      <div class="meta"><p class="name">Vercel</p><a href="https://vercel.com/login" target="_blank" rel="noopener">vercel.com/login</a><p class="note">Plain grey ground, stacked provider buttons, no imagery at all.</p></div>
+    </div>
+    <div class="card">
+      <img src="github-login.png" alt="GitHub sign-in page">
+      <div class="meta"><p class="name">GitHub</p><a href="https://github.com/login" target="_blank" rel="noopener">github.com/login</a><p class="note">The oldest, most-used dev sign-in on the web. Still just a mark and a form.</p></div>
+    </div>
+    <div class="card">
+      <img src="figma-login.png" alt="Figma sign-in page">
+      <div class="meta"><p class="name">Figma</p><a href="https://www.figma.com/login" target="_blank" rel="noopener">figma.com/login</a><p class="note">Logo top-left, form dead centre, white space everywhere else.</p></div>
+    </div>
+    <div class="card">
+      <img src="attio-login.png" alt="Attio sign-in page">
+      <div class="meta"><p class="name">Attio</p><a href="https://app.attio.com/login" target="_blank" rel="noopener">app.attio.com/login</a><p class="note">Widely cited as one of the best-designed B2B products right now. One button, one field.</p></div>
+    </div>
+    <div class="card">
+      <img src="linear-login.png" alt="Linear sign-in page">
+      <div class="meta"><p class="name">Linear</p><a href="https://linear.app/login" target="_blank" rel="noopener">linear.app/login</a><p class="note">The reference for restraint in this category. A mark, a heading, four buttons.</p></div>
+    </div>
+    <div class="card">
+      <img src="mercury-login.png" alt="Mercury sign-in page">
+      <div class="meta"><p class="name">Mercury</p><a href="https://mercury.com/login" target="_blank" rel="noopener">mercury.com/login</a><p class="note">A banking product; if anyone needed to look "trustworthy" via logos, it's them. They didn't.</p></div>
+    </div>
+    <div class="card">
+      <img src="stripe-login.png" alt="Stripe sign-in page">
+      <div class="meta"><p class="name">Stripe</p><a href="https://dashboard.stripe.com/login" target="_blank" rel="noopener">dashboard.stripe.com/login</a><p class="note">One static brand gradient behind a plain white card. Compare to their own homepage below.</p></div>
+    </div>
+  </div>
+
+  <h2>The one exception, and how it actually handles it</h2>
+  <div class="grid">
+    <div class="card full">
+      <img src="retool-login.png" alt="Retool sign-in page, showing a trust bar of flat customer wordmarks below an illustration, separate from the form">
+      <div class="meta"><p class="name">Retool</p><a href="https://login.retool.com" target="_blank" rel="noopener">login.retool.com</a><p class="note">The only one of the nine with any customer logos near a sign-in flow. Look at how it's done: flat black wordmarks (Ramp, DoorDash, Stripe, Amazon, Adobe, OpenAI), no colour, no icons, no motion, in their own quiet strip under an illustration &mdash; nowhere near the form, which still has zero decoration of its own.</p></div>
+    </div>
+  </div>
+
+  <h2>Where logo walls do live: the marketing homepage, not sign-in</h2>
+  <div class="grid">
+    <div class="card full">
+      <img src="stripe-homepage-trustbar.png" alt="Stripe homepage showing a plain grayscale-ish logo row under the hero">
+      <div class="meta"><p class="name">Stripe (homepage, not sign-in)</p><a href="https://stripe.com" target="_blank" rel="noopener">stripe.com</a><p class="note">Even Stripe's own logo wall &mdash; OpenAI, Amazon, Nvidia, Ford, Coinbase, Google, Shopify &mdash; is a plain static row under the hero. Their actual sign-in page (above) carries none of it.</p></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

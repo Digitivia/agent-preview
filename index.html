@@ -17013,7 +17013,9 @@
            ============================================================ */
         .auth-trust:has(#auth-lanes[data-strip="dock"]) .auth-logos-pause,
         .auth-trust:has(#auth-lanes[data-strip="stack"]) .auth-logos-pause,
-        .auth-trust:has(#auth-lanes[data-strip="bento"]) .auth-logos-pause { display: none; }
+        .auth-trust:has(#auth-lanes[data-strip="bento"]) .auth-logos-pause,
+        .auth-trust:has(#auth-lanes[data-strip="layeredbento"]) .auth-logos-pause,
+        .auth-trust:has(#auth-lanes[data-strip="spotlight"]) .auth-logos-pause { display: none; }
 
         /* --- D. App dock: channels in a glass dock, tools in a quiet row --- */
         #auth-lanes[data-strip="dock"] {
@@ -17164,6 +17166,124 @@
         .strip-bento-tile:hover img, .strip-bento-tile:hover svg,
         .strip-bento-tile:focus-visible img, .strip-bento-tile:focus-visible svg { filter: none; opacity: 1; }
 
+        /* --- I. Glass aurora bar (new, researched): a single frosted glass
+           capsule -- "Glassmorphism 2.0", applied surgically to one floating
+           element, never a full-screen background -- over a slow aurora glow
+           and a fine grain overlay on the glass itself. All three are named
+           2026 trend-report patterns, not a restyle of D-H. --- */
+        #auth-lanes[data-strip="auroraglass"] {
+            display: block; overflow: visible; -webkit-mask-image: none; mask-image: none; padding: 6px 0;
+        }
+        .strip-aurora-wrap { position: relative; }
+        .strip-aurora-bg {
+            position: absolute; inset: -34px -16px; z-index: 0; pointer-events: none; overflow: hidden;
+            border-radius: 26px; filter: blur(26px); opacity: .6;
+            background:
+                radial-gradient(closest-side, rgba(91, 174, 176, .55), transparent) 12% 30% / 46% 70% no-repeat,
+                radial-gradient(closest-side, rgba(139, 110, 255, .5), transparent) 82% 65% / 50% 75% no-repeat,
+                radial-gradient(closest-side, rgba(228, 64, 95, .3), transparent) 55% 5% / 40% 60% no-repeat;
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .strip-aurora-bg { animation: strip-aurora-drift 16s ease-in-out infinite alternate; }
+        }
+        @keyframes strip-aurora-drift {
+            from { transform: translate3d(-3%, -2%, 0) scale(1); }
+            to { transform: translate3d(3%, 2%, 0) scale(1.08); }
+        }
+        .strip-aurora-glass {
+            position: relative; z-index: 1; overflow: hidden; padding: 10px 0;
+            border-radius: var(--sp-r-xl); background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
+            backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+            box-shadow: 0 8px 24px rgba(5, 3, 30, .3), inset 0 1px 0 rgba(255, 255, 255, .15);
+        }
+        .strip-aurora-glass::after {
+            content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .5;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        }
+        .strip-aurora-viewport {
+            overflow: hidden; padding: 0 18px;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+        .strip-aurora-lane { display: flex; gap: 22px; width: max-content; margin: 0; padding: 0; list-style: none; }
+        .strip-aurora-item { flex-shrink: 0; list-style: none; display: flex; align-items: center; gap: 8px; opacity: .88; }
+        .strip-aurora-item img, .strip-aurora-item svg { width: 17px; height: 17px; filter: brightness(0) invert(1); }
+        .strip-aurora-item span { font-size: 12.5px; font-weight: 600; color: #fff; letter-spacing: .01em; white-space: nowrap; }
+        .strip-aurora-item.is-wordmark img { width: 32px; height: 12px; object-fit: cover; object-position: center; }
+        @media (prefers-reduced-motion: no-preference) {
+            .strip-aurora-lane { animation: auth-glide 52s linear infinite; }
+            [dir="rtl"] .strip-aurora-lane { animation-name: auth-glide-rtl; }
+            .strip-aurora-glass:hover .strip-aurora-lane,
+            #auth-lanes.is-paused .strip-aurora-lane { animation-play-state: paused; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .strip-aurora-lane { flex-wrap: wrap; width: auto; }
+            .strip-aurora-item[aria-hidden="true"] { display: none; }
+            .strip-aurora-bg { animation: none; }
+            .strip-aurora-viewport { -webkit-mask-image: none; mask-image: none; }
+        }
+
+        /* --- J. Layered bento (new, researched): the 2026 "bento evolution" --
+           tiles stack on the Z-axis and drill down in place on hover/focus
+           instead of a flat uniform grid, per the same trend reports that
+           name bento as 2026's dominant SaaS pattern. --- */
+        #auth-lanes[data-strip="layeredbento"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+        .strip-lbento { display: flex; flex-wrap: wrap; gap: 28px 22px; margin: 0; padding: 6px 2px; list-style: none; }
+        .strip-lbento-stack { position: relative; list-style: none; width: 38px; height: 38px; }
+        .strip-lbento-card {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            border-radius: var(--sp-r-md); background: #fff; box-shadow: 0 3px 8px rgba(5, 3, 30, .3);
+            transform: translate(calc(var(--i) * 5px), calc(var(--i) * -5px)) rotate(calc(var(--i) * -3deg));
+            z-index: calc(4 - var(--i)); transition: transform .25s cubic-bezier(.22, .8, .3, 1), box-shadow .25s ease;
+        }
+        .strip-lbento-card img, .strip-lbento-card svg { width: 17px; height: 17px; display: block; }
+        .strip-lbento-card.is-wordmark { width: 54px; left: auto; right: auto; border-radius: var(--sp-r-pill); overflow: hidden; }
+        .strip-lbento-card.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .strip-lbento-name {
+            position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+            font-size: 11px; font-weight: 600; color: #1d2233; white-space: nowrap; opacity: 0; pointer-events: none;
+            background: #fff; padding: 2px 7px; border-radius: var(--sp-r-sm); box-shadow: 0 2px 6px rgba(5, 3, 30, .25);
+            transition: opacity .15s ease;
+        }
+        /* A conventional card fan (macOS Stacks, a hand of cards): spreads
+           sideways around the stack's own footprint, a small lift, no
+           rotation -- never a tall vertical climb, which would reach past
+           the "Meta Tech Provider" line above it at the first grid row. */
+        .strip-lbento-stack:hover .strip-lbento-card,
+        .strip-lbento-stack:focus-within .strip-lbento-card {
+            transform: translate(calc((var(--i) - 1) * 36px), -8px) rotate(0deg);
+            box-shadow: 0 10px 20px rgba(5, 3, 30, .4);
+        }
+        .strip-lbento-stack:hover .strip-lbento-card .strip-lbento-name,
+        .strip-lbento-stack:focus-within .strip-lbento-card .strip-lbento-name { opacity: 1; }
+        @media (prefers-reduced-motion: reduce) {
+            .strip-lbento-card { transition: none; }
+        }
+
+        /* --- K. Cursor spotlight dock (new, researched): a soft light that
+           follows the pointer across a dark glass surface, brightening each
+           logo it passes -- the interactive lighting pattern current dark-UI
+           product sites use. Static and even for touch/keyboard: the glow
+           only moves in response to an actual pointer, never on its own. --- */
+        #auth-lanes[data-strip="spotlight"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+        .strip-spotlight {
+            position: relative; overflow: hidden; border-radius: var(--sp-r-xl);
+            background: rgba(0, 0, 0, .2); border: 1px solid rgba(255, 255, 255, .12); padding: 14px 16px;
+        }
+        .strip-spotlight::before {
+            content: ""; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(220px circle at var(--sx, 50%) var(--sy, 30%), rgba(255, 255, 255, .18), transparent 70%);
+        }
+        .strip-spotlight-row { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 14px; margin: 0; padding: 0; list-style: none; }
+        .strip-spotlight-item {
+            list-style: none; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            opacity: .62; filter: brightness(.9); transition: opacity .2s ease, filter .2s ease, transform .2s ease;
+        }
+        .strip-spotlight-item:hover, .strip-spotlight-item:focus-within { opacity: 1; filter: brightness(1.15); transform: translateY(-3px); }
+        .strip-spotlight-item img, .strip-spotlight-item svg { width: 20px; height: 20px; filter: brightness(0) invert(1); }
+        .strip-spotlight-item span { font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, .85); white-space: nowrap; }
+        .strip-spotlight-item.is-wordmark img { width: 38px; height: 15px; object-fit: cover; object-position: center; }
+
         /* --- Wider brand panel: every new mode scales up a little --- */
         @media (min-width: 880px) {
             .strip-dock-mark { width: 46px; height: 46px; }
@@ -17183,6 +17303,14 @@
             .strip-marquee-card img, .strip-marquee-card svg { width: 22px; height: 22px; }
             .strip-bento-tile { width: 38px; height: 38px; }
             .strip-bento-tile img, .strip-bento-tile svg { width: 19px; height: 19px; }
+            .strip-aurora-item img, .strip-aurora-item svg { width: 19px; height: 19px; }
+            .strip-aurora-item span { font-size: 14px; }
+            .strip-aurora-lane { gap: 28px; }
+            .strip-lbento-stack { width: 42px; height: 42px; }
+            .strip-lbento-card img, .strip-lbento-card svg { width: 19px; height: 19px; }
+            .strip-lbento-card.is-wordmark { width: 60px; }
+            .strip-spotlight-item img, .strip-spotlight-item svg { width: 22px; height: 22px; }
+            .strip-spotlight-item span { font-size: 11px; }
         }
         /* People who asked for less motion: the two moving new modes stand
            still and wrap, exactly like the lanes above do. */
@@ -40449,6 +40577,9 @@
             { id: 'glide', label: 'F. Monochrome glide', note: 'One calm white lane' },
             { id: 'marquee', label: 'G. Card marquee', note: 'New: elevated cards' },
             { id: 'bento', label: 'H. Quiet grid', note: 'New: static, no motion' },
+            { id: 'auroraglass', label: 'I. Glass aurora bar', note: '2026: glassmorphism + aurora + grain' },
+            { id: 'layeredbento', label: 'J. Layered bento', note: '2026: Z-axis bento, drills down on hover' },
+            { id: 'spotlight', label: 'K. Cursor spotlight', note: '2026: pointer-lit dark glass dock' },
         ];
 
         function stripMarkNode(slug, size) {
@@ -40583,6 +40714,93 @@
             host.appendChild(grid);
         }
 
+        // I. Glass aurora bar: glassmorphism applied to one floating element
+        // (never a full-screen background), over a slow aurora glow, with a
+        // fine grain overlay baked into the glass itself.
+        function buildAuroraGlassMode(host) {
+            const wrap = document.createElement('div');
+            wrap.className = 'strip-aurora-wrap';
+            const bg = document.createElement('div');
+            bg.className = 'strip-aurora-bg';
+            bg.setAttribute('aria-hidden', 'true');
+            const glass = document.createElement('div');
+            glass.className = 'strip-aurora-glass';
+            const viewport = document.createElement('div');
+            viewport.className = 'strip-aurora-viewport';
+            const lane = document.createElement('ul');
+            lane.className = 'strip-aurora-lane';
+            for (let copy = 0; copy < 2; copy += 1) {
+                AUTH_STRIP_ALL.forEach(([slug, name]) => {
+                    const li = document.createElement('li');
+                    li.className = 'strip-aurora-item' + (isWordmark(name) ? ' is-wordmark' : '');
+                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
+                    li.appendChild(stripMarkNode(slug, 17));
+                    const label = document.createElement('span');
+                    label.textContent = name;
+                    li.appendChild(label);
+                    lane.appendChild(li);
+                });
+            }
+            viewport.appendChild(lane);
+            glass.appendChild(viewport);
+            wrap.append(bg, glass);
+            host.appendChild(wrap);
+        }
+
+        // J. Layered bento: 2026's Z-axis bento evolution -- tiles stack and
+        // drill down in place on hover instead of a flat uniform grid.
+        function buildLayeredBentoMode(host) {
+            const grid = document.createElement('ul');
+            grid.className = 'strip-lbento';
+            for (let i = 0; i < AUTH_STRIP_ALL.length; i += 3) {
+                const cluster = AUTH_STRIP_ALL.slice(i, i + 3);
+                const stack = document.createElement('li');
+                stack.className = 'strip-lbento-stack';
+                cluster.forEach(([slug, name], depth) => {
+                    const card = document.createElement('span');
+                    card.className = 'strip-lbento-card' + (isWordmark(name) ? ' is-wordmark' : '');
+                    card.style.setProperty('--i', String(depth));
+                    card.tabIndex = 0;
+                    card.appendChild(stripMarkNode(slug, 17));
+                    const label = document.createElement('span');
+                    label.className = 'strip-lbento-name';
+                    label.textContent = name;
+                    card.appendChild(label);
+                    stack.appendChild(card);
+                });
+                grid.appendChild(stack);
+            }
+            host.appendChild(grid);
+        }
+
+        // K. Cursor spotlight dock: a soft light that follows the pointer
+        // across a dark glass row, brightening each logo it passes. Static
+        // and even without a pointer (touch, keyboard): the glow only moves
+        // in response to real input, never on its own.
+        function buildSpotlightMode(host) {
+            const box = document.createElement('div');
+            box.className = 'strip-spotlight';
+            const row = document.createElement('ul');
+            row.className = 'strip-spotlight-row';
+            AUTH_STRIP_ALL.forEach(([slug, name]) => {
+                const li = document.createElement('li');
+                li.className = 'strip-spotlight-item' + (isWordmark(name) ? ' is-wordmark' : '');
+                li.tabIndex = 0;
+                li.appendChild(stripMarkNode(slug, 20));
+                const label = document.createElement('span');
+                label.textContent = name;
+                li.appendChild(label);
+                row.appendChild(li);
+            });
+            box.appendChild(row);
+            box.addEventListener('pointermove', (e) => {
+                const rect = box.getBoundingClientRect();
+                box.style.setProperty('--sx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+                box.style.setProperty('--sy', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+            });
+            host.appendChild(box);
+        }
+
         function renderAuthStrip(mode) {
             const host = document.getElementById('auth-lanes');
             if (!host) return;
@@ -40604,6 +40822,9 @@
             else if (valid === 'glide') buildGlideMode(host);
             else if (valid === 'marquee') buildMarqueeMode(host);
             else if (valid === 'bento') buildBentoMode(host);
+            else if (valid === 'auroraglass') buildAuroraGlassMode(host);
+            else if (valid === 'layeredbento') buildLayeredBentoMode(host);
+            else if (valid === 'spotlight') buildSpotlightMode(host);
             try { localStorage.setItem('auth-strip-preview', valid); } catch (e) { /* private mode: fine, just won't stick */ }
             const btn = document.getElementById('strip-switcher-btn');
             const current = btn && btn.querySelector('.strip-switcher-current');

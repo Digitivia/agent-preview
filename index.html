@@ -232,6 +232,8 @@
         window.LANG_EN = {
             "auth": {
                 "app_title": "DIGITIVIA AI AGENT",
+                "marks_channels": "Answers on",
+                "marks_tools": "Works with",
                 "sign_in_google": "Sign in with Google",
                 "sign_in_linkedin": "Sign in with LinkedIn",
                 "sign_in_facebook": "Sign in with Facebook",
@@ -569,8 +571,7 @@
             "landing_logos": {
                 "title": "Works with the tools you already use",
                 "pause": "Pause logos",
-                "resume": "Play logos",
-                "works_with": "Works with"
+                "resume": "Play logos"
             },
             "landing_why": {
                 "title": "Why Digitivia?",
@@ -2275,6 +2276,8 @@
         window.LANG_AR = {
             "auth": {
                 "app_title": "وكيل الذكاء الاصطناعي ديجيتيفيا",
+                "marks_channels": "يرد عبر",
+                "marks_tools": "يعمل مع",
                 "sign_in_google": "تسجيل الدخول عبر Google",
                 "sign_in_linkedin": "تسجيل الدخول عبر LinkedIn",
                 "sign_in_facebook": "تسجيل الدخول عبر Facebook",
@@ -2612,8 +2615,7 @@
             "landing_logos": {
                 "title": "يعمل مع الأدوات التي تستخدمها بالفعل",
                 "pause": "إيقاف الشعارات",
-                "resume": "تشغيل الشعارات",
-                "works_with": "نعمل مع"
+                "resume": "تشغيل الشعارات"
             },
             "landing_why": {
                 "title": "لماذا Digitivia؟",
@@ -16941,13 +16943,17 @@
             letter-spacing: -.015em; color: var(--sp-ink);
         }
         [dir="rtl"] .auth-heading { letter-spacing: 0; }
-        /* Meta's icon with its words, a pause for the logos, and two lanes of
-           logos gliding opposite ways: the chat channels, and every tool the
-           landing page's "Works with" strip shows. Phones: one quiet strip under
-           the form, each logo a small dot (names kept for screen readers). */
+        /* Meta's icon with its words, then the logos as a still wall of each
+           brand's own wordmark in one colour: the chat channels the product
+           answers on, and every tool the landing page's "Works with" strip
+           shows. No pills, discs, cards or motion; that is how the logo walls
+           near the sign-in of Stripe and Retool are set. Each mark is the
+           brand's SVG in logos/, cropped to its ink, painted through a CSS
+           mask so it takes the colour of the surface under it in either
+           theme. Phones: under the form, on the page ground. */
         .auth-trust {
-            grid-row: 3; display: flex; flex-direction: column; align-items: center; gap: 10px;
-            padding: 10px 20px max(14px, env(safe-area-inset-bottom, 0px));
+            grid-row: 3; display: flex; flex-direction: column; align-items: center; gap: 18px;
+            padding: 12px 20px max(16px, env(safe-area-inset-bottom, 0px));
         }
         .auth-trust-head { display: flex; align-items: center; justify-content: center; gap: 10px; }
         .auth-meta { display: inline-flex; align-items: center; gap: 8px; font-size: var(--sp-t-sm); font-weight: 600; color: var(--sp-ink); }
@@ -16956,400 +16962,31 @@
             display: inline-flex; align-items: center; justify-content: center; background: var(--sp-surface-2);
         }
         .auth-meta-mark img { display: block; width: 16px; height: 16px; }
-        .auth-logos-pause {
-            flex-shrink: 0; width: 28px; height: 28px; padding: 0; border-radius: 50%; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center;
-            border: 1px solid var(--sp-line-2); background: transparent; color: var(--sp-ink-2);
+        .auth-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        .auth-marks { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; color: var(--sp-ink-2); }
+        .auth-marks-group { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .auth-marks-label {
+            margin: 0; font-size: 10.5px; font-weight: 600; line-height: 1.2;
+            letter-spacing: .14em; text-transform: uppercase; color: var(--sp-ink-3);
         }
-        .auth-logos-pause svg { display: block; width: 12px; height: 12px; fill: currentColor; }
-        .auth-logos-pause .auth-icon-play,
-        .auth-logos-pause[aria-pressed="true"] .auth-icon-pause { display: none; }
-        .auth-logos-pause[aria-pressed="true"] .auth-icon-play { display: block; }
-        .auth-sr,
-        .auth-logo-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-        /* The window the lanes glide through: as wide as its column, faded at
-           both ends. The lanes themselves are two identical halves, so moving
-           one half's width loops without a seam. */
-        .auth-lanes {
-            align-self: stretch; display: grid; gap: 8px; overflow: hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+        [dir="rtl"] .auth-marks-label { letter-spacing: 0; font-size: 12px; }
+        .auth-marks-list { margin: 0; padding: 0; list-style: none; }
+        /* --h is the mark's height in px before --k, set per mark from its
+           shape so every logo carries about the same visual weight: a long
+           wordmark (Anthropic) sits lower than a compact one (Stripe). */
+        .auth-mark {
+            display: block; flex-shrink: 0; aspect-ratio: var(--a); height: calc(var(--h) * var(--k, .8) * 1px);
+            background-color: currentColor;
+            -webkit-mask: var(--src) center / contain no-repeat; mask: var(--src) center / contain no-repeat;
         }
-        .auth-lane { display: flex; gap: 8px; width: max-content; margin: 0; padding: 0; list-style: none; }
-        /* The glide exists only for people who have not asked for less motion,
-           so there is nothing to undo for those who have. */
-        @media (prefers-reduced-motion: no-preference) {
-            .auth-lane { animation: auth-glide 44s linear infinite; }
-            .auth-lane + .auth-lane { animation-name: auth-glide-back; animation-duration: 58s; }
-            [dir="rtl"] .auth-lane { animation-name: auth-glide-rtl; }
-            [dir="rtl"] .auth-lane + .auth-lane { animation-name: auth-glide-back-rtl; }
-            .auth-lanes:hover .auth-lane,
-            .auth-lanes.is-paused .auth-lane { animation-play-state: paused; }
+        .auth-marks-channels { display: grid; grid-template-columns: repeat(2, auto); gap: 10px 28px; justify-content: center; }
+        .auth-channel { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--sp-ink); white-space: nowrap; }
+        .auth-channel .auth-mark { --k: 1; }
+        .auth-marks-tools {
+            display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px;
+            justify-items: center; align-items: center; width: 100%; max-width: 360px;
         }
-        @keyframes auth-glide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        @keyframes auth-glide-back { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-        @keyframes auth-glide-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
-        @keyframes auth-glide-back-rtl { from { transform: translateX(50%); } to { transform: translateX(0); } }
-        .auth-logo-pill {
-            flex-shrink: 0; box-sizing: border-box; width: 34px; height: 34px; padding: 3px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center; background: var(--sp-surface-2);
-        }
-        .auth-logo-mark {
-            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center; background: #fff;
-        }
-        .auth-logo-mark img,
-        .auth-logo-mark svg { display: block; width: 16px; height: 16px; }
-
-        /* ============================================================
-           PREVIEW ONLY: five more logo-strip directions, switchable live
-           from the small control initStripSwitcher() adds top-start.
-           "lanes" above (.auth-lane / .auth-logo-pill) is untouched and
-           stays the default, so a plain load looks exactly as it always
-           has. Each mode owns its own class prefix (strip-*), so none of
-           this touches the rules above it. Once one is picked for good,
-           port only that mode's markup into the real sign-in screen and
-           delete the rest, including this switcher.
-           ============================================================ */
-        .auth-trust:has(#auth-lanes[data-strip="dock"]) .auth-logos-pause,
-        .auth-trust:has(#auth-lanes[data-strip="stack"]) .auth-logos-pause,
-        .auth-trust:has(#auth-lanes[data-strip="bento"]) .auth-logos-pause,
-        .auth-trust:has(#auth-lanes[data-strip="layeredbento"]) .auth-logos-pause,
-        .auth-trust:has(#auth-lanes[data-strip="spotlight"]) .auth-logos-pause { display: none; }
-
-        /* --- D. App dock: channels in a glass dock, tools in a quiet row --- */
-        #auth-lanes[data-strip="dock"] {
-            display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
-            overflow: visible; -webkit-mask-image: none; mask-image: none;
-        }
-        .strip-dock-bar {
-            display: flex; gap: 8px; margin: 0; padding: 7px; list-style: none; width: fit-content;
-            border-radius: var(--sp-r-xl); border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .08);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        }
-        .strip-dock-icon { position: relative; list-style: none; }
-        .strip-dock-mark {
-            width: 38px; height: 38px; border-radius: var(--sp-r-lg); display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 6px rgba(5, 3, 30, .35); transition: transform .18s ease, box-shadow .18s ease;
-        }
-        .strip-dock-mark img { width: 20px; height: 20px; display: block; }
-        .strip-dock-label {
-            position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
-            white-space: nowrap; font-size: 11px; font-weight: 600; color: #fff;
-            background: rgba(19, 16, 52, .9); padding: 3px 8px; border-radius: var(--sp-r-sm);
-            opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
-        }
-        .strip-dock-icon:hover .strip-dock-mark,
-        .strip-dock-icon:focus-visible .strip-dock-mark { transform: translateY(-6px) scale(1.16); box-shadow: 0 8px 18px rgba(5, 3, 30, .45); }
-        .strip-dock-icon:hover .strip-dock-label,
-        .strip-dock-icon:focus-visible .strip-dock-label { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .strip-dock-tools-row { display: flex; align-items: center; gap: 8px; max-width: 100%; }
-        .strip-dock-tools-label {
-            flex-shrink: 0; font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: rgba(255, 255, 255, .5);
-        }
-        .strip-dock-tools {
-            display: flex; align-items: center; gap: 6px; margin: 0; padding: 2px; list-style: none;
-            flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
-        }
-        .strip-dock-tools::-webkit-scrollbar { display: none; }
-        .strip-tool {
-            flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; list-style: none;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .strip-tool img, .strip-tool svg {
-            width: 15px; height: 15px; filter: brightness(0) invert(1); opacity: .5;
-            transition: filter .15s ease, opacity .15s ease, transform .15s ease;
-        }
-        .strip-tool:hover img, .strip-tool:hover svg,
-        .strip-tool:focus-visible img, .strip-tool:focus-visible svg { filter: none; opacity: 1; transform: scale(1.15); }
-        /* WooCommerce: see the note by .strip-stack-icon.is-wordmark below. */
-        .strip-tool.is-wordmark { width: 34px; border-radius: var(--sp-r-pill); }
-        .strip-tool.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-
-        /* --- E. App stack: overlapping row, reduced overlap, wider WooCommerce --- */
-        #auth-lanes[data-strip="stack"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
-        .strip-stack { display: flex; align-items: center; margin: 0; padding: 12px 8px 12px 0; list-style: none; width: fit-content; }
-        [dir="rtl"] .strip-stack { padding: 12px 0 12px 8px; }
-        .strip-stack-icon {
-            position: relative; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; list-style: none;
-            display: flex; align-items: center; justify-content: center; background: #fff;
-            box-shadow: 0 0 0 2px var(--brand-mid, #241668), 0 2px 6px rgba(5, 3, 30, .3);
-            margin-inline-start: -10px; transition: transform .18s ease, margin .2s ease;
-        }
-        .strip-stack-icon:first-child { margin-inline-start: 0; }
-        .strip-stack-icon img, .strip-stack-icon svg { width: 19px; height: 19px; display: block; }
-        /* WooCommerce's simple-icons mark is a wordmark (the whole word,
-           drawn thin across a square viewBox), not a compact glyph like its
-           neighbours. Squeezed into a matching circle it reads as a blank
-           sliver, so it gets its own wide, short, cropped slot: object-fit
-           cover zooms past the empty top/bottom of the viewBox onto the ink. */
-        .strip-stack-icon.is-wordmark {
-            width: 64px; height: 24px; border-radius: var(--sp-r-pill); overflow: hidden;
-        }
-        .strip-stack-icon.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .strip-stack:hover .strip-stack-icon,
-        .strip-stack:focus-within .strip-stack-icon { margin-inline-start: -3px; }
-        .strip-stack:hover .strip-stack-icon:first-child,
-        .strip-stack:focus-within .strip-stack-icon:first-child { margin-inline-start: 0; }
-        .strip-stack-icon:hover, .strip-stack-icon:focus-visible { transform: translateY(-6px) scale(1.15); z-index: 40 !important; }
-        .strip-stack-label {
-            position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-            font-size: 11px; font-weight: 600; color: #fff; background: rgba(19, 16, 52, .9); padding: 3px 8px; border-radius: var(--sp-r-sm);
-            white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s ease;
-        }
-        .strip-stack-icon:hover .strip-stack-label,
-        .strip-stack-icon:focus-visible .strip-stack-label { opacity: 1; }
-
-        /* --- F. Monochrome glide: one calm lane, icon plus name --- */
-        #auth-lanes[data-strip="glide"] {
-            display: block; overflow: hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-        }
-        .strip-glide-lane { display: flex; gap: 26px; width: max-content; margin: 0; padding: 4px 0; list-style: none; }
-        .strip-glide-item {
-            flex-shrink: 0; list-style: none; display: flex; align-items: center; gap: 8px;
-            opacity: .82; transition: opacity .15s ease;
-        }
-        .strip-glide-item:hover, .strip-glide-item:focus-within { opacity: 1; }
-        .strip-glide-item img, .strip-glide-item svg { width: 17px; height: 17px; filter: brightness(0) invert(1); }
-        .strip-glide-name { font-size: 13px; font-weight: 500; color: #fff; letter-spacing: .01em; white-space: nowrap; }
-        .strip-glide-item.is-wordmark img { width: 30px; height: 12px; object-fit: cover; object-position: center; }
-        @media (prefers-reduced-motion: no-preference) {
-            .strip-glide-lane { animation: auth-glide 50s linear infinite; }
-            [dir="rtl"] .strip-glide-lane { animation-name: auth-glide-rtl; }
-            #auth-lanes[data-strip="glide"]:hover .strip-glide-lane,
-            #auth-lanes.is-paused .strip-glide-lane { animation-play-state: paused; }
-        }
-
-        /* --- G. Card marquee (new): elevated cards, gliding, tilt on hover --- */
-        #auth-lanes[data-strip="marquee"] {
-            display: block; overflow: hidden;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-        }
-        .strip-marquee-lane { display: flex; gap: 12px; width: max-content; margin: 0; padding: 6px 2px 12px; list-style: none; }
-        .strip-marquee-card {
-            flex-shrink: 0; list-style: none; width: 62px; height: 52px; border-radius: var(--sp-r-md);
-            background: rgba(255, 255, 255, .96); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
-            box-shadow: 0 4px 10px rgba(5, 3, 30, .25); transition: transform .2s ease, box-shadow .2s ease;
-        }
-        .strip-marquee-card img, .strip-marquee-card svg { width: 19px; height: 19px; }
-        .strip-marquee-card span { font-size: 9px; font-weight: 700; color: #4a5166; letter-spacing: .01em; white-space: nowrap; }
-        .strip-marquee-card.is-wordmark img { width: 40px; height: 16px; object-fit: cover; object-position: center; }
-        .strip-marquee-card:hover, .strip-marquee-card:focus-within {
-            transform: translateY(-5px) perspective(300px) rotateX(6deg) scale(1.05); box-shadow: 0 10px 20px rgba(5, 3, 30, .35);
-        }
-        @media (prefers-reduced-motion: no-preference) {
-            .strip-marquee-lane { animation: auth-glide 55s linear infinite; }
-            [dir="rtl"] .strip-marquee-lane { animation-name: auth-glide-rtl; }
-            #auth-lanes[data-strip="marquee"]:hover .strip-marquee-lane,
-            #auth-lanes.is-paused .strip-marquee-lane { animation-play-state: paused; }
-        }
-
-        /* --- H. Quiet grid (new): static tiles, no motion to manage --- */
-        #auth-lanes[data-strip="bento"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
-        .strip-bento { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; max-width: 100%; }
-        .strip-bento-tile {
-            flex-shrink: 0; list-style: none; width: 34px; height: 34px; border-radius: var(--sp-r-md);
-            display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, .08);
-            border: 1px solid rgba(255, 255, 255, .14); transition: background .15s ease, transform .15s ease;
-        }
-        .strip-bento-tile img, .strip-bento-tile svg {
-            width: 18px; height: 18px; filter: brightness(0) invert(1); opacity: .6;
-            transition: filter .15s ease, opacity .15s ease;
-        }
-        /* WooCommerce: see the note by .strip-stack-icon.is-wordmark above. */
-        .strip-bento-tile.is-wordmark { width: 52px; border-radius: var(--sp-r-pill); }
-        .strip-bento-tile.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .strip-bento-tile:hover, .strip-bento-tile:focus-visible { background: rgba(255, 255, 255, .16); transform: translateY(-3px); }
-        .strip-bento-tile:hover img, .strip-bento-tile:hover svg,
-        .strip-bento-tile:focus-visible img, .strip-bento-tile:focus-visible svg { filter: none; opacity: 1; }
-
-        /* --- I. Glass aurora bar (new, researched): a single frosted glass
-           capsule -- "Glassmorphism 2.0", applied surgically to one floating
-           element, never a full-screen background -- over a slow aurora glow
-           and a fine grain overlay on the glass itself. All three are named
-           2026 trend-report patterns, not a restyle of D-H. --- */
-        #auth-lanes[data-strip="auroraglass"] {
-            display: block; overflow: visible; -webkit-mask-image: none; mask-image: none; padding: 6px 0;
-        }
-        .strip-aurora-wrap { position: relative; }
-        .strip-aurora-bg {
-            position: absolute; inset: -34px -16px; z-index: 0; pointer-events: none; overflow: hidden;
-            border-radius: 26px; filter: blur(26px); opacity: .6;
-            background:
-                radial-gradient(closest-side, rgba(91, 174, 176, .55), transparent) 12% 30% / 46% 70% no-repeat,
-                radial-gradient(closest-side, rgba(139, 110, 255, .5), transparent) 82% 65% / 50% 75% no-repeat,
-                radial-gradient(closest-side, rgba(228, 64, 95, .3), transparent) 55% 5% / 40% 60% no-repeat;
-        }
-        @media (prefers-reduced-motion: no-preference) {
-            .strip-aurora-bg { animation: strip-aurora-drift 16s ease-in-out infinite alternate; }
-        }
-        @keyframes strip-aurora-drift {
-            from { transform: translate3d(-3%, -2%, 0) scale(1); }
-            to { transform: translate3d(3%, 2%, 0) scale(1.08); }
-        }
-        .strip-aurora-glass {
-            position: relative; z-index: 1; overflow: hidden; padding: 10px 0;
-            border-radius: var(--sp-r-xl); background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
-            backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
-            box-shadow: 0 8px 24px rgba(5, 3, 30, .3), inset 0 1px 0 rgba(255, 255, 255, .15);
-        }
-        .strip-aurora-glass::after {
-            content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .5;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-        }
-        .strip-aurora-viewport {
-            overflow: hidden; padding: 0 18px;
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-        }
-        .strip-aurora-lane { display: flex; gap: 22px; width: max-content; margin: 0; padding: 0; list-style: none; }
-        .strip-aurora-item { flex-shrink: 0; list-style: none; display: flex; align-items: center; gap: 8px; opacity: .88; }
-        .strip-aurora-item img, .strip-aurora-item svg { width: 17px; height: 17px; filter: brightness(0) invert(1); }
-        .strip-aurora-item span { font-size: 12.5px; font-weight: 600; color: #fff; letter-spacing: .01em; white-space: nowrap; }
-        .strip-aurora-item.is-wordmark img { width: 32px; height: 12px; object-fit: cover; object-position: center; }
-        @media (prefers-reduced-motion: no-preference) {
-            .strip-aurora-lane { animation: auth-glide 52s linear infinite; }
-            [dir="rtl"] .strip-aurora-lane { animation-name: auth-glide-rtl; }
-            .strip-aurora-glass:hover .strip-aurora-lane,
-            #auth-lanes.is-paused .strip-aurora-lane { animation-play-state: paused; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .strip-aurora-lane { flex-wrap: wrap; width: auto; }
-            .strip-aurora-item[aria-hidden="true"] { display: none; }
-            .strip-aurora-bg { animation: none; }
-            .strip-aurora-viewport { -webkit-mask-image: none; mask-image: none; }
-        }
-
-        /* --- J. Layered bento (new, researched): the 2026 "bento evolution" --
-           tiles stack on the Z-axis and drill down in place on hover/focus
-           instead of a flat uniform grid, per the same trend reports that
-           name bento as 2026's dominant SaaS pattern. --- */
-        #auth-lanes[data-strip="layeredbento"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
-        .strip-lbento { display: flex; flex-wrap: wrap; gap: 28px 22px; margin: 0; padding: 6px 2px; list-style: none; }
-        .strip-lbento-stack { position: relative; list-style: none; width: 38px; height: 38px; }
-        .strip-lbento-card {
-            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            border-radius: var(--sp-r-md); background: #fff; box-shadow: 0 3px 8px rgba(5, 3, 30, .3);
-            transform: translate(calc(var(--i) * 5px), calc(var(--i) * -5px)) rotate(calc(var(--i) * -3deg));
-            z-index: calc(4 - var(--i)); transition: transform .25s cubic-bezier(.22, .8, .3, 1), box-shadow .25s ease;
-        }
-        .strip-lbento-card img, .strip-lbento-card svg { width: 17px; height: 17px; display: block; }
-        .strip-lbento-card.is-wordmark { width: 54px; left: auto; right: auto; border-radius: var(--sp-r-pill); overflow: hidden; }
-        .strip-lbento-card.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-        .strip-lbento-name {
-            position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-            font-size: 11px; font-weight: 600; color: #1d2233; white-space: nowrap; opacity: 0; pointer-events: none;
-            background: #fff; padding: 2px 7px; border-radius: var(--sp-r-sm); box-shadow: 0 2px 6px rgba(5, 3, 30, .25);
-            transition: opacity .15s ease;
-        }
-        /* A conventional card fan (macOS Stacks, a hand of cards): spreads
-           sideways around the stack's own footprint, a small lift, no
-           rotation -- never a tall vertical climb, which would reach past
-           the "Meta Tech Provider" line above it at the first grid row. */
-        .strip-lbento-stack:hover .strip-lbento-card,
-        .strip-lbento-stack:focus-within .strip-lbento-card {
-            transform: translate(calc((var(--i) - 1) * 36px), -8px) rotate(0deg);
-            box-shadow: 0 10px 20px rgba(5, 3, 30, .4);
-        }
-        .strip-lbento-stack:hover .strip-lbento-card .strip-lbento-name,
-        .strip-lbento-stack:focus-within .strip-lbento-card .strip-lbento-name { opacity: 1; }
-        @media (prefers-reduced-motion: reduce) {
-            .strip-lbento-card { transition: none; }
-        }
-
-        /* --- K. Cursor spotlight dock (new, researched): a soft light that
-           follows the pointer across a dark glass surface, brightening each
-           logo it passes -- the interactive lighting pattern current dark-UI
-           product sites use. Static and even for touch/keyboard: the glow
-           only moves in response to an actual pointer, never on its own. --- */
-        #auth-lanes[data-strip="spotlight"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
-        .strip-spotlight {
-            position: relative; overflow: hidden; border-radius: var(--sp-r-xl);
-            background: rgba(0, 0, 0, .2); border: 1px solid rgba(255, 255, 255, .12); padding: 14px 16px;
-        }
-        .strip-spotlight::before {
-            content: ""; position: absolute; inset: 0; pointer-events: none;
-            background: radial-gradient(220px circle at var(--sx, 50%) var(--sy, 30%), rgba(255, 255, 255, .18), transparent 70%);
-        }
-        .strip-spotlight-row { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 14px; margin: 0; padding: 0; list-style: none; }
-        .strip-spotlight-item {
-            list-style: none; display: flex; flex-direction: column; align-items: center; gap: 4px;
-            opacity: .62; filter: brightness(.9); transition: opacity .2s ease, filter .2s ease, transform .2s ease;
-        }
-        .strip-spotlight-item:hover, .strip-spotlight-item:focus-within { opacity: 1; filter: brightness(1.15); transform: translateY(-3px); }
-        .strip-spotlight-item img, .strip-spotlight-item svg { width: 20px; height: 20px; filter: brightness(0) invert(1); }
-        .strip-spotlight-item span { font-size: 10px; font-weight: 600; color: rgba(255, 255, 255, .85); white-space: nowrap; }
-        .strip-spotlight-item.is-wordmark img { width: 38px; height: 15px; object-fit: cover; object-position: center; }
-
-        /* --- Wider brand panel: every new mode scales up a little --- */
-        @media (min-width: 880px) {
-            .strip-dock-mark { width: 46px; height: 46px; }
-            .strip-dock-mark img { width: 24px; height: 24px; }
-            .strip-tool { width: 24px; height: 24px; }
-            .strip-tool img, .strip-tool svg { width: 16px; height: 16px; }
-            .strip-tool.is-wordmark { width: 50px; border-radius: var(--sp-r-pill); }
-            .strip-tool.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-            .strip-stack-icon { width: 42px; height: 42px; margin-inline-start: -14px; }
-            .strip-stack-icon img, .strip-stack-icon svg { width: 22px; height: 22px; }
-            .strip-stack-icon.is-wordmark { width: 72px; height: 26px; }
-            #auth-lanes[data-strip="glide"],
-            #auth-lanes[data-strip="marquee"] { margin-inline: calc(-1 * clamp(28px, 3.6vw, 52px)); }
-            .strip-glide-lane { gap: 32px; }
-            .strip-glide-name { font-size: 14px; }
-            .strip-marquee-card { width: 74px; height: 58px; }
-            .strip-marquee-card img, .strip-marquee-card svg { width: 22px; height: 22px; }
-            .strip-bento-tile { width: 38px; height: 38px; }
-            .strip-bento-tile img, .strip-bento-tile svg { width: 19px; height: 19px; }
-            .strip-aurora-item img, .strip-aurora-item svg { width: 19px; height: 19px; }
-            .strip-aurora-item span { font-size: 14px; }
-            .strip-aurora-lane { gap: 28px; }
-            .strip-lbento-stack { width: 42px; height: 42px; }
-            .strip-lbento-card img, .strip-lbento-card svg { width: 19px; height: 19px; }
-            .strip-lbento-card.is-wordmark { width: 60px; }
-            .strip-spotlight-item img, .strip-spotlight-item svg { width: 22px; height: 22px; }
-            .strip-spotlight-item span { font-size: 11px; }
-        }
-        /* People who asked for less motion: the two moving new modes stand
-           still and wrap, exactly like the lanes above do. */
-        @media (prefers-reduced-motion: reduce) {
-            .strip-glide-lane, .strip-marquee-lane { flex-wrap: wrap; width: auto; }
-            #auth-lanes[data-strip="glide"],
-            #auth-lanes[data-strip="marquee"] { -webkit-mask-image: none; mask-image: none; margin-inline: 0; }
-            /* The second copy only exists to make the loop seamless; someone
-               who has asked for no motion should see each logo once, not the
-               whole set twice stacked underneath. */
-            .strip-glide-item[aria-hidden="true"],
-            .strip-marquee-card[aria-hidden="true"] { display: none; }
-        }
-
-        /* --- The preview-only switcher itself --- */
-        .strip-switcher {
-            position: fixed; top: max(10px, env(safe-area-inset-top, 0px)); inset-inline-start: 10px; z-index: 9999;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .strip-switcher-btn {
-            display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--sp-r-pill);
-            background: rgba(19, 16, 52, .92); color: #fff; border: 1px solid rgba(255, 255, 255, .25);
-            font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: var(--sp-shadow-overlay);
-        }
-        .strip-switcher-menu {
-            position: absolute; top: calc(100% + 6px); inset-inline-start: 0; min-width: 200px;
-            background: rgba(19, 16, 52, .97); border: 1px solid rgba(255, 255, 255, .2); border-radius: var(--sp-r-md);
-            padding: 6px; display: none; flex-direction: column; gap: 2px; box-shadow: var(--sp-shadow-overlay);
-            max-height: 80vh; overflow-y: auto;
-        }
-        .strip-switcher.is-open .strip-switcher-menu { display: flex; }
-        .strip-switcher-opt {
-            display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 7px 10px;
-            border-radius: var(--sp-r-sm); background: none; border: none; color: #fff;
-            font-size: 12.5px; font-weight: 600; text-align: start; cursor: pointer; width: 100%;
-        }
-        .strip-switcher-opt small { font-weight: 400; font-size: 10.5px; color: rgba(255, 255, 255, .6); }
-        .strip-switcher-opt:hover, .strip-switcher-opt[aria-current="true"] { background: rgba(255, 255, 255, .14); }
-
+        .auth-marks-tools .auth-mark { opacity: .72; }
         .auth-providers { display: flex; flex-direction: column; gap: 8px; }
         .auth-provider-row { display: flex; gap: 8px; }
         .auth-provider-row > * { flex: 1 1 0; min-width: 0; }
@@ -17472,8 +17109,8 @@
             #signout-modal .signout-options { padding-block-end: calc(var(--fab-launcher-bottom, 14px) + var(--fab-launcher-size, 52px) + 12px); }
         }
         /* Wide screens: the brand panel beside the form, no card. The panel holds
-           only the wordmark, with the Meta line and the channel pills at its
-           foot; the switches keep to the form side's top corner. */
+           only the wordmark, with the Meta line and the logo wall at its foot;
+           the switches keep to the form side's top corner. */
         @media (min-width: 880px) {
             .auth-card { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-rows: 1fr auto; }
             .auth-brand { grid-column: 1; grid-row: 1 / 3; padding: 48px clamp(28px, 3.6vw, 52px); }
@@ -17486,29 +17123,23 @@
                 padding: 80px max(48px, calc((100% - 400px) / 2));
             }
             .auth-heading { font-size: 32px; margin-bottom: 14px; }
-            .auth-trust { grid-column: 1; grid-row: 2; align-items: stretch; gap: 16px; padding: 0 clamp(28px, 3.6vw, 52px) 44px; }
-            .auth-trust-head { justify-content: space-between; }
+            .auth-trust { grid-column: 1; grid-row: 2; align-items: stretch; gap: 22px; padding: 0 clamp(28px, 3.6vw, 52px) 44px; }
+            .auth-trust-head { justify-content: flex-start; }
             .auth-meta { color: #fff; font-size: var(--sp-t-md); }
             .auth-meta-mark { width: 30px; height: 30px; background: #fff; }
             .auth-meta-mark img { width: 18px; height: 18px; }
-            .auth-card .auth-logos-pause { border-color: rgba(255, 255, 255, .3); color: #fff; }
-            .auth-card .auth-logos-pause:hover { background: rgba(255, 255, 255, .12); }
-            /* The lanes run the panel's full width, edge to edge. */
-            .auth-lanes {
-                gap: 12px; margin-inline: calc(-1 * clamp(28px, 3.6vw, 52px));
-                -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-                mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+            /* On the purple field every mark is white; a hairline sets the wall
+               apart from the Meta line without a box around it. */
+            .auth-marks {
+                align-items: stretch; gap: 20px; padding-top: 22px;
+                border-top: 1px solid rgba(255, 255, 255, .14); color: #fff;
             }
-            .auth-lane { gap: 12px; }
-            .auth-logo-pill {
-                width: auto; height: 40px; gap: 9px; padding-block: 4px; padding-inline: 4px 16px;
-                border: 1px solid rgba(255, 255, 255, .18); border-radius: var(--sp-r-pill); background: rgba(255, 255, 255, .09);
-                color: #fff; font-size: 14px; font-weight: 500; white-space: nowrap;
-            }
-            .auth-logo-mark { width: 32px; height: 32px; box-shadow: 0 2px 6px rgba(5, 3, 30, .35); }
-            .auth-logo-mark img,
-            .auth-logo-mark svg { width: 18px; height: 18px; }
-            .auth-logo-name { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+            .auth-marks-group { align-items: flex-start; }
+            .auth-marks-label { color: rgba(255, 255, 255, .5); }
+            .auth-marks-channels { display: flex; gap: 26px; }
+            .auth-channel { color: rgba(255, 255, 255, .92); font-size: 14px; }
+            .auth-marks-tools { justify-items: start; max-width: none; gap: 18px 16px; }
+            .auth-marks-tools .auth-mark { --k: 1; opacity: .62; }
         }
         /* Short laptop windows (a browser with its toolbars, or zoomed in): the
            same screen, tighter, so it still needs no scrolling. */
@@ -17520,31 +17151,22 @@
             .auth-card .login-btn { min-height: 46px; }
             .auth-card .auth-forgot { min-height: 26px; padding-block: 2px; }
             .auth-link, .auth-card .login-recovery-quiet { min-height: 30px; }
-            .auth-trust { gap: 12px; padding-bottom: 28px; }
-            .auth-lanes { gap: 8px; }
-            .auth-logo-pill { height: 36px; }
-            .auth-logo-mark { width: 28px; height: 28px; }
-        }
-        /* People who asked for less motion: nothing glides. Each logo shows
-           once, as a still dot, and the pause button has nothing to pause. */
-        @media (prefers-reduced-motion: reduce) {
-            .auth-lane { width: auto; flex-wrap: wrap; justify-content: center; }
-            .auth-lane > [aria-hidden="true"],
-            .auth-logos-pause { display: none; }
-            .auth-lanes { margin-inline: 0; -webkit-mask-image: none; mask-image: none; }
-            .auth-logo-pill { width: 40px; height: 40px; padding: 4px; }
-            .auth-logo-name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-        }
-        @media (prefers-reduced-motion: reduce) and (min-width: 880px) {
-            .auth-lane { justify-content: flex-start; }
+            .auth-trust { gap: 14px; padding-bottom: 26px; }
+            /* The tools close up into two rows, a touch smaller. */
+            .auth-marks { gap: 12px; padding-top: 14px; }
+            .auth-marks-group { gap: 8px; }
+            .auth-marks-tools { grid-template-columns: repeat(5, auto); justify-content: start; gap: 10px 22px; }
+            .auth-marks-tools .auth-mark { --k: .8; }
         }
         /* Short screens (small phones, landscape): the same card, tighter. */
         @media (max-height: 700px) and (max-width: 879px) {
             .auth-brand { padding: max(10px, env(safe-area-inset-top, 0px)) 16px 10px; }
             .auth-logo { width: 112px; }
-            .auth-trust { padding-top: 6px; gap: 8px; }
-            .auth-logo-pill { width: 30px; height: 30px; }
-            .auth-logo-mark { width: 24px; height: 24px; }
+            .auth-trust { padding-top: 6px; gap: 10px; }
+            .auth-marks { gap: 10px; }
+            .auth-marks-group { gap: 6px; }
+            .auth-marks-tools { gap: 10px 12px; }
+            .auth-marks-tools .auth-mark { --k: .7; }
             .auth-tool { width: 34px; height: 34px; }
             .auth-main { gap: 8px; padding: 12px 16px 10px; }
             .auth-heading { font-size: 22px; margin-bottom: 4px; }
@@ -35938,11 +35560,9 @@
             <div class="auth-trust">
                 <div class="auth-trust-head">
                     <div class="auth-meta"><span class="auth-meta-mark"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="" width="18" height="18" decoding="async" onerror="this.remove()"></span><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
-                    <button type="button" class="auth-logos-pause" id="auth-logos-pause" aria-pressed="false" title="Pause logos" data-i18n-title="landing_logos.pause" onclick="toggleAuthLogos(this)"><svg class="auth-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><svg class="auth-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="auth-sr" data-i18n="landing_logos.pause">Pause logos</span></button>
                 </div>
-                <!-- Filled by renderAuthStrip(); PREVIEW: mode chosen by the
-                     top-start switcher initStripSwitcher() adds. -->
-                <div class="auth-lanes" id="auth-lanes"></div>
+                <!-- Filled by renderAuthMarks() from AUTH_MARKS. -->
+                <div class="auth-marks" id="auth-marks"></div>
             </div>
         </div>
     </div>
@@ -40519,375 +40139,71 @@
             return window.location.origin + window.location.pathname;
         }
 
-        // The logos under the Meta line, in two lanes that glide opposite ways:
-        // the chat channels the product answers on, and every tool the landing
-        // page's "Works with the tools you already use" strip shows, in its
-        // order and with its icons (tests/sign-in-journey.test.js keeps the two
-        // lists equal). [simpleicons slug, name]; OpenAI has no slug there, so
-        // it is drawn from the landing page's own path.
-        const AUTH_OPENAI_MARK = '<svg viewBox="0 0 24 24" width="18" height="18" fill="#10A37F" aria-hidden="true"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z"/></svg>';
-        const AUTH_LOGO_LANES = Object.freeze([
-            Object.freeze([['whatsapp/25D366', 'WhatsApp'], ['messenger/0084FF', 'Messenger'], ['instagram/E4405F', 'Instagram'], ['telegram/26A5E4', 'Telegram']]),
-            Object.freeze([['anthropic/D97757', 'Anthropic'], ['meta/0082FB', 'Meta'], [null, 'OpenAI'], ['shopify/95BF47', 'Shopify'], ['stripe/635BFF', 'Stripe'], ['woocommerce/96588A', 'WooCommerce'], ['n8n/EA4B71', 'n8n'], ['hostinger/673DE6', 'Hostinger'], ['google/4285F4', 'Google']]),
-        ]);
-        // Copies per lane: always even (two identical halves make the loop), and
-        // enough that one half is wider than the widest panel.
-        const AUTH_LOGO_LANE_COPIES = Object.freeze([6, 4]);
+        // The logos under the Meta line, as a still wall of each brand's own
+        // wordmark in one colour: the chat channels the product answers on, and
+        // every tool the landing page's "Works with the tools you already use"
+        // strip shows, in its order (tests/sign-in-journey.test.js keeps the
+        // two lists equal). [file in logos/, name, aspect ratio of the file's
+        // viewBox]. Each file is the brand's own SVG, cropped to its ink.
+        const AUTH_MARKS = Object.freeze({
+            channels: Object.freeze([['whatsapp', 'WhatsApp', 1], ['messenger', 'Messenger', 1], ['instagram', 'Instagram', 1], ['telegram', 'Telegram', 1]]),
+            tools: Object.freeze([['anthropic', 'Anthropic', 7.706], ['meta', 'Meta', 4.605], ['openai', 'OpenAI', 3.523], ['shopify', 'Shopify', 3.345], ['stripe', 'Stripe', 2.339], ['woocommerce', 'WooCommerce', 4.602], ['n8n', 'n8n', 3.36], ['hostinger', 'Hostinger', 5.011], ['google', 'Google', 2.921]]),
+        });
 
-        function buildLogoPill(slug, name, echo) {
-            const li = document.createElement('li');
-            li.className = 'auth-logo-pill';
-            // Screen readers hear each logo once; the copies only fill the loop.
-            if (echo) li.setAttribute('aria-hidden', 'true');
+        // Equal visual weight, not equal height: the longer a wordmark, the
+        // lower it sits (20px for a 3.5:1 mark), kept within 12-23px.
+        function authMarkHeight(aspect) {
+            return Math.min(23, Math.max(12, 20 * Math.sqrt(3.5 / aspect)));
+        }
+
+        function buildAuthMark(file, aspect, height) {
             const mark = document.createElement('span');
-            mark.className = 'auth-logo-mark';
-            if (slug) {
-                const img = document.createElement('img');
-                img.alt = '';
-                img.width = 18;
-                img.height = 18;
-                img.decoding = 'async';
-                img.addEventListener('error', () => img.remove());
-                img.src = `https://cdn.simpleicons.org/${slug}`;
-                mark.appendChild(img);
-            } else {
-                mark.innerHTML = AUTH_OPENAI_MARK;
-            }
-            const label = document.createElement('span');
-            label.className = 'auth-logo-name';
-            label.textContent = name;
-            li.append(mark, label);
-            return li;
+            mark.className = 'auth-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            mark.style.setProperty('--a', String(aspect));
+            mark.style.setProperty('--h', height.toFixed(1));
+            mark.style.setProperty('--src', `url("logos/${file}.svg")`);
+            return mark;
         }
 
-        // PREVIEW ONLY: five more logo-strip directions besides the two-lane
-        // pills above, switchable live with the small control this preview
-        // adds top-start (initStripSwitcher). Nothing here changes what a
-        // plain load shows: 'lanes' stays the default. Whichever mode gets
-        // picked for good, port only that mode's markup into the real
-        // sign-in screen and delete the rest, this switcher included.
-        const AUTH_STRIP_CHANNELS = AUTH_LOGO_LANES[0];
-        const AUTH_STRIP_TOOLS = AUTH_LOGO_LANES[1];
-        const AUTH_STRIP_ALL = AUTH_STRIP_CHANNELS.concat(AUTH_STRIP_TOOLS);
-        const STRIP_BRAND_BG = { WhatsApp: '#25D366', Messenger: '#0084FF', Instagram: '#E4405F', Telegram: '#26A5E4' };
-        const AUTH_STRIP_MODES = [
-            { id: 'lanes', label: 'Two-lane pills', note: 'Live today' },
-            { id: 'dock', label: 'D. App dock', note: 'Channels in a glass dock' },
-            { id: 'stack', label: 'E. App stack', note: 'Overlapping row, fixed' },
-            { id: 'glide', label: 'F. Monochrome glide', note: 'One calm white lane' },
-            { id: 'marquee', label: 'G. Card marquee', note: 'New: elevated cards' },
-            { id: 'bento', label: 'H. Quiet grid', note: 'New: static, no motion' },
-            { id: 'auroraglass', label: 'I. Glass aurora bar', note: '2026: glassmorphism + aurora + grain' },
-            { id: 'layeredbento', label: 'J. Layered bento', note: '2026: Z-axis bento, drills down on hover' },
-            { id: 'spotlight', label: 'K. Cursor spotlight', note: '2026: pointer-lit dark glass dock' },
-        ];
-
-        function stripMarkNode(slug, size) {
-            if (slug) {
-                const img = document.createElement('img');
-                img.alt = ''; img.width = size; img.height = size; img.decoding = 'async'; img.loading = 'lazy';
-                img.addEventListener('error', () => img.remove());
-                img.src = `https://cdn.simpleicons.org/${slug}`;
-                return img;
-            }
-            const span = document.createElement('span');
-            span.innerHTML = AUTH_OPENAI_MARK;
-            return span.firstElementChild;
+        function buildAuthMarksGroup(labelKey, listClass, fill) {
+            const group = document.createElement('div');
+            group.className = 'auth-marks-group';
+            const label = document.createElement('p');
+            label.className = 'auth-marks-label';
+            label.setAttribute('data-i18n', labelKey);
+            label.textContent = t(labelKey);
+            const list = document.createElement('ul');
+            list.className = `auth-marks-list ${listClass}`;
+            fill(list);
+            group.append(label, list);
+            return group;
         }
 
-        // simple-icons draws WooCommerce as the whole word, thin, across a
-        // square viewBox, not a compact glyph like its neighbours; every
-        // icon-only slot gives it a wide cropped box instead (is-wordmark).
-        function isWordmark(name) { return name === 'WooCommerce'; }
-
-        function stripSrLabel(name) {
-            const sr = document.createElement('span');
-            sr.className = 'auth-sr';
-            sr.textContent = name;
-            return sr;
-        }
-
-        function buildDockMode(host) {
-            const bar = document.createElement('ul');
-            bar.className = 'strip-dock-bar';
-            AUTH_STRIP_CHANNELS.forEach(([slug, name]) => {
-                const li = document.createElement('li');
-                li.className = 'strip-dock-icon';
-                li.tabIndex = 0;
-                const mark = document.createElement('span');
-                mark.className = 'strip-dock-mark';
-                mark.style.background = STRIP_BRAND_BG[name] || 'rgba(255,255,255,.15)';
-                // The tile already carries the brand colour, so the glyph itself is drawn in white.
-                mark.appendChild(stripMarkNode(slug ? slug.replace(/\/[0-9A-Fa-f]{6}$/, '/ffffff') : slug, 20));
-                const label = document.createElement('span');
-                label.className = 'strip-dock-label';
-                label.textContent = name;
-                li.append(mark, label);
-                bar.appendChild(li);
-            });
-            const toolsRow = document.createElement('div');
-            toolsRow.className = 'strip-dock-tools-row';
-            const toolsLabel = document.createElement('span');
-            toolsLabel.className = 'strip-dock-tools-label';
-            toolsLabel.setAttribute('data-i18n', 'landing_logos.works_with');
-            toolsLabel.textContent = t('landing_logos.works_with');
-            const tools = document.createElement('ul');
-            tools.className = 'strip-dock-tools';
-            AUTH_STRIP_TOOLS.forEach(([slug, name]) => {
-                const li = document.createElement('li');
-                li.className = 'strip-tool' + (isWordmark(name) ? ' is-wordmark' : '');
-                li.tabIndex = 0;
-                li.appendChild(stripMarkNode(slug, 15));
-                li.appendChild(stripSrLabel(name));
-                tools.appendChild(li);
-            });
-            toolsRow.append(toolsLabel, tools);
-            host.append(bar, toolsRow);
-        }
-
-        function buildStackMode(host) {
-            const row = document.createElement('ul');
-            row.className = 'strip-stack';
-            AUTH_STRIP_ALL.forEach(([slug, name], i) => {
-                const li = document.createElement('li');
-                li.className = 'strip-stack-icon' + (isWordmark(name) ? ' is-wordmark' : '');
-                li.tabIndex = 0;
-                li.style.zIndex = String(AUTH_STRIP_ALL.length - i);
-                li.appendChild(stripMarkNode(slug, 19));
-                const label = document.createElement('span');
-                label.className = 'strip-stack-label';
-                label.textContent = name;
-                li.appendChild(label);
-                row.appendChild(li);
-            });
-            host.appendChild(row);
-        }
-
-        function buildGlideMode(host) {
-            const lane = document.createElement('ul');
-            lane.className = 'strip-glide-lane';
-            for (let copy = 0; copy < 2; copy += 1) {
-                AUTH_STRIP_ALL.forEach(([slug, name]) => {
-                    const li = document.createElement('li');
-                    li.className = 'strip-glide-item' + (isWordmark(name) ? ' is-wordmark' : '');
-                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
-                    li.appendChild(stripMarkNode(slug, 17));
-                    const label = document.createElement('span');
-                    label.className = 'strip-glide-name';
-                    label.textContent = name;
-                    li.appendChild(label);
-                    lane.appendChild(li);
-                });
-            }
-            host.appendChild(lane);
-        }
-
-        function buildMarqueeMode(host) {
-            const lane = document.createElement('ul');
-            lane.className = 'strip-marquee-lane';
-            for (let copy = 0; copy < 2; copy += 1) {
-                AUTH_STRIP_ALL.forEach(([slug, name]) => {
-                    const li = document.createElement('li');
-                    li.className = 'strip-marquee-card' + (isWordmark(name) ? ' is-wordmark' : '');
-                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
-                    li.appendChild(stripMarkNode(slug, 20));
-                    const label = document.createElement('span');
-                    label.textContent = name;
-                    li.appendChild(label);
-                    lane.appendChild(li);
-                });
-            }
-            host.appendChild(lane);
-        }
-
-        function buildBentoMode(host) {
-            const grid = document.createElement('ul');
-            grid.className = 'strip-bento';
-            AUTH_STRIP_ALL.forEach(([slug, name]) => {
-                const li = document.createElement('li');
-                li.className = 'strip-bento-tile' + (isWordmark(name) ? ' is-wordmark' : '');
-                li.tabIndex = 0;
-                li.appendChild(stripMarkNode(slug, 18));
-                li.appendChild(stripSrLabel(name));
-                grid.appendChild(li);
-            });
-            host.appendChild(grid);
-        }
-
-        // I. Glass aurora bar: glassmorphism applied to one floating element
-        // (never a full-screen background), over a slow aurora glow, with a
-        // fine grain overlay baked into the glass itself.
-        function buildAuroraGlassMode(host) {
-            const wrap = document.createElement('div');
-            wrap.className = 'strip-aurora-wrap';
-            const bg = document.createElement('div');
-            bg.className = 'strip-aurora-bg';
-            bg.setAttribute('aria-hidden', 'true');
-            const glass = document.createElement('div');
-            glass.className = 'strip-aurora-glass';
-            const viewport = document.createElement('div');
-            viewport.className = 'strip-aurora-viewport';
-            const lane = document.createElement('ul');
-            lane.className = 'strip-aurora-lane';
-            for (let copy = 0; copy < 2; copy += 1) {
-                AUTH_STRIP_ALL.forEach(([slug, name]) => {
-                    const li = document.createElement('li');
-                    li.className = 'strip-aurora-item' + (isWordmark(name) ? ' is-wordmark' : '');
-                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
-                    li.appendChild(stripMarkNode(slug, 17));
-                    const label = document.createElement('span');
-                    label.textContent = name;
-                    li.appendChild(label);
-                    lane.appendChild(li);
-                });
-            }
-            viewport.appendChild(lane);
-            glass.appendChild(viewport);
-            wrap.append(bg, glass);
-            host.appendChild(wrap);
-        }
-
-        // J. Layered bento: 2026's Z-axis bento evolution -- tiles stack and
-        // drill down in place on hover instead of a flat uniform grid.
-        function buildLayeredBentoMode(host) {
-            const grid = document.createElement('ul');
-            grid.className = 'strip-lbento';
-            for (let i = 0; i < AUTH_STRIP_ALL.length; i += 3) {
-                const cluster = AUTH_STRIP_ALL.slice(i, i + 3);
-                const stack = document.createElement('li');
-                stack.className = 'strip-lbento-stack';
-                cluster.forEach(([slug, name], depth) => {
-                    const card = document.createElement('span');
-                    card.className = 'strip-lbento-card' + (isWordmark(name) ? ' is-wordmark' : '');
-                    card.style.setProperty('--i', String(depth));
-                    card.tabIndex = 0;
-                    card.appendChild(stripMarkNode(slug, 17));
-                    const label = document.createElement('span');
-                    label.className = 'strip-lbento-name';
-                    label.textContent = name;
-                    card.appendChild(label);
-                    stack.appendChild(card);
-                });
-                grid.appendChild(stack);
-            }
-            host.appendChild(grid);
-        }
-
-        // K. Cursor spotlight dock: a soft light that follows the pointer
-        // across a dark glass row, brightening each logo it passes. Static
-        // and even without a pointer (touch, keyboard): the glow only moves
-        // in response to real input, never on its own.
-        function buildSpotlightMode(host) {
-            const box = document.createElement('div');
-            box.className = 'strip-spotlight';
-            const row = document.createElement('ul');
-            row.className = 'strip-spotlight-row';
-            AUTH_STRIP_ALL.forEach(([slug, name]) => {
-                const li = document.createElement('li');
-                li.className = 'strip-spotlight-item' + (isWordmark(name) ? ' is-wordmark' : '');
-                li.tabIndex = 0;
-                li.appendChild(stripMarkNode(slug, 20));
-                const label = document.createElement('span');
-                label.textContent = name;
-                li.appendChild(label);
-                row.appendChild(li);
-            });
-            box.appendChild(row);
-            box.addEventListener('pointermove', (e) => {
-                const rect = box.getBoundingClientRect();
-                box.style.setProperty('--sx', `${((e.clientX - rect.left) / rect.width) * 100}%`);
-                box.style.setProperty('--sy', `${((e.clientY - rect.top) / rect.height) * 100}%`);
-            });
-            host.appendChild(box);
-        }
-
-        function renderAuthStrip(mode) {
-            const host = document.getElementById('auth-lanes');
-            if (!host) return;
-            const valid = AUTH_STRIP_MODES.some((m) => m.id === mode) ? mode : 'lanes';
-            host.innerHTML = '';
-            host.classList.remove('is-paused');
-            host.dataset.strip = valid;
-            if (valid === 'lanes') {
-                AUTH_LOGO_LANES.forEach((items, i) => {
-                    const lane = document.createElement('ul');
-                    lane.className = 'auth-lane';
-                    for (let copy = 0; copy < AUTH_LOGO_LANE_COPIES[i]; copy += 1) {
-                        items.forEach(([slug, name]) => lane.appendChild(buildLogoPill(slug, name, copy > 0)));
-                    }
-                    host.appendChild(lane);
-                });
-            } else if (valid === 'dock') buildDockMode(host);
-            else if (valid === 'stack') buildStackMode(host);
-            else if (valid === 'glide') buildGlideMode(host);
-            else if (valid === 'marquee') buildMarqueeMode(host);
-            else if (valid === 'bento') buildBentoMode(host);
-            else if (valid === 'auroraglass') buildAuroraGlassMode(host);
-            else if (valid === 'layeredbento') buildLayeredBentoMode(host);
-            else if (valid === 'spotlight') buildSpotlightMode(host);
-            try { localStorage.setItem('auth-strip-preview', valid); } catch (e) { /* private mode: fine, just won't stick */ }
-            const btn = document.getElementById('strip-switcher-btn');
-            const current = btn && btn.querySelector('.strip-switcher-current');
-            if (current) current.textContent = (AUTH_STRIP_MODES.find((m) => m.id === valid) || {}).label || valid;
-            document.querySelectorAll('.strip-switcher-opt').forEach((opt) => {
-                opt.setAttribute('aria-current', opt.dataset.stripId === valid ? 'true' : 'false');
-            });
-        }
-
-        function initStripSwitcher() {
-            if (document.getElementById('strip-switcher')) return;
-            const wrap = document.createElement('div');
-            wrap.className = 'strip-switcher';
-            wrap.id = 'strip-switcher';
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'strip-switcher-btn';
-            btn.id = 'strip-switcher-btn';
-            btn.innerHTML = '<span aria-hidden="true">\u{1F39B}️</span><span class="strip-switcher-current">Two-lane pills</span>';
-            btn.addEventListener('click', () => wrap.classList.toggle('is-open'));
-            const menu = document.createElement('div');
-            menu.className = 'strip-switcher-menu';
-            AUTH_STRIP_MODES.forEach((m) => {
-                const opt = document.createElement('button');
-                opt.type = 'button';
-                opt.className = 'strip-switcher-opt';
-                opt.dataset.stripId = m.id;
-                opt.innerHTML = `${m.label}<small>${m.note}</small>`;
-                opt.addEventListener('click', () => { renderAuthStrip(m.id); wrap.classList.remove('is-open'); });
-                menu.appendChild(opt);
-            });
-            wrap.append(btn, menu);
-            document.body.appendChild(wrap);
-            document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) wrap.classList.remove('is-open'); });
-        }
-
-        function ensureAuthStripInitialized() {
-            initStripSwitcher();
-            const host = document.getElementById('auth-lanes');
+        function renderAuthMarks() {
+            const host = document.getElementById('auth-marks');
             if (!host || host.childElementCount) return;
-            let initial = 'lanes';
-            try {
-                initial = new URLSearchParams(location.search).get('strip') || localStorage.getItem('auth-strip-preview') || 'lanes';
-            } catch (e) { /* private mode: default to lanes */ }
-            renderAuthStrip(initial);
-        }
-
-        // Moving content needs a way to stop it (WCAG 2.2.2). The label follows
-        // the state in both languages; data-i18n keeps a language switch from
-        // resetting it.
-        function toggleAuthLogos(btn) {
-            const host = document.getElementById('auth-lanes');
-            if (!host || !btn) return;
-            const paused = host.classList.toggle('is-paused');
-            const key = paused ? 'landing_logos.resume' : 'landing_logos.pause';
-            btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
-            btn.setAttribute('data-i18n-title', key);
-            btn.title = t(key);
-            const label = btn.querySelector('.auth-sr');
-            if (label) {
-                label.setAttribute('data-i18n', key);
-                label.textContent = t(key);
-            }
+            const channels = buildAuthMarksGroup('auth.marks_channels', 'auth-marks-channels', (list) => {
+                AUTH_MARKS.channels.forEach(([file, name, aspect]) => {
+                    const li = document.createElement('li');
+                    li.className = 'auth-channel';
+                    const text = document.createElement('span');
+                    text.textContent = name;
+                    li.append(buildAuthMark(file, aspect, 16), text);
+                    list.appendChild(li);
+                });
+            });
+            const tools = buildAuthMarksGroup('auth.marks_tools', 'auth-marks-tools', (list) => {
+                AUTH_MARKS.tools.forEach(([file, name, aspect]) => {
+                    const li = document.createElement('li');
+                    const sr = document.createElement('span');
+                    sr.className = 'auth-sr';
+                    sr.textContent = name;
+                    li.append(buildAuthMark(file, aspect, authMarkHeight(aspect)), sr);
+                    list.appendChild(li);
+                });
+            });
+            host.append(channels, tools);
         }
 
         // `compact` (a button sharing its row) shows just the provider's name;
@@ -40997,7 +40313,7 @@
             const heading = document.getElementById('auth-heading');
             if (heading) heading.textContent = t(authHeadingKey(mode));
             renderSignInProviders();
-            ensureAuthStripInitialized();
+            renderAuthMarks();
             const langBtn = document.getElementById('auth-lang-btn');
             if (langBtn) {
                 // Named in the language it switches to, as language pickers are.

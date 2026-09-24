@@ -16918,7 +16918,7 @@
         :root[data-theme="light"] .auth-tool .icon-moon { display: inline; }
         [dir="rtl"] .auth-lang-ar,
         :root:not([dir="rtl"]) .auth-lang-en { display: none; }
-        .auth-brand-channels { display: none; }
+        .auth-orbit, .auth-meta-pill { display: none; }
         .auth-main { display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 14px; }
         .auth-heading {
             display: block; margin: 0 0 2px; text-align: center;
@@ -17044,19 +17044,49 @@
         /* Wide screens: the card splits into the brand panel and the form. */
         @media (min-width: 880px) {
             .auth-card { width: min(880px, 100%); max-width: 880px; flex-direction: row; min-height: 540px; }
-            /* The logo and the channels sit together in the middle; the two
-               switches keep to the corner. */
-            .auth-brand { flex: 0 0 42%; padding: 32px; position: relative; justify-content: center; gap: 30px; }
-            .auth-brand-top { justify-content: flex-start; }
-            .auth-brand-tools { position: absolute; top: 20px; inset-inline-end: 20px; }
+            /* The logo and the Meta mark in the middle, the native marks
+               floating around them on two faint orbits, the two switches in the
+               corner. */
+            .auth-brand { flex: 0 0 42%; padding: 32px; position: relative; overflow: hidden; align-items: center; justify-content: center; gap: 22px; }
+            .auth-brand-top { justify-content: center; }
+            /* Only the logo and the Meta mark are lifted over the orbit; the
+               row that holds them stays unpositioned so the switches keep the
+               whole panel as their corner. */
+            .auth-logo, .auth-meta-pill { position: relative; z-index: 1; }
+            .auth-brand-tools { position: absolute; top: 20px; inset-inline-end: 20px; z-index: 2; }
             .auth-logo { width: 208px; max-width: 80%; }
-            .auth-brand-channels { display: flex; flex-wrap: wrap; gap: 10px; }
-            .auth-channel {
-                width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center;
-                border-radius: 14px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .18); color: #fff;
+            .auth-orbit { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+            .auth-orbit::before,
+            .auth-orbit::after {
+                content: ""; position: absolute; left: 50%; top: 47%; aspect-ratio: 1; border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, .13); transform: translate(-50%, -50%);
+            }
+            .auth-orbit::before { width: 78%; }
+            .auth-orbit::after { width: 120%; border-color: rgba(255, 255, 255, .07); }
+            .auth-orbit-mark {
+                position: absolute; inset-inline-start: var(--x); top: var(--y);
+                width: var(--size); height: var(--size);
+                margin-inline-start: calc(var(--size) / -2); margin-top: calc(var(--size) / -2);
+                display: flex; align-items: center; justify-content: center; border-radius: 50%;
+                background: #fff; box-shadow: 0 10px 28px rgba(9, 6, 40, .38), 0 0 0 5px rgba(255, 255, 255, .07);
+            }
+            .auth-orbit-mark img { display: block; width: 50%; height: 50%; }
+            .auth-meta-pill {
+                display: inline-flex; align-items: center; gap: 9px; padding: 7px 14px 7px 7px;
+                border-radius: var(--sp-r-pill); border: 1px solid rgba(255, 255, 255, .22);
+                background: rgba(255, 255, 255, .1); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+                color: #fff; font-size: var(--sp-t-sm); font-weight: 600; letter-spacing: .01em;
+            }
+            [dir="rtl"] .auth-meta-pill { padding: 7px 7px 7px 14px; }
+            .auth-meta-pill img {
+                box-sizing: content-box; width: 18px; height: 18px; padding: 5px; border-radius: 50%; background: #fff;
             }
             .auth-main { flex: 1 1 auto; justify-content: center; gap: 12px; padding: 32px 40px; }
         }
+        @media (min-width: 880px) and (prefers-reduced-motion: no-preference) {
+            .auth-orbit-mark { animation: auth-float 7s ease-in-out infinite; animation-delay: calc(var(--delay) * -1s); }
+        }
+        @keyframes auth-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
         /* Short screens (small phones, landscape): the same card, tighter. */
         @media (max-height: 700px) and (max-width: 879px) {
             .auth-brand { padding: 8px 12px 8px 14px; }
@@ -35387,9 +35417,11 @@
                         </button>
                     </div>
                 </div>
-                <!-- Filled by renderAuthCard() from svgIcon(): the channels the
-                     product answers on. Decorative; shown on wide screens. -->
-                <div class="auth-brand-channels" aria-hidden="true"></div>
+                <!-- Wide screens: the native marks the landing page shows, floating
+                     around the logo on two faint orbits (renderBrandOrbit()), and
+                     the Meta icon with the Meta Tech Provider words. -->
+                <div class="auth-orbit" aria-hidden="true"></div>
+                <div class="auth-meta-pill"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="" width="20" height="20" decoding="async" onerror="this.remove()"><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
             </div>
 
             <div class="auth-main">
@@ -40024,6 +40056,42 @@
             return window.location.origin + window.location.pathname;
         }
 
+        // The native marks around the logo on the brand panel (wide screens):
+        // the same icons, from the same source, as the landing page. Placed by
+        // hand on two orbits (x, y in % of the panel) so they read as scattered
+        // yet never touch the logo, the Meta mark, the switches or each other;
+        // tests/sign-in-journey.browser.test.js measures that. A mark whose
+        // image cannot load leaves no empty circle behind.
+        const BRAND_ORBIT = Object.freeze([
+            Object.freeze({ slug: 'whatsapp/25D366', x: 17, y: 16, size: 58, delay: 0 }),
+            Object.freeze({ slug: 'messenger/0084FF', x: 47, y: 10, size: 46, delay: 1.4 }),
+            Object.freeze({ slug: 'instagram/E4405F', x: 81, y: 27, size: 52, delay: 0.7 }),
+            Object.freeze({ slug: 'shopify/95BF47', x: 12, y: 50, size: 48, delay: 2.1 }),
+            Object.freeze({ slug: 'google/4285F4', x: 88, y: 56, size: 44, delay: 1.1 }),
+            Object.freeze({ slug: 'wordpress/21759B', x: 22, y: 84, size: 46, delay: 2.8 }),
+            Object.freeze({ slug: 'telegram/26A5E4', x: 76, y: 82, size: 50, delay: 0.4 }),
+        ]);
+
+        function renderBrandOrbit() {
+            const host = document.querySelector('#auth-card .auth-orbit');
+            if (!host || host.childElementCount) return;
+            BRAND_ORBIT.forEach((m) => {
+                const chip = document.createElement('span');
+                chip.className = 'auth-orbit-mark';
+                chip.style.setProperty('--x', `${m.x}%`);
+                chip.style.setProperty('--y', `${m.y}%`);
+                chip.style.setProperty('--size', `${m.size}px`);
+                chip.style.setProperty('--delay', String(m.delay));
+                const img = document.createElement('img');
+                img.alt = '';
+                img.decoding = 'async';
+                img.addEventListener('error', () => chip.remove());
+                img.src = `https://cdn.simpleicons.org/${m.slug}`;
+                chip.appendChild(img);
+                host.appendChild(chip);
+            });
+        }
+
         // `compact` (a button sharing its row) shows just the provider's name;
         // a screen reader still hears the full "Continue with ...".
         function buildProviderButton(id, email, compact) {
@@ -40131,17 +40199,7 @@
             const heading = document.getElementById('auth-heading');
             if (heading) heading.textContent = t(authHeadingKey(mode));
             renderSignInProviders();
-            // The channels the product answers on, on the brand panel (wide
-            // screens), drawn once from the shared icon set.
-            const channels = card.querySelector('.auth-brand-channels');
-            if (channels && !channels.childElementCount && typeof svgIcon === 'function') {
-                ['whatsapp', 'instagram', 'messenger', 'telegram', 'globe'].forEach((name) => {
-                    const tile = document.createElement('span');
-                    tile.className = 'auth-channel';
-                    tile.innerHTML = svgIcon(name, 22);
-                    channels.appendChild(tile);
-                });
-            }
+            renderBrandOrbit();
             const langBtn = document.getElementById('auth-lang-btn');
             if (langBtn) {
                 // Named in the language it switches to, as language pickers are.

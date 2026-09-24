@@ -569,7 +569,8 @@
             "landing_logos": {
                 "title": "Works with the tools you already use",
                 "pause": "Pause logos",
-                "resume": "Play logos"
+                "resume": "Play logos",
+                "works_with": "Works with"
             },
             "landing_why": {
                 "title": "Why Digitivia?",
@@ -2611,7 +2612,8 @@
             "landing_logos": {
                 "title": "يعمل مع الأدوات التي تستخدمها بالفعل",
                 "pause": "إيقاف الشعارات",
-                "resume": "تشغيل الشعارات"
+                "resume": "تشغيل الشعارات",
+                "works_with": "نعمل مع"
             },
             "landing_why": {
                 "title": "لماذا Digitivia؟",
@@ -16998,6 +17000,228 @@
         }
         .auth-logo-mark img,
         .auth-logo-mark svg { display: block; width: 16px; height: 16px; }
+
+        /* ============================================================
+           PREVIEW ONLY: five more logo-strip directions, switchable live
+           from the small control initStripSwitcher() adds top-start.
+           "lanes" above (.auth-lane / .auth-logo-pill) is untouched and
+           stays the default, so a plain load looks exactly as it always
+           has. Each mode owns its own class prefix (strip-*), so none of
+           this touches the rules above it. Once one is picked for good,
+           port only that mode's markup into the real sign-in screen and
+           delete the rest, including this switcher.
+           ============================================================ */
+        .auth-trust:has(#auth-lanes[data-strip="dock"]) .auth-logos-pause,
+        .auth-trust:has(#auth-lanes[data-strip="stack"]) .auth-logos-pause,
+        .auth-trust:has(#auth-lanes[data-strip="bento"]) .auth-logos-pause { display: none; }
+
+        /* --- D. App dock: channels in a glass dock, tools in a quiet row --- */
+        #auth-lanes[data-strip="dock"] {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+            overflow: visible; -webkit-mask-image: none; mask-image: none;
+        }
+        .strip-dock-bar {
+            display: flex; gap: 8px; margin: 0; padding: 7px; list-style: none; width: fit-content;
+            border-radius: var(--sp-r-xl); border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .strip-dock-icon { position: relative; list-style: none; }
+        .strip-dock-mark {
+            width: 38px; height: 38px; border-radius: var(--sp-r-lg); display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 6px rgba(5, 3, 30, .35); transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .strip-dock-mark img { width: 20px; height: 20px; display: block; }
+        .strip-dock-label {
+            position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+            white-space: nowrap; font-size: 11px; font-weight: 600; color: #fff;
+            background: rgba(19, 16, 52, .9); padding: 3px 8px; border-radius: var(--sp-r-sm);
+            opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+        }
+        .strip-dock-icon:hover .strip-dock-mark,
+        .strip-dock-icon:focus-visible .strip-dock-mark { transform: translateY(-6px) scale(1.16); box-shadow: 0 8px 18px rgba(5, 3, 30, .45); }
+        .strip-dock-icon:hover .strip-dock-label,
+        .strip-dock-icon:focus-visible .strip-dock-label { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .strip-dock-tools-row { display: flex; align-items: center; gap: 8px; max-width: 100%; }
+        .strip-dock-tools-label {
+            flex-shrink: 0; font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: rgba(255, 255, 255, .5);
+        }
+        .strip-dock-tools {
+            display: flex; align-items: center; gap: 6px; margin: 0; padding: 2px; list-style: none;
+            flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .strip-dock-tools::-webkit-scrollbar { display: none; }
+        .strip-tool {
+            flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; list-style: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .strip-tool img, .strip-tool svg {
+            width: 15px; height: 15px; filter: brightness(0) invert(1); opacity: .5;
+            transition: filter .15s ease, opacity .15s ease, transform .15s ease;
+        }
+        .strip-tool:hover img, .strip-tool:hover svg,
+        .strip-tool:focus-visible img, .strip-tool:focus-visible svg { filter: none; opacity: 1; transform: scale(1.15); }
+        /* WooCommerce: see the note by .strip-stack-icon.is-wordmark below. */
+        .strip-tool.is-wordmark { width: 34px; border-radius: var(--sp-r-pill); }
+        .strip-tool.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+        /* --- E. App stack: overlapping row, reduced overlap, wider WooCommerce --- */
+        #auth-lanes[data-strip="stack"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+        .strip-stack { display: flex; align-items: center; margin: 0; padding: 12px 8px 12px 0; list-style: none; width: fit-content; }
+        [dir="rtl"] .strip-stack { padding: 12px 0 12px 8px; }
+        .strip-stack-icon {
+            position: relative; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; list-style: none;
+            display: flex; align-items: center; justify-content: center; background: #fff;
+            box-shadow: 0 0 0 2px var(--brand-mid, #241668), 0 2px 6px rgba(5, 3, 30, .3);
+            margin-inline-start: -10px; transition: transform .18s ease, margin .2s ease;
+        }
+        .strip-stack-icon:first-child { margin-inline-start: 0; }
+        .strip-stack-icon img, .strip-stack-icon svg { width: 19px; height: 19px; display: block; }
+        /* WooCommerce's simple-icons mark is a wordmark (the whole word,
+           drawn thin across a square viewBox), not a compact glyph like its
+           neighbours. Squeezed into a matching circle it reads as a blank
+           sliver, so it gets its own wide, short, cropped slot: object-fit
+           cover zooms past the empty top/bottom of the viewBox onto the ink. */
+        .strip-stack-icon.is-wordmark {
+            width: 64px; height: 24px; border-radius: var(--sp-r-pill); overflow: hidden;
+        }
+        .strip-stack-icon.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .strip-stack:hover .strip-stack-icon,
+        .strip-stack:focus-within .strip-stack-icon { margin-inline-start: -3px; }
+        .strip-stack:hover .strip-stack-icon:first-child,
+        .strip-stack:focus-within .strip-stack-icon:first-child { margin-inline-start: 0; }
+        .strip-stack-icon:hover, .strip-stack-icon:focus-visible { transform: translateY(-6px) scale(1.15); z-index: 40 !important; }
+        .strip-stack-label {
+            position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+            font-size: 11px; font-weight: 600; color: #fff; background: rgba(19, 16, 52, .9); padding: 3px 8px; border-radius: var(--sp-r-sm);
+            white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s ease;
+        }
+        .strip-stack-icon:hover .strip-stack-label,
+        .strip-stack-icon:focus-visible .strip-stack-label { opacity: 1; }
+
+        /* --- F. Monochrome glide: one calm lane, icon plus name --- */
+        #auth-lanes[data-strip="glide"] {
+            display: block; overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+        }
+        .strip-glide-lane { display: flex; gap: 26px; width: max-content; margin: 0; padding: 4px 0; list-style: none; }
+        .strip-glide-item {
+            flex-shrink: 0; list-style: none; display: flex; align-items: center; gap: 8px;
+            opacity: .82; transition: opacity .15s ease;
+        }
+        .strip-glide-item:hover, .strip-glide-item:focus-within { opacity: 1; }
+        .strip-glide-item img, .strip-glide-item svg { width: 17px; height: 17px; filter: brightness(0) invert(1); }
+        .strip-glide-name { font-size: 13px; font-weight: 500; color: #fff; letter-spacing: .01em; white-space: nowrap; }
+        .strip-glide-item.is-wordmark img { width: 30px; height: 12px; object-fit: cover; object-position: center; }
+        @media (prefers-reduced-motion: no-preference) {
+            .strip-glide-lane { animation: auth-glide 50s linear infinite; }
+            [dir="rtl"] .strip-glide-lane { animation-name: auth-glide-rtl; }
+            #auth-lanes[data-strip="glide"]:hover .strip-glide-lane,
+            #auth-lanes.is-paused .strip-glide-lane { animation-play-state: paused; }
+        }
+
+        /* --- G. Card marquee (new): elevated cards, gliding, tilt on hover --- */
+        #auth-lanes[data-strip="marquee"] {
+            display: block; overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+        }
+        .strip-marquee-lane { display: flex; gap: 12px; width: max-content; margin: 0; padding: 6px 2px 12px; list-style: none; }
+        .strip-marquee-card {
+            flex-shrink: 0; list-style: none; width: 62px; height: 52px; border-radius: var(--sp-r-md);
+            background: rgba(255, 255, 255, .96); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+            box-shadow: 0 4px 10px rgba(5, 3, 30, .25); transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .strip-marquee-card img, .strip-marquee-card svg { width: 19px; height: 19px; }
+        .strip-marquee-card span { font-size: 9px; font-weight: 700; color: #4a5166; letter-spacing: .01em; white-space: nowrap; }
+        .strip-marquee-card.is-wordmark img { width: 40px; height: 16px; object-fit: cover; object-position: center; }
+        .strip-marquee-card:hover, .strip-marquee-card:focus-within {
+            transform: translateY(-5px) perspective(300px) rotateX(6deg) scale(1.05); box-shadow: 0 10px 20px rgba(5, 3, 30, .35);
+        }
+        @media (prefers-reduced-motion: no-preference) {
+            .strip-marquee-lane { animation: auth-glide 55s linear infinite; }
+            [dir="rtl"] .strip-marquee-lane { animation-name: auth-glide-rtl; }
+            #auth-lanes[data-strip="marquee"]:hover .strip-marquee-lane,
+            #auth-lanes.is-paused .strip-marquee-lane { animation-play-state: paused; }
+        }
+
+        /* --- H. Quiet grid (new): static tiles, no motion to manage --- */
+        #auth-lanes[data-strip="bento"] { overflow: visible; -webkit-mask-image: none; mask-image: none; }
+        .strip-bento { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; max-width: 100%; }
+        .strip-bento-tile {
+            flex-shrink: 0; list-style: none; width: 34px; height: 34px; border-radius: var(--sp-r-md);
+            display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .14); transition: background .15s ease, transform .15s ease;
+        }
+        .strip-bento-tile img, .strip-bento-tile svg {
+            width: 18px; height: 18px; filter: brightness(0) invert(1); opacity: .6;
+            transition: filter .15s ease, opacity .15s ease;
+        }
+        /* WooCommerce: see the note by .strip-stack-icon.is-wordmark above. */
+        .strip-bento-tile.is-wordmark { width: 52px; border-radius: var(--sp-r-pill); }
+        .strip-bento-tile.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .strip-bento-tile:hover, .strip-bento-tile:focus-visible { background: rgba(255, 255, 255, .16); transform: translateY(-3px); }
+        .strip-bento-tile:hover img, .strip-bento-tile:hover svg,
+        .strip-bento-tile:focus-visible img, .strip-bento-tile:focus-visible svg { filter: none; opacity: 1; }
+
+        /* --- Wider brand panel: every new mode scales up a little --- */
+        @media (min-width: 880px) {
+            .strip-dock-mark { width: 46px; height: 46px; }
+            .strip-dock-mark img { width: 24px; height: 24px; }
+            .strip-tool { width: 24px; height: 24px; }
+            .strip-tool img, .strip-tool svg { width: 16px; height: 16px; }
+            .strip-tool.is-wordmark { width: 50px; border-radius: var(--sp-r-pill); }
+            .strip-tool.is-wordmark img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+            .strip-stack-icon { width: 42px; height: 42px; margin-inline-start: -14px; }
+            .strip-stack-icon img, .strip-stack-icon svg { width: 22px; height: 22px; }
+            .strip-stack-icon.is-wordmark { width: 72px; height: 26px; }
+            #auth-lanes[data-strip="glide"],
+            #auth-lanes[data-strip="marquee"] { margin-inline: calc(-1 * clamp(28px, 3.6vw, 52px)); }
+            .strip-glide-lane { gap: 32px; }
+            .strip-glide-name { font-size: 14px; }
+            .strip-marquee-card { width: 74px; height: 58px; }
+            .strip-marquee-card img, .strip-marquee-card svg { width: 22px; height: 22px; }
+            .strip-bento-tile { width: 38px; height: 38px; }
+            .strip-bento-tile img, .strip-bento-tile svg { width: 19px; height: 19px; }
+        }
+        /* People who asked for less motion: the two moving new modes stand
+           still and wrap, exactly like the lanes above do. */
+        @media (prefers-reduced-motion: reduce) {
+            .strip-glide-lane, .strip-marquee-lane { flex-wrap: wrap; width: auto; }
+            #auth-lanes[data-strip="glide"],
+            #auth-lanes[data-strip="marquee"] { -webkit-mask-image: none; mask-image: none; margin-inline: 0; }
+            /* The second copy only exists to make the loop seamless; someone
+               who has asked for no motion should see each logo once, not the
+               whole set twice stacked underneath. */
+            .strip-glide-item[aria-hidden="true"],
+            .strip-marquee-card[aria-hidden="true"] { display: none; }
+        }
+
+        /* --- The preview-only switcher itself --- */
+        .strip-switcher {
+            position: fixed; top: max(10px, env(safe-area-inset-top, 0px)); inset-inline-start: 10px; z-index: 9999;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .strip-switcher-btn {
+            display: flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--sp-r-pill);
+            background: rgba(19, 16, 52, .92); color: #fff; border: 1px solid rgba(255, 255, 255, .25);
+            font-size: 12px; font-weight: 600; cursor: pointer; box-shadow: var(--sp-shadow-overlay);
+        }
+        .strip-switcher-menu {
+            position: absolute; top: calc(100% + 6px); inset-inline-start: 0; min-width: 200px;
+            background: rgba(19, 16, 52, .97); border: 1px solid rgba(255, 255, 255, .2); border-radius: var(--sp-r-md);
+            padding: 6px; display: none; flex-direction: column; gap: 2px; box-shadow: var(--sp-shadow-overlay);
+            max-height: 80vh; overflow-y: auto;
+        }
+        .strip-switcher.is-open .strip-switcher-menu { display: flex; }
+        .strip-switcher-opt {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 7px 10px;
+            border-radius: var(--sp-r-sm); background: none; border: none; color: #fff;
+            font-size: 12.5px; font-weight: 600; text-align: start; cursor: pointer; width: 100%;
+        }
+        .strip-switcher-opt small { font-weight: 400; font-size: 10.5px; color: rgba(255, 255, 255, .6); }
+        .strip-switcher-opt:hover, .strip-switcher-opt[aria-current="true"] { background: rgba(255, 255, 255, .14); }
+
         .auth-providers { display: flex; flex-direction: column; gap: 8px; }
         .auth-provider-row { display: flex; gap: 8px; }
         .auth-provider-row > * { flex: 1 1 0; min-width: 0; }
@@ -35588,7 +35812,8 @@
                     <div class="auth-meta"><span class="auth-meta-mark"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="" width="18" height="18" decoding="async" onerror="this.remove()"></span><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
                     <button type="button" class="auth-logos-pause" id="auth-logos-pause" aria-pressed="false" title="Pause logos" data-i18n-title="landing_logos.pause" onclick="toggleAuthLogos(this)"><svg class="auth-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><svg class="auth-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="auth-sr" data-i18n="landing_logos.pause">Pause logos</span></button>
                 </div>
-                <!-- Filled by renderAuthLogoLanes() from AUTH_LOGO_LANES. -->
+                <!-- Filled by renderAuthStrip(); PREVIEW: mode chosen by the
+                     top-start switcher initStripSwitcher() adds. -->
                 <div class="auth-lanes" id="auth-lanes"></div>
             </div>
         </div>
@@ -40207,17 +40432,223 @@
             return li;
         }
 
-        function renderAuthLogoLanes() {
+        // PREVIEW ONLY: five more logo-strip directions besides the two-lane
+        // pills above, switchable live with the small control this preview
+        // adds top-start (initStripSwitcher). Nothing here changes what a
+        // plain load shows: 'lanes' stays the default. Whichever mode gets
+        // picked for good, port only that mode's markup into the real
+        // sign-in screen and delete the rest, this switcher included.
+        const AUTH_STRIP_CHANNELS = AUTH_LOGO_LANES[0];
+        const AUTH_STRIP_TOOLS = AUTH_LOGO_LANES[1];
+        const AUTH_STRIP_ALL = AUTH_STRIP_CHANNELS.concat(AUTH_STRIP_TOOLS);
+        const STRIP_BRAND_BG = { WhatsApp: '#25D366', Messenger: '#0084FF', Instagram: '#E4405F', Telegram: '#26A5E4' };
+        const AUTH_STRIP_MODES = [
+            { id: 'lanes', label: 'Two-lane pills', note: 'Live today' },
+            { id: 'dock', label: 'D. App dock', note: 'Channels in a glass dock' },
+            { id: 'stack', label: 'E. App stack', note: 'Overlapping row, fixed' },
+            { id: 'glide', label: 'F. Monochrome glide', note: 'One calm white lane' },
+            { id: 'marquee', label: 'G. Card marquee', note: 'New: elevated cards' },
+            { id: 'bento', label: 'H. Quiet grid', note: 'New: static, no motion' },
+        ];
+
+        function stripMarkNode(slug, size) {
+            if (slug) {
+                const img = document.createElement('img');
+                img.alt = ''; img.width = size; img.height = size; img.decoding = 'async'; img.loading = 'lazy';
+                img.addEventListener('error', () => img.remove());
+                img.src = `https://cdn.simpleicons.org/${slug}`;
+                return img;
+            }
+            const span = document.createElement('span');
+            span.innerHTML = AUTH_OPENAI_MARK;
+            return span.firstElementChild;
+        }
+
+        // simple-icons draws WooCommerce as the whole word, thin, across a
+        // square viewBox, not a compact glyph like its neighbours; every
+        // icon-only slot gives it a wide cropped box instead (is-wordmark).
+        function isWordmark(name) { return name === 'WooCommerce'; }
+
+        function stripSrLabel(name) {
+            const sr = document.createElement('span');
+            sr.className = 'auth-sr';
+            sr.textContent = name;
+            return sr;
+        }
+
+        function buildDockMode(host) {
+            const bar = document.createElement('ul');
+            bar.className = 'strip-dock-bar';
+            AUTH_STRIP_CHANNELS.forEach(([slug, name]) => {
+                const li = document.createElement('li');
+                li.className = 'strip-dock-icon';
+                li.tabIndex = 0;
+                const mark = document.createElement('span');
+                mark.className = 'strip-dock-mark';
+                mark.style.background = STRIP_BRAND_BG[name] || 'rgba(255,255,255,.15)';
+                // The tile already carries the brand colour, so the glyph itself is drawn in white.
+                mark.appendChild(stripMarkNode(slug ? slug.replace(/\/[0-9A-Fa-f]{6}$/, '/ffffff') : slug, 20));
+                const label = document.createElement('span');
+                label.className = 'strip-dock-label';
+                label.textContent = name;
+                li.append(mark, label);
+                bar.appendChild(li);
+            });
+            const toolsRow = document.createElement('div');
+            toolsRow.className = 'strip-dock-tools-row';
+            const toolsLabel = document.createElement('span');
+            toolsLabel.className = 'strip-dock-tools-label';
+            toolsLabel.setAttribute('data-i18n', 'landing_logos.works_with');
+            toolsLabel.textContent = t('landing_logos.works_with');
+            const tools = document.createElement('ul');
+            tools.className = 'strip-dock-tools';
+            AUTH_STRIP_TOOLS.forEach(([slug, name]) => {
+                const li = document.createElement('li');
+                li.className = 'strip-tool' + (isWordmark(name) ? ' is-wordmark' : '');
+                li.tabIndex = 0;
+                li.appendChild(stripMarkNode(slug, 15));
+                li.appendChild(stripSrLabel(name));
+                tools.appendChild(li);
+            });
+            toolsRow.append(toolsLabel, tools);
+            host.append(bar, toolsRow);
+        }
+
+        function buildStackMode(host) {
+            const row = document.createElement('ul');
+            row.className = 'strip-stack';
+            AUTH_STRIP_ALL.forEach(([slug, name], i) => {
+                const li = document.createElement('li');
+                li.className = 'strip-stack-icon' + (isWordmark(name) ? ' is-wordmark' : '');
+                li.tabIndex = 0;
+                li.style.zIndex = String(AUTH_STRIP_ALL.length - i);
+                li.appendChild(stripMarkNode(slug, 19));
+                const label = document.createElement('span');
+                label.className = 'strip-stack-label';
+                label.textContent = name;
+                li.appendChild(label);
+                row.appendChild(li);
+            });
+            host.appendChild(row);
+        }
+
+        function buildGlideMode(host) {
+            const lane = document.createElement('ul');
+            lane.className = 'strip-glide-lane';
+            for (let copy = 0; copy < 2; copy += 1) {
+                AUTH_STRIP_ALL.forEach(([slug, name]) => {
+                    const li = document.createElement('li');
+                    li.className = 'strip-glide-item' + (isWordmark(name) ? ' is-wordmark' : '');
+                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
+                    li.appendChild(stripMarkNode(slug, 17));
+                    const label = document.createElement('span');
+                    label.className = 'strip-glide-name';
+                    label.textContent = name;
+                    li.appendChild(label);
+                    lane.appendChild(li);
+                });
+            }
+            host.appendChild(lane);
+        }
+
+        function buildMarqueeMode(host) {
+            const lane = document.createElement('ul');
+            lane.className = 'strip-marquee-lane';
+            for (let copy = 0; copy < 2; copy += 1) {
+                AUTH_STRIP_ALL.forEach(([slug, name]) => {
+                    const li = document.createElement('li');
+                    li.className = 'strip-marquee-card' + (isWordmark(name) ? ' is-wordmark' : '');
+                    if (copy > 0) li.setAttribute('aria-hidden', 'true');
+                    li.appendChild(stripMarkNode(slug, 20));
+                    const label = document.createElement('span');
+                    label.textContent = name;
+                    li.appendChild(label);
+                    lane.appendChild(li);
+                });
+            }
+            host.appendChild(lane);
+        }
+
+        function buildBentoMode(host) {
+            const grid = document.createElement('ul');
+            grid.className = 'strip-bento';
+            AUTH_STRIP_ALL.forEach(([slug, name]) => {
+                const li = document.createElement('li');
+                li.className = 'strip-bento-tile' + (isWordmark(name) ? ' is-wordmark' : '');
+                li.tabIndex = 0;
+                li.appendChild(stripMarkNode(slug, 18));
+                li.appendChild(stripSrLabel(name));
+                grid.appendChild(li);
+            });
+            host.appendChild(grid);
+        }
+
+        function renderAuthStrip(mode) {
+            const host = document.getElementById('auth-lanes');
+            if (!host) return;
+            const valid = AUTH_STRIP_MODES.some((m) => m.id === mode) ? mode : 'lanes';
+            host.innerHTML = '';
+            host.classList.remove('is-paused');
+            host.dataset.strip = valid;
+            if (valid === 'lanes') {
+                AUTH_LOGO_LANES.forEach((items, i) => {
+                    const lane = document.createElement('ul');
+                    lane.className = 'auth-lane';
+                    for (let copy = 0; copy < AUTH_LOGO_LANE_COPIES[i]; copy += 1) {
+                        items.forEach(([slug, name]) => lane.appendChild(buildLogoPill(slug, name, copy > 0)));
+                    }
+                    host.appendChild(lane);
+                });
+            } else if (valid === 'dock') buildDockMode(host);
+            else if (valid === 'stack') buildStackMode(host);
+            else if (valid === 'glide') buildGlideMode(host);
+            else if (valid === 'marquee') buildMarqueeMode(host);
+            else if (valid === 'bento') buildBentoMode(host);
+            try { localStorage.setItem('auth-strip-preview', valid); } catch (e) { /* private mode: fine, just won't stick */ }
+            const btn = document.getElementById('strip-switcher-btn');
+            const current = btn && btn.querySelector('.strip-switcher-current');
+            if (current) current.textContent = (AUTH_STRIP_MODES.find((m) => m.id === valid) || {}).label || valid;
+            document.querySelectorAll('.strip-switcher-opt').forEach((opt) => {
+                opt.setAttribute('aria-current', opt.dataset.stripId === valid ? 'true' : 'false');
+            });
+        }
+
+        function initStripSwitcher() {
+            if (document.getElementById('strip-switcher')) return;
+            const wrap = document.createElement('div');
+            wrap.className = 'strip-switcher';
+            wrap.id = 'strip-switcher';
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'strip-switcher-btn';
+            btn.id = 'strip-switcher-btn';
+            btn.innerHTML = '<span aria-hidden="true">\u{1F39B}️</span><span class="strip-switcher-current">Two-lane pills</span>';
+            btn.addEventListener('click', () => wrap.classList.toggle('is-open'));
+            const menu = document.createElement('div');
+            menu.className = 'strip-switcher-menu';
+            AUTH_STRIP_MODES.forEach((m) => {
+                const opt = document.createElement('button');
+                opt.type = 'button';
+                opt.className = 'strip-switcher-opt';
+                opt.dataset.stripId = m.id;
+                opt.innerHTML = `${m.label}<small>${m.note}</small>`;
+                opt.addEventListener('click', () => { renderAuthStrip(m.id); wrap.classList.remove('is-open'); });
+                menu.appendChild(opt);
+            });
+            wrap.append(btn, menu);
+            document.body.appendChild(wrap);
+            document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) wrap.classList.remove('is-open'); });
+        }
+
+        function ensureAuthStripInitialized() {
+            initStripSwitcher();
             const host = document.getElementById('auth-lanes');
             if (!host || host.childElementCount) return;
-            AUTH_LOGO_LANES.forEach((items, i) => {
-                const lane = document.createElement('ul');
-                lane.className = 'auth-lane';
-                for (let copy = 0; copy < AUTH_LOGO_LANE_COPIES[i]; copy += 1) {
-                    items.forEach(([slug, name]) => lane.appendChild(buildLogoPill(slug, name, copy > 0)));
-                }
-                host.appendChild(lane);
-            });
+            let initial = 'lanes';
+            try {
+                initial = new URLSearchParams(location.search).get('strip') || localStorage.getItem('auth-strip-preview') || 'lanes';
+            } catch (e) { /* private mode: default to lanes */ }
+            renderAuthStrip(initial);
         }
 
         // Moving content needs a way to stop it (WCAG 2.2.2). The label follows
@@ -40345,7 +40776,7 @@
             const heading = document.getElementById('auth-heading');
             if (heading) heading.textContent = t(authHeadingKey(mode));
             renderSignInProviders();
-            renderAuthLogoLanes();
+            ensureAuthStripInitialized();
             const langBtn = document.getElementById('auth-lang-btn');
             if (langBtn) {
                 // Named in the language it switches to, as language pickers are.

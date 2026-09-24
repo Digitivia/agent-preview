@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sign-in Logo Strip</title>
+<style>
+  :root {
+    --ground: #f3f4f9;
+    --card: #ffffff;
+    --ink: #131034;
+    --body: #4a5166;
+    --line: #e2e4ee;
+    --brand: #241668;
+    --accent: #2a8184;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0f1115;
+      --card: #171a20;
+      --ink: #e9edf3;
+      --body: #aab1bd;
+      --line: #2a2f38;
+      --brand: #b9a8ff;
+      --accent: #5baeb0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0f1115;
+    --card: #171a20;
+    --ink: #e9edf3;
+    --body: #aab1bd;
+    --line: #2a2f38;
+    --brand: #b9a8ff;
+    --accent: #5baeb0;
+  }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font: 15px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 16px 56px; }
+  h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 6px; text-wrap: balance; }
+  .lede { color: var(--body); margin: 0 0 28px; max-width: 68ch; }
+  .option { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; margin-bottom: 22px; }
+  .option h2 { font-size: 1.25rem; margin: 0 0 4px; color: var(--brand); }
+  .option p { margin: 0 0 14px; color: var(--body); max-width: 72ch; }
+  .media { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+  .media img, .media video { width: 100%; max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); display: block; background: #e9ebf3; }
+  .cap { font-size: 0.8125rem; color: var(--body); margin-top: 6px; }
+  .note { font-size: 0.875rem; color: var(--body); border-top: 1px solid var(--line); padding-top: 16px; }
+  @media (max-width: 760px) { .media { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Three ways to show the logos</h1>
+  <p class="lede">Each option shows all 13 logos: the four chat channels plus the landing page's Anthropic, Meta, OpenAI, Shopify, Stripe, WooCommerce, n8n, Hostinger and Google. The Meta Tech Provider line stays as it is. Each image shows desktop and phone; each video shows the pointer moving over the logos.</p>
+
+  <section class="option">
+    <h2>D. App dock</h2>
+    <p>The four chat channels as real app icons, like a phone's home screen, in a glass dock that magnifies the icon under the pointer and shows its name. Below it, the tools sit in quiet white and light up in their own colours on hover, as on your landing page strip.</p>
+    <div class="media">
+      <div><img src="board-dock.png" alt="App dock option on desktop and phone" loading="lazy"></div>
+      <div><video src="dock-motion.webm" autoplay muted loop playsinline controls></video><div class="cap">Hover: the dock magnifies, then the tools light up.</div></div>
+    </div>
+  </section>
+
+  <section class="option">
+    <h2>E. App stack</h2>
+    <p>All 13 as round app icons in one overlapping row, the way profile pictures stack. On hover the row fans open and the icon under the pointer lifts and shows its name.</p>
+    <div class="media">
+      <div><img src="board-stack.png" alt="App stack option on desktop and phone" loading="lazy"></div>
+      <div><video src="stack-motion.webm" autoplay muted loop playsinline controls></video><div class="cap">Hover: the stack fans open.</div></div>
+    </div>
+  </section>
+
+  <section class="option">
+    <h2>F. Monochrome glide</h2>
+    <p>One calm lane of white logos and names, gliding slowly with faded ends. The understated look premium software sites use for their logo walls.</p>
+    <div class="media">
+      <div><img src="board-glide.png" alt="Monochrome glide option on desktop and phone" loading="lazy"></div>
+      <div><video src="glide-motion.webm" autoplay muted loop playsinline controls></video><div class="cap">It glides by itself, and pauses under the pointer.</div></div>
+    </div>
+  </section>
+
+  <p class="note">All three fit without scrolling on desktop and phone. Whichever you choose will work in Arabic (mirrored) and in dark mode, stand still for anyone who has turned motion off, and keep every logo's name for screen readers.</p>
+</div>
+</body>
+</html>

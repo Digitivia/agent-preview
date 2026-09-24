@@ -16868,58 +16868,102 @@
 
         /* ==========================================================
            SIGN-IN CARD (docs/superpowers/specs/2026-09-24-sign-in-journey-design.md)
-           Built only from the --sp-* tokens, so light, dark and Arabic come
-           from the same rules as the rest of the product.
+           One screen, no scrolling, on every common phone and laptop: a brand
+           side (the Digitivia wordmark on the colours it was drawn on) and the
+           form. Everything but the brand colours comes from the --sp-* tokens,
+           so light, dark and Arabic follow the rest of the product.
            ========================================================== */
         #login-container {
-            padding-block: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-bottom, 0px));
-            padding-inline: 16px;
+            padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px));
             overflow-y: auto;
             align-items: safe center;
         }
+        /* The sign-in screen owns the whole viewport: the floating rail (AI
+           launcher, theme toggle, Sentry's report button) stands down while it
+           shows, and the card carries its own theme and language switches. */
+        body:has(#login-container[style*="display: flex"]) :is(.theme-float-btn, .aiw-root, #sentry-feedback) { display: none !important; }
         .auth-card {
-            width: min(420px, 100%); max-width: 420px; margin-block: auto;
-            padding: 32px 28px; border-radius: var(--sp-r-xl);
-            background: var(--sp-surface); border: 1px solid var(--sp-line);
+            /* Sampled from the logo, the same values as BRAND in
+               supabase/functions/_shared/brand-email.ts. */
+            --auth-brand-deep: #111147;
+            --auth-brand-mid: #241668;
+            --auth-brand-lift: #3b2089;
+            width: min(440px, 100%); max-width: 440px; margin-block: auto; padding: 0; overflow: hidden;
+            display: flex; flex-direction: column;
+            border-radius: var(--sp-r-xl); background: var(--sp-surface); border: 1px solid var(--sp-line);
             color: var(--sp-ink); font-family: var(--sp-font); text-align: start;
-            display: flex; flex-direction: column; gap: 12px;
             box-shadow: var(--sp-shadow-overlay);
         }
         .auth-card [hidden] { display: none !important; }
-        .auth-card .login-title-wrap { margin: 0; }
-        .auth-card .login-title { margin: 0; color: var(--sp-accent); font-size: var(--sp-t-sm); letter-spacing: .14em; }
+        .auth-brand {
+            display: flex; flex-direction: column; gap: 18px; padding: 12px 14px 12px 16px; color: #fff;
+            background:
+                radial-gradient(120% 160% at 0% 0%, rgba(91, 52, 199, .55) 0%, transparent 60%),
+                radial-gradient(90% 90% at 100% 100%, rgba(91, 52, 199, .35) 0%, transparent 60%),
+                linear-gradient(135deg, var(--auth-brand-deep) 0%, var(--auth-brand-mid) 55%, var(--auth-brand-lift) 100%);
+        }
+        .auth-brand-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .auth-logo { display: block; width: 126px; max-width: 55%; height: auto; }
+        .auth-brand-tools { display: flex; gap: 6px; flex-shrink: 0; }
+        .auth-tool {
+            width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: var(--sp-r-pill); border: 1px solid rgba(255, 255, 255, .3);
+            background: rgba(255, 255, 255, .1); color: #fff; cursor: pointer;
+            font-family: var(--sp-font); font-size: var(--sp-t-sm); font-weight: 700; line-height: 1;
+        }
+        .auth-tool:hover { background: rgba(255, 255, 255, .2); }
+        .auth-tool svg { width: 18px; height: 18px; fill: currentColor; }
+        .auth-tool .icon-moon { display: none; }
+        :root[data-theme="light"] .auth-tool .icon-sun { display: none; }
+        :root[data-theme="light"] .auth-tool .icon-moon { display: inline; }
+        [dir="rtl"] .auth-lang-ar,
+        :root:not([dir="rtl"]) .auth-lang-en { display: none; }
+        .auth-brand-channels { display: none; }
+        .auth-main { display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 14px; }
         .auth-heading {
-            display: block; margin: 0 0 4px; text-align: center;
+            display: block; margin: 0 0 2px; text-align: center;
             font-size: var(--sp-t-xl); line-height: var(--sp-lh-tight); font-weight: 700; color: var(--sp-ink);
         }
-        .auth-providers { display: flex; flex-direction: column; gap: 10px; }
+        .auth-providers { display: flex; flex-direction: column; gap: 8px; }
+        .auth-provider-row { display: flex; gap: 8px; }
+        .auth-provider-row > * { flex: 1 1 0; min-width: 0; }
         .auth-card .social-btn {
-            min-height: 48px; margin: 0; padding: 10px 16px; gap: 10px;
+            min-height: 46px; margin: 0; padding: 8px 12px; gap: 8px;
             border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
             background: var(--sp-surface-2); color: var(--sp-ink);
             font-size: var(--sp-t-md); font-weight: 600;
             transition: border-color .15s ease, background .15s ease;
         }
+        .auth-card .social-btn.is-featured { min-height: 48px; }
         .auth-card .social-btn:hover { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
-        .auth-card .social-btn.is-minor { min-height: 44px; background: transparent; font-size: var(--sp-t-sm); font-weight: 500; }
+        .auth-card .social-btn span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .auth-card .social-btn svg { flex-shrink: 0; }
         .auth-card .social-login-divider {
-            display: flex; align-items: center; gap: 12px; margin: 2px 0;
+            display: flex; align-items: center; gap: 12px; margin: 0;
             color: var(--sp-ink-3); font-size: var(--sp-t-xs); text-transform: uppercase; letter-spacing: .08em;
         }
         .auth-card .social-login-divider::before,
         .auth-card .social-login-divider::after { content: ""; position: static; flex: 1; width: auto; height: 1px; background: var(--sp-line); }
         .auth-form { display: flex; flex-direction: column; gap: 8px; margin: 0; }
-        .auth-label { margin-top: 4px; font-size: var(--sp-t-sm); font-weight: 600; color: var(--sp-ink-2); }
+        .auth-field { position: relative; }
         .auth-card .login-input {
-            width: 100%; min-height: 48px; margin: 0; padding: 12px 14px;
+            width: 100%; height: 50px; margin: 0; padding: 20px 14px 6px;
             font-size: 16px; text-align: start;
             border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
             background: var(--sp-bg); color: var(--sp-ink);
         }
+        .auth-field label {
+            position: absolute; inset-inline-start: 15px; top: 50%; transform: translateY(-50%);
+            font-size: var(--sp-t-md); color: var(--sp-ink-3); pointer-events: none;
+            transition: top .15s ease, font-size .15s ease, transform .15s ease;
+        }
+        .auth-field .login-input:focus + label,
+        .auth-field .login-input:not(:placeholder-shown) + label,
+        .auth-field .login-input:-webkit-autofill + label {
+            top: 7px; transform: none; font-size: 11px; font-weight: 600; color: var(--sp-ink-2);
+        }
         .auth-card #login-user { direction: ltr; }
         [dir="rtl"] .auth-card #login-user { text-align: right; }
-        .auth-pass-wrap { position: relative; }
         .auth-pass-wrap .login-input { padding-inline-end: 52px; }
         .auth-pass-toggle {
             position: absolute; inset-block: 0; inset-inline-end: 2px; width: 46px;
@@ -16933,10 +16977,10 @@
         .auth-strength { min-height: 1.2em; font-size: var(--sp-t-xs); color: var(--sp-ink-3); }
         .auth-strength[data-level="weak"] { color: var(--sp-warn); }
         .auth-strength[data-level="strong"] { color: var(--sp-ok); }
-        .auth-card .auth-forgot { align-self: flex-end; }
+        .auth-card .auth-forgot { align-self: flex-end; min-height: 32px; padding: 4px 2px; }
         .auth-card .login-btn,
         .signout-options .login-btn {
-            flex: none; width: 100%; min-height: 48px; margin-top: 6px; padding: 12px 16px;
+            flex: none; width: 100%; min-height: 48px; margin-top: 2px; padding: 12px 16px;
             border: none; border-radius: var(--sp-r-md);
             background: var(--sp-accent); color: var(--sp-accent-ink);
             font-size: var(--sp-t-lg); font-weight: 700; cursor: pointer;
@@ -16955,7 +16999,7 @@
         }
         @keyframes auth-spin { to { transform: rotate(360deg); } }
         .auth-card .login-recovery {
-            margin: 0; padding: 12px 14px; border-radius: var(--sp-r-md);
+            margin: 0; padding: 10px 12px; border-radius: var(--sp-r-md);
             border: 1px solid var(--sp-err); background: var(--sp-err-soft);
         }
         .auth-card .login-recovery .login-recovery-text { margin: 0; color: var(--sp-err-ink); font-size: var(--sp-t-sm); line-height: var(--sp-lh); }
@@ -16963,10 +17007,10 @@
         .auth-card .login-recovery[data-tone="info"] .login-recovery-text { color: var(--sp-ink); }
         .auth-card .login-recovery[data-tone="ok"] { border-color: var(--sp-ok); background: var(--sp-ok-soft); }
         .auth-card .login-recovery[data-tone="ok"] .login-recovery-text { color: var(--sp-ok-ink); }
-        .auth-card .login-recovery-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .auth-card .login-recovery-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .auth-link,
         .auth-card .login-recovery-quiet {
-            min-height: 44px; padding: 8px 4px; background: none; border: none; cursor: pointer;
+            min-height: 36px; padding: 6px 4px; background: none; border: none; cursor: pointer;
             color: var(--sp-accent); font-size: var(--sp-t-sm); font-weight: 600;
             text-decoration: underline; text-underline-offset: 3px;
         }
@@ -16980,7 +17024,15 @@
         .auth-card .known-account-main:hover { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
         .auth-card .known-account-avatar { background: var(--sp-accent); color: var(--sp-accent-ink); }
         .auth-card .known-account-forget { width: 44px; height: 44px; }
+        .auth-card .known-accounts-other {
+            min-height: 36px; color: var(--sp-accent); font-size: var(--sp-t-sm); font-weight: 600; text-underline-offset: 3px;
+        }
+        /* A returning visitor sees their accounts first; the full form is one
+           tap away ("Use another account"), which also keeps the card short. */
+        .auth-card[data-mode="signin"][data-picker="1"] :is(#sign-in-providers, .social-login-divider, #auth-form) { display: none; }
         .signout-box { max-width: 380px; }
+        .signout-options { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+        .signout-options .signout-everywhere { align-self: center; }
         /* Above the theme toggle (4200), like the product's other important
            dialogs (10000). Only the AI launcher (12500) floats above every
            dialog, so on a phone the sheet keeps its choices clear of it. */
@@ -16989,20 +17041,38 @@
             /* id-scoped: the phone .modal-body rules further down would win otherwise */
             #signout-modal .signout-options { padding-block-end: calc(var(--fab-launcher-bottom, 14px) + var(--fab-launcher-size, 52px) + 12px); }
         }
-        .signout-options { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
-        .signout-options .signout-everywhere { align-self: center; }
-        /* A returning visitor sees their accounts first; the full form is one
-           tap away ("Use another account"), which also keeps the card short. */
-        .auth-card[data-mode="signin"][data-picker="1"] :is(#sign-in-providers, .social-login-divider, #auth-form) { display: none; }
-        /* On a phone the floating rail (theme toggle, AI launcher, Sentry's
-           report button) owns the bottom-end corner. Leave room to scroll the
-           card clear of it; the rail's own variables say how tall it is. */
-        @media (max-width: 768px) {
-            #login-container { padding-block-end: calc(var(--fab-banner-bottom, 200px) + 8px); }
+        /* Wide screens: the card splits into the brand panel and the form. */
+        @media (min-width: 880px) {
+            .auth-card { width: min(880px, 100%); max-width: 880px; flex-direction: row; min-height: 540px; }
+            /* The logo and the channels sit together in the middle; the two
+               switches keep to the corner. */
+            .auth-brand { flex: 0 0 42%; padding: 32px; position: relative; justify-content: center; gap: 30px; }
+            .auth-brand-top { justify-content: flex-start; }
+            .auth-brand-tools { position: absolute; top: 20px; inset-inline-end: 20px; }
+            .auth-logo { width: 208px; max-width: 80%; }
+            .auth-brand-channels { display: flex; flex-wrap: wrap; gap: 10px; }
+            .auth-channel {
+                width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center;
+                border-radius: 14px; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .18); color: #fff;
+            }
+            .auth-main { flex: 1 1 auto; justify-content: center; gap: 12px; padding: 32px 40px; }
         }
-        @media (max-width: 480px) { .auth-card { padding: 24px 18px; border-radius: var(--sp-r-lg); } }
+        /* Short screens (small phones, landscape): the same card, tighter. */
+        @media (max-height: 700px) and (max-width: 879px) {
+            .auth-brand { padding: 8px 12px 8px 14px; }
+            .auth-logo { width: 112px; }
+            .auth-tool { width: 34px; height: 34px; }
+            .auth-main { gap: 8px; padding: 12px 16px 10px; }
+            .auth-heading { font-size: var(--sp-t-lg); }
+            .auth-card .social-btn, .auth-card .social-btn.is-featured { min-height: 42px; }
+            .auth-card .login-input { height: 46px; padding-top: 18px; }
+            .auth-card .login-btn { min-height: 44px; }
+            .auth-card .auth-forgot { min-height: 28px; padding-block: 2px; }
+            .auth-link, .auth-card .login-recovery-quiet { min-height: 32px; }
+        }
+        @media (max-width: 480px) { .auth-card { border-radius: var(--sp-r-lg); } }
         @media (prefers-reduced-motion: no-preference) {
-            .auth-card > :not([hidden]) { animation: auth-fade .15s ease; }
+            .auth-main > :not([hidden]) { animation: auth-fade .15s ease; }
         }
         @keyframes auth-fade { from { opacity: 0; } to { opacity: 1; } }
 
@@ -35301,64 +35371,86 @@
              reset email sent. setAuthMode() is the only thing that switches
              them. docs/superpowers/specs/2026-09-24-sign-in-journey-design.md -->
         <div class="card glass login-card auth-card" id="auth-card" data-mode="signin">
-            <div class="login-title-wrap">
-                <div class="login-title-main">
-                    <div class="login-title" data-i18n="auth.app_title">DIGITIVIA AI AGENT</div>
+            <!-- The brand side: the Digitivia wordmark on the colours it was drawn
+                 on (never on white), and this screen's own language and theme
+                 switches, since the floating ones stand down while it shows. -->
+            <div class="auth-brand">
+                <div class="auth-brand-top">
+                    <img class="auth-logo" src="cropped-White.png" alt="Digitivia" width="150" height="50" decoding="async">
+                    <div class="auth-brand-tools">
+                        <button type="button" class="auth-tool" id="auth-lang-btn" onclick="toggleLanguage()"
+                            aria-label="العربية" title="العربية"><span class="auth-lang-ar" lang="ar">ع</span><span class="auth-lang-en" lang="en">EN</span></button>
+                        <button type="button" class="auth-tool" id="auth-theme-btn" onclick="toggleTheme()"
+                            aria-label="Switch to light theme" title="Switch to light theme">
+                            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.8 1.42-1.42zm10.48 0l1.42 1.42 1.79-1.8-1.41-1.41-1.8 1.79zM12 5a7 7 0 100 14 7 7 0 000-14zm0-5h-1v3h1V0zm0 21h-1v3h1v-3zm12-10h-3v1h3v-1zM3 11H0v1h3v-1zm15.24 7.16l1.8 1.79 1.41-1.41-1.79-1.8-1.42 1.42zM4.96 19.95l1.8-1.79-1.42-1.42-1.79 1.8 1.41 1.41z"/></svg>
+                            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.64 13.01A9 9 0 0110.99 2.36a1 1 0 00-1.24-1.24A11 11 0 1022.88 14.25a1 1 0 00-1.24-1.24z"/></svg>
+                        </button>
+                    </div>
                 </div>
+                <!-- Filled by renderAuthCard() from svgIcon(): the channels the
+                     product answers on. Decorative; shown on wide screens. -->
+                <div class="auth-brand-channels" aria-hidden="true"></div>
             </div>
-            <h1 class="auth-heading" id="auth-heading">Sign in to Digitivia</h1>
 
-            <!-- Accounts previously used on this device. Emails only -- picking
-                 one fills the address in, it never signs anyone in. -->
-            <div id="known-accounts" class="known-accounts" data-auth-only="signin"></div>
+            <div class="auth-main">
+                <h1 class="auth-heading" id="auth-heading">Sign in to Digitivia</h1>
 
-            <!-- Filled from SIGN_IN_PROVIDERS by renderSignInProviders(). -->
-            <div id="sign-in-providers" class="auth-providers" data-auth-only="signin signup"></div>
+                <!-- Accounts previously used on this device. Emails only -- picking
+                     one fills the address in, it never signs anyone in. -->
+                <div id="known-accounts" class="known-accounts" data-auth-only="signin"></div>
 
-            <div class="social-login-divider" data-auth-only="signin signup"><span data-i18n="auth.or">or</span></div>
+                <!-- Filled from SIGN_IN_PROVIDERS by renderSignInProviders(). -->
+                <div id="sign-in-providers" class="auth-providers" data-auth-only="signin signup"></div>
 
-            <form id="auth-form" class="auth-form" novalidate data-auth-only="signin signup">
-                <label class="auth-label" for="login-user" data-i18n="auth.email">Email</label>
-                <input type="email" id="login-user" name="email" class="login-input" autocomplete="username"
-                    inputmode="email" autocapitalize="off" spellcheck="false">
-                <label class="auth-label" for="login-pass" data-i18n="auth.password">Password</label>
-                <div class="auth-pass-wrap">
-                    <input type="password" id="login-pass" name="password" class="login-input" autocomplete="current-password">
-                    <button type="button" class="auth-pass-toggle" id="auth-pass-toggle" aria-pressed="false"
-                        aria-label="Show password" title="Show password">
-                        <svg class="auth-eye-open" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                        <svg class="auth-eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+                <div class="social-login-divider" data-auth-only="signin signup"><span data-i18n="auth.or">or</span></div>
+
+                <form id="auth-form" class="auth-form" novalidate data-auth-only="signin signup">
+                    <!-- Each label sits inside its field and moves up once the
+                         field is focused or filled (placeholder=" " drives it). -->
+                    <div class="auth-field">
+                        <input type="email" id="login-user" name="email" class="login-input" autocomplete="username"
+                            inputmode="email" autocapitalize="off" spellcheck="false" placeholder=" ">
+                        <label for="login-user" data-i18n="auth.email">Email</label>
+                    </div>
+                    <div class="auth-field auth-pass-wrap">
+                        <input type="password" id="login-pass" name="password" class="login-input" autocomplete="current-password" placeholder=" ">
+                        <label for="login-pass" data-i18n="auth.password">Password</label>
+                        <button type="button" class="auth-pass-toggle" id="auth-pass-toggle" aria-pressed="false"
+                            aria-label="Show password" title="Show password">
+                            <svg class="auth-eye-open" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                            <svg class="auth-eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+                        </button>
+                    </div>
+                    <div class="auth-strength" id="auth-strength" data-auth-only="signup" aria-live="polite" hidden></div>
+                    <!-- Discoverable before the failure, not only after it. -->
+                    <button type="button" class="login-recovery-quiet auth-forgot" data-auth-only="signin"
+                        data-i18n="auth.forgot_password" onclick="requestPasswordReset()">Forgot your password?</button>
+                    <button type="submit" class="login-btn auth-submit" id="auth-submit">
+                        <span data-auth-only="signin" data-i18n="auth.sign_in">Sign in</span>
+                        <span data-auth-only="signup" data-i18n="auth.create_account" hidden>Create account</span>
                     </button>
+                </form>
+
+                <div class="auth-panel" data-auth-only="check-inbox" hidden>
+                    <p class="auth-panel-text" id="auth-inbox-text"></p>
+                    <button type="button" class="login-btn" id="auth-resend" data-i18n="auth.inbox_resend">Resend email</button>
+                    <button type="button" class="auth-link" id="auth-other-email" data-i18n="auth.inbox_other_email">Use a different email</button>
                 </div>
-                <div class="auth-strength" id="auth-strength" data-auth-only="signup" aria-live="polite" hidden></div>
-                <!-- Discoverable before the failure, not only after it. -->
-                <button type="button" class="login-recovery-quiet auth-forgot" data-auth-only="signin"
-                    data-i18n="auth.forgot_password" onclick="requestPasswordReset()">Forgot your password?</button>
-                <button type="submit" class="login-btn auth-submit" id="auth-submit">
-                    <span data-auth-only="signin" data-i18n="auth.sign_in">Sign in</span>
-                    <span data-auth-only="signup" data-i18n="auth.create_account" hidden>Create account</span>
-                </button>
-            </form>
+                <div class="auth-panel" data-auth-only="reset-sent" hidden>
+                    <p class="auth-panel-text" id="auth-reset-text"></p>
+                    <button type="button" class="login-btn" id="auth-back-signin" data-i18n="auth.back_to_signin">Back to sign in</button>
+                </div>
 
-            <div class="auth-panel" data-auth-only="check-inbox" hidden>
-                <p class="auth-panel-text" id="auth-inbox-text"></p>
-                <button type="button" class="login-btn" id="auth-resend" data-i18n="auth.inbox_resend">Resend email</button>
-                <button type="button" class="auth-link" id="auth-other-email" data-i18n="auth.inbox_other_email">Use a different email</button>
-            </div>
-            <div class="auth-panel" data-auth-only="reset-sent" hidden>
-                <p class="auth-panel-text" id="auth-reset-text"></p>
-                <button type="button" class="login-btn" id="auth-back-signin" data-i18n="auth.back_to_signin">Back to sign in</button>
-            </div>
+                <!-- The card's one message area (showAuthNotice). Empty and hidden
+                     until something needs saying; read aloud when it changes. -->
+                <div id="login-recovery" class="login-recovery" role="status" aria-live="polite" hidden></div>
 
-            <!-- The card's one message area (showAuthNotice). Empty and hidden
-                 until something needs saying; read aloud when it changes. -->
-            <div id="login-recovery" class="login-recovery" role="status" aria-live="polite" hidden></div>
-
-            <div class="auth-switch" data-auth-only="signin">
-                <button type="button" class="auth-link" id="auth-to-signup" data-i18n="auth.to_signup">New to Digitivia? Create an account</button>
-            </div>
-            <div class="auth-switch" data-auth-only="signup" hidden>
-                <button type="button" class="auth-link" id="auth-to-signin" data-i18n="auth.to_signin">Already have an account? Sign in</button>
+                <div class="auth-switch" data-auth-only="signin">
+                    <button type="button" class="auth-link" id="auth-to-signup" data-i18n="auth.to_signup">New to Digitivia? Create an account</button>
+                </div>
+                <div class="auth-switch" data-auth-only="signup" hidden>
+                    <button type="button" class="auth-link" id="auth-to-signin" data-i18n="auth.to_signin">Already have an account? Sign in</button>
+                </div>
             </div>
         </div>
     </div>
@@ -37955,6 +38047,9 @@
             btn.setAttribute('data-theme-next-label', label);
             btn.setAttribute('aria-label', ariaLabel);
             btn.setAttribute('title', ariaLabel);
+            // The sign-in card's own switch says the same thing.
+            const authBtn = document.getElementById('auth-theme-btn');
+            if (authBtn) { authBtn.setAttribute('aria-label', ariaLabel); authBtn.setAttribute('title', ariaLabel); }
         }
 
         function setTheme(theme, persist = true) {
@@ -39660,12 +39755,14 @@
         // The one list of sign-in providers (Supabase's ids). The card, the
         // recovery panel and the remembered accounts are all built from it, so
         // they cannot disagree again (they did: the card offered Facebook while
-        // the recovery panel offered LinkedIn). LinkedIn stays, smaller, while
-        // anyone still signs in with it (one account did on 2026-02-20).
+        // the recovery panel offered LinkedIn). Google is featured (138 of 140
+        // social sign-ins on 2026-09-23); Facebook and LinkedIn share a row.
+        // LinkedIn stays while anyone signs in with it (one account did on
+        // 2026-02-20).
         const SIGN_IN_PROVIDERS = Object.freeze([
-            Object.freeze({ id: 'google', label: 'Google' }),
+            Object.freeze({ id: 'google', label: 'Google', featured: true }),
             Object.freeze({ id: 'facebook', label: 'Facebook' }),
-            Object.freeze({ id: 'linkedin_oidc', label: 'LinkedIn', minor: true }),
+            Object.freeze({ id: 'linkedin_oidc', label: 'LinkedIn' }),
         ]);
         const OAUTH_PROVIDER_LABELS = Object.freeze(Object.fromEntries(SIGN_IN_PROVIDERS.map((p) => [p.id, p.label])));
         const isOAuthMethod = (m) => Object.prototype.hasOwnProperty.call(OAUTH_PROVIDER_LABELS, String(m || ''));
@@ -39776,9 +39873,8 @@
 
             const actions = document.createElement('div');
             actions.className = 'login-recovery-actions';
-            const addProviders = (exclude) => SIGN_IN_PROVIDERS
-                .filter((p) => p.id !== exclude)
-                .forEach((p) => { const b = buildProviderButton(p.id, email); if (b) actions.appendChild(b); });
+            const addProviders = (exclude) => appendProviderButtons(actions,
+                SIGN_IN_PROVIDERS.map((p) => p.id).filter((id) => id !== exclude), email);
             const addLink = (key, onClick) => {
                 const b = document.createElement('button');
                 b.type = 'button';
@@ -39804,6 +39900,8 @@
             }
             if (actions.children.length) host.appendChild(actions);
             host.hidden = false;
+            // On a short screen the message can land below the fold: bring it in.
+            try { host.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (_) {}
         }
         window.showAuthNotice = showAuthNotice;
 
@@ -39926,16 +40024,20 @@
             return window.location.origin + window.location.pathname;
         }
 
-        function buildProviderButton(id, email) {
+        // `compact` (a button sharing its row) shows just the provider's name;
+        // a screen reader still hears the full "Continue with ...".
+        function buildProviderButton(id, email, compact) {
             const p = SIGN_IN_PROVIDERS.find((x) => x.id === id);
             if (!p) return null;
+            const full = t('auth.continue_with', { provider: p.label });
             const b = document.createElement('button');
             b.type = 'button';
-            b.className = `social-btn ${p.id.split('_')[0]}${p.minor ? ' is-minor' : ''}`;
+            b.className = `social-btn ${p.id.split('_')[0]}${p.featured ? ' is-featured' : ''}`;
             b.dataset.provider = p.id;
+            b.setAttribute('aria-label', full);
             b.innerHTML = PROVIDER_ICONS[p.id] || '';
             const label = document.createElement('span');
-            label.textContent = t('auth.continue_with', { provider: p.label });
+            label.textContent = compact ? p.label : full;
             b.appendChild(label);
             b.addEventListener('click', () => {
                 // From the recovery panel the address is known: remember which
@@ -39946,14 +40048,25 @@
             return b;
         }
 
+        // Featured providers get a full-width button; the rest share one row,
+        // so three ways in cost two rows. The card and the recovery panel both
+        // lay their buttons out through here.
+        function appendProviderButtons(host, ids, email) {
+            const featured = ids.filter((id) => SIGN_IN_PROVIDERS.some((p) => p.id === id && p.featured));
+            const rest = ids.filter((id) => !featured.includes(id));
+            featured.forEach((id) => { const b = buildProviderButton(id, email, false); if (b) host.appendChild(b); });
+            if (!rest.length) return;
+            const row = document.createElement('div');
+            row.className = 'auth-provider-row';
+            rest.forEach((id) => { const b = buildProviderButton(id, email, rest.length > 1); if (b) row.appendChild(b); });
+            host.appendChild(row);
+        }
+
         function renderSignInProviders() {
             const host = document.getElementById('sign-in-providers');
             if (!host) return;
             host.innerHTML = '';
-            SIGN_IN_PROVIDERS.forEach((p) => {
-                const b = buildProviderButton(p.id);
-                if (b) host.appendChild(b);
-            });
+            appendProviderButtons(host, SIGN_IN_PROVIDERS.map((p) => p.id));
         }
 
         function passwordStrength(pw) {
@@ -40018,6 +40131,24 @@
             const heading = document.getElementById('auth-heading');
             if (heading) heading.textContent = t(authHeadingKey(mode));
             renderSignInProviders();
+            // The channels the product answers on, on the brand panel (wide
+            // screens), drawn once from the shared icon set.
+            const channels = card.querySelector('.auth-brand-channels');
+            if (channels && !channels.childElementCount && typeof svgIcon === 'function') {
+                ['whatsapp', 'instagram', 'messenger', 'telegram', 'globe'].forEach((name) => {
+                    const tile = document.createElement('span');
+                    tile.className = 'auth-channel';
+                    tile.innerHTML = svgIcon(name, 22);
+                    channels.appendChild(tile);
+                });
+            }
+            const langBtn = document.getElementById('auth-lang-btn');
+            if (langBtn) {
+                // Named in the language it switches to, as language pickers are.
+                const target = currentLang === 'ar' ? 'English' : 'العربية';
+                langBtn.setAttribute('aria-label', target);
+                langBtn.title = target;
+            }
             const email = card.dataset.email || '';
             const inbox = document.getElementById('auth-inbox-text');
             if (inbox) inbox.textContent = t('auth.inbox_body', { email });

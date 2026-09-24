@@ -16874,36 +16874,50 @@
            so light, dark and Arabic follow the rest of the product.
            ========================================================== */
         #login-container {
-            padding: max(12px, env(safe-area-inset-top, 0px)) 12px max(12px, env(safe-area-inset-bottom, 0px));
+            padding: 0;
             overflow-y: auto;
-            align-items: safe center;
+            align-items: stretch;
         }
         /* The sign-in screen owns the whole viewport: the floating rail (AI
            launcher, theme toggle, Sentry's report button) stands down while it
            shows, and the card carries its own theme and language switches. */
         body:has(#login-container[style*="display: flex"]) :is(.theme-float-btn, .aiw-root, #sentry-feedback) { display: none !important; }
+        /* The quiet split (.impeccable/surfaces/index-html.md): no floating
+           card. One grid fills the screen; on phones it stacks the brand band,
+           the form and the trust strip, and on wide screens the same three
+           pieces become a brand panel beside the form. */
         .auth-card {
             /* Sampled from the logo, the same values as BRAND in
                supabase/functions/_shared/brand-email.ts. */
             --auth-brand-deep: #111147;
             --auth-brand-mid: #241668;
             --auth-brand-lift: #3b2089;
-            width: min(440px, 100%); max-width: 440px; margin-block: auto; padding: 0; overflow: hidden;
-            display: flex; flex-direction: column;
-            border-radius: var(--sp-r-xl); background: var(--sp-surface); border: 1px solid var(--sp-line);
+            position: relative;
+            width: 100%; max-width: none; min-height: 100%; margin: 0; padding: 0;
+            display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto;
+            border: 0; border-radius: 0; box-shadow: none; background: var(--sp-surface);
             color: var(--sp-ink); font-family: var(--sp-font); text-align: start;
-            box-shadow: var(--sp-shadow-overlay);
         }
         .auth-card [hidden] { display: none !important; }
+        /* Light theme: the product teal (#2f8f91) reads 3.85:1 against white,
+           under WCAG AA. On the sign-in screen, the first text every customer
+           reads, the button and the teal links take a deeper cut of the same
+           teal that clears 4.5:1 both ways (white on it, and it on white). The
+           rest of the product keeps its token; tests measure both themes. */
+        :root[data-theme="light"] .auth-card { --sp-accent: #2a8184; --sp-accent-hover: #236e71; }
         .auth-brand {
-            display: flex; flex-direction: column; gap: 18px; padding: 12px 14px 12px 16px; color: #fff;
+            grid-row: 1; display: flex; flex-direction: column; justify-content: center;
+            padding: max(14px, env(safe-area-inset-top, 0px)) 20px 14px; color: #fff;
+            /* The grain is the top background layer, not a pseudo-element: a
+               positioned box here would become the switches' corner. */
             background:
-                radial-gradient(120% 160% at 0% 0%, rgba(91, 52, 199, .55) 0%, transparent 60%),
-                radial-gradient(90% 90% at 100% 100%, rgba(91, 52, 199, .35) 0%, transparent 60%),
-                linear-gradient(135deg, var(--auth-brand-deep) 0%, var(--auth-brand-mid) 55%, var(--auth-brand-lift) 100%);
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E"),
+                radial-gradient(120% 80% at 100% 0%, rgba(91, 174, 176, .22) 0%, transparent 55%),
+                radial-gradient(90% 70% at 0% 100%, rgba(59, 32, 137, .9) 0%, transparent 60%),
+                linear-gradient(160deg, var(--auth-brand-deep) 0%, var(--auth-brand-mid) 58%, var(--auth-brand-lift) 100%);
         }
         .auth-brand-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-        .auth-logo { display: block; width: 126px; max-width: 55%; height: auto; }
+        .auth-logo { display: block; width: 124px; max-width: 55%; height: auto; }
         .auth-brand-tools { display: flex; gap: 6px; flex-shrink: 0; }
         .auth-tool {
             width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;
@@ -16918,23 +16932,44 @@
         :root[data-theme="light"] .auth-tool .icon-moon { display: inline; }
         [dir="rtl"] .auth-lang-ar,
         :root:not([dir="rtl"]) .auth-lang-en { display: none; }
-        .auth-orbit, .auth-meta-pill { display: none; }
-        .auth-main { display: flex; flex-direction: column; gap: 10px; padding: 18px 18px 14px; }
+        .auth-main { grid-row: 2; display: flex; flex-direction: column; gap: 10px; padding: 22px 20px 12px; }
         .auth-heading {
-            display: block; margin: 0 0 2px; text-align: center;
-            font-size: var(--sp-t-xl); line-height: var(--sp-lh-tight); font-weight: 700; color: var(--sp-ink);
+            display: block; margin: 0 0 8px; text-align: start; text-wrap: balance;
+            font-family: 'Cairo Display', var(--sp-font); font-size: 26px; line-height: 1.2; font-weight: 700;
+            letter-spacing: -.015em; color: var(--sp-ink);
         }
+        [dir="rtl"] .auth-heading { letter-spacing: 0; }
+        /* Meta's icon with its words, and the four chat channels as the landing
+           page shows them. Phones: one quiet strip under the form, the channels
+           as small dots (their names stay for screen readers). */
+        .auth-trust {
+            grid-row: 3; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px;
+            padding: 10px 20px max(14px, env(safe-area-inset-bottom, 0px));
+        }
+        .auth-meta { display: inline-flex; align-items: center; gap: 8px; font-size: var(--sp-t-sm); font-weight: 600; color: var(--sp-ink); }
+        .auth-meta-mark {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center; background: var(--sp-surface-2);
+        }
+        .auth-meta-mark img, .auth-chip img { display: block; width: 16px; height: 16px; }
+        .auth-channels { display: flex; gap: 6px; margin: 0; padding: 0; list-style: none; }
+        .auth-chip {
+            box-sizing: border-box; width: 30px; height: 30px; padding: 7px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center; background: var(--sp-surface-2);
+        }
+        .auth-chip span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+        .auth-chip:not(:has(img)) { display: none; }
         .auth-providers { display: flex; flex-direction: column; gap: 8px; }
         .auth-provider-row { display: flex; gap: 8px; }
         .auth-provider-row > * { flex: 1 1 0; min-width: 0; }
         .auth-card .social-btn {
-            min-height: 46px; margin: 0; padding: 8px 12px; gap: 8px;
-            border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
-            background: var(--sp-surface-2); color: var(--sp-ink);
+            min-height: 46px; margin: 0; padding: 8px 12px; gap: 10px;
+            border-radius: 12px; border: 1px solid var(--sp-line-2);
+            background: var(--sp-surface); color: var(--sp-ink); box-shadow: 0 1px 2px rgba(19, 16, 52, .06);
             font-size: var(--sp-t-md); font-weight: 600;
             transition: border-color .15s ease, background .15s ease;
         }
-        .auth-card .social-btn.is-featured { min-height: 48px; }
+        .auth-card .social-btn.is-featured { min-height: 50px; }
         .auth-card .social-btn:hover { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
         .auth-card .social-btn span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .auth-card .social-btn svg { flex-shrink: 0; }
@@ -16947,13 +16982,13 @@
         .auth-form { display: flex; flex-direction: column; gap: 8px; margin: 0; }
         .auth-field { position: relative; }
         .auth-card .login-input {
-            width: 100%; height: 50px; margin: 0; padding: 20px 14px 6px;
+            width: 100%; height: 54px; margin: 0; padding: 22px 16px 6px;
             font-size: 16px; text-align: start;
-            border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
+            border-radius: 12px; border: 1px solid var(--sp-line-2);
             background: var(--sp-bg); color: var(--sp-ink);
         }
         .auth-field label {
-            position: absolute; inset-inline-start: 15px; top: 50%; transform: translateY(-50%);
+            position: absolute; inset-inline-start: 17px; top: 50%; transform: translateY(-50%);
             font-size: var(--sp-t-md); color: var(--sp-ink-3); pointer-events: none;
             transition: top .15s ease, font-size .15s ease, transform .15s ease;
         }
@@ -16980,8 +17015,8 @@
         .auth-card .auth-forgot { align-self: flex-end; min-height: 32px; padding: 4px 2px; }
         .auth-card .login-btn,
         .signout-options .login-btn {
-            flex: none; width: 100%; min-height: 48px; margin-top: 2px; padding: 12px 16px;
-            border: none; border-radius: var(--sp-r-md);
+            flex: none; width: 100%; min-height: 52px; margin-top: 2px; padding: 12px 16px;
+            border: none; border-radius: 12px;
             background: var(--sp-accent); color: var(--sp-accent-ink);
             font-size: var(--sp-t-lg); font-weight: 700; cursor: pointer;
         }
@@ -17015,6 +17050,10 @@
             text-decoration: underline; text-underline-offset: 3px;
         }
         .auth-switch { display: flex; justify-content: center; }
+        /* The two links everyone sees read as quiet teal words; the underline
+           comes back under the pointer and on keyboard focus. */
+        .auth-card :is(.auth-forgot, .auth-switch .auth-link) { text-decoration: none; }
+        .auth-card :is(.auth-forgot, .auth-switch .auth-link):is(:hover, :focus-visible) { text-decoration: underline; }
         .auth-panel { display: flex; flex-direction: column; gap: 10px; text-align: center; }
         .auth-panel-text { margin: 0; color: var(--sp-ink-2); font-size: var(--sp-t-md); line-height: var(--sp-lh); overflow-wrap: anywhere; }
         .auth-card :is(button, input):focus-visible,
@@ -17041,66 +17080,63 @@
             /* id-scoped: the phone .modal-body rules further down would win otherwise */
             #signout-modal .signout-options { padding-block-end: calc(var(--fab-launcher-bottom, 14px) + var(--fab-launcher-size, 52px) + 12px); }
         }
-        /* Wide screens: the card splits into the brand panel and the form. */
+        /* Wide screens: the brand panel beside the form, no card. The panel holds
+           only the wordmark, with the Meta line and the channel pills at its
+           foot; the switches keep to the form side's top corner. */
         @media (min-width: 880px) {
-            .auth-card { width: min(880px, 100%); max-width: 880px; flex-direction: row; min-height: 540px; }
-            /* The logo and the Meta mark in the middle, the native marks
-               floating around them on two faint orbits, the two switches in the
-               corner. */
-            .auth-brand { flex: 0 0 42%; padding: 32px; position: relative; overflow: hidden; align-items: center; justify-content: center; gap: 22px; }
-            .auth-brand-top { justify-content: center; }
-            /* Only the logo and the Meta mark are lifted over the orbit; the
-               row that holds them stays unpositioned so the switches keep the
-               whole panel as their corner. */
-            .auth-logo, .auth-meta-pill { position: relative; z-index: 1; }
-            .auth-brand-tools { position: absolute; top: 20px; inset-inline-end: 20px; z-index: 2; }
-            .auth-logo { width: 208px; max-width: 80%; }
-            .auth-orbit { display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-            .auth-orbit::before,
-            .auth-orbit::after {
-                content: ""; position: absolute; left: 50%; top: 47%; aspect-ratio: 1; border-radius: 50%;
-                border: 1px solid rgba(255, 255, 255, .13); transform: translate(-50%, -50%);
+            .auth-card { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); grid-template-rows: 1fr auto; }
+            .auth-brand { grid-column: 1; grid-row: 1 / 3; padding: 48px clamp(28px, 3.6vw, 52px); }
+            .auth-logo { width: clamp(176px, 17vw, 248px); max-width: 100%; }
+            .auth-brand-tools { position: absolute; top: 28px; inset-inline-end: 32px; }
+            .auth-card .auth-tool { border-color: var(--sp-line-2); background: transparent; color: var(--sp-ink-2); }
+            .auth-card .auth-tool:hover { background: var(--sp-surface-2); color: var(--sp-ink); }
+            .auth-main {
+                grid-column: 2; grid-row: 1 / 3; justify-content: center; gap: 12px;
+                padding: 80px max(48px, calc((100% - 400px) / 2));
             }
-            .auth-orbit::before { width: 78%; }
-            .auth-orbit::after { width: 120%; border-color: rgba(255, 255, 255, .07); }
-            .auth-orbit-mark {
-                position: absolute; inset-inline-start: var(--x); top: var(--y);
-                width: var(--size); height: var(--size);
-                margin-inline-start: calc(var(--size) / -2); margin-top: calc(var(--size) / -2);
-                display: flex; align-items: center; justify-content: center; border-radius: 50%;
-                background: #fff; box-shadow: 0 10px 28px rgba(9, 6, 40, .38), 0 0 0 5px rgba(255, 255, 255, .07);
+            .auth-heading { font-size: 32px; margin-bottom: 14px; }
+            .auth-trust {
+                grid-column: 1; grid-row: 2; container-type: inline-size;
+                flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 16px;
+                padding: 0 clamp(28px, 3.6vw, 52px) 48px;
             }
-            .auth-orbit-mark img { display: block; width: 50%; height: 50%; }
-            .auth-meta-pill {
-                display: inline-flex; align-items: center; gap: 9px; padding: 7px 14px 7px 7px;
-                border-radius: var(--sp-r-pill); border: 1px solid rgba(255, 255, 255, .22);
-                background: rgba(255, 255, 255, .1); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-                color: #fff; font-size: var(--sp-t-sm); font-weight: 600; letter-spacing: .01em;
+            .auth-meta { color: #fff; font-size: var(--sp-t-md); }
+            .auth-meta-mark { width: 30px; height: 30px; background: #fff; }
+            .auth-meta-mark img { width: 18px; height: 18px; }
+            .auth-channels { gap: 8px; }
+            .auth-chip {
+                width: auto; height: 34px; gap: 8px; padding-block: 8px; padding-inline: 10px 14px; border-radius: var(--sp-r-pill);
+                background: #fff; color: #1d2233; box-shadow: 0 1px 2px rgba(9, 6, 40, .25);
+                font-size: 13px; font-weight: 500; white-space: nowrap;
             }
-            [dir="rtl"] .auth-meta-pill { padding: 7px 7px 7px 14px; }
-            .auth-meta-pill img {
-                box-sizing: content-box; width: 18px; height: 18px; padding: 5px; border-radius: 50%; background: #fff;
-            }
-            .auth-main { flex: 1 1 auto; justify-content: center; gap: 12px; padding: 32px 40px; }
+            .auth-chip img { width: 18px; height: 18px; }
+            .auth-chip span { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
         }
-        @media (min-width: 880px) and (prefers-reduced-motion: no-preference) {
-            .auth-orbit-mark { animation: auth-float 7s ease-in-out infinite; animation-delay: calc(var(--delay) * -1s); }
+        /* The pills always stay one row: tighter as the panel narrows, and
+           just the icons once the names would no longer fit. */
+        @container (max-width: 480px) {
+            .auth-channels { gap: 6px; }
+            .auth-chip { height: 32px; gap: 7px; padding-block: 8px; padding-inline: 9px 12px; font-size: 12.5px; }
+            .auth-chip img { width: 16px; height: 16px; }
         }
-        @keyframes auth-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+        @container (max-width: 420px) {
+            .auth-chip { width: 34px; height: 34px; padding: 8px; justify-content: center; }
+            .auth-chip span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+        }
         /* Short screens (small phones, landscape): the same card, tighter. */
         @media (max-height: 700px) and (max-width: 879px) {
-            .auth-brand { padding: 8px 12px 8px 14px; }
+            .auth-brand { padding: max(10px, env(safe-area-inset-top, 0px)) 16px 10px; }
             .auth-logo { width: 112px; }
+            .auth-trust { padding-top: 6px; }
             .auth-tool { width: 34px; height: 34px; }
             .auth-main { gap: 8px; padding: 12px 16px 10px; }
-            .auth-heading { font-size: var(--sp-t-lg); }
+            .auth-heading { font-size: 22px; margin-bottom: 4px; }
             .auth-card .social-btn, .auth-card .social-btn.is-featured { min-height: 42px; }
             .auth-card .login-input { height: 46px; padding-top: 18px; }
             .auth-card .login-btn { min-height: 44px; }
             .auth-card .auth-forgot { min-height: 28px; padding-block: 2px; }
             .auth-link, .auth-card .login-recovery-quiet { min-height: 32px; }
         }
-        @media (max-width: 480px) { .auth-card { border-radius: var(--sp-r-lg); } }
         @media (prefers-reduced-motion: no-preference) {
             .auth-main > :not([hidden]) { animation: auth-fade .15s ease; }
         }
@@ -35417,11 +35453,6 @@
                         </button>
                     </div>
                 </div>
-                <!-- Wide screens: the native marks the landing page shows, floating
-                     around the logo on two faint orbits (renderBrandOrbit()), and
-                     the Meta icon with the Meta Tech Provider words. -->
-                <div class="auth-orbit" aria-hidden="true"></div>
-                <div class="auth-meta-pill"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="" width="20" height="20" decoding="async" onerror="this.remove()"><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
             </div>
 
             <div class="auth-main">
@@ -35483,6 +35514,18 @@
                 <div class="auth-switch" data-auth-only="signup" hidden>
                     <button type="button" class="auth-link" id="auth-to-signin" data-i18n="auth.to_signin">Already have an account? Sign in</button>
                 </div>
+            </div>
+
+            <!-- Meta's icon with its words, and the chat channels the product
+                 answers on, as the landing page shows them. -->
+            <div class="auth-trust">
+                <div class="auth-meta"><span class="auth-meta-mark"><img src="https://cdn.simpleicons.org/meta/0082FB" alt="" width="18" height="18" decoding="async" onerror="this.remove()"></span><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
+                <ul class="auth-channels">
+                    <li class="auth-chip"><img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="" width="18" height="18" decoding="async" onerror="this.remove()"><span>WhatsApp</span></li>
+                    <li class="auth-chip"><img src="https://cdn.simpleicons.org/messenger/0084FF" alt="" width="18" height="18" decoding="async" onerror="this.remove()"><span>Messenger</span></li>
+                    <li class="auth-chip"><img src="https://cdn.simpleicons.org/instagram/E4405F" alt="" width="18" height="18" decoding="async" onerror="this.remove()"><span>Instagram</span></li>
+                    <li class="auth-chip"><img src="https://cdn.simpleicons.org/telegram/26A5E4" alt="" width="18" height="18" decoding="async" onerror="this.remove()"><span>Telegram</span></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -40046,50 +40089,17 @@
         // mode; buildProviderButton() is the only way a provider button is made.
         const AUTH_MODES = Object.freeze(['signin', 'signup', 'check-inbox', 'reset-sent']);
         const OAUTH_ATTEMPT_KEY = 'digitivia_oauth_attempt';
+        // Each provider in its own brand colours (Google's four-colour G is
+        // what its sign-in guidelines ask for). A white shape sits behind the
+        // Facebook and LinkedIn cut-outs so the letters stay white on dark.
         const PROVIDER_ICONS = Object.freeze({
-            google: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>',
-            facebook: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
-            linkedin_oidc: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>',
+            google: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.58v3h3.86c2.26-2.09 3.56-5.17 3.56-8.82z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.86-3c-1.08.72-2.45 1.16-4.07 1.16-3.13 0-5.78-2.11-6.73-4.96H1.29v3.09C3.26 21.3 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.98-3.09z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09C6.22 6.86 8.87 4.75 12 4.75z"/></svg>',
+            facebook: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#fff"/><path fill="#0866FF" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+            linkedin_oidc: '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="2" fill="#fff"/><path fill="#0A66C2" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>',
         });
 
         function authRedirectUrl() {
             return window.location.origin + window.location.pathname;
-        }
-
-        // The native marks around the logo on the brand panel (wide screens):
-        // the same icons, from the same source, as the landing page. Placed by
-        // hand on two orbits (x, y in % of the panel) so they read as scattered
-        // yet never touch the logo, the Meta mark, the switches or each other;
-        // tests/sign-in-journey.browser.test.js measures that. A mark whose
-        // image cannot load leaves no empty circle behind.
-        const BRAND_ORBIT = Object.freeze([
-            Object.freeze({ slug: 'whatsapp/25D366', x: 17, y: 16, size: 58, delay: 0 }),
-            Object.freeze({ slug: 'messenger/0084FF', x: 47, y: 10, size: 46, delay: 1.4 }),
-            Object.freeze({ slug: 'instagram/E4405F', x: 81, y: 27, size: 52, delay: 0.7 }),
-            Object.freeze({ slug: 'shopify/95BF47', x: 12, y: 50, size: 48, delay: 2.1 }),
-            Object.freeze({ slug: 'google/4285F4', x: 88, y: 56, size: 44, delay: 1.1 }),
-            Object.freeze({ slug: 'wordpress/21759B', x: 22, y: 84, size: 46, delay: 2.8 }),
-            Object.freeze({ slug: 'telegram/26A5E4', x: 76, y: 82, size: 50, delay: 0.4 }),
-        ]);
-
-        function renderBrandOrbit() {
-            const host = document.querySelector('#auth-card .auth-orbit');
-            if (!host || host.childElementCount) return;
-            BRAND_ORBIT.forEach((m) => {
-                const chip = document.createElement('span');
-                chip.className = 'auth-orbit-mark';
-                chip.style.setProperty('--x', `${m.x}%`);
-                chip.style.setProperty('--y', `${m.y}%`);
-                chip.style.setProperty('--size', `${m.size}px`);
-                chip.style.setProperty('--delay', String(m.delay));
-                const img = document.createElement('img');
-                img.alt = '';
-                img.decoding = 'async';
-                img.addEventListener('error', () => chip.remove());
-                img.src = `https://cdn.simpleicons.org/${m.slug}`;
-                chip.appendChild(img);
-                host.appendChild(chip);
-            });
         }
 
         // `compact` (a button sharing its row) shows just the provider's name;
@@ -40199,7 +40209,6 @@
             const heading = document.getElementById('auth-heading');
             if (heading) heading.textContent = t(authHeadingKey(mode));
             renderSignInProviders();
-            renderBrandOrbit();
             const langBtn = document.getElementById('auth-lang-btn');
             if (langBtn) {
                 // Named in the language it switches to, as language pickers are.

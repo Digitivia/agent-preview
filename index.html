@@ -65,7 +65,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="/assets/icon-192-UOhGt9cb.png">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window.__supabaseCdnFailed = true;"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.1" onerror="window.__supabaseCdnFailed = true;"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
     <!-- Sentry Error Tracking (Loader) -->
@@ -242,7 +242,47 @@
                 "btn_register": "REGISTER",
                 "btn_loading_login": "LOGGING IN...",
                 "btn_loading_register": "REGISTERING...",
-                "forgot_password": "Forgot your password?"
+                "forgot_password": "Forgot your password?",
+                "title_signin": "Sign in to Digitivia",
+                "title_welcome_back": "Welcome back",
+                "title_signup": "Create your Digitivia account",
+                "continue_with": "Continue with {provider}",
+                "or": "or",
+                "email": "Email",
+                "password": "Password",
+                "show_password": "Show password",
+                "hide_password": "Hide password",
+                "sign_in": "Sign in",
+                "create_account": "Create account",
+                "to_signup": "New to Digitivia? Create an account",
+                "to_signin": "Already have an account? Sign in",
+                "strength_weak": "Add more characters to make it stronger.",
+                "strength_ok": "Good. Longer is even stronger.",
+                "strength_strong": "Strong password.",
+                "inbox_title": "Check your inbox",
+                "inbox_body": "We sent a confirmation link to {email}. Open it to finish creating your account.",
+                "inbox_resend": "Resend email",
+                "inbox_resent": "Sent again. It can take a minute to arrive.",
+                "inbox_other_email": "Use a different email",
+                "reset_sent": "If an account uses {email}, we sent it a link to reset the password.",
+                "back_to_signin": "Back to sign in",
+                "need_fields": "Enter your email and password.",
+                "need_email": "Enter your email address first",
+                "disposable_email": "Please sign up with your real email address. Temporary email addresses cannot be used.",
+                "wrong_password": "That password did not match. Try again, or use another way in.",
+                "uses_provider": "This account signs in with {provider}. Use the button below, no password needed.",
+                "unknown_way": "We could not sign you in with that. Choose how you created this account:",
+                "account_exists": "An account with this email already exists. Sign in below.",
+                "not_confirmed": "Please confirm your email first. We can send the link again.",
+                "provider_cancelled": "Sign-in with {provider} was cancelled. Try again, or choose another way in.",
+                "provider_no_email": "Your {provider} account did not share an email address, so we could not sign you in with it. Choose another way in.",
+                "provider_failed": "We could not sign you in with {provider}. Try again, or choose another way in.",
+                "offline": "You seem to be offline. Check your connection and try again. What you typed is kept.",
+                "too_many": "Too many attempts. Wait a minute, then try again.",
+                "signout_title": "Sign out",
+                "signout_here": "Sign out",
+                "signout_forget": "Sign out and forget this device",
+                "signout_everywhere": "Sign out on all devices"
             },
             "sidebar": {
                 "nav_dashboard": "Dashboard",
@@ -2244,7 +2284,47 @@
                 "btn_register": "إنشاء حساب",
                 "btn_loading_login": "جاري الدخول...",
                 "btn_loading_register": "جاري التسجيل...",
-                "forgot_password": "نسيت كلمة المرور؟"
+                "forgot_password": "نسيت كلمة المرور؟",
+                "title_signin": "تسجيل الدخول إلى ديجيتيفيا",
+                "title_welcome_back": "مرحبًا بعودتك",
+                "title_signup": "أنشئ حسابك في ديجيتيفيا",
+                "continue_with": "المتابعة عبر {provider}",
+                "or": "أو",
+                "email": "البريد الإلكتروني",
+                "password": "كلمة المرور",
+                "show_password": "إظهار كلمة المرور",
+                "hide_password": "إخفاء كلمة المرور",
+                "sign_in": "تسجيل الدخول",
+                "create_account": "إنشاء الحساب",
+                "to_signup": "جديد في ديجيتيفيا؟ أنشئ حسابًا",
+                "to_signin": "لديك حساب بالفعل؟ سجّل الدخول",
+                "strength_weak": "أضف أحرفًا أكثر لتصبح أقوى.",
+                "strength_ok": "جيدة. كلما طالت كانت أقوى.",
+                "strength_strong": "كلمة مرور قوية.",
+                "inbox_title": "تحقق من بريدك الوارد",
+                "inbox_body": "أرسلنا رابط تأكيد إلى {email}. افتحه لإكمال إنشاء حسابك.",
+                "inbox_resend": "إعادة إرسال الرسالة",
+                "inbox_resent": "أُرسلت مرة أخرى. قد يستغرق وصولها دقيقة.",
+                "inbox_other_email": "استخدام بريد آخر",
+                "reset_sent": "إذا كان هناك حساب يستخدم {email}، فقد أرسلنا إليه رابطًا لإعادة تعيين كلمة المرور.",
+                "back_to_signin": "العودة إلى تسجيل الدخول",
+                "need_fields": "أدخل بريدك الإلكتروني وكلمة المرور.",
+                "need_email": "اكتب بريدك الإلكتروني أولاً",
+                "disposable_email": "سجل بإيميلك الحقيقي من فضلك. الإيميلات المؤقتة مش بتنفع للتسجيل.",
+                "wrong_password": "كلمة المرور غير صحيحة. جرّب مرة أخرى، أو ادخل بطريقة أخرى.",
+                "uses_provider": "هذا الحساب يسجّل الدخول عبر {provider}. اضغط الزر بالأسفل، لا حاجة لكلمة مرور.",
+                "unknown_way": "لم نتمكن من تسجيل الدخول بهذه البيانات. اختر الطريقة التي أنشأت بها حسابك:",
+                "account_exists": "يوجد حساب بهذا البريد بالفعل. سجّل الدخول من هنا.",
+                "not_confirmed": "يرجى تأكيد بريدك الإلكتروني أولًا. يمكننا إرسال الرابط مرة أخرى.",
+                "provider_cancelled": "تم إلغاء تسجيل الدخول عبر {provider}. حاول مرة أخرى أو اختر طريقة أخرى.",
+                "provider_no_email": "لم يشارك حساب {provider} عنوان بريدك الإلكتروني، لذلك تعذّر تسجيل الدخول به. اختر طريقة أخرى.",
+                "provider_failed": "تعذّر تسجيل الدخول عبر {provider}. حاول مرة أخرى أو اختر طريقة أخرى.",
+                "offline": "يبدو أنك غير متصل بالإنترنت. تحقق من الاتصال وحاول مرة أخرى، وما كتبته محفوظ.",
+                "too_many": "محاولات كثيرة. انتظر دقيقة ثم حاول مرة أخرى.",
+                "signout_title": "تسجيل الخروج",
+                "signout_here": "تسجيل الخروج",
+                "signout_forget": "تسجيل الخروج ونسيان هذا الجهاز",
+                "signout_everywhere": "تسجيل الخروج من جميع الأجهزة"
             },
             "sidebar": {
                 "nav_dashboard": "لوحة التحكم",
@@ -16786,6 +16866,146 @@
             color: var(--accent); font-size: .8rem; cursor: pointer; text-decoration: underline;
         }
 
+        /* ==========================================================
+           SIGN-IN CARD (docs/superpowers/specs/2026-09-24-sign-in-journey-design.md)
+           Built only from the --sp-* tokens, so light, dark and Arabic come
+           from the same rules as the rest of the product.
+           ========================================================== */
+        #login-container {
+            padding-block: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-bottom, 0px));
+            padding-inline: 16px;
+            overflow-y: auto;
+            align-items: safe center;
+        }
+        .auth-card {
+            width: min(420px, 100%); max-width: 420px; margin-block: auto;
+            padding: 32px 28px; border-radius: var(--sp-r-xl);
+            background: var(--sp-surface); border: 1px solid var(--sp-line);
+            color: var(--sp-ink); font-family: var(--sp-font); text-align: start;
+            display: flex; flex-direction: column; gap: 12px;
+            box-shadow: var(--sp-shadow-overlay);
+        }
+        .auth-card [hidden] { display: none !important; }
+        .auth-card .login-title-wrap { margin: 0; }
+        .auth-card .login-title { margin: 0; color: var(--sp-accent); font-size: var(--sp-t-sm); letter-spacing: .14em; }
+        .auth-heading {
+            display: block; margin: 0 0 4px; text-align: center;
+            font-size: var(--sp-t-xl); line-height: var(--sp-lh-tight); font-weight: 700; color: var(--sp-ink);
+        }
+        .auth-providers { display: flex; flex-direction: column; gap: 10px; }
+        .auth-card .social-btn {
+            min-height: 48px; margin: 0; padding: 10px 16px; gap: 10px;
+            border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
+            background: var(--sp-surface-2); color: var(--sp-ink);
+            font-size: var(--sp-t-md); font-weight: 600;
+            transition: border-color .15s ease, background .15s ease;
+        }
+        .auth-card .social-btn:hover { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
+        .auth-card .social-btn.is-minor { min-height: 44px; background: transparent; font-size: var(--sp-t-sm); font-weight: 500; }
+        .auth-card .social-btn svg { flex-shrink: 0; }
+        .auth-card .social-login-divider {
+            display: flex; align-items: center; gap: 12px; margin: 2px 0;
+            color: var(--sp-ink-3); font-size: var(--sp-t-xs); text-transform: uppercase; letter-spacing: .08em;
+        }
+        .auth-card .social-login-divider::before,
+        .auth-card .social-login-divider::after { content: ""; position: static; flex: 1; width: auto; height: 1px; background: var(--sp-line); }
+        .auth-form { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+        .auth-label { margin-top: 4px; font-size: var(--sp-t-sm); font-weight: 600; color: var(--sp-ink-2); }
+        .auth-card .login-input {
+            width: 100%; min-height: 48px; margin: 0; padding: 12px 14px;
+            font-size: 16px; text-align: start;
+            border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2);
+            background: var(--sp-bg); color: var(--sp-ink);
+        }
+        .auth-card #login-user { direction: ltr; }
+        [dir="rtl"] .auth-card #login-user { text-align: right; }
+        .auth-pass-wrap { position: relative; }
+        .auth-pass-wrap .login-input { padding-inline-end: 52px; }
+        .auth-pass-toggle {
+            position: absolute; inset-block: 0; inset-inline-end: 2px; width: 46px;
+            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; border-radius: var(--sp-r-sm);
+            color: var(--sp-ink-3); cursor: pointer;
+        }
+        .auth-pass-toggle:hover { color: var(--sp-ink); }
+        .auth-pass-toggle[aria-pressed="true"] .auth-eye-open,
+        .auth-pass-toggle[aria-pressed="false"] .auth-eye-closed { display: none; }
+        .auth-strength { min-height: 1.2em; font-size: var(--sp-t-xs); color: var(--sp-ink-3); }
+        .auth-strength[data-level="weak"] { color: var(--sp-warn); }
+        .auth-strength[data-level="strong"] { color: var(--sp-ok); }
+        .auth-card .auth-forgot { align-self: flex-end; }
+        .auth-card .login-btn,
+        .signout-options .login-btn {
+            flex: none; width: 100%; min-height: 48px; margin-top: 6px; padding: 12px 16px;
+            border: none; border-radius: var(--sp-r-md);
+            background: var(--sp-accent); color: var(--sp-accent-ink);
+            font-size: var(--sp-t-lg); font-weight: 700; cursor: pointer;
+        }
+        .auth-card .login-btn:hover,
+        .signout-options .login-btn:hover { background: var(--sp-accent-hover); transform: none; box-shadow: none; }
+        .signout-options .login-btn.secondary { background: transparent; color: var(--sp-ink); border: 1px solid var(--sp-line-2); }
+        .auth-card button[aria-busy="true"],
+        .signout-options button[aria-busy="true"] { position: relative; color: transparent !important; pointer-events: none; }
+        .auth-card button[aria-busy="true"] svg { visibility: hidden; }
+        .auth-card button[aria-busy="true"]::after,
+        .signout-options button[aria-busy="true"]::after {
+            content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px;
+            border-radius: 50%; border: 2px solid var(--sp-line-2); border-top-color: var(--sp-accent);
+            animation: auth-spin .8s linear infinite;
+        }
+        @keyframes auth-spin { to { transform: rotate(360deg); } }
+        .auth-card .login-recovery {
+            margin: 0; padding: 12px 14px; border-radius: var(--sp-r-md);
+            border: 1px solid var(--sp-err); background: var(--sp-err-soft);
+        }
+        .auth-card .login-recovery .login-recovery-text { margin: 0; color: var(--sp-err-ink); font-size: var(--sp-t-sm); line-height: var(--sp-lh); }
+        .auth-card .login-recovery[data-tone="info"] { border-color: var(--sp-line-2); background: var(--sp-accent-soft); }
+        .auth-card .login-recovery[data-tone="info"] .login-recovery-text { color: var(--sp-ink); }
+        .auth-card .login-recovery[data-tone="ok"] { border-color: var(--sp-ok); background: var(--sp-ok-soft); }
+        .auth-card .login-recovery[data-tone="ok"] .login-recovery-text { color: var(--sp-ok-ink); }
+        .auth-card .login-recovery-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .auth-link,
+        .auth-card .login-recovery-quiet {
+            min-height: 44px; padding: 8px 4px; background: none; border: none; cursor: pointer;
+            color: var(--sp-accent); font-size: var(--sp-t-sm); font-weight: 600;
+            text-decoration: underline; text-underline-offset: 3px;
+        }
+        .auth-switch { display: flex; justify-content: center; }
+        .auth-panel { display: flex; flex-direction: column; gap: 10px; text-align: center; }
+        .auth-panel-text { margin: 0; color: var(--sp-ink-2); font-size: var(--sp-t-md); line-height: var(--sp-lh); overflow-wrap: anywhere; }
+        .auth-card :is(button, input):focus-visible,
+        .signout-options button:focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
+        .auth-card .known-accounts { margin: 0; }
+        .auth-card .known-account-main { min-height: 52px; border-color: var(--sp-line-2); color: var(--sp-ink); }
+        .auth-card .known-account-main:hover { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
+        .auth-card .known-account-avatar { background: var(--sp-accent); color: var(--sp-accent-ink); }
+        .auth-card .known-account-forget { width: 44px; height: 44px; }
+        .signout-box { max-width: 380px; }
+        /* Above the theme toggle (4200), like the product's other important
+           dialogs (10000). Only the AI launcher (12500) floats above every
+           dialog, so on a phone the sheet keeps its choices clear of it. */
+        .signout-modal { z-index: 10000; }
+        @media (max-width: 768px) {
+            /* id-scoped: the phone .modal-body rules further down would win otherwise */
+            #signout-modal .signout-options { padding-block-end: calc(var(--fab-launcher-bottom, 14px) + var(--fab-launcher-size, 52px) + 12px); }
+        }
+        .signout-options { display: flex; flex-direction: column; gap: 10px; padding: 18px 20px 20px; }
+        .signout-options .signout-everywhere { align-self: center; }
+        /* A returning visitor sees their accounts first; the full form is one
+           tap away ("Use another account"), which also keeps the card short. */
+        .auth-card[data-mode="signin"][data-picker="1"] :is(#sign-in-providers, .social-login-divider, #auth-form) { display: none; }
+        /* On a phone the floating rail (theme toggle, AI launcher, Sentry's
+           report button) owns the bottom-end corner. Leave room to scroll the
+           card clear of it; the rail's own variables say how tall it is. */
+        @media (max-width: 768px) {
+            #login-container { padding-block-end: calc(var(--fab-banner-bottom, 200px) + 8px); }
+        }
+        @media (max-width: 480px) { .auth-card { padding: 24px 18px; border-radius: var(--sp-r-lg); } }
+        @media (prefers-reduced-motion: no-preference) {
+            .auth-card > :not([hidden]) { animation: auth-fade .15s ease; }
+        }
+        @keyframes auth-fade { from { opacity: 0; } to { opacity: 1; } }
+
         .accept-invite-mismatch-detail { font-size: .82rem; color: var(--text-muted); margin-top: 6px; }
         .accept-invite-btn-quiet { margin-top: 8px; }
 
@@ -18418,8 +18638,10 @@
             border-bottom-right-radius: 2px;
         }
 
+        /* The sign-in card is start-aligned since 2026-09-24 (only its
+           heading is centred), in Arabic as in English. */
         [dir="rtl"] .login-card {
-            text-align: center;
+            text-align: start;
         }
 
         [dir="rtl"] .pricing-grid {
@@ -24628,8 +24850,6 @@
         }
 
         :root[data-theme="light"] .search-input-wrapper,
-        :root[data-theme="light"] .social-btn,
-        :root[data-theme="light"] .login-btn.secondary,
         :root[data-theme="light"] .top-bar-btn {
             background: rgba(241, 245, 249, 0.88) !important;
             border-color: rgba(15, 23, 42, 0.14) !important;
@@ -24679,7 +24899,6 @@
             color: var(--text-main) !important;
         }
 
-        :root[data-theme="light"] .login-btn,
         :root[data-theme="light"] .help-btn,
         :root[data-theme="light"] .docs-cta button,
         :root[data-theme="light"] .top-bar-btn:hover,
@@ -35078,50 +35297,69 @@
     </div>
 
     <div id="login-container">
-        <div class="card glass login-card">
+        <!-- One card, four modes: sign in, create account, check your inbox,
+             reset email sent. setAuthMode() is the only thing that switches
+             them. docs/superpowers/specs/2026-09-24-sign-in-journey-design.md -->
+        <div class="card glass login-card auth-card" id="auth-card" data-mode="signin">
             <div class="login-title-wrap">
                 <div class="login-title-main">
-                    <div class="login-title">DIGITIVIA AI AGENT</div>
+                    <div class="login-title" data-i18n="auth.app_title">DIGITIVIA AI AGENT</div>
                 </div>
             </div>
-            <button class="social-btn google" onclick="performOAuthLogin('google')">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <path
-                        d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
-                </svg>
-                Sign in with Google
-            </button>
-            <button class="social-btn facebook" onclick="performOAuthLogin('facebook')">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-                    <path
-                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-                <span data-i18n="auth.sign_in_facebook">Sign in with Facebook</span>
-            </button>
-
-            <div class="social-login-divider">OR</div>
+            <h1 class="auth-heading" id="auth-heading">Sign in to Digitivia</h1>
 
             <!-- Accounts previously used on this device. Emails only -- picking
                  one fills the address in, it never signs anyone in. -->
-            <div id="known-accounts" class="known-accounts"></div>
+            <div id="known-accounts" class="known-accounts" data-auth-only="signin"></div>
 
-            <input type="email" id="login-user" class="login-input" data-i18n-placeholder="auth.input_email_placeholder"
-                placeholder="Email Address">
-            <input type="password" id="login-pass" class="login-input"
-                data-i18n-placeholder="auth.input_password_placeholder" placeholder="Password">
+            <!-- Filled from SIGN_IN_PROVIDERS by renderSignInProviders(). -->
+            <div id="sign-in-providers" class="auth-providers" data-auth-only="signin signup"></div>
 
-            <!-- Filled by showLoginRecovery() when a sign-in cannot succeed as
-                 typed -- wrong password, or an address that belongs to Google
-                 or LinkedIn. Empty and hidden the rest of the time. -->
-            <div id="login-recovery" class="login-recovery" hidden></div>
+            <div class="social-login-divider" data-auth-only="signin signup"><span data-i18n="auth.or">or</span></div>
 
-            <div class="login-btn-group">
-                <button class="login-btn" onclick="performLogin()">LOGIN</button>
-                <button class="login-btn secondary" onclick="performSignUp()">REGISTER</button>
-            </div>
-            <!-- Discoverable before the failure, not only after it. -->
-            <button type="button" class="login-recovery-quiet" style="align-self:center;margin-top:10px;"
+            <form id="auth-form" class="auth-form" novalidate data-auth-only="signin signup">
+                <label class="auth-label" for="login-user" data-i18n="auth.email">Email</label>
+                <input type="email" id="login-user" name="email" class="login-input" autocomplete="username"
+                    inputmode="email" autocapitalize="off" spellcheck="false">
+                <label class="auth-label" for="login-pass" data-i18n="auth.password">Password</label>
+                <div class="auth-pass-wrap">
+                    <input type="password" id="login-pass" name="password" class="login-input" autocomplete="current-password">
+                    <button type="button" class="auth-pass-toggle" id="auth-pass-toggle" aria-pressed="false"
+                        aria-label="Show password" title="Show password">
+                        <svg class="auth-eye-open" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                        <svg class="auth-eye-closed" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+                    </button>
+                </div>
+                <div class="auth-strength" id="auth-strength" data-auth-only="signup" aria-live="polite" hidden></div>
+                <!-- Discoverable before the failure, not only after it. -->
+                <button type="button" class="login-recovery-quiet auth-forgot" data-auth-only="signin"
                     data-i18n="auth.forgot_password" onclick="requestPasswordReset()">Forgot your password?</button>
+                <button type="submit" class="login-btn auth-submit" id="auth-submit">
+                    <span data-auth-only="signin" data-i18n="auth.sign_in">Sign in</span>
+                    <span data-auth-only="signup" data-i18n="auth.create_account" hidden>Create account</span>
+                </button>
+            </form>
+
+            <div class="auth-panel" data-auth-only="check-inbox" hidden>
+                <p class="auth-panel-text" id="auth-inbox-text"></p>
+                <button type="button" class="login-btn" id="auth-resend" data-i18n="auth.inbox_resend">Resend email</button>
+                <button type="button" class="auth-link" id="auth-other-email" data-i18n="auth.inbox_other_email">Use a different email</button>
+            </div>
+            <div class="auth-panel" data-auth-only="reset-sent" hidden>
+                <p class="auth-panel-text" id="auth-reset-text"></p>
+                <button type="button" class="login-btn" id="auth-back-signin" data-i18n="auth.back_to_signin">Back to sign in</button>
+            </div>
+
+            <!-- The card's one message area (showAuthNotice). Empty and hidden
+                 until something needs saying; read aloud when it changes. -->
+            <div id="login-recovery" class="login-recovery" role="status" aria-live="polite" hidden></div>
+
+            <div class="auth-switch" data-auth-only="signin">
+                <button type="button" class="auth-link" id="auth-to-signup" data-i18n="auth.to_signup">New to Digitivia? Create an account</button>
+            </div>
+            <div class="auth-switch" data-auth-only="signup" hidden>
+                <button type="button" class="auth-link" id="auth-to-signin" data-i18n="auth.to_signin">Already have an account? Sign in</button>
+            </div>
         </div>
     </div>
 
@@ -35400,7 +35638,7 @@
                     </svg></div>
                 <span class="nav-label" style="color:var(--theme-color);" data-i18n="install_app.hero_btn">Install the app</span>
             </div>
-            <div class="nav-item" onclick="performLogout()">
+            <div class="nav-item" onclick="openSignOutChooser()">
                 <div class="nav-icon" style="color:var(--error);"><svg viewBox="0 0 24 24">
                         <path
                             d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
@@ -36001,9 +36239,27 @@
                 <div class="profile-actions-row">
                     <button class="btn-upgrade" onclick="closeProfileModal(); openPricingModal();" style="flex:1;"
                         data-i18n="modals.profile.btn_upgrade">Upgrade Plan</button>
-                    <button class="btn-logout" onclick="performLogout()" style="flex:1;"
+                    <button class="btn-logout" onclick="openSignOutChooser()" style="flex:1;"
                         data-i18n="modals.profile.btn_logout">Logout</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign out: this device, this device and forget it, or all devices.
+         docs/superpowers/specs/2026-09-24-sign-in-journey-design.md -->
+    <div id="signout-modal" class="modal-overlay signout-modal" style="display:none;" role="dialog"
+        aria-modal="true" aria-labelledby="signout-title" onclick="closeSignOutChooser(event)">
+        <div class="modal-box signout-box">
+            <div class="modal-header">
+                <h3 id="signout-title" data-i18n="auth.signout_title">Sign out</h3>
+                <button type="button" class="modal-close-btn" onclick="closeSignOutChooser()" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body signout-options">
+                <button type="button" class="login-btn signout-option" onclick="chooseSignOut('here')"><span data-i18n="auth.signout_here">Sign out</span></button>
+                <button type="button" class="login-btn secondary signout-option" data-feature="signout-forget-device"
+                    onclick="chooseSignOut('forget')"><span data-i18n="auth.signout_forget">Sign out and forget this device</span></button>
+                <button type="button" class="login-recovery-quiet signout-everywhere" onclick="chooseSignOut('everywhere')"><span data-i18n="auth.signout_everywhere">Sign out on all devices</span></button>
             </div>
         </div>
     </div>
@@ -37899,6 +38155,7 @@
             'dashboard-connect-buttons': { since: '2026-09-17' },
             'crm-custom-statuses' : { since: '2026-09-17' },
             'crm-custom-categories' : { since: '2026-09-17' },
+            'signout-forget-device' : { since: '2026-09-24' },
         });
 
         /**
@@ -38281,6 +38538,11 @@
             // is an outage. Never let the first cause the second.
             try { paintFeatureBadges(); }
             catch (e) { console.error('paintFeatureBadges failed', e); }
+            // The sign-in card draws some text itself (provider buttons,
+            // heading). It only exists once its section has run; the first
+            // applyTranslations() happens earlier in this same block.
+            try { if (window.__authCardReady) refreshAuthCardLanguage(); }
+            catch (e) { console.error('refreshAuthCardLanguage failed', e); }
             try { if (typeof renderWhatsNew === 'function') renderWhatsNew(); }
             catch (e) { console.error('renderWhatsNew failed', e); }
         }
@@ -38805,7 +39067,8 @@
                 showToast(t('modals.profile.delete_success') || 'Account deleted. Redirecting...', 'success');
                 setTimeout(() => {
                     sentryIdentify(null);
-                    supabaseClient.auth.signOut();
+                    // The account is gone everywhere, so every session goes too.
+                    supabaseClient.auth.signOut({ scope: 'global' });
                     window.location.reload();
                 }, 2000);
             } catch (e) {
@@ -39394,8 +39657,17 @@
         // pressing the Google button themselves. It never leaves the device.
         const KNOWN_ACCOUNTS_KEY = 'digitivia_known_accounts';
         const KNOWN_ACCOUNTS_MAX = 5;
-        // Supabase's provider ids, mapped to what the customer actually sees.
-        const OAUTH_PROVIDER_LABELS = { google: 'Google', linkedin_oidc: 'LinkedIn', facebook: 'Facebook' };
+        // The one list of sign-in providers (Supabase's ids). The card, the
+        // recovery panel and the remembered accounts are all built from it, so
+        // they cannot disagree again (they did: the card offered Facebook while
+        // the recovery panel offered LinkedIn). LinkedIn stays, smaller, while
+        // anyone still signs in with it (one account did on 2026-02-20).
+        const SIGN_IN_PROVIDERS = Object.freeze([
+            Object.freeze({ id: 'google', label: 'Google' }),
+            Object.freeze({ id: 'facebook', label: 'Facebook' }),
+            Object.freeze({ id: 'linkedin_oidc', label: 'LinkedIn', minor: true }),
+        ]);
+        const OAUTH_PROVIDER_LABELS = Object.freeze(Object.fromEntries(SIGN_IN_PROVIDERS.map((p) => [p.id, p.label])));
         const isOAuthMethod = (m) => Object.prototype.hasOwnProperty.call(OAUTH_PROVIDER_LABELS, String(m || ''));
 
         function getRememberedAccounts() {
@@ -39440,6 +39712,7 @@
                 localStorage.setItem(KNOWN_ACCOUNTS_KEY, JSON.stringify(next));
             } catch (e) {}
             renderRememberedAccounts();
+            refreshAuthCard();
         }
         window.forgetAccount = forgetAccount;
 
@@ -39458,6 +39731,7 @@
             const list = document.getElementById('known-accounts');
             if (list) list.dataset.collapsed = '1';
             renderRememberedAccounts();
+            refreshAuthCard();
             setTimeout(() => document.getElementById('login-pass')?.focus(), 50);
         }
         window.useRememberedAccount = useRememberedAccount;
@@ -39472,67 +39746,126 @@
         // the panel offers every door rather than guessing at one.
         function hideLoginRecovery() {
             const host = document.getElementById('login-recovery');
-            if (host) { host.innerHTML = ''; host.hidden = true; }
+            if (host) { host.innerHTML = ''; host.hidden = true; delete host.dataset.kind; delete host.dataset.tone; }
+            lastAuthNotice = null;
         }
         window.hideLoginRecovery = hideLoginRecovery;
 
-        function showLoginRecovery(reason, email, provider) {
+        // The card's one message area. `kind` is an auth.* translation key
+        // (or 'raw' for a server message with no better sentence). Every
+        // button it offers is built from SIGN_IN_PROVIDERS.
+        const AUTH_NOTICE_TONE = Object.freeze({ inbox_resent: 'ok', account_exists: 'info', uses_provider: 'info' });
+        let lastAuthNotice = null;
+        function showAuthNotice(kind, params) {
+            const prm = params || {};
             const host = document.getElementById('login-recovery');
             if (!host) return;
-            const isAr = currentLang === 'ar';
-            const label = OAUTH_PROVIDER_LABELS[provider] || '';
+            lastAuthNotice = { kind, params: prm };
+            const email = String(prm.email || document.getElementById('login-user')?.value || '').trim();
+            const provider = isOAuthMethod(prm.provider) ? prm.provider : null;
             host.innerHTML = '';
+            host.dataset.kind = kind;
+            host.dataset.tone = AUTH_NOTICE_TONE[kind] || 'error';
 
             const text = document.createElement('p');
             text.className = 'login-recovery-text';
-            if (reason === 'oauth' && label) {
-                text.textContent = isAr
-                    ? `هذا الحساب يسجّل الدخول عبر ${label}. اضغط الزر بالأسفل — لا حاجة لكلمة مرور.`
-                    : `This account signs in with ${label}. Use the button below — no password needed.`;
-            } else if (reason === 'wrong_password') {
-                text.textContent = isAr
-                    ? 'كلمة المرور غير صحيحة. جرّب مرة أخرى، أو ادخل بطريقة أخرى.'
-                    : 'That password did not match. Try again, or use another way in.';
-            } else {
-                text.textContent = isAr
-                    ? 'لم نتمكن من تسجيل الدخول بهذه البيانات. اختر الطريقة التي أنشأت بها حسابك:'
-                    : 'We could not sign you in with that. Choose how you created this account:';
-            }
+            text.textContent = kind === 'raw'
+                ? String(prm.message || '')
+                : t('auth.' + kind, { provider: provider ? OAUTH_PROVIDER_LABELS[provider] : '', email });
             host.appendChild(text);
 
             const actions = document.createElement('div');
             actions.className = 'login-recovery-actions';
-
-            const providerButton = (id, name) => {
+            const addProviders = (exclude) => SIGN_IN_PROVIDERS
+                .filter((p) => p.id !== exclude)
+                .forEach((p) => { const b = buildProviderButton(p.id, email); if (b) actions.appendChild(b); });
+            const addLink = (key, onClick) => {
                 const b = document.createElement('button');
                 b.type = 'button';
-                b.className = `social-btn ${id === 'google' ? 'google' : id === 'facebook' ? 'facebook' : 'linkedin'}`;
-                b.textContent = isAr ? `المتابعة عبر ${name}` : `Continue with ${name}`;
-                b.addEventListener('click', () => {
-                    if (email) rememberAccount(email, null, id);
-                    if (typeof performOAuthLogin === 'function') performOAuthLogin(id);
-                });
-                return b;
+                b.className = 'login-recovery-quiet';
+                b.textContent = t(key);
+                b.addEventListener('click', (ev) => onClick(ev.currentTarget));
+                actions.appendChild(b);
             };
-
-            if (reason === 'oauth' && label) {
-                actions.appendChild(providerButton(provider, label));
-            } else if (reason !== 'wrong_password') {
-                actions.appendChild(providerButton('google', 'Google'));
-                actions.appendChild(providerButton('linkedin_oidc', 'LinkedIn'));
+            if (kind === 'uses_provider' && provider) {
+                const b = buildProviderButton(provider, email);
+                if (b) actions.appendChild(b);
+            } else if (kind === 'unknown_way') {
+                addProviders(null);
+                addLink('auth.forgot_password', () => requestPasswordReset(email));
+            } else if (kind === 'wrong_password') {
+                addLink('auth.forgot_password', () => requestPasswordReset(email));
+            } else if (kind === 'not_confirmed') {
+                addLink('auth.inbox_resend', (btn) => resendConfirmation(email, btn));
+            } else if (kind === 'provider_cancelled' || kind === 'provider_failed') {
+                addProviders(null);
+            } else if (kind === 'provider_no_email') {
+                addProviders(provider);
             }
-
-            const reset = document.createElement('button');
-            reset.type = 'button';
-            reset.className = 'login-recovery-quiet';
-            reset.textContent = isAr ? 'نسيت كلمة المرور؟' : 'Forgot your password?';
-            reset.addEventListener('click', () => requestPasswordReset(email));
-            if (reason !== 'oauth') actions.appendChild(reset);
-
-            host.appendChild(actions);
+            if (actions.children.length) host.appendChild(actions);
             host.hidden = false;
         }
+        window.showAuthNotice = showAuthNotice;
+
+        // Kept for its callers: the three cases a failed password sign-in can
+        // be, now said by showAuthNotice.
+        function showLoginRecovery(reason, email, provider) {
+            if (reason === 'oauth' && isOAuthMethod(provider)) { showAuthNotice('uses_provider', { email, provider }); return; }
+            if (reason === 'wrong_password') { showAuthNotice('wrong_password', { email }); return; }
+            showAuthNotice('unknown_way', { email });
+        }
         window.showLoginRecovery = showLoginRecovery;
+
+        function authErrorKind(e, online = navigator.onLine) {
+            const msg = String(e?.message || '');
+            if (/email not confirmed/i.test(msg)) return 'not_confirmed';
+            if (Number(e?.status) === 429 || /rate limit|too many/i.test(msg)) return 'too_many';
+            if (online === false || e?.name === 'AuthRetryableFetchError'
+                || /failed to fetch|networkerror|network request failed|load failed/i.test(msg)) return 'offline';
+            return null;
+        }
+
+        function showAuthError(e, email) {
+            const kind = authErrorKind(e);
+            if (kind) { showAuthNotice(kind, { email }); return; }
+            showAuthNotice('raw', { message: String(e?.message || 'Sign-in failed') });
+        }
+
+        // One busy state for every sign-in button: a spinner, and a second
+        // press does nothing until the first has finished.
+        async function withBusy(button, fn) {
+            if (!button) return fn();
+            if (button.dataset.busy === '1') return undefined;
+            button.dataset.busy = '1';
+            button.setAttribute('aria-busy', 'true');
+            button.disabled = true;
+            try {
+                return await fn();
+            } finally {
+                delete button.dataset.busy;
+                button.removeAttribute('aria-busy');
+                button.disabled = false;
+            }
+        }
+
+        async function resendConfirmation(email, button) {
+            const addr = String(email || '').trim();
+            if (!addr) { showAuthNotice('need_email'); return; }
+            await withBusy(button, async () => {
+                try {
+                    const { error } = await supabaseClient.auth.resend({
+                        type: 'signup',
+                        email: addr,
+                        options: { emailRedirectTo: authRedirectUrl() },
+                    });
+                    if (error) throw error;
+                    showAuthNotice('inbox_resent', { email: addr });
+                } catch (e) {
+                    console.error('resend confirmation failed', e);
+                    showAuthError(e, addr);
+                }
+            });
+        }
 
         // Until 2026-09-13 there was no way to reset a password anywhere in the
         // product. Forgetting it meant emailing support, so "Invalid
@@ -39543,26 +39876,19 @@
         // emails which of them bank here.
         async function requestPasswordReset(email) {
             const addr = String(email || document.getElementById('login-user')?.value || '').trim();
-            const isAr = currentLang === 'ar';
             if (!addr || !addr.includes('@')) {
-                showToast(isAr ? 'اكتب بريدك الإلكتروني أولاً' : 'Enter your email address first', 'warning');
+                showAuthNotice('need_email');
                 document.getElementById('login-user')?.focus();
                 return;
             }
-            const sameAnswer = isAr
-                ? 'إذا كان هذا البريد لديه كلمة مرور، فقد أرسلنا إليه رابط إعادة التعيين.'
-                : 'If that address has a password, we have sent it a reset link.';
             try {
-                await supabaseClient.auth.resetPasswordForEmail(addr, {
-                    redirectTo: window.location.origin + window.location.pathname,
-                });
-                showToast(sameAnswer, 'success');
+                await supabaseClient.auth.resetPasswordForEmail(addr, { redirectTo: authRedirectUrl() });
             } catch (e) {
-                console.error('password reset request failed', e);
-                // Same sentence on failure: a different one would leak the
+                // The same screen on failure: a different one would leak the
                 // answer just as loudly as naming the user.
-                showToast(sameAnswer, 'success');
+                console.error('password reset request failed', e);
             }
+            setAuthMode('reset-sent', { email: addr });
         }
         window.requestPasswordReset = requestPasswordReset;
 
@@ -39571,6 +39897,7 @@
             const list = document.getElementById('known-accounts');
             if (list) list.dataset.collapsed = '1';
             renderRememberedAccounts();
+            refreshAuthCard();
             const input = document.getElementById('login-user');
             if (input) { input.value = ''; input.focus(); }
         }
@@ -39581,6 +39908,218 @@
         ['login-user', 'login-pass'].forEach((id) => {
             document.getElementById(id)?.addEventListener('input', hideLoginRecovery);
         });
+
+        // ---- The sign-in card ----------------------------------------------
+        // docs/superpowers/specs/2026-09-24-sign-in-journey-design.md
+        // One card, four modes. setAuthMode() is the only thing that changes
+        // the mode; renderAuthCard() redraws whatever depends on language or
+        // mode; buildProviderButton() is the only way a provider button is made.
+        const AUTH_MODES = Object.freeze(['signin', 'signup', 'check-inbox', 'reset-sent']);
+        const OAUTH_ATTEMPT_KEY = 'digitivia_oauth_attempt';
+        const PROVIDER_ICONS = Object.freeze({
+            google: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>',
+            facebook: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+            linkedin_oidc: '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>',
+        });
+
+        function authRedirectUrl() {
+            return window.location.origin + window.location.pathname;
+        }
+
+        function buildProviderButton(id, email) {
+            const p = SIGN_IN_PROVIDERS.find((x) => x.id === id);
+            if (!p) return null;
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = `social-btn ${p.id.split('_')[0]}${p.minor ? ' is-minor' : ''}`;
+            b.dataset.provider = p.id;
+            b.innerHTML = PROVIDER_ICONS[p.id] || '';
+            const label = document.createElement('span');
+            label.textContent = t('auth.continue_with', { provider: p.label });
+            b.appendChild(label);
+            b.addEventListener('click', () => {
+                // From the recovery panel the address is known: remember which
+                // door it used, so the picker sends it there next time.
+                if (email) rememberAccount(email, null, p.id);
+                withBusy(b, () => performOAuthLogin(p.id));
+            });
+            return b;
+        }
+
+        function renderSignInProviders() {
+            const host = document.getElementById('sign-in-providers');
+            if (!host) return;
+            host.innerHTML = '';
+            SIGN_IN_PROVIDERS.forEach((p) => {
+                const b = buildProviderButton(p.id);
+                if (b) host.appendChild(b);
+            });
+        }
+
+        function passwordStrength(pw) {
+            const s = String(pw || '');
+            if (s.length < 8) return 'weak';
+            const variety = [/[a-z]/, /[A-Z]/, /[0-9]/, /[^A-Za-z0-9]/].filter((r) => r.test(s)).length;
+            return s.length >= 12 && variety >= 3 ? 'strong' : 'ok';
+        }
+
+        function updatePasswordStrength() {
+            const el = document.getElementById('auth-strength');
+            const card = document.getElementById('auth-card');
+            if (!el || !card) return;
+            const pw = document.getElementById('login-pass')?.value || '';
+            if (card.dataset.mode !== 'signup' || !pw) {
+                el.textContent = '';
+                el.removeAttribute('data-level');
+                return;
+            }
+            const level = passwordStrength(pw);
+            el.dataset.level = level;
+            el.textContent = t('auth.strength_' + level);
+        }
+
+        function setPasswordVisible(visible) {
+            const input = document.getElementById('login-pass');
+            const btn = document.getElementById('auth-pass-toggle');
+            if (input) input.type = visible ? 'text' : 'password';
+            if (btn) {
+                const label = t(visible ? 'auth.hide_password' : 'auth.show_password');
+                btn.setAttribute('aria-pressed', visible ? 'true' : 'false');
+                btn.setAttribute('aria-label', label);
+                btn.title = label;
+            }
+        }
+
+        // True while the sign-in card leads with the remembered accounts.
+        function isShowingAccountPicker() {
+            const list = document.getElementById('known-accounts');
+            return getRememberedAccounts().length > 0 && list?.dataset.collapsed !== '1';
+        }
+
+        function authHeadingKey(mode) {
+            if (mode === 'signup') return 'auth.title_signup';
+            if (mode === 'check-inbox') return 'auth.inbox_title';
+            if (mode === 'reset-sent') return 'auth.forgot_password';
+            return isShowingAccountPicker() ? 'auth.title_welcome_back' : 'auth.title_signin';
+        }
+
+        // For callers that change the picker (pick, forget, use another
+        // account): redraw the card once it exists.
+        function refreshAuthCard() {
+            if (!window.__authCardReady) return;
+            try { renderAuthCard(); } catch (e) { console.error('renderAuthCard failed', e); }
+        }
+
+        function renderAuthCard() {
+            const card = document.getElementById('auth-card');
+            if (!card) return;
+            const mode = card.dataset.mode || 'signin';
+            card.dataset.picker = mode === 'signin' && isShowingAccountPicker() ? '1' : '0';
+            const heading = document.getElementById('auth-heading');
+            if (heading) heading.textContent = t(authHeadingKey(mode));
+            renderSignInProviders();
+            const email = card.dataset.email || '';
+            const inbox = document.getElementById('auth-inbox-text');
+            if (inbox) inbox.textContent = t('auth.inbox_body', { email });
+            const reset = document.getElementById('auth-reset-text');
+            if (reset) reset.textContent = t('auth.reset_sent', { email });
+            updatePasswordStrength();
+            setPasswordVisible(document.getElementById('login-pass')?.type === 'text');
+        }
+        window.renderAuthCard = renderAuthCard;
+
+        function setAuthMode(mode, opts) {
+            const o = opts || {};
+            const card = document.getElementById('auth-card');
+            if (!card || !AUTH_MODES.includes(mode)) return;
+            const changed = card.dataset.mode !== mode;
+            card.dataset.mode = mode;
+            if (o.email !== undefined && o.email !== null) card.dataset.email = String(o.email);
+            card.querySelectorAll('[data-auth-only]').forEach((el) => {
+                el.hidden = !String(el.dataset.authOnly || '').split(/\s+/).includes(mode);
+            });
+            const emailInput = document.getElementById('login-user');
+            if (emailInput && o.email !== undefined && o.email !== null) emailInput.value = String(o.email);
+            const pass = document.getElementById('login-pass');
+            if (pass) {
+                // Carry the address across modes; never carry a password.
+                if (changed) pass.value = '';
+                pass.setAttribute('autocomplete', mode === 'signup' ? 'new-password' : 'current-password');
+            }
+            setPasswordVisible(false);
+            hideLoginRecovery();
+            renderAuthCard();
+            if (o.notice) showAuthNotice(o.notice, { email: o.email, provider: o.provider });
+        }
+        window.setAuthMode = setAuthMode;
+
+        // Redraws everything language-dependent on the card. Called from
+        // applyTranslations() once this section has run (__authCardReady).
+        function refreshAuthCardLanguage() {
+            renderAuthCard();
+            if (typeof renderRememberedAccounts === 'function') renderRememberedAccounts();
+            const host = document.getElementById('login-recovery');
+            if (lastAuthNotice && host && !host.hidden) showAuthNotice(lastAuthNotice.kind, lastAuthNotice.params);
+        }
+
+        document.getElementById('auth-form')?.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            if (document.getElementById('auth-card')?.dataset.mode === 'signup') performSignUp();
+            else performLogin();
+        });
+        document.getElementById('auth-pass-toggle')?.addEventListener('click', () => {
+            const input = document.getElementById('login-pass');
+            setPasswordVisible(input?.type === 'password');
+            input?.focus();
+        });
+        document.getElementById('login-pass')?.addEventListener('input', updatePasswordStrength);
+        document.getElementById('auth-to-signup')?.addEventListener('click', () => setAuthMode('signup'));
+        document.getElementById('auth-to-signin')?.addEventListener('click', () => setAuthMode('signin'));
+        document.getElementById('auth-back-signin')?.addEventListener('click', () => setAuthMode('signin'));
+        document.getElementById('auth-other-email')?.addEventListener('click', () => {
+            setAuthMode('signup', { email: '' });
+            document.getElementById('login-user')?.focus();
+        });
+        document.getElementById('auth-resend')?.addEventListener('click', (ev) => {
+            resendConfirmation(document.getElementById('auth-card')?.dataset.email || '', ev.currentTarget);
+        });
+
+        // Supabase sends a provider's failure back in the address bar: in the
+        // query (PKCE) or the hash (implicit). Anything unrecognised counts
+        // as a failed sign-in, never as nothing.
+        function readAuthReturnError(search, hash) {
+            const q = new URLSearchParams(String(search || '').replace(/^\?/, ''));
+            const h = new URLSearchParams(String(hash || '').replace(/^#/, ''));
+            const get = (k) => q.get(k) || h.get(k) || '';
+            const error = get('error');
+            const code = get('error_code');
+            const desc = get('error_description');
+            if (!error && !code && !desc) return null;
+            if (/access_denied|user_denied/i.test(`${error} ${code}`)) return { kind: 'provider_cancelled' };
+            if (/\bemail\b/i.test(desc)) return { kind: 'provider_no_email' };
+            return { kind: 'provider_failed' };
+        }
+
+        // `provider` is read by the gate before clearRestoredAppState() empties
+        // sessionStorage, where performOAuthLogin() left it.
+        function showAuthReturnError(ret, provider) {
+            // A refresh must not say it again.
+            try { window.history.replaceState({}, document.title, authRedirectUrl()); } catch (_) {}
+            document.body.classList.remove('accept-invite-mode');
+            document.getElementById('landing-page')?.classList.remove('active');
+            const container = document.getElementById('login-container');
+            if (container) container.style.display = 'flex';
+            prepareLoginScreen();
+            // Without the provider we cannot name it, so offer every way in.
+            setAuthMode('signin', isOAuthMethod(provider)
+                ? { notice: ret.kind, provider }
+                : { notice: 'unknown_way' });
+        }
+
+        // Everything the card needs exists from here on; applyTranslations()
+        // may now redraw it.
+        window.__authCardReady = true;
+        try { renderAuthCard(); } catch (e) { console.error('renderAuthCard failed', e); }
 
         function renderRememberedAccounts() {
             const host = document.getElementById('known-accounts');
@@ -39824,10 +40363,22 @@
                 if (typeof window.dismissDeepLinkSplash === 'function') window.dismissDeepLinkSplash();
             } else {
                 window.__authGateResolved = true;
+                // Back from Google, Facebook or LinkedIn without a session: say
+                // why in the card instead of dropping them on the marketing page.
+                // Read before clearRestoredAppState() empties sessionStorage.
+                let authReturn = null;
+                let authAttempt = null;
+                try { authReturn = readAuthReturnError(window.location.search, window.location.hash); } catch (_) {}
+                if (authReturn) { try { authAttempt = sessionStorage.getItem(OAUTH_ATTEMPT_KEY); } catch (_) {} }
                 // Nothing left to restore — clear the stale "where was I"
                 // breadcrumb so the next person to sign in on this device does
                 // not land on someone else's last tab.
                 clearRestoredAppState();
+                if (authReturn) {
+                    try { showAuthReturnError(authReturn, authAttempt); } catch (e) { console.error('showAuthReturnError failed', e); }
+                    if (typeof window.dismissDeepLinkSplash === 'function') window.dismissDeepLinkSplash();
+                    return;
+                }
                 // Special-case: email-link deep-links must not flash the marketing
                 // landing page. For #accept-invite, route straight to the login
                 // screen (the invitation page itself handles the signed-out flow
@@ -39899,16 +40450,13 @@
         }
 
         async function performLogin() {
-            const email = document.getElementById('login-user').value;
-            const pass = document.getElementById('login-pass').value;
+            const email = String(document.getElementById('login-user')?.value || '').trim();
+            const pass = document.getElementById('login-pass')?.value || '';
+            if (!email || !pass) { showAuthNotice('need_fields'); return; }
+            await withBusy(document.getElementById('auth-submit'), () => submitPasswordSignIn(email, pass));
+        }
 
-            if (!email || !pass) {
-                showToast("Please fill in email and password", "error");
-                return;
-            }
-
-            setLoadingState(true, "LOGGING IN...");
-
+        async function submitPasswordSignIn(email, pass) {
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({
                     email: email,
@@ -39969,10 +40517,8 @@
                     else if (known === 'password') showLoginRecovery('wrong_password', email);
                     else showLoginRecovery('unknown', email);
                 } else {
-                    showToast(raw, "error");
+                    showAuthError(e, email);
                 }
-            } finally {
-                setLoadingState(false, "LOGIN");
             }
         }
 
@@ -39998,54 +40544,47 @@
         }
 
         async function performSignUp() {
-            const email = document.getElementById('login-user').value;
-            const pass = document.getElementById('login-pass').value;
+            const email = String(document.getElementById('login-user')?.value || '').trim();
+            const pass = document.getElementById('login-pass')?.value || '';
+            if (!email || !pass) { showAuthNotice('need_fields'); return; }
+            if (isDisposableEmail(email)) { showAuthNotice('disposable_email'); return; }
+            await withBusy(document.getElementById('auth-submit'), () => submitSignUp(email, pass));
+        }
 
-            if (!email || !pass) {
-                showToast("Please fill in email and password", "error");
-                return;
-            }
-
-            if (isDisposableEmail(email)) {
-                showToast(currentLang === 'ar'
-                    ? 'سجل بإيميلك الحقيقي من فضلك. الإيميلات المؤقتة مش بتنفع للتسجيل.'
-                    : 'Please sign up with your real email address. Temporary email addresses cannot be used.', 'error');
-                return;
-            }
-
-            setLoadingState(true, "REGISTERING...");
-
+        async function submitSignUp(email, pass) {
             try {
                 const { data, error } = await supabaseClient.auth.signUp({
-                    email: email,
+                    email,
                     password: pass,
+                    options: { emailRedirectTo: authRedirectUrl() },
                 });
-
                 if (error) throw error;
-
-                // Check if user already exists but identity not linked (Supabase specific behavior)
-                if (data.user && data.user.identities && data.user.identities.length === 0) {
-                    showToast("Account exists. Please log in.", "warning");
+                // Supabase answers an address that already has an account with a
+                // user that has no identities rather than an error. The product
+                // has always said so; now it also moves them to sign in.
+                if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+                    setAuthMode('signin', { email, notice: 'account_exists' });
                     return;
                 }
-
-                showToast("Registration successful! Check your email.", "success");
+                // Email confirmation switched off: Supabase signed them straight
+                // in, so let the auth gate take over as after any sign-in.
+                if (data.session) { window.location.reload(); return; }
+                rememberAccount(email, null, 'password');
+                setAuthMode('check-inbox', { email });
             } catch (e) {
                 console.error(e);
-                let msg = e.message || "Registration Failed";
-                if (msg.includes("User already registered")) {
-                    msg = "Account exists. Please log in or use Social Login.";
+                if (/already registered/i.test(String(e?.message || ''))) {
+                    setAuthMode('signin', { email, notice: 'account_exists' });
+                    return;
                 }
-                showToast(msg, "error");
-            } finally {
-                setLoadingState(false, "REGISTER", true);
+                showAuthError(e, email);
             }
         }
 
         async function performOAuthLogin(provider) {
             try {
                 // Use clean base URL without query params or hash fragments
-                const cleanRedirectUrl = window.location.origin + window.location.pathname;
+                const cleanRedirectUrl = authRedirectUrl();
 
                 const oauthOptions = { redirectTo: cleanRedirectUrl };
                 if (provider === 'facebook') {
@@ -40057,6 +40596,8 @@
                     oauthOptions.scopes = 'public_profile email';
                 }
 
+                // Which door was tried, so a failed return can name it.
+                try { sessionStorage.setItem(OAUTH_ATTEMPT_KEY, provider); } catch (_) {}
                 const { data, error } = await supabaseClient.auth.signInWithOAuth({
                     provider: provider,
                     options: oauthOptions
@@ -40064,7 +40605,7 @@
                 if (error) throw error;
             } catch (e) {
                 console.error(e);
-                showToast(`Error connecting to ${provider}`, "error");
+                showAuthNotice('provider_failed', { provider });
             }
         }
 
@@ -40107,7 +40648,12 @@
             }
         }
 
-        async function performLogout() {
+        async function performLogout(options) {
+            // supabase-js v2 signs out EVERY device by default. The customer's
+            // everyday choice is this device; all devices is asked for by name
+            // (chooseSignOut). docs/superpowers/specs/2026-09-24-sign-in-journey-design.md
+            const o = options || {};
+            const scope = o.scope === 'global' ? 'global' : 'local';
             // Audit log: logout
             if (currentUserOrgId && currentUserProfile?.user_id) {
                 try {
@@ -40124,7 +40670,8 @@
             // Offer this address back on the login screen next time. Nothing
             // secret: an email and a display name.
             try {
-                rememberAccount(currentUserProfile?.email, currentUserProfile?.full_name);
+                if (o.forgetDevice) forgetAccount(currentUserProfile?.email);
+                else rememberAccount(currentUserProfile?.email, currentUserProfile?.full_name);
             } catch (e) {}
             // A sign-out that exists only to switch into an invitation keeps the
             // token, because losing it here would send the user back to their
@@ -40137,7 +40684,7 @@
             } catch (e) {}
 
             sentryIdentify(null);
-            await supabaseClient.auth.signOut();
+            await supabaseClient.auth.signOut({ scope });
             // Everything the last person cached on this device, not just their
             // last tab: see clearPerUserDeviceState.
             clearPerUserDeviceState();
@@ -40150,6 +40697,38 @@
             // Clear hash fragments before reload to prevent double-hash issue
             window.location.href = window.location.origin + window.location.pathname;
         }
+
+        // Sign out: this device, this device and forget it, or all devices.
+        function openSignOutChooser() {
+            try { if (typeof closeProfileModal === 'function') closeProfileModal(); } catch (_) {}
+            const modal = document.getElementById('signout-modal');
+            if (!modal) { performLogout(); return; }
+            modal.style.display = 'flex';
+            setTimeout(() => modal.querySelector('.signout-option')?.focus(), 30);
+        }
+        window.openSignOutChooser = openSignOutChooser;
+
+        function closeSignOutChooser(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('signout-modal');
+            if (modal) modal.style.display = 'none';
+        }
+        window.closeSignOutChooser = closeSignOutChooser;
+
+        async function chooseSignOut(choice) {
+            closeSignOutChooser();
+            await performLogout({
+                scope: choice === 'everywhere' ? 'global' : 'local',
+                forgetDevice: choice === 'forget',
+            });
+        }
+        window.chooseSignOut = chooseSignOut;
+
+        document.addEventListener('keydown', (ev) => {
+            if (ev.key !== 'Escape') return;
+            const modal = document.getElementById('signout-modal');
+            if (modal && modal.style.display === 'flex') closeSignOutChooser();
+        });
 
         async function ensureUserProfile(user) {
             try {
@@ -40942,21 +41521,6 @@
             }
         }
 
-        function setLoadingState(isLoading, text, isSecondary = false) {
-            const btns = document.querySelectorAll('.login-btn');
-            btns.forEach(b => {
-                if (isLoading) {
-                    if (b.innerText.includes(text.replace('ING...', ''))) b.innerText = text;
-                    b.style.opacity = "0.7";
-                    b.disabled = true;
-                } else {
-                    if (b.classList.contains('secondary')) b.innerText = "REGISTER";
-                    else b.innerText = "LOGIN";
-                    b.style.opacity = "1";
-                    b.disabled = false;
-                }
-            });
-        }
 
         // Everything the login screen needs before it is shown, in one place so
         // the three routes into it cannot drift: the account picker, and the
@@ -40975,6 +41539,7 @@
                 }
             } catch (e) {}
             if (typeof renderRememberedAccounts === 'function') renderRememberedAccounts();
+            try { renderAuthCard(); } catch (e) { console.error('renderAuthCard failed', e); }
         }
         window.prepareLoginScreen = prepareLoginScreen;
 
@@ -40982,11 +41547,13 @@
         function showLandingLogin() {
             document.getElementById('landing-page').classList.remove('active');
             document.getElementById('login-container').style.display = 'flex';
+            setAuthMode('signin');
             prepareLoginScreen();
         }
         function showLandingSignup() {
             document.getElementById('landing-page').classList.remove('active');
             document.getElementById('login-container').style.display = 'flex';
+            setAuthMode('signup');
             prepareLoginScreen();
             // Focus the email field for signup flow
             setTimeout(() => {
@@ -82998,7 +83565,7 @@ Thank you for shopping with {store_name}!</textarea>
                     // SWITCH, so leaving the old identity attached would file the
                     // invited person's errors under the person who left.
                     sentryIdentify(null);
-                    await supabaseClient.auth.signOut();
+                    await supabaseClient.auth.signOut({ scope: 'local' });
                     location.reload();
                 }
             };

@@ -572,18 +572,9 @@
                 "resume": "Play logos"
             },
             "auth_stage": {
-                "summary": "Digitivia's AI agents answer customers on WhatsApp, Messenger, Instagram and Telegram, and work with OpenAI, Anthropic, Google, Shopify, Stripe, n8n and more.",
+                "summary": "Digitivia's AI agents answer customers on WhatsApp, Instagram, Messenger, Facebook and Telegram, and work with OpenAI, Anthropic, Google, Shopify, Gmail, Google Calendar, Stripe and more.",
                 "motion_pause": "Pause motion",
                 "motion_play": "Play motion",
-                "thinking": "Thinking",
-                "scenes": {
-                    "stock": { "customer": "Hi! Is the black hoodie back in stock?", "working": "Checking stock", "done": "M and L in stock", "reply": "Yes! M and L just came back. Want me to hold one for you?" },
-                    "booking": { "customer": "Can I book a session this Saturday?", "working": "Finding a free slot", "done": "Saturday, 5 PM", "reply": "Done! You're booked for Saturday at 5 PM. See you then." },
-                    "payment": { "customer": "Did my payment go through?", "working": "Checking the payment", "done": "Payment received", "reply": "It did! Your receipt is on its way to your inbox." },
-                    "lead": { "customer": "How much is it for a team of five?", "working": "Saving the lead", "done": "Added to your CRM", "reply": "Great question! I just sent you our team plans. Want a quick call?" },
-                    "delivery": { "customer": "When will my order arrive?", "working": "Tracking the order", "done": "Out for delivery", "reply": "It's out for delivery and should reach you tomorrow." },
-                    "followup": { "customer": "Can you tell me when it's back?", "working": "Scheduling a follow-up", "done": "Reminder set", "reply": "Of course! I'll message you the moment it's back." }
-                },
                 "reviews": [
                     { "i": "S", "w": "Online fashion store", "t": "Honestly, this made our day so much easier." },
                     { "i": "K", "w": "Dental clinic", "t": "Wait, it already handled that for us?" },
@@ -2642,18 +2633,9 @@
                 "resume": "تشغيل الشعارات"
             },
             "auth_stage": {
-                "summary": "وكلاء ديجيتيفيا بالذكاء الاصطناعي بيردوا على عملائك في واتساب وماسنجر وإنستجرام وتيليجرام، وبيشتغلوا مع OpenAI وAnthropic وGoogle وShopify وStripe وn8n وغيرهم.",
+                "summary": "وكلاء ديجيتيفيا بالذكاء الاصطناعي بيردوا على عملائك في واتساب وإنستجرام وماسنجر وفيسبوك وتيليجرام، وبيشتغلوا مع OpenAI وAnthropic وGoogle وShopify وGmail وGoogle Calendar وStripe وغيرهم.",
                 "motion_pause": "إيقاف الحركة",
                 "motion_play": "تشغيل الحركة",
-                "thinking": "بيفكّر",
-                "scenes": {
-                    "stock": { "customer": "الهودي الأسود رجع المخزن؟", "working": "بيراجع المخزون", "done": "مقاس M و L متوفرين", "reply": "أيوه رجع! M و L متوفرين، أحجزلك واحد؟" },
-                    "booking": { "customer": "ممكن أحجز جلسة يوم السبت؟", "working": "بيدوّر على ميعاد فاضي", "done": "السبت الساعة ٥", "reply": "تمام! حجزك يوم السبت الساعة ٥، في انتظارك" },
-                    "payment": { "customer": "الدفع بتاعي وصل؟", "working": "بيتأكد من الدفع", "done": "الدفع وصل", "reply": "وصل! والإيصال في الطريق لإيميلك" },
-                    "lead": { "customer": "السعر كام لفريق من ٥ أشخاص؟", "working": "بيسجّل العميل", "done": "اتضاف للـ CRM", "reply": "سؤال حلو! بعتلك باقات الفرق، تحب نكلمك مكالمة سريعة؟" },
-                    "delivery": { "customer": "طلبي هيوصل امتى؟", "working": "بيتابع الطلب", "done": "خرج للتوصيل", "reply": "طلبك خرج للتوصيل وهيوصلك بكرة" },
-                    "followup": { "customer": "ممكن تعرفني لما يرجع؟", "working": "بيجهّز متابعة", "done": "التذكير اتظبط", "reply": "أكيد! هبعتلك أول ما يرجع" }
-                },
                 "reviews": [
                     { "i": "م", "w": "متجر ملابس أونلاين", "t": "بجد فرق معانا جدًا وخلى يومنا أسهل" },
                     { "i": "س", "w": "عيادة أسنان", "t": "هو خلصها لوحده فعلًا؟" },
@@ -17049,14 +17031,10 @@
         }
         .auth-trust-head { display: flex; align-items: center; justify-content: center; gap: 12px; }
         .auth-meta { display: inline-flex; align-items: center; gap: 8px; font-size: var(--sp-t-sm); font-weight: 600; color: var(--sp-ink); }
-        /* Meta's own blue mark on the same polished silver as the stage's
-           logos: premium, and still Meta at a glance. */
-        .auth-meta-mark {
-            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 1px 0 #fff, inset 0 -1.5px 3px rgba(44, 40, 92, .25), 0 0 0 1px rgba(120, 128, 150, .3), 0 4px 10px -4px rgba(10, 8, 40, .5);
-        }
-        .auth-meta-mark img { display: block; width: 17px; height: 17px; filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .7)); }
+        /* Meta's mark in the same single silver as the logos above it (the
+           page's own grey ink on a phone's page ground), beside the words. */
+        .auth-meta-mark { flex-shrink: 0; display: inline-flex; color: var(--sp-ink-2); }
+        .auth-meta-mark svg { display: block; width: 22px; height: 22px; fill: currentColor; }
         .auth-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
         /* Moving content needs a way to stop it (WCAG 2.2.2). 34px to see,
            44px to tap. */
@@ -17076,283 +17054,78 @@
         @media (prefers-reduced-motion: reduce) { .auth-motion-btn { display: none; } }
 
         /* ==========================================================
-           THE LIVING BRAND STAGE
-           The Digitivia wordmark is the hub. Around it sit the platforms the
-           product really works with, as their own native logos, on three
-           quiet orbits: the chat channels and the AI models nearest; commerce,
-           payments and automation next; infrastructure furthest and faintest.
-           A live card plays one real kind of request at a time (a message
-           arrives, the agent thinks, a tool acts, the reply goes out) in step
-           with light moving along the links, and customers' own words come
-           and go. renderAuthStage() builds it; layoutAuthStage() places every
-           piece from measured space (the logo, the switches, the trust
-           strip), so nothing overlaps at any size, and a piece that does not
-           fit is left out rather than squeezed. Decorative, so aria-hidden;
-           .auth-trust says the same thing to a screen reader in one sentence.
+           THE BRAND STAGE (the owner's picks, 2026-09-24: logos H3-12,
+           comments E3, chosen from option pages)
+           Around the Digitivia wordmark, and nothing louder than it: one slow
+           row of twelve silver marks of platforms the product really works
+           with, sliding under the wordmark and fading out at both ends; and
+           customers' words, two at a time on quiet cards, one above the
+           wordmark on the side reading starts from and one below the row on
+           the other side, each changing on its own clock. On phones the row
+           sits at the foot of the band and one comment at a time sits under
+           the form. renderAuthStage() builds it; layoutAuthStage() places it
+           from measured space and leaves out whatever does not fit.
+           Decorative, so aria-hidden; .auth-trust says the same thing to a
+           screen reader in one sentence.
            ========================================================== */
         .auth-stage {
             grid-column: 1; grid-row: 1; position: relative; z-index: 1; min-width: 0; min-height: 0;
             overflow: hidden; pointer-events: none; user-select: none; -webkit-user-select: none;
         }
-        .auth-logo { position: relative; z-index: 2; transition: filter 1.2s ease; }
-        /* The agent is thinking: a soft silver light gathers around the wordmark. */
-        .auth-logo.is-thinking { filter: drop-shadow(0 0 1px rgba(255, 255, 255, .7)) drop-shadow(0 0 18px rgba(214, 226, 255, .55)); }
-
-        /* One silver system for everything around the wordmark: polished metal
-           lit from the upper left, taking a little of the panel's violet in its
-           lower half the way real metal takes the colour of what surrounds it.
-           Logos, avatars, reactions and the Meta mark are the same metal; the
-           cards are glass with a silver edge. */
-        .auth-card {
-            --stg-silver: linear-gradient(162deg, #ffffff 0%, #e5e8ef 25%, #b9bfcc 53%, #d2d6e0 68%, #eceef3 82%, #aca8ca 100%);
-            --stg-spec: radial-gradient(90% 70% at 30% 14%, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .32) 36%, rgba(255, 255, 255, 0) 62%);
-            --stg-rim: conic-gradient(from 210deg, #ffffff, #9aa1b2 16%, #eef0f5 33%, #7f8798 52%, #ffffff 66%, #aab1c0 82%, #ffffff);
-            --stg-glass: linear-gradient(155deg, rgba(255, 255, 255, .16) 0%, rgba(255, 255, 255, .06) 36%, rgba(255, 255, 255, .025) 64%, rgba(206, 214, 255, .07) 100%);
-            --stg-glass-rim: linear-gradient(140deg, rgba(255, 255, 255, .62), rgba(255, 255, 255, .14) 28%, rgba(255, 255, 255, .05) 58%, rgba(206, 216, 255, .38));
-            --stg-ink: #2b3045;
+        .auth-logo { position: relative; z-index: 2; }
+        .auth-card { --stg-silver: #cdd3e6; }
+        /* The row. Every mark is the same single silver; the list is there
+           twice so the slide loops without a seam. */
+        .stage-row {
+            position: absolute; left: 0; right: 0; height: var(--isz, 40px); overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
         }
-        :is(.stage-tile, .stage-badge, .stage-chip-logo, .stage-review-avatar, .stage-react, .auth-meta-mark) {
-            background: var(--stg-spec), var(--stg-silver);
-        }
-        .stage-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-        /* Orbits: hairlines of light, brightest where the light falls. */
-        .stage-orbit { fill: none; stroke: url(#stage-orbit-silver); stroke-width: 1; }
-        .stage-link { fill: none; stroke: rgba(226, 232, 255, .16); stroke-width: 1; transition: stroke .8s ease; }
-        .stage-link.is-lit { stroke: rgba(226, 238, 255, .55); }
-        /* A short light travelling along a link: pathLength is 100, so the
-           dash (7) starts just before the path and ends just after it. */
-        .stage-flow {
-            fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 7 100; stroke-dashoffset: 7; opacity: 0;
-            filter: url(#stage-soft-glow);
-        }
-        .stage-flow.is-out { animation: stage-flow-out 1.2s cubic-bezier(.45, 0, .25, 1) 1; }
-        .stage-flow.is-in { animation: stage-flow-in 1.2s cubic-bezier(.45, 0, .25, 1) 1; }
-        @keyframes stage-flow-out { 0% { stroke-dashoffset: 7; opacity: 0; } 12%, 86% { opacity: 1; } 100% { stroke-dashoffset: -100; opacity: 0; } }
-        @keyframes stage-flow-in { 0% { stroke-dashoffset: -100; opacity: 0; } 12%, 86% { opacity: 1; } 100% { stroke-dashoffset: 7; opacity: 0; } }
-        .stage-glow {
-            position: absolute; border-radius: 50%; transform: translate(-50%, -50%);
-            background: radial-gradient(closest-side, rgba(226, 234, 255, .22), rgba(143, 216, 226, .14) 42%, rgba(109, 75, 216, .16) 70%, transparent 100%);
-            opacity: .65; transition: opacity 1.6s ease;
-        }
-        .stage-glow.is-thinking { opacity: 1; }
-        /* Each logo is set in a polished silver disc with a bright rim, so
-           every brand keeps its own colours and the set still reads as one
-           piece of the same object. Depth is size and opacity per orbit
-           (--s, --o); the outermost orbit is also a little quieter in colour. */
-        .stage-node {
-            position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-            opacity: 0; transition: opacity .9s ease var(--in, 0s);
-        }
-        .auth-stage.is-ready .stage-node { opacity: var(--o, 1); }
-        .stage-tile {
-            position: relative; display: flex; width: 100%; height: 100%; align-items: center; justify-content: center;
-            border-radius: 50%; overflow: hidden; isolation: isolate;
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, .95),
-                inset 0 -2px 5px rgba(52, 44, 110, .30),
-                0 0 0 1px rgba(255, 255, 255, .16),
-                0 12px 24px -10px rgba(6, 3, 34, .85),
-                0 0 22px -2px rgba(190, 206, 255, .22);
-            transition: transform .8s cubic-bezier(.2, .8, .2, 1), box-shadow .8s ease;
-        }
-        /* A 1px light under the mark sets it into the metal. */
-        .stage-tile img {
-            position: relative; z-index: 1; display: block; width: 52%; height: 52%; object-fit: contain;
-            filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .65));
-        }
-        .stage-node[data-ring="3"] .stage-tile img { filter: saturate(.6) drop-shadow(0 1px 0 rgba(255, 255, 255, .65)); }
-        /* The rim: a thin ring of brighter metal, catching light unevenly. */
-        .stage-tile::after {
-            content: ""; position: absolute; inset: 0; z-index: 3; border-radius: 50%; padding: 1.25px; pointer-events: none;
-            background: var(--stg-rim);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-        }
-        /* The shine: one band of light passing across the disc. */
-        .stage-tile::before {
-            content: ""; position: absolute; inset: 0; z-index: 2; border-radius: 50%;
-            background: linear-gradient(118deg, transparent 36%, rgba(255, 255, 255, .78) 49%, rgba(226, 238, 255, .3) 54%, transparent 64%) 140% 0 / 280% 100% no-repeat;
-            opacity: 0;
-        }
-        /* The glow: light gathering behind a disc while it works. */
-        .stage-ring {
-            position: absolute; inset: -55%; border-radius: 50%;
-            background: radial-gradient(closest-side, rgba(228, 238, 255, .5), rgba(160, 226, 232, .2) 48%, rgba(160, 226, 232, 0) 100%);
-            opacity: 0; transform: scale(.7);
-        }
-        .stage-node.is-lit .stage-tile {
-            transform: scale(1.07);
-            box-shadow:
-                inset 0 1px 0 #fff,
-                inset 0 -2px 5px rgba(52, 44, 110, .26),
-                0 0 0 1px rgba(255, 255, 255, .42),
-                0 14px 28px -10px rgba(6, 3, 34, .85),
-                0 0 30px 2px rgba(210, 228, 255, .42);
-        }
+        .stage-row[hidden] { display: none; }
+        .stage-track { position: absolute; top: 0; left: 0; display: flex; gap: calc(var(--isz, 40px) * .55); height: 100%; width: max-content; }
+        [dir="rtl"] .stage-track { left: auto; right: 0; }
+        .stage-mark { flex: none; width: var(--isz, 40px); height: var(--isz, 40px); display: flex; align-items: center; justify-content: center; }
+        .stage-mark img { display: block; width: 72%; height: 72%; object-fit: contain; opacity: .82; }
         @media (prefers-reduced-motion: no-preference) {
-            .stage-node.is-lit .stage-ring { animation: stage-bloom 1.9s cubic-bezier(.3, 0, .2, 1) 1; }
-            .stage-node:is(.is-lit, .is-shine) .stage-tile::before { animation: stage-sheen 1.6s ease-in-out 1; }
-            .stage-glow { animation: stage-breathe 7s ease-in-out infinite alternate; }
-            .stage-tile { animation: stage-float var(--fd, 9s) ease-in-out var(--fdel, 0s) infinite alternate; }
+            .stage-track { animation: stage-slide var(--dur, 36s) linear infinite; }
+            [dir="rtl"] .stage-track { animation-name: stage-slide-rtl; }
         }
-        @keyframes stage-bloom { 0% { opacity: 0; transform: scale(.7); } 35% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.15); } }
-        @keyframes stage-sheen { 0% { opacity: 1; background-position: 140% 0; } 100% { opacity: 1; background-position: -40% 0; } }
-        @keyframes stage-breathe { from { transform: translate(-50%, -50%) scale(.94); } to { transform: translate(-50%, -50%) scale(1.06); } }
-        @keyframes stage-float { from { translate: 0 -2px; } to { translate: 0 2px; } }
-
-        /* Cards: glass on the purple, so the orbits show through, with a
-           silver edge that is brightest where the light falls. */
-        .stage-card {
-            position: absolute; box-sizing: border-box; width: var(--w); color: #fff; text-align: start;
-            font-family: var(--sp-font); border-radius: 18px; background: var(--stg-glass);
-            -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 22px 44px -20px rgba(4, 2, 28, .85), 0 0 36px -10px rgba(190, 206, 255, .18);
-        }
-        .stage-card[hidden] { display: none; }
-        .stage-card::before, .auth-trust-review::before {
-            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-            background: var(--stg-glass-rim);
-            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude;
-        }
-        /* One pass of light across a comment as it arrives. */
-        .stage-card::after {
-            content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-            background: linear-gradient(112deg, transparent 38%, rgba(255, 255, 255, .13) 50%, transparent 62%) 150% 0 / 260% 100% no-repeat;
-        }
-        /* The agent at work: the customer's message, the agent's state (the
-           same shimmer a thinking model shows, then the tool it used, then a
-           tick), and its reply. Every row is always there, only faded, so the
-           card never changes size while it plays. The agent is Digitivia's
-           own mark. */
-        .stage-agent { display: flex; flex-direction: column; gap: 9px; padding: 13px; }
-        .stage-row { display: flex; align-items: flex-end; gap: 8px; opacity: 0; transform: translateY(4px); transition: opacity .6s ease, transform .6s ease; }
-        .stage-row.is-on { opacity: 1; transform: none; }
-        .stage-row-out { justify-content: flex-end; }
-        .stage-bubble {
-            max-width: calc(100% - 30px); padding: 7px 11px; border-radius: 14px;
-            font-size: 12.5px; line-height: 1.42; font-weight: 500; overflow-wrap: anywhere;
-        }
-        .stage-row-in .stage-bubble {
-            background: rgba(255, 255, 255, .11); border-end-start-radius: 4px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 0 0 1px rgba(255, 255, 255, .08);
-        }
-        .stage-row-out .stage-bubble {
-            background: linear-gradient(140deg, rgba(150, 228, 230, .30), rgba(124, 136, 236, .24)); border-end-end-radius: 4px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), inset 0 0 0 1px rgba(190, 236, 240, .22), 0 6px 16px -8px rgba(40, 170, 180, .5);
-        }
-        .stage-badge, .stage-avatar {
-            position: relative; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .stage-badge { box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(255, 255, 255, .22), 0 3px 8px -2px rgba(6, 3, 34, .7); }
-        .stage-badge img { width: 12px; height: 12px; object-fit: contain; }
-        .stage-avatar { background: #2a1a6e; box-shadow: 0 0 0 1.25px rgba(236, 240, 250, .85), 0 0 12px rgba(160, 200, 255, .35); }
-        .stage-avatar img { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .stage-avatar::after {
-            content: ""; position: absolute; inset: -6px; border-radius: 50%; z-index: -1; opacity: 0;
-            background: radial-gradient(closest-side, rgba(214, 230, 255, .6), rgba(214, 230, 255, 0));
-        }
-        .stage-status { position: relative; flex: 1; min-width: 0; height: 24px; align-self: center; }
-        .stage-status > span {
-            position: absolute; inset-inline-start: 0; top: 50%; transform: translateY(-50%);
-            display: inline-flex; align-items: center; gap: 7px; max-width: 100%;
-            white-space: nowrap; opacity: 0; transition: opacity .45s ease;
-        }
-        .stage-status > span.is-on { opacity: 1; }
-        .stage-say { font-size: 12px; font-weight: 600; }
-        .stage-shimmer {
-            background: linear-gradient(90deg, rgba(255, 255, 255, .45) 0%, #fff 42%, rgba(255, 255, 255, .45) 64%) 0 0 / 250% 100%;
-            -webkit-background-clip: text; background-clip: text; color: transparent;
-        }
-        .stage-dots { display: inline-flex; gap: 3px; }
-        .stage-dots i { width: 4px; height: 4px; border-radius: 50%; background: #e6ecff; opacity: .35; }
-        .stage-chip {
-            padding-block: 3px; padding-inline: 3px 10px; border-radius: 999px; color: var(--stg-ink);
-            font-size: 11.5px; font-weight: 600; background: linear-gradient(180deg, #fdfdff 0%, #e2e5ee 100%);
-            box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(60, 64, 96, .12), 0 0 0 1px rgba(255, 255, 255, .35), 0 4px 12px -4px rgba(6, 4, 30, .55);
-        }
-        .stage-chip-logo {
-            width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 0 0 .5px rgba(80, 86, 110, .3);
-        }
-        .stage-chip-logo img, .stage-chip-logo svg { width: 11px; height: 11px; object-fit: contain; }
-        .stage-chip-logo svg { fill: #3d4461; }
-        .stage-tick { width: 12px; height: 12px; fill: #16866a; }
-        @media (prefers-reduced-motion: no-preference) {
-            .stage-shimmer { animation: stage-text 1.7s linear infinite; }
-            [dir="rtl"] .stage-shimmer { animation-direction: reverse; }
-            .stage-dots i { animation: stage-dot 1.2s ease-in-out infinite; }
-            .stage-dots i:nth-child(2) { animation-delay: .16s; }
-            .stage-dots i:nth-child(3) { animation-delay: .32s; }
-            .stage-agent.is-working .stage-avatar::after { animation: stage-think 1.8s ease-in-out infinite; }
-        }
-        @keyframes stage-text { from { background-position: 125% 0; } to { background-position: -25% 0; } }
-        @keyframes stage-dot { 0%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-2px); } }
-        @keyframes stage-think { 0%, 100% { opacity: .15; transform: scale(.85); } 50% { opacity: .9; transform: scale(1.12); } }
-
-        /* Customers' own words, the way a message arrives: a silver monogram,
-           the kind of business, what they said, and a small reaction. No full
-           names, no companies, no stars, no "verified". A comment comes in
-           out of a soft blur, stays, and fades. */
-        .stage-review {
-            display: flex; gap: 11px; align-items: flex-start; padding-block: 12px 13px; padding-inline: 12px 14px;
-            opacity: 0; transform: translateY(10px) scale(.98); filter: blur(4px);
-            transition: opacity 1.1s ease, transform 1.1s cubic-bezier(.2, .8, .2, 1), filter 1.1s ease;
-        }
-        .stage-review.is-in { opacity: 1; transform: none; filter: blur(0); }
-        .stage-review-avatar {
-            flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: var(--stg-ink); font-size: 13px; font-weight: 700; line-height: 1;
-            box-shadow: inset 0 1px 0 #fff, inset 0 -1.5px 3px rgba(44, 40, 92, .28), 0 0 0 1px rgba(255, 255, 255, .22), 0 6px 14px -6px rgba(6, 3, 34, .8);
-        }
-        .stage-review-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-        .stage-review-who { font-size: 11px; line-height: 1.3; font-weight: 600; letter-spacing: .02em; color: rgba(222, 228, 245, .72); }
-        [dir="rtl"] .stage-review-who { font-size: 11.5px; letter-spacing: 0; }
-        .stage-review-text { margin: 0; font-size: 13px; line-height: 1.45; font-weight: 500; color: rgba(255, 255, 255, .95); overflow-wrap: anywhere; }
-        [dir="rtl"] .stage-review-text { font-size: 13.5px; }
-        .stage-react {
-            position: absolute; inset-block-end: -9px; inset-inline-end: 16px; width: 22px; height: 22px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: inset 0 1px 0 #fff, 0 0 0 1px rgba(255, 255, 255, .25), 0 4px 10px -3px rgba(6, 3, 34, .7);
-            transform: scale(0); transition: transform .5s cubic-bezier(.3, 1.5, .5, 1) 1.2s;
-        }
-        .stage-react svg { width: 12px; height: 12px; }
-        .stage-review.is-in .stage-react { transform: scale(1); }
-        @media (prefers-reduced-motion: no-preference) {
-            .stage-review.stage-card.is-in::after { animation: stage-card-sheen 2.2s ease .5s 1; }
-        }
+        /* Standing still, the row is centred instead of starting at an edge. */
         @media (prefers-reduced-motion: reduce) {
-            .stage-review { transform: none; filter: none; }
+            .stage-track, [dir="rtl"] .stage-track { left: 50%; right: auto; transform: translateX(-50%); }
         }
-        @keyframes stage-card-sheen { 0% { opacity: 1; background-position: 150% 0; } 100% { opacity: 1; background-position: -50% 0; } }
-        /* The phone version sits under the form, on the page ground: dark
-           glass in the dark theme, brushed white in the light one, the same
-           silver edge in both. */
-        .auth-trust-review {
-            position: relative; width: 100%; max-width: 360px; color: var(--sp-ink); border-radius: 18px;
-            background: linear-gradient(160deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .02));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 14px 30px -18px rgba(0, 0, 0, .8);
+        @keyframes stage-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @keyframes stage-slide-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+        /* A comment: a quiet card (a soft fill, no border), a silver initial,
+           the words, and the kind of business. No names, no companies, no
+           stars, no "verified". It fades in, stays, and fades out. */
+        .stage-note {
+            --f: 14px;
+            position: absolute; box-sizing: border-box; width: var(--w, 300px); display: flex; gap: calc(var(--f) * .8); align-items: flex-start;
+            padding: calc(var(--f) * .95) calc(var(--f) * 1.1); border-radius: calc(var(--f) * 1.15);
+            background: rgba(255, 255, 255, .065); color: #fff; font-family: var(--sp-font); text-align: start;
+            opacity: 0; transform: translateY(8px); transition: opacity .9s ease, transform .9s cubic-bezier(.2, .8, .2, 1);
         }
-        .auth-trust-review .stage-review-who { color: var(--sp-ink-2); }
-        .auth-trust-review .stage-review-text { color: var(--sp-ink); }
-        :root[data-theme="light"] .auth-trust-review {
-            background: linear-gradient(165deg, #ffffff 0%, #f4f6fa 60%, #eceff5 100%);
-            box-shadow: inset 0 1px 0 #fff, 0 14px 30px -16px rgba(28, 32, 72, .35);
+        .stage-note.is-in { opacity: 1; transform: none; }
+        .stage-note[hidden] { display: none; }
+        .stage-note-av {
+            flex: none; width: calc(var(--f) * 2.1); height: calc(var(--f) * 2.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: #d5dae9; color: #262a44; font-size: calc(var(--f) * .9); font-weight: 700; line-height: 1;
         }
-        :root[data-theme="light"] .auth-trust-review::before {
-            background: linear-gradient(140deg, #ffffff, rgba(150, 158, 178, .55) 45%, rgba(196, 202, 216, .9));
-        }
-        :root[data-theme="light"] .auth-trust-review .stage-review-avatar {
-            box-shadow: inset 0 1px 0 #fff, inset 0 -1.5px 3px rgba(44, 40, 92, .22), 0 0 0 1px rgba(120, 128, 150, .3), 0 4px 10px -5px rgba(20, 24, 60, .45);
-        }
+        .stage-note-body { display: flex; flex-direction: column; gap: calc(var(--f) * .3); min-width: 0; }
+        .stage-note-text { margin: 0; font-size: var(--f); line-height: 1.45; font-weight: 500; color: rgba(255, 255, 255, .95); overflow-wrap: anywhere; }
+        .stage-note-who { font-size: calc(var(--f) * .8); font-weight: 600; letter-spacing: .02em; color: var(--stg-silver); }
+        [dir="rtl"] .stage-note-who { letter-spacing: 0; }
+        /* The phone version sits under the form, on the page ground, in the
+           page's own second surface and inks. */
+        .auth-trust-review { --f: 13.5px; position: relative; width: 100%; max-width: 360px; background: var(--sp-surface-2); }
+        .auth-trust-review .stage-note-text { color: var(--sp-ink); }
+        .auth-trust-review .stage-note-who { color: var(--sp-ink-2); }
         .auth-trust-review[hidden] { display: none; }
-        /* Pausing freezes every animation where it stands. */
-        /* Pausing freezes every animation where it stands, the shine and glow
-           layers (pseudo-elements, which * does not reach) included. */
-        .auth-card.is-motion-paused :is(.auth-stage, .auth-stage *, .auth-trust-review, .auth-trust-review *),
-        .auth-card.is-motion-paused :is(.auth-stage *, .auth-trust-review)::before,
-        .auth-card.is-motion-paused :is(.auth-stage *, .auth-trust-review)::after { animation-play-state: paused !important; }
+        @media (prefers-reduced-motion: reduce) { .stage-note { transition: none; transform: none; } }
+        /* Pausing freezes the row where it stands. */
+        .auth-card.is-motion-paused :is(.auth-stage, .auth-stage *, .auth-trust-review, .auth-trust-review *) { animation-play-state: paused !important; }
         .auth-providers { display: flex; flex-direction: column; gap: 8px; }
         .auth-provider-row { display: flex; gap: 8px; }
         .auth-provider-row > * { flex: 1 1 0; min-width: 0; }
@@ -17480,13 +17253,14 @@
            band folds back into one row and the stage stands down. */
         @media (max-width: 879px) {
             .auth-card { --auth-band-h: clamp(136px, 20vh, 196px); --auth-band-h: clamp(136px, 20svh, 196px); }
-            .auth-brand { position: relative; min-height: var(--auth-band-h); padding-block: 12px; }
+            /* The foot of the band is kept for the row of marks. */
+            .auth-brand { position: relative; min-height: var(--auth-band-h); padding-block: 12px calc(16px + var(--auth-row-h, 30px)); }
             .auth-brand-top { justify-content: center; }
             .auth-brand-tools { position: absolute; top: max(10px, env(safe-area-inset-top, 0px)); inset-inline-end: 12px; z-index: 3; }
             .auth-logo { width: min(144px, 34vw); }
         }
         @media (min-width: 600px) and (max-width: 879px) {
-            .auth-card { --auth-band-h: clamp(190px, 26vh, 320px); --auth-band-h: clamp(190px, 26svh, 320px); }
+            .auth-card { --auth-band-h: clamp(190px, 26vh, 320px); --auth-band-h: clamp(190px, 26svh, 320px); --auth-row-h: 36px; }
             .auth-logo { width: 188px; }
             .auth-main, .auth-trust { width: 100%; max-width: 480px; justify-self: center; }
             .auth-main { justify-content: center; }
@@ -17513,17 +17287,10 @@
             .auth-trust { grid-column: 1; grid-row: 2; align-items: stretch; gap: 0; padding: 0 clamp(28px, 3.6vw, 52px) 40px; }
             .auth-trust-head { justify-content: space-between; }
             .auth-meta { color: #fff; font-size: var(--sp-t-md); }
-            .auth-meta-mark {
-                width: 32px; height: 32px;
-                box-shadow: inset 0 1px 0 #fff, inset 0 -2px 4px rgba(52, 44, 110, .3), 0 0 0 1px rgba(255, 255, 255, .2), 0 8px 18px -8px rgba(6, 3, 34, .85), 0 0 18px -2px rgba(190, 206, 255, .28);
-            }
-            .auth-meta-mark img { width: 19px; height: 19px; }
-            .auth-card .auth-motion-btn {
-                border-color: rgba(255, 255, 255, .26); color: #fff;
-                background: linear-gradient(160deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .04));
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
-            }
-            .auth-card .auth-motion-btn:hover { background: rgba(255, 255, 255, .16); }
+            .auth-meta-mark { color: var(--stg-silver); }
+            .auth-meta-mark svg { width: 26px; height: 26px; }
+            .auth-card .auth-motion-btn { border-color: rgba(255, 255, 255, .3); color: #fff; }
+            .auth-card .auth-motion-btn:hover { background: rgba(255, 255, 255, .12); }
             .auth-trust-review { display: none; }
         }
         /* Short laptop windows (a browser with its toolbars, or zoomed in): the
@@ -35947,11 +35714,11 @@
                  comments live in the stage). -->
             <div class="auth-trust">
                 <div class="auth-trust-head">
-                    <div class="auth-meta"><span class="auth-meta-mark"><img src="logos/meta.svg" alt="" width="18" height="18" decoding="async"></span><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
+                    <div class="auth-meta"><span class="auth-meta-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973a6.624 6.624 0 0 0 .265.86 5.297 5.297 0 0 0 .371.761c.696 1.159 1.818 1.927 3.593 1.927 1.497 0 2.633-.671 3.965-2.444.76-1.012 1.144-1.626 2.663-4.32l.756-1.339.186-.325c.061.1.121.196.183.3l2.152 3.595c.724 1.21 1.665 2.556 2.47 3.314 1.046.987 1.992 1.22 3.06 1.22 1.075 0 1.876-.355 2.455-.843a3.743 3.743 0 0 0 .81-.973c.542-.939.861-2.127.861-3.745 0-2.72-.681-5.357-2.084-7.45-1.282-1.912-2.957-2.93-4.716-2.93-1.047 0-2.088.467-3.053 1.308-.652.57-1.257 1.29-1.82 2.05-.69-.875-1.335-1.547-1.958-2.056-1.182-.966-2.315-1.303-3.454-1.303zm10.16 2.053c1.147 0 2.188.758 2.992 1.999 1.132 1.748 1.647 4.195 1.647 6.4 0 1.548-.368 2.9-1.839 2.9-.58 0-1.027-.23-1.664-1.004-.496-.601-1.343-1.878-2.832-4.358l-.617-1.028a44.908 44.908 0 0 0-1.255-1.98c.07-.109.141-.224.211-.327 1.12-1.667 2.118-2.602 3.358-2.602zm-10.201.553c1.265 0 2.058.791 2.675 1.446.307.327.737.871 1.234 1.579l-1.02 1.566c-.757 1.163-1.882 3.017-2.837 4.338-1.191 1.649-1.81 1.817-2.486 1.817-.524 0-1.038-.237-1.383-.794-.263-.426-.464-1.13-.464-2.046 0-2.221.63-4.535 1.66-6.088.454-.687.964-1.226 1.533-1.533a2.264 2.264 0 0 1 1.088-.285z"/></svg></span><span data-i18n="sidebar.meta_tech_provider">Meta Tech Provider</span></div>
                     <button type="button" class="auth-motion-btn" id="auth-motion-btn" aria-pressed="false" title="Pause motion" data-i18n-title="auth_stage.motion_pause"><svg class="auth-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><svg class="auth-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="auth-sr" data-i18n="auth_stage.motion_pause">Pause motion</span></button>
                 </div>
-                <div class="stage-review auth-trust-review" id="auth-trust-review" aria-hidden="true" hidden></div>
-                <p class="auth-sr" data-i18n="auth_stage.summary">Digitivia's AI agents answer customers on WhatsApp, Messenger, Instagram and Telegram, and work with OpenAI, Anthropic, Google, Shopify, Stripe, n8n and more.</p>
+                <div class="stage-note auth-trust-review" id="auth-trust-review" aria-hidden="true" hidden></div>
+                <p class="auth-sr" data-i18n="auth_stage.summary">Digitivia's AI agents answer customers on WhatsApp, Instagram, Messenger, Facebook and Telegram, and work with OpenAI, Anthropic, Google, Shopify, Gmail, Google Calendar, Stripe and more.</p>
             </div>
         </div>
     </div>
@@ -40528,494 +40295,175 @@
             return window.location.origin + window.location.pathname;
         }
 
-        // ---- The living brand stage ------------------------------------------
-        // The Digitivia wordmark is the hub. Around it: the platforms the
-        // product really works with, as their own native logos, on three
-        // orbits (the chat channels and the AI models nearest; commerce,
-        // payments and automation next; infrastructure furthest and faintest).
-        // A live card plays one real kind of request at a time (a message
-        // arrives, the agent thinks, a tool acts, the reply goes out) in step
-        // with light moving along the links, and customers' own words come and
-        // go on their own clocks. layoutAuthStage() places every piece from
-        // measured space, so nothing overlaps at any size; what does not fit
-        // is left out, most important first.
-        const AUTH_STAGE_NODES = Object.freeze([
-            // [file in logos/, orbit]; the order is the priority when space is short.
-            ['whatsapp', 1], ['instagram', 1], ['messenger', 1], ['telegram', 1], ['openai', 1], ['anthropic', 1],
-            ['shopify', 2], ['google', 2], ['meta', 2], ['n8n', 2], ['stripe', 2], ['linkedin', 2], ['facebook', 2],
-            ['salla', 3], ['zid', 3], ['woocommerce', 3], ['hostinger', 3], ['supabase', 3],
+        // ---- The brand stage ---------------------------------------------------
+        // The owner's picks (2026-09-24), chosen from option pages: H3-12, a
+        // slow row of twelve silver marks under the wordmark, and E3,
+        // customers' words two at a time on quiet cards, one above the
+        // wordmark on the side reading starts from and one below the row on
+        // the other side. layoutAuthStage() places both from measured space
+        // and leaves out what does not fit. On phones the row sits at the foot
+        // of the band and one comment at a time sits under the form
+        // (#auth-trust-review).
+        // Every mark is a platform the product really connects to, the most
+        // recognisable first. logos/mono/ holds them as single-colour glyphs.
+        const AUTH_STAGE_MARKS = Object.freeze([
+            'whatsapp', 'instagram', 'messenger', 'facebook', 'openai', 'anthropic',
+            'google', 'shopify', 'telegram', 'gmail', 'gcalendar', 'stripe',
         ]);
-        const authStageFile = (id) => `logos/${id}.${id === 'zid' ? 'png' : 'svg'}`;
-        // One request each: the channel it arrives on, the model that thinks,
-        // and the tool that acts (a logo on the stage, or one of the product's
-        // own tools, drawn as an icon).
-        const AUTH_STAGE_SCENES = Object.freeze([
-            { key: 'stock', channel: 'whatsapp', ai: 'openai', tool: 'shopify' },
-            { key: 'booking', channel: 'instagram', ai: 'anthropic', tool: 'calendar' },
-            { key: 'payment', channel: 'telegram', ai: 'openai', tool: 'stripe' },
-            { key: 'lead', channel: 'messenger', ai: 'anthropic', tool: 'crm' },
-            { key: 'delivery', channel: 'whatsapp', ai: 'openai', tool: 'salla' },
-            { key: 'followup', channel: 'instagram', ai: 'anthropic', tool: 'n8n' },
-        ]);
-        const AUTH_STAGE_ICONS = Object.freeze({
-            calendar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h2v2h6V2h2v2h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3V2zm12 8H5v9h14v-9zM7 12h4v4H7v-4z"/></svg>',
-            crm: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm8 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm-5 11h10a5 5 0 0 0-10 0z"/></svg>',
-            spark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.1 6.4 6.4 2.1-6.4 2.1L12 19l-2.1-6.4-6.4-2.1 6.4-2.1z"/></svg>',
-            tick: '<svg class="stage-tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.4-1.4z"/></svg>',
-            heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#d9789d" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3.2 4.5 7 4.5c2.1 0 3.6 1.1 5 2.8 1.4-1.7 2.9-2.8 5-2.8 3.8 0 6.1 3.9 4.6 7.3C19.5 16.4 12 21 12 21z"/></svg>',
-            sparkle: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#8a7fd9" d="M12 2l2.1 6.4 6.4 2.1-6.4 2.1L12 19l-2.1-6.4-6.4-2.1 6.4-2.1z"/></svg>',
-            smile: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#b08a3e" stroke-width="1.8"/><circle cx="9" cy="10" r="1.2" fill="#b08a3e"/><circle cx="15" cy="10" r="1.2" fill="#b08a3e"/><path d="M8.2 14a4.4 4.4 0 0 0 7.6 0" fill="none" stroke="#b08a3e" stroke-width="1.8" stroke-linecap="round"/></svg>',
-        });
-        const AUTH_STAGE_REACTS = Object.freeze(['heart', 'sparkle', 'smile']);
+        // Each comment keeps its own rhythm: [shown, gap, first change] in ms.
+        const AUTH_STAGE_NOTE_TIMES = Object.freeze([[7000, 1300, 5200], [7000, 1300, 8800]]);
+        const AUTH_STAGE_TRUST_TIMES = Object.freeze([6500, 1000, 6000]);
+        // The row slides at this many pixels a second, whatever its size.
+        const AUTH_STAGE_SPEED = 24;
 
         const authStage = {
-            built: false, mode: 'off', ready: false, nodes: new Map(), placed: [], links: new Map(),
-            agent: null, slots: [], trust: null, svg: null, glow: null, logo: null,
-            timers: [], running: false, paused: false, visible: false, scene: 0, review: 0, raf: 0,
+            built: false, mode: 'off', row: null, notes: [], trust: null, logo: null,
+            timers: [], running: false, paused: false, visible: false, review: 2, raf: 0,
         };
         const authStageReduced = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-        const authRectsOverlap = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
-        const authInflate = (r, p) => ({ x: r.x - p, y: r.y - p, w: r.w + p * 2, h: r.h + p * 2 });
         const authClamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
-        function buildAuthReviewCard(card) {
-            card.innerHTML = '<span class="stage-review-avatar"></span>'
-                + '<span class="stage-review-body"><span class="stage-review-who"></span><p class="stage-review-text"></p></span>'
-                + '<span class="stage-react"></span>';
-            return card;
+        function buildAuthNote(el) {
+            el.innerHTML = '<span class="stage-note-av"></span>'
+                + '<span class="stage-note-body"><p class="stage-note-text"></p><span class="stage-note-who"></span></span>';
+            return el;
+        }
+
+        function fillAuthNote(el, idx) {
+            const list = t('auth_stage.reviews');
+            if (!el || !Array.isArray(list) || !list.length) return;
+            const item = list[idx % list.length] || {};
+            el.querySelector('.stage-note-av').textContent = item.i || '';
+            el.querySelector('.stage-note-text').textContent = item.t || '';
+            const who = el.querySelector('.stage-note-who');
+            who.textContent = item.w || '';
+            who.hidden = !item.w;
+            el.dataset.idx = String(idx);
         }
 
         function buildAuthStage(stage) {
-            const NS = 'http://www.w3.org/2000/svg';
-            const svg = document.createElementNS(NS, 'svg');
-            svg.setAttribute('class', 'stage-svg');
-            stage.appendChild(svg);
-            const glow = document.createElement('div');
-            glow.className = 'stage-glow';
-            stage.appendChild(glow);
-            AUTH_STAGE_NODES.forEach(([id, ring], i) => {
-                const node = document.createElement('div');
-                node.className = 'stage-node';
-                node.dataset.id = id;
-                node.hidden = true;
-                // Each tile floats on its own clock, so nothing moves in step.
-                node.style.setProperty('--fd', `${(7.4 + ((i * 1.37) % 4)).toFixed(2)}s`);
-                node.style.setProperty('--fdel', `${(-((i * 2.3) % 7)).toFixed(2)}s`);
-                const halo = document.createElement('span');
-                halo.className = 'stage-ring';
-                const tile = document.createElement('span');
-                tile.className = 'stage-tile';
+            const row = document.createElement('div');
+            row.className = 'stage-row';
+            row.hidden = true;
+            const track = document.createElement('div');
+            track.className = 'stage-track';
+            [...AUTH_STAGE_MARKS, ...AUTH_STAGE_MARKS].forEach((id) => {
+                const mark = document.createElement('span');
+                mark.className = 'stage-mark';
+                mark.dataset.id = id;
                 const img = document.createElement('img');
                 img.alt = '';
                 img.decoding = 'async';
                 img.draggable = false;
-                img.src = authStageFile(id);
-                tile.appendChild(img);
-                node.append(halo, tile);
-                stage.appendChild(node);
-                authStage.nodes.set(id, { el: node, ring });
+                img.src = `logos/mono/${id}.svg`;
+                mark.appendChild(img);
+                track.appendChild(mark);
             });
-            const agent = document.createElement('div');
-            agent.className = 'stage-card stage-agent';
-            agent.hidden = true;
-            agent.innerHTML =
-                '<div class="stage-row stage-row-in"><span class="stage-badge"><img alt="" src=""></span><span class="stage-bubble"></span></div>'
-                + '<div class="stage-row stage-row-state"><span class="stage-avatar"><img alt="" src=""></span><span class="stage-status">'
-                + '<span class="stage-say" data-k="think"><span class="stage-dots"><i></i><i></i><i></i></span><span class="stage-shimmer"></span></span>'
-                + '<span class="stage-say" data-k="work"><span class="stage-chip-logo"></span><span class="stage-shimmer"></span></span>'
-                + `<span class="stage-chip" data-k="done"><span class="stage-chip-logo"></span><span class="stage-chip-text"></span>${AUTH_STAGE_ICONS.tick}</span>`
-                + '</span></div>'
-                + '<div class="stage-row stage-row-out"><span class="stage-bubble"></span></div>';
-            // The agent is Digitivia's own mark: the page's icon, by whatever
-            // name this build gave it.
-            const mark = document.querySelector('link[rel="icon"]')?.getAttribute('href');
-            const avatar = agent.querySelector('.stage-avatar img');
-            if (mark) avatar.src = mark;
-            else avatar.parentElement.innerHTML = AUTH_STAGE_ICONS.spark;
-            stage.appendChild(agent);
-            authStage.slots = [0, 1].map(() => {
-                const card = buildAuthReviewCard(document.createElement('div'));
-                card.className = 'stage-card stage-review';
-                card.hidden = true;
-                stage.appendChild(card);
-                return card;
+            row.appendChild(track);
+            stage.appendChild(row);
+            authStage.notes = [0, 1].map((n) => {
+                const note = buildAuthNote(document.createElement('div'));
+                note.className = 'stage-note';
+                note.hidden = true;
+                fillAuthNote(note, n);
+                stage.appendChild(note);
+                return note;
             });
             const trust = document.getElementById('auth-trust-review');
-            if (trust) authStage.trust = buildAuthReviewCard(trust);
-            authStage.agent = agent;
-            authStage.svg = svg;
-            authStage.glow = glow;
+            if (trust) {
+                authStage.trust = buildAuthNote(trust);
+                fillAuthNote(trust, 0);
+            }
+            authStage.row = row;
             authStage.built = true;
         }
 
-        function fillAuthScene(scene) {
-            const a = authStage.agent;
-            if (!a) return;
-            const copy = t(`auth_stage.scenes.${scene.key}`);
-            const c = copy && typeof copy === 'object' ? copy : {};
-            a.querySelector('.stage-row-in img').src = authStageFile(scene.channel);
-            a.querySelector('.stage-row-in .stage-bubble').textContent = c.customer || '';
-            a.querySelector('[data-k="think"] .stage-shimmer').textContent = t('auth_stage.thinking');
-            a.querySelectorAll('.stage-chip-logo').forEach((el) => {
-                if (authStage.nodes.has(scene.tool)) {
-                    const img = document.createElement('img');
-                    img.alt = '';
-                    img.src = authStageFile(scene.tool);
-                    el.replaceChildren(img);
-                } else {
-                    el.innerHTML = AUTH_STAGE_ICONS[scene.tool] || '';
-                }
-            });
-            a.querySelector('[data-k="work"] .stage-shimmer').textContent = c.working || '';
-            a.querySelector('.stage-chip-text').textContent = c.done || '';
-            a.querySelector('.stage-row-out .stage-bubble').textContent = c.reply || '';
-        }
-
-        function authStageStatus(k) {
-            authStage.agent?.querySelectorAll('.stage-status > span').forEach((el) => el.classList.toggle('is-on', el.dataset.k === k));
-        }
-
-        function authStageRows(on) {
-            authStage.agent?.querySelectorAll('.stage-row').forEach((row) => {
-                const k = row.classList.contains('stage-row-in') ? 'in' : row.classList.contains('stage-row-out') ? 'out' : 'state';
-                row.classList.toggle('is-on', on.includes(k));
-            });
-        }
-
-        // The height a card needs for its longest text in the current
-        // language. Layout budgets that much space, so a card never grows
-        // into its neighbours; the card itself still fits its content (cards
-        // are anchored at their top, so a shorter one only leaves more air).
-        function measureAuthCard(card, fill, count) {
+        // The height a card needs for its longest comment in the current
+        // language, at this width. Layout budgets that much, so a card never
+        // grows into the wordmark or the row when its words change.
+        function measureAuthNote(note, w, f) {
+            const keep = Number(note.dataset.idx || 0);
+            const list = t('auth_stage.reviews');
+            const count = Array.isArray(list) ? list.length : 1;
+            note.style.setProperty('--w', `${w}px`);
+            note.style.setProperty('--f', `${f}px`);
+            note.style.visibility = 'hidden';
+            note.hidden = false;
             let tallest = 0;
             for (let i = 0; i < count; i += 1) {
-                fill(i);
-                tallest = Math.max(tallest, card.offsetHeight);
+                fillAuthNote(note, i);
+                tallest = Math.max(tallest, note.offsetHeight);
             }
+            fillAuthNote(note, keep);
+            note.hidden = true;
+            note.style.visibility = '';
             return tallest;
         }
 
-        function fillAuthReview(card, idx) {
-            const list = t('auth_stage.reviews');
-            if (!card || !Array.isArray(list) || !list.length) return;
-            const item = list[idx % list.length] || {};
-            card.querySelector('.stage-review-avatar').textContent = item.i || '';
-            const who = card.querySelector('.stage-review-who');
-            who.textContent = item.w || '';
-            who.hidden = !item.w;
-            card.querySelector('.stage-review-text').textContent = item.t || '';
-            card.querySelector('.stage-react').innerHTML = AUTH_STAGE_ICONS[AUTH_STAGE_REACTS[idx % AUTH_STAGE_REACTS.length]];
-            card.dataset.idx = String(idx);
-        }
-
-        // ---- Layout: every piece from measured space ---------------------------
         function layoutAuthStage() {
             const stage = document.getElementById('auth-stage');
             if (!stage || !authStage.built) return;
             const sr = stage.getBoundingClientRect();
             const W = sr.width;
             const H = sr.height;
-            const logoEl = authStage.logo;
-            const lr = logoEl ? logoEl.getBoundingClientRect() : null;
-            const rel = (r) => ({ x: r.left - sr.left, y: r.top - sr.top, w: r.width, h: r.height });
+            const lr = authStage.logo ? authStage.logo.getBoundingClientRect() : null;
             const wide = !!(window.matchMedia && window.matchMedia('(min-width: 880px)').matches);
-            const rtl = getComputedStyle(stage).direction === 'rtl';
-            // The trust strip on wide screens and the switches on phones are
-            // the only other things that share the stage's space.
-            let bottom = H;
-            const trustEl = document.querySelector('#auth-card .auth-trust');
-            if (trustEl && wide) {
-                const tr = rel(trustEl.getBoundingClientRect());
-                if (tr.y < H && tr.y + tr.h > 0) bottom = Math.min(bottom, tr.y - 10);
-            }
-            const inset = authClamp(Math.min(W, bottom) * 0.03, 8, 22);
-            const room = { x: inset, y: inset, w: W - inset * 2, h: bottom - inset * 2 };
-            let mode = 'off';
-            if (lr && lr.width > 0 && lr.height > 0) {
-                if (wide && room.w >= 280 && room.h >= 300) mode = 'hub';
-                else if (!wide && room.w >= 300 && room.h >= 104) mode = 'band';
-            }
-            authStage.mode = mode;
-            const nodesAll = [...authStage.nodes.values()];
-            if (mode === 'off') {
-                nodesAll.forEach((n) => { n.el.hidden = true; });
-                authStage.agent.hidden = true;
-                authStage.slots.forEach((c) => { c.hidden = true; });
-                authStage.svg.replaceChildren();
-                authStage.glow.hidden = true;
-                authStage.placed = [];
-                authStage.links = new Map();
+            const { row, notes } = authStage;
+            row.hidden = true;
+            notes.forEach((n) => { n.hidden = true; });
+            authStage.mode = 'off';
+            if (!lr || !lr.width || !lr.height || W < 240) return;
+            const logoTop = lr.top - sr.top;
+            const logoBottom = lr.bottom - sr.top;
+            const placeRow = (top, isz) => {
+                row.style.top = `${Math.round(top)}px`;
+                row.style.setProperty('--isz', `${isz}px`);
+                row.style.setProperty('--dur', `${((AUTH_STAGE_MARKS.length * isz * 1.55) / AUTH_STAGE_SPEED).toFixed(1)}s`);
+                row.hidden = false;
+            };
+            if (!wide) {
+                // Phones and tablets: the row at the foot of the band, which
+                // keeps that space free for it (--auth-row-h). A band too short
+                // for it (a landscape phone) shows the wordmark alone.
+                const isz = Math.round(authClamp(W * 0.07, 24, 34));
+                const top = H - 10 - isz;
+                if (top < logoBottom + 6) return;
+                placeRow(top, isz);
+                authStage.mode = 'band';
                 return;
             }
-            const logo = rel(lr);
-            const hub = { x: logo.x + logo.w / 2, y: logo.y + logo.h / 2 };
-            if (mode === 'hub') {
-                // On big panels the composition stays a centrepiece in
-                // proportion to the wordmark, rather than drifting to the
-                // corners; the rest of the panel is left as calm space.
-                const maxW = Math.max(600, logo.w * 2.5);
-                const maxH = maxW * 1.3;
-                const nx = Math.max(room.x, hub.x - maxW / 2);
-                const ny = Math.max(room.y, hub.y - maxH / 2);
-                room.w = Math.min(room.x + room.w, hub.x + maxW / 2) - nx;
-                room.h = Math.min(room.y + room.h, hub.y + maxH / 2) - ny;
-                room.x = nx;
-                room.y = ny;
+            // Wide screens: the room ends above the Meta line.
+            let foot = H;
+            const trustEl = document.querySelector('#auth-card .auth-trust');
+            if (trustEl) {
+                const tt = trustEl.getBoundingClientRect().top - sr.top;
+                if (tt < H) foot = tt - 16;
             }
-            const obstacles = [];
-            const toolsEl = document.querySelector('#auth-card .auth-brand-tools');
-            if (toolsEl && !wide) {
-                const tb = rel(toolsEl.getBoundingClientRect());
-                if (tb.w && authRectsOverlap(tb, { x: 0, y: 0, w: W, h: H })) obstacles.push(authInflate(tb, 8));
-            }
-            // Start and end of the reading direction, so Arabic mirrors.
-            const fromStart = (w, frac) => (rtl ? room.x + room.w - w - (room.w - w) * frac : room.x + (room.w - w) * frac);
-
-            // Cards (the wide panel only; on phones the form comes first).
-            const cards = [];
-            const place = (el, x, y, w, h) => {
-                el.style.left = `${Math.round(x)}px`;
-                el.style.top = `${Math.round(y)}px`;
-                cards.push({ el, x, y, w, h });
+            const inset = authClamp(W * 0.06, 16, 40);
+            const isz = Math.round(authClamp(W * 0.062, 28, 40));
+            const rowTop = logoBottom + authClamp(H * 0.08, 28, 88);
+            if (rowTop + isz > foot) return;
+            placeRow(rowTop, isz);
+            authStage.mode = 'hub';
+            // The comments: one above the wordmark on the side reading starts
+            // from, one below the row on the other side, each only where the
+            // tallest comment fits.
+            const f = Math.round(authClamp(W * 0.024, 13, 15.5) * 2) / 2;
+            const w = Math.round(Math.min(authClamp(W * 0.6, 240, 360), W - inset * 2));
+            if (w < 220) return;
+            const tallest = measureAuthNote(notes[0], w, f);
+            measureAuthNote(notes[1], w, f);
+            const rtl = getComputedStyle(stage).direction === 'rtl';
+            const place = (note, x, y) => {
+                note.style.left = `${Math.round(x)}px`;
+                note.style.top = `${Math.round(y)}px`;
+                note.hidden = false;
             };
-            const agent = authStage.agent;
-            const [slotA, slotB] = authStage.slots;
-            [agent, slotA, slotB].forEach((el) => { el.hidden = true; });
-            let aboveTop = room.y;
-            if (mode === 'hub') {
-                const logoSafe = authInflate(logo, 18);
-                const agentW = Math.min(292, room.w - 12);
-                agent.style.setProperty('--w', `${agentW}px`);
-                agent.hidden = false;
-                const shown = AUTH_STAGE_SCENES[Math.max(0, authStage.scene - 1) % AUTH_STAGE_SCENES.length];
-                const agentH = measureAuthCard(agent, (i) => fillAuthScene(AUTH_STAGE_SCENES[i]), AUTH_STAGE_SCENES.length);
-                fillAuthScene(shown);
-                const below = room.y + room.h - (logo.y + logo.h);
-                const gapBelow = Math.max(24, Math.min((below - agentH) * 0.52, 190));
-                if (agentW >= 236 && below - agentH >= 24) {
-                    place(agent, fromStart(agentW, 0.12), logo.y + logo.h + gapBelow, agentW, agentH);
-                } else {
-                    agent.hidden = true;
-                }
-                const reviewW = Math.min(258, room.w - 12);
-                const above = logo.y - room.y;
-                [slotA, slotB].forEach((el) => { el.style.setProperty('--w', `${reviewW}px`); });
-                slotA.hidden = false;
-                const reviewCount = (t('auth_stage.reviews') || []).length || 1;
-                const keepA = Number(slotA.dataset.idx || 0);
-                const reviewH = measureAuthCard(slotA, (i) => fillAuthReview(slotA, i), reviewCount);
-                fillAuthReview(slotA, keepA);
-                if (reviewW >= 236 && above - reviewH >= 20) {
-                    const ya = room.y + Math.max(0, (above - reviewH - 20) * 0.28);
-                    place(slotA, fromStart(reviewW, 0.9), ya, reviewW, reviewH);
-                    aboveTop = ya + reviewH;
-                    // A second slot, lower and on the other side, only where
-                    // both fit side by side without touching.
-                    if (room.w >= reviewW * 2 + 32 && above - reviewH >= 20) {
-                        slotB.hidden = false;
-                        const yb = Math.min(ya + reviewH * 0.62, logo.y - 20 - reviewH);
-                        if (yb >= room.y) place(slotB, fromStart(reviewW, 0.04), yb, reviewW, reviewH);
-                        else slotB.hidden = true;
-                    }
-                } else {
-                    slotA.hidden = true;
-                }
-                // Any card that ended up against the wordmark is dropped.
-                for (let i = cards.length - 1; i >= 0; i -= 1) {
-                    if (authRectsOverlap(cards[i], logoSafe)) { cards[i].el.hidden = true; cards.splice(i, 1); }
-                }
-            }
-            cards.forEach((c) => obstacles.push(authInflate(c, 12)));
-
-            // Orbits. Every slot is an offset from the hub; a slot is used
-            // only if its tile stays inside the room and clear of the logo,
-            // the switches, the cards and the other tiles.
-            const s1 = Math.round(mode === 'hub' ? authClamp(Math.min(room.w, room.h * 0.85) * 0.078, 34, 54) : authClamp(room.h * 0.22, 28, 42));
-            const s2 = Math.round(s1 * 0.84);
-            const s3 = Math.round(s1 * 0.7);
-            const safe = Math.max(12, s1 * 0.3);
-            const lw = logo.w / 2;
-            const lh = logo.h / 2;
-            const rings = [];
-            const angled = (rx, ry, angles) => angles.map((a) => {
-                const r = (a * Math.PI) / 180;
-                return [rx * Math.cos(r), ry * Math.sin(r)];
-            });
-            if (mode === 'hub') {
-                const rx1 = lw + s1 / 2 + Math.max(26, s1 * 0.8);
-                const ry1 = (lh + safe + s1 / 2) / Math.SQRT1_2 + 6;
-                const rx2 = rx1 + s2 + 30;
-                const ry2 = ry1 + s2 + 34;
-                const rx3 = rx2 + s3 * 0.6;
-                const ry3 = ry2 + s3 + 30;
-                rings.push({ s: s1, o: 1, rx: rx1, ry: ry1, slots: angled(rx1, ry1, [-135, -45, 45, 135, 180, 0, -90, 90]) });
-                rings.push({ s: s2, o: .94, rx: rx2, ry: ry2, slots: angled(rx2, ry2, [-90, 90, -162, -18, 162, 18, -126, -54, 126, 54]) });
-                rings.push({ s: s3, o: .8, rx: rx3, ry: ry3, slots: angled(rx3, ry3, [-110, -70, 110, 70, -150, -30, 150, 30, 180, 0]) });
-            } else {
-                // A band: wings either side of the wordmark. Slots come in
-                // mirrored pairs and a pair is used whole or not at all, so the
-                // wings always balance (the switches block one corner).
-                const near = lw + s1 / 2 + Math.max(16, s1 * 0.45);
-                const mid = near + s1 * 0.5 + s2 / 2 + 22;
-                const far = mid + s2 / 2 + s3 / 2 + 20;
-                const lift = Math.min(room.h / 2 - s2 / 2 - 2, s2 * 0.95);
-                rings.push({ s: s1, o: 1, slots: [[-near, 0], [near, 0]], paired: true });
-                rings.push({ s: s2, o: .94, slots: [[-mid, -lift], [mid, -lift], [-mid, lift], [mid, lift]], paired: true });
-                rings.push({ s: s3, o: .8, slots: [[-far, 0], [far, 0]], paired: true });
-            }
-            const logoSafe = authInflate(logo, safe);
-            const placed = [];
-            const minGap = mode === 'hub' ? 14 : 10;
-            const fits = (x, y, s) => {
-                const box = { x: x - s / 2, y: y - s / 2, w: s, h: s };
-                if (box.x < room.x || box.y < room.y || box.x + box.w > room.x + room.w || box.y + box.h > room.y + room.h) return false;
-                if (authRectsOverlap(box, logoSafe)) return false;
-                if (obstacles.some((o) => authRectsOverlap(box, o))) return false;
-                return placed.every((p) => Math.hypot(p.x - x, p.y - y) >= (p.s + s) / 2 + minGap);
-            };
-            const roomy = room.w * room.h;
-            const maxNodes = mode === 'hub'
-                ? (roomy >= 380000 ? 15 : roomy >= 250000 ? 13 : 10)
-                : (room.w >= 560 ? 9 : room.w >= 380 ? 6 : 4);
-            const used = rings.map(() => new Set());
-            if (mode === 'band') {
-                // Pairs in order, filled with the next two logos by priority.
-                const queue = AUTH_STAGE_NODES.map(([id]) => id);
-                rings.forEach((ring, r) => {
-                    for (let j = 0; j + 1 < ring.slots.length; j += 2) {
-                        if (placed.length + 2 > maxNodes || queue.length < 2) return;
-                        const pair = [ring.slots[j], ring.slots[j + 1]].map(([dx, dy]) => ({ x: hub.x + (rtl ? -dx : dx), y: hub.y + dy }));
-                        if (!fits(pair[0].x, pair[0].y, ring.s)) continue;
-                        placed.push({ id: queue[0], x: pair[0].x, y: pair[0].y, s: ring.s, o: ring.o, ring: r + 1 });
-                        if (!fits(pair[1].x, pair[1].y, ring.s)) { placed.pop(); continue; }
-                        placed.push({ id: queue[1], x: pair[1].x, y: pair[1].y, s: ring.s, o: ring.o, ring: r + 1 });
-                        queue.splice(0, 2);
-                    }
-                });
-            }
-            for (const [id, pref] of (mode === 'band' ? [] : AUTH_STAGE_NODES)) {
-                if (placed.length >= maxNodes) break;
-                let done = false;
-                for (let r = pref - 1; r < rings.length && !done; r += 1) {
-                    const ring = rings[r];
-                    for (let j = 0; j < ring.slots.length; j += 1) {
-                        if (used[r].has(j)) continue;
-                        const [dx, dy] = ring.slots[j];
-                        const x = hub.x + (rtl ? -dx : dx);
-                        const y = hub.y + dy;
-                        if (fits(x, y, ring.s)) {
-                            placed.push({ id, x, y, s: ring.s, o: ring.o, ring: r + 1 });
-                            used[r].add(j);
-                            done = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            const placedIds = new Set(placed.map((p) => p.id));
-            nodesAll.forEach((n) => { if (!placedIds.has(n.el.dataset.id)) n.el.hidden = true; });
-            placed.forEach((p, i) => {
-                const n = authStage.nodes.get(p.id).el;
-                n.hidden = false;
-                n.style.left = `${Math.round(p.x)}px`;
-                n.style.top = `${Math.round(p.y)}px`;
-                n.style.setProperty('--s', `${p.s}px`);
-                n.style.setProperty('--o', String(p.o));
-                n.dataset.ring = String(p.ring);
-                n.style.setProperty('--in', `${(0.15 + i * 0.07).toFixed(2)}s`);
-            });
-
-            // Links: the nearest orbit to the hub, the outer ones to their
-            // nearest neighbour on the orbit inside. A link that would run
-            // under a card is left out.
-            const NS = 'http://www.w3.org/2000/svg';
-            const svg = authStage.svg;
-            svg.setAttribute('viewBox', `0 0 ${Math.round(W)} ${Math.round(H)}`);
-            const frag = document.createDocumentFragment();
-            // The glow's region is the whole stage, in user space: a region
-            // sized to a path's box is zero-tall for a level link.
-            const defs = document.createElementNS(NS, 'defs');
-            defs.innerHTML = '<linearGradient id="stage-orbit-silver" x1="0" y1="0" x2="1" y2="1">'
-                + '<stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".5" stop-color="#c9d2ea" stop-opacity=".06"/>'
-                + '<stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient>'
-                + `<filter id="stage-soft-glow" filterUnits="userSpaceOnUse" x="0" y="0" width="${Math.round(W)}" height="${Math.round(H)}">`
-                + '<feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
-            frag.appendChild(defs);
-            if (mode === 'hub') {
-                rings.slice(0, 2).forEach((ring) => {
-                    const e = document.createElementNS(NS, 'ellipse');
-                    e.setAttribute('class', 'stage-orbit');
-                    e.setAttribute('cx', hub.x.toFixed(1));
-                    e.setAttribute('cy', hub.y.toFixed(1));
-                    e.setAttribute('rx', ring.rx.toFixed(1));
-                    e.setAttribute('ry', ring.ry.toFixed(1));
-                    frag.appendChild(e);
-                });
-            }
-            const hubEdge = (tx, ty) => {
-                const dx = tx - hub.x;
-                const dy = ty - hub.y;
-                const ex = lw + 8;
-                const ey = lh + 8;
-                const k = 1 / Math.sqrt((dx / ex) ** 2 + (dy / ey) ** 2 || 1);
-                return { x: hub.x + dx * k, y: hub.y + dy * k };
-            };
-            const underCard = (pts) => pts.some((pt) => cards.some((c) => pt.x > c.x - 4 && pt.x < c.x + c.w + 4 && pt.y > c.y - 4 && pt.y < c.y + c.h + 4));
-            const links = new Map();
-            placed.forEach((p, i) => {
-                let a;
-                let fromId = null;
-                if (p.ring === 1) {
-                    a = hubEdge(p.x, p.y);
-                } else if (p.ring === 2) {
-                    const inner = placed.filter((q) => q.ring === 1);
-                    if (!inner.length) return;
-                    const q = inner.reduce((best, c) => (Math.hypot(c.x - p.x, c.y - p.y) < Math.hypot(best.x - p.x, best.y - p.y) ? c : best));
-                    const d = Math.hypot(q.x - p.x, q.y - p.y);
-                    a = { x: q.x + ((p.x - q.x) / d) * (q.s / 2 + 5), y: q.y + ((p.y - q.y) / d) * (q.s / 2 + 5) };
-                    fromId = q.id;
-                } else {
-                    return;
-                }
-                const len = Math.hypot(p.x - a.x, p.y - a.y);
-                if (len < 12) return;
-                const b = { x: p.x - ((p.x - a.x) / len) * (p.s / 2 + 5), y: p.y - ((p.y - a.y) / len) * (p.s / 2 + 5) };
-                const mx = (a.x + b.x) / 2;
-                const my = (a.y + b.y) / 2;
-                const bend = (i % 2 ? 1 : -1) * len * 0.12;
-                const cx = mx + (-(b.y - a.y) / len) * bend;
-                const cy = my + ((b.x - a.x) / len) * bend;
-                const pts = [];
-                for (let s = 0; s <= 10; s += 1) {
-                    const u = s / 10;
-                    pts.push({ x: (1 - u) ** 2 * a.x + 2 * (1 - u) * u * cx + u * u * b.x, y: (1 - u) ** 2 * a.y + 2 * (1 - u) * u * cy + u * u * b.y });
-                }
-                if (underCard(pts)) return;
-                const d = `M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
-                const link = document.createElementNS(NS, 'path');
-                link.setAttribute('class', 'stage-link');
-                link.setAttribute('d', d);
-                const flow = document.createElementNS(NS, 'path');
-                flow.setAttribute('class', 'stage-flow');
-                flow.setAttribute('d', d);
-                flow.setAttribute('pathLength', '100');
-                frag.append(link, flow);
-                links.set(p.id, { link, flow, from: fromId });
-            });
-            svg.replaceChildren(frag);
-            authStage.links = links;
-            authStage.placed = placed;
-
-            const glow = authStage.glow;
-            glow.hidden = false;
-            glow.style.left = `${Math.round(hub.x)}px`;
-            glow.style.top = `${Math.round(hub.y)}px`;
-            glow.style.width = `${Math.round(logo.w * 1.7)}px`;
-            glow.style.height = `${Math.round(Math.max(logo.h * 3, logo.w * 0.7))}px`;
-            if (!authStage.ready) {
-                authStage.ready = true;
-                requestAnimationFrame(() => stage.classList.add('is-ready'));
-            }
+            const upTop = inset;
+            const upBottom = logoTop - 24;
+            if (upBottom - upTop >= tallest) place(notes[0], rtl ? W - inset - w : inset, upTop + (upBottom - upTop - tallest) * 0.45);
+            const downTop = rowTop + isz + 24;
+            if (foot - downTop >= tallest) place(notes[1], rtl ? inset : W - inset - w, downTop + (foot - downTop - tallest) * 0.5);
         }
 
         function scheduleAuthStageLayout() {
@@ -41027,7 +40475,7 @@
             });
         }
 
-        // ---- Motion: one scene at a time, comments on their own clocks -----------
+        // ---- Motion: the row slides (CSS); each comment changes on its own clock.
         function authStageAt(ms, fn) {
             const id = setTimeout(() => {
                 authStage.timers = authStage.timers.filter((x) => x !== id);
@@ -41044,131 +40492,46 @@
             authStage.timers.forEach(clearTimeout);
             authStage.timers = [];
             authStage.running = false;
-            authStage.logo?.classList.remove('is-thinking');
-            authStage.glow?.classList.remove('is-thinking');
-            authStage.agent?.classList.remove('is-working');
         }
 
-        // A tile lights and light runs along its link: 'in' toward the hub,
-        // 'out' away from it.
-        function authStageLight(id, dir, keep) {
-            const n = authStage.nodes.get(id);
-            if (!n || n.el.hidden) return;
-            n.el.classList.add('is-lit');
-            authStageAt(keep || 1800, () => n.el.classList.remove('is-lit'));
-            const l = authStage.links.get(id);
-            if (!l) return;
-            l.link.classList.add('is-lit');
-            authStageAt(keep || 1800, () => l.link.classList.remove('is-lit'));
-            if (!dir) return;
-            l.flow.classList.remove('is-in', 'is-out');
-            void l.flow.getBoundingClientRect();
-            l.flow.classList.add(dir === 'in' ? 'is-in' : 'is-out');
-        }
-
-        function playAuthScene() {
-            if (!authStageCanRun()) { authStageStop(); return; }
-            const scene = AUTH_STAGE_SCENES[authStage.scene % AUTH_STAGE_SCENES.length];
-            authStage.scene += 1;
-            const agent = authStage.agent;
-            const card = agent && !agent.hidden;
-            if (card) { fillAuthScene(scene); authStageRows([]); authStageStatus(''); }
-            authStageLight(scene.channel, 'in');
-            if (card) authStageAt(120, () => authStageRows(['in']));
-            authStageAt(1300, () => {
-                authStage.logo?.classList.add('is-thinking');
-                authStage.glow?.classList.add('is-thinking');
-                agent?.classList.add('is-working');
-                if (card) { authStageRows(['in', 'state']); authStageStatus('think'); }
-                authStageLight(scene.ai, 'out', 2000);
-            });
-            authStageAt(2250, () => authStageLight(scene.ai, 'in', 1200));
-            authStageAt(2950, () => {
-                if (card) authStageStatus('work');
-                const toolLink = authStage.links.get(scene.tool);
-                if (toolLink && toolLink.from) authStageLight(toolLink.from, null, 1400);
-                authStageLight(scene.tool, 'out', 1900);
-            });
-            authStageAt(4350, () => { if (card) authStageStatus('done'); });
-            authStageAt(5000, () => {
-                authStage.logo?.classList.remove('is-thinking');
-                authStage.glow?.classList.remove('is-thinking');
-                agent?.classList.remove('is-working');
-            });
-            authStageAt(5250, () => {
-                if (card) authStageRows(['in', 'state', 'out']);
-                authStageLight(scene.channel, 'out');
-            });
-            authStageAt(8700, () => { if (card) authStageRows([]); });
-            authStageAt(9500, playAuthScene);
-        }
-
-        // Now and then a tile further out catches the light, and sometimes a
-        // message runs between two tools: systems talking in the background.
-        const AUTH_STAGE_AMBIENT = Object.freeze([3100, 4200, 2700, 3800, 4600, 3300]);
-        function playAuthAmbient(step) {
+        // Fade the comment out, give it the next words, fade it back in.
+        function playAuthNote(note, times) {
+            const [shown, gap] = times;
             if (!authStageCanRun()) return;
-            const pool = authStage.placed.filter((p) => p.ring > 1);
-            if (pool.length) {
-                const p = pool[(step * 5) % pool.length];
-                const n = authStage.nodes.get(p.id).el;
-                n.classList.add('is-shine');
-                authStageAt(1600, () => n.classList.remove('is-shine'));
-                if (step % 2 === 0) authStageLight(p.id, 'out', 1500);
-            }
-            authStageAt(AUTH_STAGE_AMBIENT[step % AUTH_STAGE_AMBIENT.length], () => playAuthAmbient(step + 1));
-        }
-
-        // Each comment slot keeps its own rhythm, so they rarely change together.
-        const AUTH_STAGE_SLOT_TIMES = Object.freeze([[6800, 2600, 400], [6200, 3400, 4600]]);
-        function playAuthReview(card, hold, rest) {
-            if (!authStageCanRun()) return;
-            if (!card || card.hidden || !card.getClientRects().length) {
-                authStageAt(rest + hold, () => playAuthReview(card, hold, rest));
+            if (!note || note.hidden || !note.getClientRects().length) {
+                authStageAt(shown + gap, () => playAuthNote(note, times));
                 return;
             }
-            fillAuthReview(card, authStage.review);
-            authStage.review += 1;
-            card.classList.add('is-in');
-            authStageAt(hold, () => {
-                card.classList.remove('is-in');
-                authStageAt(rest, () => playAuthReview(card, hold, rest));
+            note.classList.remove('is-in');
+            authStageAt(gap, () => {
+                fillAuthNote(note, authStage.review);
+                authStage.review += 1;
+                note.classList.add('is-in');
+                authStageAt(shown, () => playAuthNote(note, times));
             });
+        }
+
+        // Every comment on screen, standing still: motion switched off,
+        // paused, or before the first change.
+        function authStageStill() {
+            authStage.notes.concat(authStage.trust || []).forEach((note) => note.classList.add('is-in'));
         }
 
         function authStageStart() {
             if (authStage.running || !authStageCanRun()) return;
             authStage.running = true;
-            authStage.nodes.forEach((n) => n.el.classList.remove('is-lit', 'is-shine'));
-            authStage.links.forEach((l) => { l.link.classList.remove('is-lit'); l.flow.classList.remove('is-in', 'is-out'); });
-            authStage.slots.concat(authStage.trust || []).forEach((card) => card.classList.remove('is-in'));
-            playAuthScene();
-            authStageAt(2000, () => playAuthAmbient(0));
-            authStage.slots.forEach((card, i) => {
-                const [hold, rest, delay] = AUTH_STAGE_SLOT_TIMES[i];
-                authStageAt(delay, () => playAuthReview(card, hold, rest));
+            authStageStill();
+            authStage.notes.forEach((note, i) => {
+                const times = AUTH_STAGE_NOTE_TIMES[i];
+                authStageAt(times[2], () => playAuthNote(note, times));
             });
-            if (authStage.trust) authStageAt(600, () => playAuthReview(authStage.trust, 6500, 900));
-        }
-
-        // Motion off (asked for, or paused): one finished scene and one comment
-        // per slot, standing still.
-        function authStageStill() {
-            const agent = authStage.agent;
-            if (agent) {
-                fillAuthScene(AUTH_STAGE_SCENES[0]);
-                authStageRows(['in', 'state', 'out']);
-                authStageStatus('done');
-            }
-            authStage.slots.forEach((card, i) => { fillAuthReview(card, i); card.classList.add('is-in'); });
-            if (authStage.trust) { fillAuthReview(authStage.trust, 0); authStage.trust.classList.add('is-in'); }
+            if (authStage.trust) authStageAt(AUTH_STAGE_TRUST_TIMES[2], () => playAuthNote(authStage.trust, AUTH_STAGE_TRUST_TIMES));
         }
 
         function authStageSync() {
             if (!authStage.built) return;
             if (authStage.trust) authStage.trust.hidden = false;
-            if (authStageReduced()) { authStageStop(); authStageStill(); return; }
-            if (authStage.paused) return;
+            if (authStageReduced() || authStage.paused) { authStageStop(); authStageStill(); return; }
             if (authStageCanRun()) authStageStart();
             else authStageStop();
         }
@@ -41185,8 +40548,7 @@
                 const label = btn.querySelector('.auth-sr');
                 if (label) { label.setAttribute('data-i18n', key); label.textContent = t(key); }
             }
-            if (authStage.paused) authStageStop();
-            else authStageSync();
+            authStageSync();
         }
 
         // Called from renderAuthCard(): builds once, then keeps the words in
@@ -41218,11 +40580,9 @@
                 document.getElementById('auth-motion-btn')?.addEventListener('click', () => setAuthStagePaused(!authStage.paused));
             }
             // A language switch: whatever is on screen now speaks the new one.
-            authStage.slots.concat(authStage.trust || []).forEach((card) => {
-                if (card.dataset.idx) fillAuthReview(card, Number(card.dataset.idx));
+            authStage.notes.concat(authStage.trust || []).forEach((note) => {
+                if (note.dataset.idx) fillAuthNote(note, Number(note.dataset.idx));
             });
-            const current = AUTH_STAGE_SCENES[(authStage.scene + AUTH_STAGE_SCENES.length - 1) % AUTH_STAGE_SCENES.length];
-            if (authStage.scene > 0) fillAuthScene(current);
             scheduleAuthStageLayout();
         }
 

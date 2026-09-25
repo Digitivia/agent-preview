@@ -34509,10 +34509,10 @@
         <style id="lp-light">
             #landing-page {
                 --sp-bg: #f5f6fb; --sp-surface: #ffffff; --sp-surface-2: #eef1f6; --sp-surface-3: #e4e8f0; --sp-line: #e3e6ee; --sp-line-2: #ccd2dd;
-                --sp-ink: #0f1330; --sp-ink-2: #4a5068; --sp-ink-3: #5f6580; --sp-accent: #2a8184; --sp-accent-hover: #1f6f72; --sp-accent-ink: #ffffff; --sp-accent-soft: #e6f2f2;
-                --sp-focus: #1f6f71; --theme-color: #2a8184; --glass-bg: #ffffff; --glass-border: rgba(15, 19, 48, .08); --bg-dark: #f5f6fb; --bg-surface: #ffffff;
-                --text-main: #0f1330; --text-muted: #565c7a; --text-primary: #0f1330; --text-secondary: #565c7a;
-                --lp-ink: #0f1330; --lp-ink-2: #2b3052; --lp-mut: #565c7a; --lp-line: rgba(15, 19, 48, .08);
+                --sp-ink: #121318; --sp-ink-2: #4a5068; --sp-ink-3: #5f6580; --sp-accent: #18174e; --sp-accent-hover: #100f3a; --sp-accent-ink: #ffffff; --sp-accent-soft: #ecebf5;
+                --sp-focus: #18174e; --theme-color: #18174e; --glass-bg: #ffffff; --glass-border: rgba(15, 19, 48, .08); --bg-dark: #f5f6fb; --bg-surface: #ffffff;
+                --text-main: #121318; --text-muted: #565c7a; --text-primary: #121318; --text-secondary: #565c7a;
+                --lp-ink: #121318; --lp-ink-2: #2b3052; --lp-mut: #565c7a; --lp-line: rgba(15, 19, 48, .08);
                 --lp-card-shadow: 0 1px 2px rgba(20, 24, 60, .05), 0 18px 40px -26px rgba(20, 24, 60, .3), 0 0 0 1px rgba(15, 19, 48, .06);
                 --lp-ease: cubic-bezier(.22, 1, .36, 1);
                 background: #f5f6fb; background-image: none; color: var(--lp-ink); color-scheme: light;
@@ -34543,7 +34543,8 @@
             #landing-page .lp-menu a, #landing-page .lp-menu button.lpx-login-link { color: var(--lp-ink); font-weight: 500; }
             @media (max-width: 1100px) { #landing-page .lp-nav { padding-inline: 32px; } }
             @media (max-width: 600px) { #landing-page .lp-nav { padding-inline: 18px; } }
-            #landing-page .lp-scroll-progress { height: 2px; background: #2a8184; }
+            #landing-page .lp-scroll-progress { height: 2px; background: #18174e; }
+            #landing-page .lp-menu-btn:hover, #landing-page .lp-menu a:hover, #landing-page .lp-menu button.lpx-login-link:hover { background: rgba(24, 23, 78, .06); }
 
             /* ---- one rhythm for every section ---- */
             #landing-page .lps { position: relative; box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(18px, 4vw, 40px) 0; }
@@ -34566,7 +34567,7 @@
             #landing-page .lp-feature-card { padding: 24px; }
             #landing-page .lp-feature-card h3 { font-size: 17px; font-weight: 700; margin: 14px 0 6px; }
             #landing-page .lp-feature-card p { font-size: 14.5px; line-height: 1.6; margin: 0; }
-            #landing-page .lp-feature-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #1f6f72; background: #e7f3f3; transition: transform .5s var(--lp-ease), background-color .35s ease, color .35s ease; }
+            #landing-page .lp-feature-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #18174e; background: #ecebf5; transition: transform .5s var(--lp-ease), background-color .35s ease, color .35s ease; }
             #landing-page .lp-feature-icon svg { width: 22px; height: 22px; }
             #landing-page :is(.lp-features-grid, .lp-glimpse-grid) { gap: 16px; }
             /* Grids fill their row instead of leaving one card alone on the next line. */
@@ -34580,23 +34581,23 @@
             #landing-page #lp-stats-strip .lp-stat { padding: 20px 22px; min-width: 0; text-align: start; }
             #landing-page .lp-stat-num { font-family: "Cairo", "Inter", sans-serif; font-weight: 800; color: var(--lp-ink); line-height: 1.1; }
             #landing-page .lp-stat-label { color: var(--lp-mut); font-size: 13.5px; }
-            #landing-page .lp-stat-icon { color: #2a8184; }
+            #landing-page .lp-stat-icon { color: #18174e; }
 
             /* ---- one button family ---- */
             #landing-page .lp-btn { border-radius: 14px; font-weight: 700; transition: transform .3s var(--lp-ease), box-shadow .3s ease; }
-            #landing-page .lp-btn-primary { color: #fff; border: 0; background: #247d80; box-shadow: 0 14px 28px -14px rgba(34, 118, 121, .85); }
-            #landing-page .lp-final-panel { background: #0e3a3c; }
-            #landing-page .lp-final-panel .lp-btn-primary { background: #e8f4f4; color: #0b2426; box-shadow: none; }
+            #landing-page .lp-btn-primary { color: #fff; border: 0; background: linear-gradient(180deg, #2e2d68 0%, #18174e 100%); box-shadow: 0 14px 28px -14px rgba(24, 23, 78, .85); }
+            #landing-page .lp-final-panel { background: #18174e; }
+            #landing-page .lp-final-panel .lp-btn-primary { background: #ffffff; color: #18174e; box-shadow: none; }
             #landing-page .lp-btn-outline { color: var(--lp-ink); background: #fff; border: 0; box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px var(--lp-line); }
-            #landing-page .lp-btn-outline:hover { box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px rgba(42, 129, 132, .45); }
+            #landing-page .lp-btn-outline:hover { box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px rgba(24, 23, 78, .45); }
 
             /* ---- sections with their own parts ---- */
             #landing-page .lp-agent-card { padding: 28px; }
             #landing-page .lp-how-step { padding: 24px; }
-            #landing-page .lp-how-num { color: #fff; background: #2a8184; }
+            #landing-page .lp-how-num { color: #fff; background: #18174e; }
             #landing-page .lp-price-card { padding: 28px; }
-            #landing-page .lp-price-card.popular { box-shadow: 0 0 0 2px #2a8184, 0 30px 60px -30px rgba(42, 129, 132, .55); }
-            #landing-page .lp-popular-tag { color: #fff; background: #2a8184; }
+            #landing-page .lp-price-card.popular { box-shadow: 0 0 0 2px #18174e, 0 30px 60px -30px rgba(24, 23, 78, .55); }
+            #landing-page .lp-popular-tag { color: #fff; background: #18174e; }
             #landing-page .lp-price-amount { color: var(--lp-ink); font-family: "Cairo", "Inter", sans-serif; }
             #landing-page .lp-faq-item { padding: 0; overflow: hidden; }
             #landing-page .lp-faq-q { color: var(--lp-ink); font-weight: 600; background: none; }
@@ -34617,7 +34618,7 @@
                costs the scroll anything; people who ask for less motion get a still page. ---- */
             #landing-page > section, #landing-page > footer { position: relative; z-index: 1; }
             #landing-page .lps > .lp-section-title { display: block; }
-            #landing-page .lps > .lp-section-title::before { content: ""; display: block; width: 36px; height: 3px; border-radius: 2px; background: #2a8184; margin: 0 auto 16px; }
+            #landing-page .lps > .lp-section-title::before { content: ""; display: block; width: 36px; height: 3px; border-radius: 2px; background: #18174e; margin: 0 auto 16px; }
             #landing-page .lp-align-start > .lp-section-title::before { margin-inline: 0; }
             @media (prefers-reduced-motion: no-preference) {
                 #landing-page.lp-motion [data-rv] { opacity: 0; translate: 0 34px; scale: .985;
@@ -34628,20 +34629,20 @@
             }
             @media (hover: hover) {
                 #landing-page :is(.lp-feature-card, .lp-agent-card, .lp-price-card, .lp-glimpse-card, .lp-stat, .lp-how-step, .lp-trust-badge):hover {
-                    transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(42, 129, 132, .35), 0 30px 50px -28px rgba(20, 24, 60, .45); }
+                    transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(24, 23, 78, .35), 0 30px 50px -28px rgba(20, 24, 60, .45); }
                 #landing-page :is(.lp-stat, .lp-how-step, .lp-trust-badge) { transition: transform .5s var(--lp-ease), box-shadow .5s ease; }
-                #landing-page .lp-feature-card:hover .lp-feature-icon { background: #247d80; color: #fff; transform: scale(1.06) rotate(-6deg); }
-                #landing-page .lp-stat:hover .lp-stat-num { color: #1f6f72; }
+                #landing-page .lp-feature-card:hover .lp-feature-icon { background: #18174e; color: #fff; transform: scale(1.06) rotate(-6deg); }
+                #landing-page .lp-stat:hover .lp-stat-num { color: #18174e; }
                 #landing-page .lp-faq-item { transition: box-shadow .35s ease; }
-                #landing-page .lp-faq-item:hover { box-shadow: 0 0 0 1px rgba(42, 129, 132, .35), var(--lp-card-shadow); }
-                #landing-page .lp-btn-primary:hover { transform: translateY(-2px); background: #1c6a6d; box-shadow: 0 20px 34px -14px rgba(28, 106, 109, .9); }
-                #landing-page .lp-btn-outline:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .4), 0 0 0 1px rgba(42, 129, 132, .45); }
+                #landing-page .lp-faq-item:hover { box-shadow: 0 0 0 1px rgba(24, 23, 78, .35), var(--lp-card-shadow); }
+                #landing-page .lp-btn-primary:hover { transform: translateY(-2px); background: #100f3a; box-shadow: 0 20px 34px -14px rgba(16, 15, 58, .9); }
+                #landing-page .lp-btn-outline:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .4), 0 0 0 1px rgba(24, 23, 78, .45); }
                 #landing-page .lp-final-panel .lp-btn-primary:hover { background: #ffffff; }
                 #landing-page .lpx-marquee .lp-logo-item { transition: transform .4s var(--lp-ease), box-shadow .4s ease; }
-                #landing-page .lpx-marquee .lp-logo-item:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 0 1px rgba(42, 129, 132, .4), 0 14px 24px -16px rgba(20, 24, 60, .4); }
+                #landing-page .lpx-marquee .lp-logo-item:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 0 1px rgba(24, 23, 78, .4), 0 14px 24px -16px rgba(20, 24, 60, .4); }
             }
             /* the top bar's links: a solid underline that grows from the middle */
-            #landing-page .lp-nav-links a:not(.lp-btn)::after { display: block; content: ""; position: absolute; left: 12px; right: 12px; bottom: 8px; height: 2px; border-radius: 2px; background: #2a8184; transform: scaleX(0); transition: transform .35s var(--lp-ease); }
+            #landing-page .lp-nav-links a:not(.lp-btn)::after { display: block; content: ""; position: absolute; left: 12px; right: 12px; bottom: 8px; height: 2px; border-radius: 2px; background: #18174e; transform: scaleX(0); transition: transform .35s var(--lp-ease); }
             #landing-page .lp-nav-links a:not(.lp-btn):hover::after, #landing-page .lp-nav-links a:not(.lp-btn):focus-visible::after { transform: scaleX(1); }
             #landing-page .lp-nav-links a:not(.lp-btn):hover { background: none; }
             /* the platforms drifting in the margins, from the hero's wall down the page */
@@ -34927,8 +34928,8 @@
         <section class="hx" id="landing-top" aria-labelledby="hx-title">
             <style>
                 .hx {
-                    --ink: #0f1330; --ink-2: #2b3052; --mut: #565c7a; --dim: #878ca6; --line: rgba(15, 19, 48, .08);
-                    --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #1f6f72; --ok: #11845a;
+                    --ink: #121318; --ink-2: #2b3052; --mut: #565c7a; --dim: #878ca6; --line: rgba(15, 19, 48, .08);
+                    --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #18174e; --ok: #11845a;
                     --shadow-1: 0 1px 2px rgba(20, 24, 60, .06), 0 10px 24px -14px rgba(20, 24, 60, .22);
                     --ease: cubic-bezier(.22, 1, .36, 1);
                     position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink); background: var(--ground);
@@ -34938,42 +34939,52 @@
                 [dir="rtl"] .hx { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
                 .hx * { box-sizing: border-box; }
                 .hx-logos { position: absolute; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-                .hx-logos canvas { position: absolute; display: block; }
+                .hx .ft { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: calc(var(--s) * .28); display: grid; place-items: center; background: #fff;
+                    box-shadow: 0 0 0 1px rgba(15, 19, 48, .05), 0 16px 30px -18px rgba(20, 24, 60, .4); opacity: var(--o, 1); animation: hx-float var(--dur, 9s) ease-in-out var(--del, 0s) infinite; will-change: transform; }
+                .hx .ft img { width: 52%; height: 52%; object-fit: contain; display: block; }
+                .hx .ft[data-id="woocommerce"] img { width: 76%; height: 76%; } .hx .ft[data-id="n8n"] img { width: 64%; height: 64%; }
+                /* a ring that lights a tile in turn, and whenever its app is answering */
+                .hx .ft::after { content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; opacity: 0;
+                    box-shadow: 0 0 0 2px rgba(24, 23, 78, .55), 0 0 0 8px rgba(24, 23, 78, .08); animation: hx-act 12s ease-in-out var(--act, 0s) infinite; }
+                .hx .ft.is-on::after { animation: none; opacity: 1; transition: opacity .4s ease; }
+                @keyframes hx-float { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r0, -3deg)); } 50% { transform: translate3d(0, -14px, 0) rotate(var(--r1, 3deg)); } }
+                @keyframes hx-act { 0%, 82%, 100% { opacity: 0; } 87%, 93% { opacity: 1; } }
                 .hx-body { position: relative; z-index: 2; flex: 1 0 auto; width: 100%; max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; align-content: center; padding: 28px 56px 60px; }
                 .hx-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: center; }
                 .hx-eyebrow { display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%; padding: 5px 14px 5px 5px; border-radius: 999px; background: rgba(255, 255, 255, .85); box-shadow: var(--shadow-1), 0 0 0 1px var(--line); font-size: 13px; font-weight: 600; color: var(--ink-2); }
                 .hx-eyebrow .eb-s { display: none; }
-                .hx-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(42, 129, 132, .1); color: var(--teal-2); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+                .hx-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(24, 23, 78, .1); color: var(--teal-2); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
                 [dir="rtl"] .hx-live { letter-spacing: 0; }
                 .hx-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #1fbf7f; animation: hx-ping 1.8s ease-in-out infinite; }
                 /* opacity only, so the blink never repaints */
                 @keyframes hx-ping { 50% { opacity: .35; } }
                 .hx h1 { margin: 0; font-family: "Cairo", "Inter", system-ui, sans-serif; font-weight: 800; font-size: clamp(34px, 4.3cqw, 64px); line-height: 1.06; letter-spacing: -.025em; text-wrap: balance; color: var(--ink); }
                 [dir="rtl"] .hx h1 { letter-spacing: 0; line-height: 1.25; font-size: clamp(32px, 3.5cqw, 52px); }
-                .hx h1 em { font-style: normal; color: #1f8a8c; }
+                .hx h1 em { font-style: normal; background: linear-gradient(90deg, #18174e 0%, #3b3a92 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+                [dir="rtl"] .hx h1 em { background-image: linear-gradient(270deg, #18174e 0%, #3b3a92 100%); }
                 .hx-sub { margin: 0; font-size: clamp(16px, 1.25cqw, 18.5px); line-height: 1.6; color: var(--mut); max-width: 58ch; }
                 .hx-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
                 .hx-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
-                .hx-btn:focus-visible { outline: 2px solid #2a8184; outline-offset: 3px; }
-                .hx-btn-p { color: #fff; background: #247d80; box-shadow: 0 14px 28px -14px rgba(34, 118, 121, .9); transition: transform .35s var(--ease), box-shadow .35s ease, background-color .25s ease; }
+                .hx-btn:focus-visible { outline: 2px solid #18174e; outline-offset: 3px; }
+                .hx-btn-p { color: #fff; background: linear-gradient(180deg, #2e2d68 0%, #18174e 100%); box-shadow: 0 14px 28px -14px rgba(24, 23, 78, .9); transition: transform .35s var(--ease), box-shadow .35s ease, background-color .25s ease; }
                 .hx-btn-s { transition: transform .35s var(--ease), box-shadow .35s ease; }
                 @media (hover: hover) {
-                    .hx-btn-p:hover { transform: translateY(-2px); background: #1c6a6d; box-shadow: 0 20px 34px -14px rgba(28, 106, 109, .9); }
-                    .hx-btn-s:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .45), 0 0 0 1px rgba(42, 129, 132, .45); }
-                    .hx-btn-s:hover .pl { background: #247d80; } .hx-btn-s:hover .pl svg { fill: #fff; }
+                    .hx-btn-p:hover { transform: translateY(-2px); background: #100f3a; box-shadow: 0 20px 34px -14px rgba(16, 15, 58, .9); }
+                    .hx-btn-s:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .45), 0 0 0 1px rgba(24, 23, 78, .45); }
+                    .hx-btn-s:hover .pl { background: #18174e; } .hx-btn-s:hover .pl svg { fill: #fff; }
                     .hx-btn:active { transform: translateY(0); }
                 }
                 .hx-btn-s { color: var(--ink); background: #fff; box-shadow: var(--shadow-1), 0 0 0 1px var(--line); padding-inline-start: 10px; }
-                .hx-btn-s .pl { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(42, 129, 132, .1); transition: background-color .3s ease; }
+                .hx-btn-s .pl { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(24, 23, 78, .1); transition: background-color .3s ease; }
                 .hx-btn-s svg { width: 14px; height: 14px; fill: var(--teal-2); }
                 [dir="rtl"] .hx-btn-s svg { transform: scaleX(-1); }
                 .hx-micro { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--mut); }
                 .hx-micro span { display: inline-flex; align-items: center; gap: 7px; }
-                .hx-micro span::before { content: ""; width: 15px; height: 15px; border-radius: 50%; background: rgba(42, 129, 132, .12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231f6f72' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center / 10px no-repeat; }
+                .hx-micro span::before { content: ""; width: 15px; height: 15px; border-radius: 50%; background: rgba(24, 23, 78, .12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2318174e' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center / 10px no-repeat; }
                 .hx-visual { position: relative; min-width: 0; }
                 .hx-pause { position: absolute; z-index: 3; inset-block-end: 16px; inset-inline-start: 56px; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; font: inherit; font-size: 12px; font-weight: 600; color: var(--mut); background: rgba(255, 255, 255, .85); box-shadow: 0 0 0 1px var(--line); cursor: pointer; }
                 .hx-pause:hover { color: var(--ink); }
-                .hx-pause:focus-visible { outline: 2px solid #2a8184; outline-offset: 2px; }
+                .hx-pause:focus-visible { outline: 2px solid #18174e; outline-offset: 2px; }
                 .hx-pause svg { width: 12px; height: 12px; fill: currentColor; }
                 .hx-pause .i-play, .hx.is-paused .hx-pause .i-pause { display: none; }
                 .hx.is-paused .hx-pause .i-play { display: inline; }
@@ -35008,13 +35019,13 @@
                 .hx .cc-hub .mz { width: 30px; height: 30px; }
                 .hx .cc-beams { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; overflow: visible; }
                 .hx .cc-beam { fill: none; stroke: rgba(86, 92, 150, .22); stroke-width: 1.4; stroke-dasharray: 3 6; transition: stroke .5s ease; }
-                .hx .cc-beam.is-hot { stroke: rgba(42, 129, 132, .8); animation: hx-flow .8s linear infinite; }
+                .hx .cc-beam.is-hot { stroke: rgba(24, 23, 78, .8); animation: hx-flow .8s linear infinite; }
                 @keyframes hx-flow { to { stroke-dashoffset: -18; } }
                 .hx .cc-phone { position: absolute; top: 76px; left: 50%; width: 256px; height: 486px; padding: 7px; border-radius: 44px; z-index: 2; background: #121320;
                     box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 50px 80px -40px rgba(20, 24, 60, .55), 0 18px 30px -18px rgba(20, 24, 60, .35); transition: transform 1s var(--ease), opacity .7s ease; }
                 /* The busy glow is its own layer that only fades, so it never repaints the phone. */
                 .hx .cc-phone::after { content: ""; position: absolute; inset: -1px; border-radius: 44px; pointer-events: none; opacity: 0; transition: opacity .7s ease;
-                    box-shadow: 0 0 0 5px rgba(42, 129, 132, .16), 0 0 60px -12px rgba(42, 129, 132, .45); }
+                    box-shadow: 0 0 0 5px rgba(24, 23, 78, .16), 0 0 60px -12px rgba(24, 23, 78, .45); }
                 .hx .cc-phone.is-busy::after { opacity: 1; }
                 .hx .cc-scr { position: relative; height: 100%; border-radius: 37px; overflow: hidden; display: flex; flex-direction: column; }
                 .hx .cc-scr::before { content: ""; position: absolute; top: 9px; left: 50%; width: 76px; height: 22px; transform: translateX(-50%); border-radius: 999px; background: #121320; z-index: 3; }
@@ -35023,7 +35034,7 @@
                 .hx .cc-phone.pos-2 { transform: translateX(38%) translateY(36px) rotate(6deg) scale(.9); }
                 .hx .cc-status { display: flex; justify-content: space-between; padding: 12px 24px 6px; font-size: 11px; font-weight: 700; }
                 .hx .cc-app { display: flex; align-items: center; gap: 9px; padding: 8px 14px 10px; }
-                .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: #2a8184; }
+                .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: #18174e; }
                 .hx .cc-app .who { display: grid; min-width: 0; } .hx .cc-app .who b { font-size: 13px; } .hx .cc-app .who span { font-size: 10.5px; opacity: .65; }
                 .hx .cc-app .lg { margin-inline-start: auto; width: 20px; height: 20px; }
                 .hx .cc-body { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 12px; overflow: hidden; }
@@ -35145,92 +35156,41 @@
                     root.style.setProperty('--copy-x', Math.round(root.dir === 'rtl' || document.documentElement.dir === 'rtl' ? root.offsetWidth - x : x + c.offsetWidth) + 'px');
                     root.style.setProperty('--copy-y', Math.round(y + c.offsetHeight) + 'px');
                 }
-                // The stack behind, drawn on one flat canvas: tilted rows of logo tiles sliding in turn, nearer rows
-                // larger, fading out before the words. One flat layer is the cheapest thing a page can scroll over,
-                // so the wall costs nothing while you scroll: it freezes for that moment and resumes after.
-                var strip = new Image(); var stripReady = false; var cv = null; var cx = null; var raf = 0; var t0 = 0; var lastDraw = 0; var scrollingUntil = 0;
-                strip.onload = function () { stripReady = true; draw(performance.now()); };
-                strip.src = 'logos/stack/wall.svg';
-                var SPEC = { desk: { tile: 60, rows: 9 }, tab: { tile: 58, rows: 12 }, phone: { tile: 46, rows: 12 } };
-                // The strip rasterised once per row height and kept, so a frame only copies bitmaps.
-                // (One shared slot made every row re-rasterise the SVG on every frame: the lag the owner saw.)
-                var strips = {};
-                function stripAt(hPx) {
-                    if (strips[hPx]) return strips[hPx];
-                    var c = document.createElement('canvas'); c.width = Math.round(1564 * hPx / 92); c.height = hPx;
-                    c.getContext('2d').drawImage(strip, 0, 0, c.width, c.height);
-                    strips[hPx] = c; return c;
-                }
+                // The stack behind: the platforms we work with, as tiles in a ring around the phones and clear of
+                // the words. Each floats on its own clock and one lights up in turn; a phone's app lights as it
+                // answers. Pure CSS transforms and opacity, so the graphics card moves them even when the page is busy.
+                var TILES = ['whatsapp', 'openai', 'instagram', 'shopify', 'messenger', 'anthropic', 'gmail', 'telegram', 'stripe', 'meta', 'gcalendar', 'google', 'woocommerce', 'wordpress', 'n8n', 'facebook'];
                 function wall() {
-                    cv = document.createElement('canvas'); cx = cv.getContext('2d');
-                    layer.replaceChildren(cv);
-                    sizeCanvas(); draw(performance.now());
-                }
-                function relayout() { veil(); sizeCanvas(); draw(performance.now()); }
-                // The canvas covers only where the wall can be seen: beside the words on wide screens, under them
-                // on narrow ones. Less to draw, and the fade is drawn only along its edges.
-                var box = { x: 0, y: 0, w: 0, h: 0, dpr: 1 };
-                function sizeCanvas() {
-                    if (!cv) return;
-                    var W = root.clientWidth; var H = root.clientHeight; var rtl = document.documentElement.dir === 'rtl';
-                    var cxv = parseFloat(root.style.getPropertyValue('--copy-x')) || W * 0.4; var cyv = parseFloat(root.style.getPropertyValue('--copy-y')) || H * 0.4;
-                    if (size() !== 'desk') box = { x: 0, y: Math.round(cyv + 8), w: W, h: Math.max(0, H - Math.round(cyv + 8)) };
-                    else box = { x: rtl ? 0 : Math.round(cxv + 20), y: 0, w: Math.max(0, W - Math.round(cxv + 20)), h: H };
-                    box.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-                    cv.style.left = box.x + 'px'; cv.style.top = box.y + 'px'; cv.style.width = box.w + 'px'; cv.style.height = box.h + 'px';
-                    cv.width = Math.round(box.w * box.dpr); cv.height = Math.round(box.h * box.dpr);
-                }
-                function band(x, y, w, h, x1, y1, x2, y2, a1, a2) {
-                    var g = cx.createLinearGradient(x1, y1, x2, y2); g.addColorStop(0, 'rgba(0,0,0,' + a1 + ')'); g.addColorStop(1, 'rgba(0,0,0,' + a2 + ')');
-                    cx.fillStyle = g; cx.fillRect(x, y, w, h);
-                }
-                function draw(now) {
-                    if (!cv || !stripReady || !cv.width || !cv.height) return;
-                    var W = cv.width; var H = cv.height; var dpr = box.dpr;
-                    var sz = size(); var S = SPEC[sz]; var rtl = document.documentElement.dir === 'rtl';
-                    var t = (now - t0) / 1000;
-                    cx.setTransform(1, 0, 0, 1, 0, 0); cx.clearRect(0, 0, W, H);
-                    var stacked = sz !== 'desk';
-                    // The plane's centre in hero coordinates, moved into this canvas.
-                    var hw = root.clientWidth; var hh = root.clientHeight;
-                    var ox = (stacked ? hw / 2 : (rtl ? hw * 0.3 : hw * 0.7)) - box.x; var oy = hh / 2 - box.y;
-                    cx.translate(ox * dpr, oy * dpr); cx.rotate((rtl ? 14 : -14) * Math.PI / 180);
-                    var baseH = Math.round(S.tile * 92 / 70 * dpr);
-                    var rows = S.rows; var total = 0; var sc = [];
-                    for (var i = 0; i < rows; i += 1) { sc.push(0.8 + 0.4 * i / (rows - 1)); total += Math.round(baseH * sc[i]); }
-                    var y = -total / 2; var span = Math.max(hw, hh) * 1.5 * dpr;
-                    for (var r = 0; r < rows; r += 1) {
-                        var hPx = Math.round(baseH * sc[r]); var img = stripAt(hPx); var setW = img.width;
-                        if (r === 0) window.__hxDraws = (window.__hxDraws || 0) + 1;
-                        var speed = (11 + (r % 3) * 4) * dpr * sc[r]; var dir = r % 2 ? 1 : -1;
-                        var start = ((r * 7) % 17) * setW / 17;
-                        var x = ((start + dir * speed * t) % setW + setW) % setW;
-                        for (var px = -span / 2 - x; px < span / 2; px += setW) cx.drawImage(img, px, y);
-                        y += hPx;
+                    var sz = size(); var W = root.clientWidth; var H = root.clientHeight; var rtl = document.documentElement.dir === 'rtl'; var stacked = sz !== 'desk';
+                    var x = 0; var y = 0; var e = visual; while (e && e !== root) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+                    var cx = x + visual.offsetWidth / 2; var cy = y + visual.offsetHeight / 2;
+                    var rx = visual.offsetWidth / 2 + (sz === 'phone' ? 8 : 44); var ry = visual.offsetHeight / 2 + (sz === 'phone' ? 18 : 34);
+                    var copyX = parseFloat(root.style.getPropertyValue('--copy-x')) || 0; var copyY = parseFloat(root.style.getPropertyValue('--copy-y')) || 0;
+                    var want = sz === 'phone' ? 10 : 14; var base = sz === 'phone' ? 40 : (sz === 'tab' ? 52 : 58);
+                    // Many places round the ring; keep those clear of the words, then spread the tiles over them.
+                    var spots = [];
+                    for (var i = 0; i < 48; i += 1) {
+                        var a = (i / 48) * Math.PI * 2 - Math.PI / 2; var px = cx + Math.cos(a) * rx; var py = cy + Math.sin(a) * ry;
+                        if (stacked ? py < copyY + 40 : (rtl ? px > W - copyX - 50 : px < copyX + 50)) continue;
+                        if (py < 60 || py > H - 24) continue;
+                        spots.push([px, py]);
                     }
-                    // The fade, only along the edges: towards the words, under the top bar, and at the foot.
-                    cx.setTransform(1, 0, 0, 1, 0, 0);
-                    cx.globalCompositeOperation = 'destination-out';
-                    var fw = 130 * dpr;
-                    if (stacked) band(0, 0, W, 82 * dpr, 0, 0, 0, 82 * dpr, 1, 0);
-                    else if (rtl) band(W - fw, 0, fw, H, W - fw, 0, W, 0, 0, 1);
-                    else band(0, 0, fw, H, 0, 0, fw, 0, 1, 0);
-                    if (!stacked) band(0, 0, W, 70 * dpr, 0, 0, 0, 70 * dpr, 1, 0);
-                    band(0, H - 90 * dpr, W, 90 * dpr, 0, H - 90 * dpr, 0, H, 0, 0.9);
-                    cx.globalCompositeOperation = 'source-over';
-                    lastDraw = now;
+                    var frag = document.createDocumentFragment();
+                    var n = Math.min(want, spots.length);
+                    for (var k = 0; k < n; k += 1) {
+                        var p = spots[Math.floor((k + 0.5) * spots.length / n)]; var depth = ((k * 37) % 10) / 10; var s = Math.round(base * (0.72 + 0.46 * depth));
+                        var t = h('div', 'ft'); var id = TILES[k % TILES.length]; t.dataset.id = id;
+                        var im = document.createElement('img'); im.src = 'logos/stack/' + id + '.svg'; im.alt = ''; im.decoding = 'async'; t.appendChild(im);
+                        t.style.cssText = 'left:' + Math.round(p[0]) + 'px;top:' + Math.round(p[1]) + 'px;--s:' + s + 'px;--o:' + (0.7 + depth * 0.3).toFixed(2) + ';--dur:' + (7 + (k % 5)) + 's;--del:-' + ((k * 1.3) % 7).toFixed(1) + 's;--act:-' + (k * 0.86).toFixed(2) + 's;--r0:' + (-4 + (k % 3)) + 'deg;--r1:' + (3 + (k % 4)) + 'deg';
+                        frag.appendChild(t);
+                    }
+                    layer.replaceChildren(frag);
                 }
-                function loop(now) {
-                    raf = 0;
-                    if (!running()) return;
-                    // Every frame, with sub-pixel positions, so the drift is smooth; while the page scrolls, hold still.
-                    if (now > scrollingUntil) draw(now);
-                    raf = requestAnimationFrame(loop);
+                function lightTile(id) {
+                    var t = layer.querySelector('.ft[data-id="' + id + '"]'); if (!t) return;
+                    t.classList.add('is-on'); at(1800, function () { t.classList.remove('is-on'); });
                 }
-                function startWall() { if (!raf && running()) raf = requestAnimationFrame(loop); }
-                function stopWall() { if (raf) cancelAnimationFrame(raf); raf = 0; }
-                var scroller = document.getElementById('landing-page');
-                if (scroller) scroller.addEventListener('scroll', function () { scrollingUntil = performance.now() + 140; }, { passive: true });
+                function relayout() { veil(); wall(); }
                 function phonesView(L, sz, still) {
                     var t = TXT[L];
                     var wrap = h('div', 'cc');
@@ -35264,7 +35224,7 @@
                     function converse(p, i, again) {
                         var sc = p.sc[p.k % p.sc.length]; p.k += 1;
                         head(p, sc); p.body.replaceChildren(); front(p);
-                        p.ph.classList.add('is-busy'); beamEls[i].classList.add('is-hot');
+                        p.ph.classList.add('is-busy'); beamEls[i].classList.add('is-hot'); lightTile(CH[sc.ch].logo);
                         at(300, function () { p.body.appendChild(h('div', 'cc-msg in pop', sc.msg[L])); });
                         var typing = h('div', 'cc-msg out cc-typing pop'); typing.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
                         at(1100, function () { var tag = h('div', 'cc-tag pop'); tag.append(mascot(sc.agent, 'thinking'), document.createTextNode(t.agent[sc.agent])); p.body.append(tag, typing); });
@@ -35291,7 +35251,6 @@
                     phonesView(L, sz, !live);
                     veil();
                     wall();
-                    if (live) startWall(); else stopWall();
                 }
                 function setPaused(p) {
                     paused = p;
@@ -35303,10 +35262,10 @@
                     var txt = p ? 'Play motion' : 'Pause motion';
                     try { if (typeof window.t === 'function') { var v = window.t(key); if (v && v.indexOf('landing_hero.') !== 0) txt = v; } } catch (e) { /* the label keeps its English */ }
                     label.textContent = txt;
-                    if (p) { stopTimers(); stopWall(); } else build(false);
+                    if (p) stopTimers(); else build(false);
                 }
                 document.getElementById('hx-pause').addEventListener('click', function () { setPaused(!paused); });
-                function wake() { if (running()) { root.classList.remove('is-paused'); build(false); } else { stopTimers(); stopWall(); if (!reduce) root.classList.add('is-paused'); } }
+                function wake() { if (running()) { root.classList.remove('is-paused'); build(false); } else { stopTimers(); if (!reduce) root.classList.add('is-paused'); } }
                 document.addEventListener('visibilitychange', wake);
                 if ('IntersectionObserver' in window) {
                     new IntersectionObserver(function (es) { var v = es[es.length - 1].isIntersecting; if (v !== inView) { inView = v; wake(); } }, { threshold: 0.05 }).observe(root);

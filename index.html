@@ -442,6 +442,7 @@
             "landing_nav": {
                 "cta": "Start Free",
                 "features": "Features",
+                "how": "How it works",
                 "pricing": "Pricing",
                 "faq": "FAQ",
                 "login": "Log In",
@@ -2517,6 +2518,7 @@
             "landing_nav": {
                 "cta": "ابدأ مجانًا",
                 "features": "المزايا",
+                "how": "إزاي بيشتغل",
                 "pricing": "الأسعار",
                 "faq": "الأسئلة الشائعة",
                 "login": "تسجيل الدخول",
@@ -9878,8 +9880,9 @@
         .lp-scroll-progress {
             position: fixed; top: 0; inset-inline-start: 0; height: 2px; z-index: 10000;
             background: var(--theme-color);
-            width: 0%; transition: width 0.1s linear;
+            width: 100%; transform: scaleX(0); transform-origin: left center; will-change: transform;
         }
+        [dir="rtl"] .lp-scroll-progress { transform-origin: right center; }
 
         /* Noise texture overlay: removed (flat surfaces, no template grain). */
 
@@ -10211,7 +10214,7 @@
         .lp-nav.is-scrolled { box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
         :root[data-theme="light"] .lp-nav.is-scrolled { box-shadow: 0 8px 30px rgba(15,23,42,0.08); }
         /* Sticky mobile CTA bar (landing only) */
-        #lp-sticky-cta { position: fixed; inset-inline: 0; bottom: 0; z-index: 120; display: none; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(15,16,20,0.88); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid rgba(255,255,255,0.08); }
+        #lp-sticky-cta { position: fixed; inset-inline: 0; bottom: 0; z-index: 120; display: none; padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background: rgba(15,16,20,0.88); border-top: 1px solid rgba(255,255,255,0.08); }
         #lp-sticky-cta .lp-btn { width: 100%; padding: 0.8rem; font-size: 1rem; }
         :root[data-theme="light"] #lp-sticky-cta { background: rgba(255,255,255,0.92); border-top-color: #e2e8f0; }
         @media (max-width: 767px) { #lp-sticky-cta.show { display: block; } }
@@ -34500,6 +34503,115 @@
 
     <!-- ========== LANDING PAGE ========== -->
     <div id="landing-page">
+        <!-- The landing page's look, rebuilt around the light hero (owner, 2026-09-25): one light ground,
+             one section rhythm, one card, one button family, on every screen size. The landing is always
+             light, whatever theme the app itself is set to, so a visitor sees one product. -->
+        <style id="lp-light">
+            #landing-page {
+                --sp-bg: #f5f6fb; --sp-surface: #ffffff; --sp-surface-2: #eef1f6; --sp-surface-3: #e4e8f0; --sp-line: #e3e6ee; --sp-line-2: #ccd2dd;
+                --sp-ink: #0f1330; --sp-ink-2: #4a5068; --sp-ink-3: #5f6580; --sp-accent: #2a8184; --sp-accent-hover: #1f6f72; --sp-accent-ink: #ffffff; --sp-accent-soft: #e6f2f2;
+                --sp-focus: #1f6f71; --theme-color: #2a8184; --glass-bg: #ffffff; --glass-border: rgba(15, 19, 48, .08); --bg-dark: #f5f6fb; --bg-surface: #ffffff;
+                --text-main: #0f1330; --text-muted: #565c7a; --text-primary: #0f1330; --text-secondary: #565c7a;
+                --lp-ink: #0f1330; --lp-ink-2: #2b3052; --lp-mut: #565c7a; --lp-line: rgba(15, 19, 48, .08);
+                --lp-card-shadow: 0 1px 2px rgba(20, 24, 60, .05), 0 18px 40px -26px rgba(20, 24, 60, .3), 0 0 0 1px rgba(15, 19, 48, .06);
+                --lp-ease: cubic-bezier(.22, 1, .36, 1);
+                background: #f5f6fb; background-image: none; color: var(--lp-ink); color-scheme: light;
+                font-family: "Inter", "Tajawal", system-ui, sans-serif;
+            }
+            [dir="rtl"] #landing-page { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
+
+            /* ---- the top bar: solid, quiet, aligned with the hero's content ---- */
+            #landing-page .lp-nav {
+                max-width: none; min-height: 68px; margin: 0; padding-block: 10px; padding-top: calc(10px + env(safe-area-inset-top, 0px));
+                padding-inline: max(56px, calc((100% - 1480px) / 2 + 56px)); background: rgba(250, 251, 254, .96);
+                -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom: 1px solid transparent; box-shadow: none;
+                transition: border-color .3s ease, box-shadow .3s ease;
+            }
+            #landing-page .lp-nav.is-scrolled { border-bottom-color: var(--lp-line); box-shadow: 0 12px 30px -24px rgba(20, 24, 60, .45); }
+            #landing-page .lp-nav-logo { gap: 0; min-height: 44px; color: var(--lp-ink); }
+            #landing-page .lp-brand-mark { display: block; height: 28px; aspect-ratio: 1998 / 668; background: var(--lp-ink);
+                -webkit-mask: url("cropped-White.png") center / contain no-repeat; mask: url("cropped-White.png") center / contain no-repeat; }
+            #landing-page .lp-brand-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+            #landing-page .lp-nav-links { gap: 2px; }
+            #landing-page .lp-nav-links a:not(.lp-btn), #landing-page .lp-nav-links .lpx-login-link { color: var(--lp-ink-2); font-size: 14.5px; font-weight: 500; padding-inline: 12px; border-radius: 10px; }
+            #landing-page .lp-nav-links a:not(.lp-btn)::after { display: none; }
+            #landing-page .lp-nav-links a:not(.lp-btn):hover, #landing-page .lp-nav-links .lpx-login-link:hover { color: var(--lp-ink); background: rgba(15, 19, 48, .05); }
+            #landing-page .lp-nav-links .lpx-login-link { font-weight: 600; color: var(--lp-ink); margin-inline-start: 6px; }
+            #landing-page .lp-nav .lp-btn-primary { margin-inline-start: 6px; padding: 10px 18px; min-height: 42px; border-radius: 12px; font-size: 14.5px; }
+            #landing-page .lp-menu-btn { color: var(--lp-ink); background: #fff; border: 0; box-shadow: 0 0 0 1px var(--lp-line); }
+            #landing-page .lp-menu.open { background: #fff; border: 0; box-shadow: var(--lp-card-shadow); border-radius: 16px; padding: 8px; }
+            #landing-page .lp-menu a, #landing-page .lp-menu button.lpx-login-link { color: var(--lp-ink); font-weight: 500; }
+            @media (max-width: 1100px) { #landing-page .lp-nav { padding-inline: 32px; } }
+            @media (max-width: 600px) { #landing-page .lp-nav { padding-inline: 18px; } }
+            #landing-page .lp-scroll-progress { height: 2px; background: linear-gradient(90deg, #2a8184, #6d4bd8); }
+
+            /* ---- one rhythm for every section ---- */
+            #landing-page .lps { position: relative; box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(18px, 4vw, 40px) 0; }
+            #landing-page .lps-narrow { max-width: 920px; }
+            #landing-page .lps-stats { padding-top: clamp(40px, 5vw, 64px); }
+            #landing-page .lp-section-title { font-family: "Cairo", "Inter", system-ui, sans-serif; font-weight: 800; font-size: clamp(28px, 3.3vw, 44px); line-height: 1.12; letter-spacing: -.02em; color: var(--lp-ink); margin: 0 0 12px; text-wrap: balance; }
+            [dir="rtl"] #landing-page .lp-section-title { letter-spacing: 0; line-height: 1.3; }
+            #landing-page .lp-section-sub { color: var(--lp-mut); font-size: clamp(16px, 1.3vw, 18px); line-height: 1.6; max-width: 62ch; margin: 0 0 clamp(28px, 4vw, 44px); }
+            #landing-page .lps:not(.lp-align-start) > .lp-section-title, #landing-page .lps:not(.lp-align-start) > .lp-section-sub { text-align: center; }
+            #landing-page .lps:not(.lp-align-start) > .lp-section-sub { margin-inline: auto; }
+            #landing-page h3 { color: var(--lp-ink); }
+            #landing-page p { color: var(--lp-mut); }
+
+            /* ---- one card ---- */
+            #landing-page :is(.lp-feature-card, .lp-agent-card, .lp-price-card, .lp-faq-item, .lp-how-step, .lp-glimpse-card, .lp-stat, .lp-trust-badge, .lp-demo-panel) {
+                background: #fff; border: 0; border-radius: 20px; box-shadow: var(--lp-card-shadow); color: var(--lp-ink); backdrop-filter: none; -webkit-backdrop-filter: none;
+            }
+            #landing-page :is(.lp-feature-card, .lp-agent-card, .lp-price-card, .lp-glimpse-card) { transition: transform .5s var(--lp-ease); }
+            @media (hover: hover) { #landing-page :is(.lp-feature-card, .lp-agent-card, .lp-price-card, .lp-glimpse-card):hover { transform: translateY(-4px); } }
+            #landing-page .lp-feature-card { padding: 24px; }
+            #landing-page .lp-feature-card h3 { font-size: 17px; font-weight: 700; margin: 14px 0 6px; }
+            #landing-page .lp-feature-card p { font-size: 14.5px; line-height: 1.6; margin: 0; }
+            #landing-page .lp-feature-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #1f6f72; background: linear-gradient(135deg, rgba(42, 129, 132, .14), rgba(109, 75, 216, .12)); }
+            #landing-page .lp-feature-icon svg { width: 22px; height: 22px; }
+            #landing-page :is(.lp-features-grid, .lp-glimpse-grid) { gap: 16px; }
+            /* Grids fill their row instead of leaving one card alone on the next line. */
+            #landing-page .lp-features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+            #landing-page .lp-pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 14px; align-items: stretch; }
+            #landing-page .lp-pricing-grid .lp-price-card { padding: 24px 20px; min-width: 0; }
+            #landing-page .lp-pricing-grid .lp-price-amount { font-size: clamp(26px, 2.3vw, 32px); overflow-wrap: anywhere; }
+
+            /* stats under the hero: five quiet cards in one row where they fit */
+            #landing-page #lp-stats-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 14px; }
+            #landing-page #lp-stats-strip .lp-stat { padding: 20px 22px; min-width: 0; text-align: start; }
+            #landing-page .lp-stat-num { font-family: "Cairo", "Inter", sans-serif; font-weight: 800; color: var(--lp-ink); line-height: 1.1; }
+            #landing-page .lp-stat-label { color: var(--lp-mut); font-size: 13.5px; }
+            #landing-page .lp-stat-icon { color: #2a8184; }
+
+            /* ---- one button family ---- */
+            #landing-page .lp-btn { border-radius: 14px; font-weight: 700; transition: transform .3s var(--lp-ease), box-shadow .3s ease; }
+            #landing-page .lp-btn-primary { color: #fff; border: 0; background: linear-gradient(180deg, #2f8f91, #227679);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 0 0 1px rgba(20, 96, 99, .6), 0 14px 28px -14px rgba(34, 118, 121, .85); }
+            #landing-page .lp-btn-outline { color: var(--lp-ink); background: #fff; border: 0; box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px var(--lp-line); }
+            #landing-page .lp-btn-outline:hover { box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px rgba(42, 129, 132, .45); }
+
+            /* ---- sections with their own parts ---- */
+            #landing-page .lp-agent-card { padding: 28px; }
+            #landing-page .lp-how-step { padding: 24px; }
+            #landing-page .lp-how-num { color: #fff; background: linear-gradient(135deg, #2a8184, #6d4bd8); }
+            #landing-page .lp-price-card { padding: 28px; }
+            #landing-page .lp-price-card.popular { box-shadow: 0 0 0 2px #2a8184, 0 30px 60px -30px rgba(42, 129, 132, .55); }
+            #landing-page .lp-popular-tag { color: #fff; background: linear-gradient(135deg, #2a8184, #6d4bd8); }
+            #landing-page .lp-price-amount { color: var(--lp-ink); font-family: "Cairo", "Inter", sans-serif; }
+            #landing-page .lp-faq-item { padding: 0; overflow: hidden; }
+            #landing-page .lp-faq-q { color: var(--lp-ink); font-weight: 600; background: none; }
+            #landing-page .lp-faq-a { color: var(--lp-mut); }
+            #landing-page .lp-mini-chip { background: #fff; box-shadow: 0 0 0 1px var(--lp-line); border: 0; }
+            #landing-page .lpx-marquee { max-width: 1200px; margin: 0 auto; padding: clamp(56px, 7vw, 96px) clamp(18px, 4vw, 40px) 0; text-align: center; background: none; border: 0; }
+            #landing-page .lpx-marquee .lp-logo-item { filter: none; opacity: .92; background: #fff; border-radius: 14px; box-shadow: 0 0 0 1px var(--lp-line); padding: 10px 16px; }
+            #landing-page .lp-trust-badges { gap: 14px; }
+            #landing-page .lp-trust-badge { padding: 18px 20px; }
+            #landing-page .lp-pay-plate { background: #fff; border: 0; box-shadow: 0 0 0 1px var(--lp-line); border-radius: 12px; }
+            #landing-page .lps-cta { padding-bottom: clamp(64px, 8vw, 104px); }
+            #landing-page .lp-final-panel { border-radius: 28px; }
+            #landing-page .lp-footer { max-width: none; margin: 0; padding: 40px max(20px, calc((100% - 1200px) / 2 + 40px)) calc(28px + env(safe-area-inset-bottom, 0px)); background: #fff; border-top: 1px solid var(--lp-line); color: var(--lp-mut); }
+            #landing-page .lp-footer a { color: var(--lp-ink-2); }
+            #landing-page #lp-sticky-cta { background: rgba(255, 255, 255, .97); border-top: 1px solid var(--lp-line); }
+        </style>
         <!-- Scroll Progress Bar -->
         <div class="lp-scroll-progress" id="lp-scroll-progress"></div>
 
@@ -34567,35 +34679,23 @@
         <!-- Premium Interactions Engine -->
         <script>
         (function() {
-            // 1. Scroll Reveal Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-            setTimeout(() => {
-                document.querySelectorAll('#landing-page section, #landing-page .lp-feature-card, #landing-page .lp-price-card, #landing-page .lp-faq-item').forEach((el, i) => {
-                    el.classList.add('lp-reveal');
-                    if (i % 3 === 1) el.classList.add('lp-reveal-delay-1');
-                    if (i % 3 === 2) el.classList.add('lp-reveal-delay-2');
-                    observer.observe(el);
-                });
-            }, 100);
+            // 1. Sections are visible at rest: nothing on the landing page waits for a scroll to appear.
 
             // 2. Scroll Progress Bar
             const lpPage = document.getElementById('landing-page');
             const progressBar = document.getElementById('lp-scroll-progress');
             if (lpPage && progressBar) {
+                // One write per frame, as a transform: scrolling never waits for layout.
+                let queued = false;
                 lpPage.addEventListener('scroll', () => {
-                    const scrollTop = lpPage.scrollTop;
-                    const scrollHeight = lpPage.scrollHeight - lpPage.clientHeight;
-                    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-                    progressBar.style.width = progress + '%';
-                });
+                    if (queued) return;
+                    queued = true;
+                    requestAnimationFrame(() => {
+                        queued = false;
+                        const scrollHeight = lpPage.scrollHeight - lpPage.clientHeight;
+                        progressBar.style.transform = `scaleX(${scrollHeight > 0 ? lpPage.scrollTop / scrollHeight : 0})`;
+                    });
+                }, { passive: true });
             }
 
             // 5. Animated Counter for Stats
@@ -34652,9 +34752,10 @@
         <!-- Navigation -->
         <nav class="lp-nav" aria-label="Landing">
             <a class="lp-skip" href="#landing-top" data-i18n="landing_nav.skip">Skip to content</a>
-            <a href="#landing-top" class="lp-nav-logo" translate="no"><span class="lp-logo-mark" aria-hidden="true"><i></i><i></i></span>DIGITIVIA&nbsp;AI AGENT</a>
+            <a href="#landing-top" class="lp-nav-logo" translate="no"><span class="lp-brand-mark" aria-hidden="true"></span><span class="lp-brand-text">Digitivia AI Agent</span></a>
             <div class="lp-nav-links">
                 <a href="#lp-features" data-i18n="landing_nav.features">Features</a>
+                <a href="#lp-how" data-i18n="landing_nav.how">How it works</a>
                 <a href="#lp-pricing" data-i18n="landing_nav.pricing">Pricing</a>
                 <a href="#lp-faq" data-i18n="landing_nav.faq">FAQ</a>
                 <button type="button" class="lpx-login-link" onclick="showLandingLogin()" data-i18n="landing_nav.login">Log In</button>
@@ -34667,6 +34768,7 @@
             </div>
             <div class="lp-menu" id="lp-menu">
                 <a href="#lp-features" onclick="lpCloseMenu()" data-i18n="landing_nav.features">Features</a>
+                <a href="#lp-how" onclick="lpCloseMenu()" data-i18n="landing_nav.how">How it works</a>
                 <a href="#lp-pricing" onclick="lpCloseMenu()" data-i18n="landing_nav.pricing">Pricing</a>
                 <a href="#lp-faq" onclick="lpCloseMenu()" data-i18n="landing_nav.faq">FAQ</a>
                 <button type="button" class="lpx-login-link" onclick="lpCloseMenu();showLandingLogin()" data-i18n="landing_nav.login">Log In</button>
@@ -34725,36 +34827,31 @@
                     --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #1f6f72; --ok: #11845a;
                     --shadow-1: 0 1px 2px rgba(20, 24, 60, .06), 0 10px 24px -14px rgba(20, 24, 60, .22);
                     --ease: cubic-bezier(.22, 1, .36, 1);
-                    position: relative; overflow: hidden; isolation: isolate; color: var(--ink); background: var(--ground);
+                    position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink);
+                    background: radial-gradient(46% 52% at 84% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 70% 92%, rgba(139, 108, 255, .16), transparent 72%),
+                        radial-gradient(44% 50% at 4% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%);
                     min-height: clamp(640px, calc(100svh - 64px), 940px); display: flex; flex-direction: column;
                     font-family: "Inter", "Tajawal", system-ui, sans-serif; container-type: inline-size; container-name: hx; text-align: start;
                 }
                 [dir="rtl"] .hx { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
                 .hx * { box-sizing: border-box; }
-                .hx-bg { position: absolute; inset: 0; z-index: -3; pointer-events: none;
-                    background: radial-gradient(46% 52% at 84% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 70% 92%, rgba(139, 108, 255, .16), transparent 72%),
-                        radial-gradient(44% 50% at 4% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%); }
-                [dir="rtl"] .hx-bg { transform: scaleX(-1); }
+                [dir="rtl"] .hx { background: radial-gradient(46% 52% at 16% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 30% 92%, rgba(139, 108, 255, .16), transparent 72%),
+                        radial-gradient(44% 50% at 96% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%); }
                 .hx-logos { position: absolute; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-                /* The veil keeps the words on clean ground; the script measures where the words end. */
-                .hx-veil { position: absolute; inset: 0; z-index: -1; pointer-events: none;
-                    background: linear-gradient(90deg, var(--ground) 0, var(--ground) calc(var(--copy-x, 40%) + 20px), rgba(245, 246, 251, .7) calc(var(--copy-x, 40%) + 70px), var(--ground-0) calc(var(--copy-x, 40%) + 150px)),
-                        linear-gradient(180deg, var(--ground) 0, var(--ground-0) 70px, var(--ground-0) calc(100% - 90px), rgba(245, 246, 251, .9) 100%); }
-                [dir="rtl"] .hx-veil { background: linear-gradient(270deg, var(--ground) 0, var(--ground) calc(var(--copy-x, 40%) + 20px), rgba(245, 246, 251, .7) calc(var(--copy-x, 40%) + 70px), var(--ground-0) calc(var(--copy-x, 40%) + 150px)),
-                        linear-gradient(180deg, var(--ground) 0, var(--ground-0) 70px, var(--ground-0) calc(100% - 90px), rgba(245, 246, 251, .9) 100%); }
+                .hx-logos canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
                 .hx-body { position: relative; z-index: 2; flex: 1 0 auto; width: 100%; max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; align-content: center; padding: 28px 56px 60px; }
                 .hx-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: center; }
                 .hx-eyebrow { display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%; padding: 5px 14px 5px 5px; border-radius: 999px; background: rgba(255, 255, 255, .85); box-shadow: var(--shadow-1), 0 0 0 1px var(--line); font-size: 13px; font-weight: 600; color: var(--ink-2); }
                 .hx-eyebrow .eb-s { display: none; }
                 .hx-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(42, 129, 132, .1); color: var(--teal-2); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
                 [dir="rtl"] .hx-live { letter-spacing: 0; }
-                .hx-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #1fbf7f; animation: hx-ping 1.8s var(--ease) infinite; }
-                @keyframes hx-ping { 0% { box-shadow: 0 0 0 0 rgba(31, 191, 127, .5); } 80%, 100% { box-shadow: 0 0 0 7px rgba(31, 191, 127, 0); } }
+                .hx-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #1fbf7f; animation: hx-ping 1.8s ease-in-out infinite; }
+                /* opacity only, so the blink never repaints */
+                @keyframes hx-ping { 50% { opacity: .35; } }
                 .hx h1 { margin: 0; font-family: "Cairo", "Inter", system-ui, sans-serif; font-weight: 800; font-size: clamp(34px, 4.3cqw, 64px); line-height: 1.06; letter-spacing: -.025em; text-wrap: balance; color: var(--ink); }
                 [dir="rtl"] .hx h1 { letter-spacing: 0; line-height: 1.25; font-size: clamp(32px, 3.5cqw, 52px); }
-                .hx h1 em { font-style: normal; background: linear-gradient(90deg, #1f8a8c 0%, #6d4bd8 50%, #1f8a8c 100%) 0 0 / 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: hx-sheen 8s linear infinite; }
-                [dir="rtl"] .hx h1 em { animation-direction: reverse; }
-                @keyframes hx-sheen { to { background-position: 200% 0; } }
+                .hx h1 em { font-style: normal; background: linear-gradient(90deg, #1f8a8c 0%, #6d4bd8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+                [dir="rtl"] .hx h1 em { background-image: linear-gradient(270deg, #1f8a8c 0%, #6d4bd8 100%); }
                 .hx-sub { margin: 0; font-size: clamp(16px, 1.25cqw, 18.5px); line-height: 1.6; color: var(--mut); max-width: 58ch; }
                 .hx-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
                 .hx-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
@@ -34785,22 +34882,9 @@
                 .hx.intro h1 { animation-delay: .12s; } .hx.intro .hx-sub { animation-delay: .32s; } .hx.intro .hx-ctas { animation-delay: .44s; } .hx.intro .hx-micro { animation-delay: .56s; }
                 .hx.intro .hx-visual { animation: hx-rise-big 1.3s var(--ease) .25s both; }
                 .hx.intro .hx-logos { animation: hx-fade 2.2s ease .5s both; }
-                @keyframes hx-rise { from { opacity: 0; transform: translateY(16px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
-                @keyframes hx-rise-big { from { opacity: 0; transform: translateY(34px) scale(.97); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+                @keyframes hx-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+                @keyframes hx-rise-big { from { opacity: 0; transform: translateY(34px) scale(.97); } to { opacity: 1; transform: none; } }
                 @keyframes hx-fade { from { opacity: 0; } to { opacity: 1; } }
-
-                /* the stack behind: a tilted wall of tiles */
-                .hx .bgw-plane { position: absolute; left: 62%; top: 50%; display: grid; gap: var(--gap); width: max-content; transform: translate(-50%, -50%) perspective(1800px) rotateX(34deg) rotateZ(-14deg); }
-                [dir="rtl"] .hx .bgw-plane { left: 38%; transform: translate(-50%, -50%) perspective(1800px) rotateX(34deg) rotateZ(14deg); }
-                .hx .bgw-row { position: relative; height: var(--tile); width: var(--pw); overflow: hidden; }
-                .hx .bgw-track { position: absolute; top: 0; left: 0; display: flex; gap: var(--gap); width: max-content; animation: hx-slide var(--d, 180s) linear infinite; }
-                .hx .bgw-row.rev .bgw-track { animation-direction: reverse; }
-                @keyframes hx-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                .hx .bgw-tile { flex: none; width: var(--tile); height: var(--tile); border-radius: calc(var(--tile) * .28); display: grid; place-items: center; background: #fff;
-                    box-shadow: inset 0 -1px 0 rgba(15, 19, 48, .04), 0 0 0 1px rgba(15, 19, 48, .05), 0 14px 26px -18px rgba(20, 24, 60, .35); transition: box-shadow 1.1s var(--ease), transform 1.1s var(--ease); }
-                .hx .bgw-tile img { width: 50%; height: 50%; object-fit: contain; display: block; }
-                .hx .bgw-tile[data-id="woocommerce"] img { width: 78%; height: 78%; } .hx .bgw-tile[data-id="n8n"] img { width: 66%; height: 66%; }
-                .hx .bgw-tile.is-lit { transform: translateY(-5px); box-shadow: 0 0 0 1.5px rgba(42, 129, 132, .5), 0 0 0 6px rgba(42, 129, 132, .08), 0 22px 36px -18px rgba(42, 129, 132, .6); }
 
                 /* shared small pieces */
                 .hx .mz { display: inline-flex; flex: none; line-height: 0; } .hx .mz svg { display: block; width: 100%; height: 100%; }
@@ -34825,13 +34909,16 @@
                 .hx .cc-beam.is-hot { stroke: rgba(42, 129, 132, .8); animation: hx-flow .8s linear infinite; }
                 @keyframes hx-flow { to { stroke-dashoffset: -18; } }
                 .hx .cc-phone { position: absolute; top: 76px; left: 50%; width: 256px; height: 486px; padding: 7px; border-radius: 44px; z-index: 2; background: #121320;
-                    box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 50px 80px -40px rgba(20, 24, 60, .55), 0 18px 30px -18px rgba(20, 24, 60, .35); transition: transform 1s var(--ease), box-shadow .7s ease, filter .7s ease, opacity .7s ease; }
+                    box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 50px 80px -40px rgba(20, 24, 60, .55), 0 18px 30px -18px rgba(20, 24, 60, .35); transition: transform 1s var(--ease), opacity .7s ease; }
+                /* The busy glow is its own layer that only fades, so it never repaints the phone. */
+                .hx .cc-phone::after { content: ""; position: absolute; inset: -1px; border-radius: 44px; pointer-events: none; opacity: 0; transition: opacity .7s ease;
+                    box-shadow: 0 0 0 5px rgba(42, 129, 132, .16), 0 0 60px -12px rgba(42, 129, 132, .45); }
+                .hx .cc-phone.is-busy::after { opacity: 1; }
                 .hx .cc-scr { position: relative; height: 100%; border-radius: 37px; overflow: hidden; display: flex; flex-direction: column; }
                 .hx .cc-scr::before { content: ""; position: absolute; top: 9px; left: 50%; width: 76px; height: 22px; transform: translateX(-50%); border-radius: 999px; background: #121320; z-index: 3; }
-                .hx .cc-phone.pos-0 { transform: translateX(-138%) translateY(36px) rotate(-6deg) scale(.9); filter: saturate(.85) brightness(.97); }
+                .hx .cc-phone.pos-0 { transform: translateX(-138%) translateY(36px) rotate(-6deg) scale(.9); }
                 .hx .cc-phone.pos-1 { transform: translateX(-50%); z-index: 3; }
-                .hx .cc-phone.pos-2 { transform: translateX(38%) translateY(36px) rotate(6deg) scale(.9); filter: saturate(.85) brightness(.97); }
-                .hx .cc-phone.is-busy { box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 0 0 5px rgba(42, 129, 132, .16), 0 50px 80px -40px rgba(20, 24, 60, .55), 0 0 60px -12px rgba(42, 129, 132, .45); filter: none; }
+                .hx .cc-phone.pos-2 { transform: translateX(38%) translateY(36px) rotate(6deg) scale(.9); }
                 .hx .cc-status { display: flex; justify-content: space-between; padding: 12px 24px 6px; font-size: 11px; font-weight: 700; }
                 .hx .cc-app { display: flex; align-items: center; gap: 9px; padding: 8px 14px 10px; }
                 .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: linear-gradient(135deg, #6d4bd8, #2a8184); }
@@ -34859,7 +34946,8 @@
                 .hx .th-ms .cc-msg.in { background: #f0f0f0; } .hx .th-ms .cc-msg.out, .hx .th-ms .cc-typing { color: #fff; background: linear-gradient(135deg, #0a7cff, #a33bf2); }
                 .hx .th-ms .cc-input { background: #f0f2f5; }
                 .hx .cc-ribbon { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; overflow: hidden; z-index: 5; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-                .hx .cc-track { position: absolute; top: 0; left: 0; display: flex; gap: 10px; width: max-content; height: 100%; align-items: center; animation: hx-slide 44s linear infinite; }
+                .hx .cc-track { position: absolute; top: 0; left: 0; display: flex; gap: 10px; width: max-content; height: 100%; align-items: center; animation: hx-slide 44s linear infinite; will-change: transform; }
+                @keyframes hx-slide { to { transform: translateX(-50%); } }
                 [dir="rtl"] .hx .cc-track { left: auto; right: 0; animation-name: hx-slide-rtl; }
                 @keyframes hx-slide-rtl { to { transform: translateX(50%); } }
                 .hx .cc-task { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px 7px 7px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; color: var(--ink); background: #fff; box-shadow: 0 0 0 1px var(--line), 0 8px 16px -12px rgba(20, 24, 60, .35); }
@@ -34872,8 +34960,6 @@
                     .hx h1 { font-size: clamp(38px, 5.6cqw, 56px); } [dir="rtl"] .hx h1 { font-size: clamp(36px, 5.2cqw, 52px); }
                     .hx-sub { margin-inline: auto; }
                     .hx-ctas, .hx-micro { justify-content: center; }
-                    .hx-veil, [dir="rtl"] .hx-veil { background: linear-gradient(180deg, var(--ground) 0, var(--ground) calc(var(--copy-y, 40%) + 8px), rgba(245, 246, 251, .7) calc(var(--copy-y, 40%) + 40px), var(--ground-0) calc(var(--copy-y, 40%) + 90px), var(--ground-0) calc(100% - 70px), rgba(245, 246, 251, .9) 100%); }
-                    .hx .bgw-plane, [dir="rtl"] .hx .bgw-plane { left: 50%; }
                     .hx .cc { max-width: 720px; margin-inline: auto; width: 100%; }
                     .hx-pause { inset-inline-start: 32px; }
                 }
@@ -34890,7 +34976,7 @@
                     .hx .cc { height: 610px; }
                     .hx .cc-phone { width: 266px; height: 476px; top: 72px; }
                     .hx .cc-phone.pos-0, .hx .cc-phone.pos-2, .hx .cc-phone.pos-1:not(.is-front) { opacity: 0; transform: translateX(-50%) scale(.96); }
-                    .hx .cc-phone.is-front { opacity: 1; transform: translateX(-50%); z-index: 4; filter: none; }
+                    .hx .cc-phone.is-front { opacity: 1; transform: translateX(-50%); z-index: 4; }
                     .hx .cc-hub { font-size: 12px; }
                     .hx .cc-beams { display: none; }
                     .hx-pause { inset-inline-start: 18px; }
@@ -34899,9 +34985,7 @@
                 .hx.is-paused *, .hx.is-paused *::before, .hx.is-paused *::after { animation-play-state: paused !important; }
                 .hx.still *, .hx.still *::before, .hx.still *::after { animation: none !important; transition: none !important; }
             </style>
-            <div class="hx-bg" aria-hidden="true"></div>
             <div class="hx-logos" aria-hidden="true"></div>
-            <div class="hx-veil" aria-hidden="true"></div>
             <div class="hx-body">
                 <div class="hx-copy">
                     <div class="hx-eyebrow"><span class="hx-live" data-i18n="landing_hero.hx_live">Live</span><span class="eb-l" data-i18n="landing_hero.hx_eyebrow">AI agents for social media, sales and operations</span><span class="eb-s" data-i18n="landing_hero.hx_eyebrow_short">AI agents for social media and sales</span></div>
@@ -34959,40 +35043,86 @@
                     root.style.setProperty('--copy-x', Math.round(root.dir === 'rtl' || document.documentElement.dir === 'rtl' ? root.offsetWidth - x : x + c.offsetWidth) + 'px');
                     root.style.setProperty('--copy-y', Math.round(y + c.offsetHeight) + 'px');
                 }
-                function wall(sz) {
-                    var S = { desk: { tile: 70, gap: 22, rows: 10, pw: 2500 }, tab: { tile: 66, gap: 20, rows: 14, pw: 2000 }, phone: { tile: 52, gap: 16, rows: 14, pw: 1150 } }[sz];
-                    var plane = h('div', 'bgw-plane');
-                    plane.style.setProperty('--tile', S.tile + 'px'); plane.style.setProperty('--gap', S.gap + 'px'); plane.style.setProperty('--pw', S.pw + 'px');
-                    var setW = STACK.length * (S.tile + S.gap); var copies = Math.max(1, Math.ceil(S.pw / setW));
-                    for (var r = 0; r < S.rows; r += 1) {
-                        var row = h('div', 'bgw-row' + (r % 2 ? ' rev' : '')); var track = h('div', 'bgw-track');
-                        for (var c = 0; c < copies * 2; c += 1) {
-                            for (var i = 0; i < STACK.length; i += 1) {
-                                var id = STACK[(i + r * 7) % STACK.length]; var tile = h('div', 'bgw-tile'); tile.dataset.id = id;
-                                var im = document.createElement('img'); im.src = 'logos/stack/' + id + '.svg'; im.alt = ''; im.decoding = 'async'; tile.appendChild(im); track.appendChild(tile);
-                            }
-                        }
-                        track.style.setProperty('--d', Math.round((copies * setW) / (11 + (r % 3) * 4)) + 's');
-                        track.style.animationDelay = '-' + ((r * 13) % 60) + 's';
-                        row.appendChild(track); plane.appendChild(row);
+                // The stack behind, drawn on one flat canvas: tilted rows of logo tiles sliding in turn, nearer rows
+                // larger, fading out before the words. One flat layer is the cheapest thing a page can scroll over,
+                // so the wall costs nothing while you scroll: it freezes for that moment and resumes after.
+                var strip = new Image(); var stripReady = false; var cv = null; var cx = null; var raf = 0; var t0 = 0; var lastDraw = 0; var scrollingUntil = 0;
+                strip.onload = function () { stripReady = true; draw(performance.now()); };
+                strip.src = 'logos/stack/wall.svg';
+                var SPEC = { desk: { tile: 60, rows: 9 }, tab: { tile: 58, rows: 12 }, phone: { tile: 46, rows: 12 } };
+                var cache = { key: '', canvas: null };
+                function stripAt(hPx) {
+                    // The strip rasterised once at the size it is drawn, then only copied.
+                    var key = String(hPx);
+                    if (cache.key === key) return cache.canvas;
+                    var c = document.createElement('canvas'); c.width = Math.round(1564 * hPx / 92); c.height = hPx;
+                    c.getContext('2d').drawImage(strip, 0, 0, c.width, c.height);
+                    cache.key = key; cache.canvas = c; return c;
+                }
+                function wall() {
+                    cv = document.createElement('canvas'); cx = cv.getContext('2d');
+                    layer.replaceChildren(cv);
+                    sizeCanvas(); draw(performance.now());
+                }
+                function sizeCanvas() {
+                    if (!cv) return;
+                    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+                    cv.width = Math.round(root.clientWidth * dpr); cv.height = Math.round(root.clientHeight * dpr);
+                }
+                function draw(now) {
+                    if (!cv || !stripReady || !cv.width) return;
+                    var W = cv.width; var H = cv.height; var dpr = W / root.clientWidth;
+                    var sz = size(); var S = SPEC[sz]; var rtl = document.documentElement.dir === 'rtl';
+                    var t = (now - t0) / 1000;
+                    cx.setTransform(1, 0, 0, 1, 0, 0); cx.clearRect(0, 0, W, H);
+                    var stacked = sz !== 'desk';
+                    var ox = stacked ? W / 2 : (rtl ? W * 0.3 : W * 0.7); var oy = H / 2;
+                    cx.translate(ox, oy); cx.rotate((rtl ? 14 : -14) * Math.PI / 180);
+                    var baseH = Math.round(S.tile * 92 / 70 * dpr);
+                    var rows = S.rows; var total = 0; var sc = [];
+                    for (var i = 0; i < rows; i += 1) { sc.push(0.8 + 0.4 * i / (rows - 1)); total += baseH * sc[i]; }
+                    var y = -total / 2; var span = Math.max(W, H) * 1.5;
+                    for (var r = 0; r < rows; r += 1) {
+                        var hPx = Math.round(baseH * sc[r]); var img = stripAt(hPx); var setW = img.width;
+                        var speed = (11 + (r % 3) * 4) * dpr * sc[r]; var dir = r % 2 ? 1 : -1;
+                        var start = ((r * 7) % 17) * setW / 17;
+                        var x = ((start + dir * speed * t) % setW + setW) % setW;
+                        for (var px = -span / 2 - x; px < span / 2; px += setW) cx.drawImage(img, Math.round(px), Math.round(y), setW, hPx);
+                        y += hPx;
                     }
-                    layer.replaceChildren(plane);
-                    return plane;
+                    // The fade before the words, drawn into the same canvas from a mask made once per layout.
+                    cx.setTransform(1, 0, 0, 1, 0, 0);
+                    cx.globalCompositeOperation = 'destination-in';
+                    cx.drawImage(maskFor(W, H, dpr, rtl, stacked), 0, 0);
+                    cx.globalCompositeOperation = 'source-over';
+                    lastDraw = now;
                 }
-                // One tile at a time lights up where it can be seen, as if the system just used it.
-                function lightLoop(plane) {
-                    var H = root.getBoundingClientRect(); var V = visual.getBoundingClientRect(); var C = root.querySelector('.hx-copy').getBoundingClientRect();
-                    var stacked = root.clientWidth <= 1100; var rtl = document.documentElement.dir === 'rtl';
-                    var seen = Array.prototype.filter.call(plane.querySelectorAll('.bgw-tile:not(.is-lit)'), function (t) {
-                        var r = t.getBoundingClientRect(); var x = (r.left + r.right) / 2; var y = (r.top + r.bottom) / 2;
-                        if (x < H.left + 20 || x > H.right - 20 || y < H.top + 40 || y > H.bottom - 20) return false;
-                        if (x > V.left - 10 && x < V.right + 10 && y > V.top - 10 && y < V.bottom + 10) return false;
-                        if (stacked) return y > C.bottom + 60;
-                        return rtl ? x < C.left - 100 : x > C.right + 100;
-                    });
-                    if (seen.length) { var t = seen[Math.floor(Math.random() * seen.length)]; t.classList.add('is-lit'); at(2200, function () { t.classList.remove('is-lit'); }); }
-                    at(1700, function () { lightLoop(plane); });
+                var maskCache = { key: '', canvas: null };
+                function maskFor(W, H, dpr, rtl, stacked) {
+                    var cxv = parseFloat(root.style.getPropertyValue('--copy-x')) * dpr || W * 0.4; var cyv = parseFloat(root.style.getPropertyValue('--copy-y')) * dpr || H * 0.4;
+                    var key = [W, H, Math.round(cxv), Math.round(cyv), rtl, stacked].join(',');
+                    if (maskCache.key === key) return maskCache.canvas;
+                    var m = document.createElement('canvas'); m.width = W; m.height = H; var c = m.getContext('2d'); var g;
+                    if (stacked) { g = c.createLinearGradient(0, 0, 0, H); stops(g, H, [[0, 0], [cyv + 8 * dpr, 0], [cyv + 40 * dpr, .3], [cyv + 90 * dpr, 1], [H - 70 * dpr, 1], [H, .1]]); }
+                    else { g = rtl ? c.createLinearGradient(W, 0, 0, 0) : c.createLinearGradient(0, 0, W, 0); stops(g, W, [[0, 0], [cxv + 20 * dpr, 0], [cxv + 70 * dpr, .3], [cxv + 150 * dpr, 1], [W, 1]]); }
+                    c.fillStyle = g; c.fillRect(0, 0, W, H);
+                    c.globalCompositeOperation = 'destination-in';
+                    var gv = c.createLinearGradient(0, 0, 0, H); stops(gv, H, [[0, 0], [70 * dpr, 1], [H - 90 * dpr, 1], [H, .1]]);
+                    c.fillStyle = gv; c.fillRect(0, 0, W, H);
+                    maskCache.key = key; maskCache.canvas = m; return m;
                 }
+                function stops(g, len, list) { list.forEach(function (p) { g.addColorStop(Math.max(0, Math.min(1, p[0] / len)), 'rgba(0,0,0,' + p[1] + ')'); }); }
+                function loop(now) {
+                    raf = 0;
+                    if (!running()) return;
+                    // About 30 frames a second is smooth for a slow drift; while the page scrolls, hold still.
+                    if (now > scrollingUntil && now - lastDraw >= 32) draw(now);
+                    raf = requestAnimationFrame(loop);
+                }
+                function startWall() { if (!raf && running()) raf = requestAnimationFrame(loop); }
+                function stopWall() { if (raf) cancelAnimationFrame(raf); raf = 0; }
+                var scroller = document.getElementById('landing-page');
+                if (scroller) scroller.addEventListener('scroll', function () { scrollingUntil = performance.now() + 140; }, { passive: true });
                 function phonesView(L, sz, still) {
                     var t = TXT[L];
                     var wrap = h('div', 'cc');
@@ -35050,10 +35180,10 @@
                     built = L + sz;
                     root.classList.toggle('still', reduce);
                     root.classList.toggle('intro', !!intro && live);
-                    var plane = wall(sz);
                     phonesView(L, sz, !live);
                     veil();
-                    if (live) at(1600, function () { lightLoop(plane); });
+                    wall();
+                    if (live) startWall(); else stopWall();
                 }
                 function setPaused(p) {
                     paused = p;
@@ -35065,78 +35195,59 @@
                     var txt = p ? 'Play motion' : 'Pause motion';
                     try { if (typeof window.t === 'function') { var v = window.t(key); if (v && v.indexOf('landing_hero.') !== 0) txt = v; } } catch (e) { /* the label keeps its English */ }
                     label.textContent = txt;
-                    if (p) stopTimers(); else build(false);
+                    if (p) { stopTimers(); stopWall(); } else build(false);
                 }
                 document.getElementById('hx-pause').addEventListener('click', function () { setPaused(!paused); });
-                function wake() { if (running()) { root.classList.remove('is-paused'); build(false); } else { stopTimers(); if (!reduce) root.classList.add('is-paused'); } }
+                function wake() { if (running()) { root.classList.remove('is-paused'); build(false); } else { stopTimers(); stopWall(); if (!reduce) root.classList.add('is-paused'); } }
                 document.addEventListener('visibilitychange', wake);
                 if ('IntersectionObserver' in window) {
                     new IntersectionObserver(function (es) { var v = es[es.length - 1].isIntersecting; if (v !== inView) { inView = v; wake(); } }, { threshold: 0.05 }).observe(root);
                 }
                 // A new language or a different size class redraws; anything else only re-measures the veil.
-                new MutationObserver(function () { if (lang() + size() !== built) build(false); else veil(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
+                new MutationObserver(function () { if (lang() + size() !== built) build(false); else { veil(); draw(performance.now()); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
                 if ('ResizeObserver' in window) {
                     var rt = 0;
-                    new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { if (lang() + size() !== built) build(false); else veil(); }, 150); }).observe(root);
+                    new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { if (lang() + size() !== built) build(false); else { veil(); sizeCanvas(); draw(performance.now()); } }, 150); }).observe(root);
                 }
-                if (document.fonts && document.fonts.ready) document.fonts.ready.then(veil);
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { veil(); draw(performance.now()); });
                 build(true);
             })();
             </script>
         </section>
 
         <!-- Stats strip (kept from the previous hero, now just below it) -->
-        <section class="lpx-hero" style="padding-top:2.5rem;padding-bottom:1rem;">
+        <section class="lps lps-stats">
             <!-- Social Proof Stats (Live Data) -->
-            <div class="lp-stats lpx-bento" id="lp-stats-strip" style="border:none;padding:0;gap:0.9rem;">
-                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+            <div class="lp-stats lpx-bento" id="lp-stats-strip">
+                <div class="lp-stat">
                     <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:2rem;">5</div>
+                    <div class="lp-stat-num" style="font-size:30px;">5</div>
                     <div class="lp-stat-label">Live channels</div>
                 </div>
-                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                <div class="lp-stat">
                     <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:2rem;">2</div>
+                    <div class="lp-stat-num" style="font-size:30px;">2</div>
                     <div class="lp-stat-label">AI agents · Cartiva + Opsy</div>
                 </div>
-                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                <div class="lp-stat">
                     <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 14.24L11 13V7h1.5v5.25l4.5 2.67-.76 1.32z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:2rem;">24/7</div>
+                    <div class="lp-stat-num" style="font-size:30px;">24/7</div>
                     <div class="lp-stat-label">Replies + one-tap human takeover</div>
                 </div>
-                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
+                <div class="lp-stat">
                     <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 18H7V5h10v14z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:2rem;">1</div>
+                    <div class="lp-stat-num" style="font-size:30px;">1</div>
                     <div class="lp-stat-label">Inbox for every channel</div>
                 </div>
-                <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
-                    <div class="lp-stat-num" style="font-size:1.4rem;">AR + EN</div>
+                <div class="lp-stat">
+                    <div class="lp-stat-num" style="font-size:24px;">AR + EN</div>
                     <div class="lp-stat-label">Arabic + English, RTL native</div>
                 </div>
             </div>
-            <script>
-            (function() {
-                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                // Animated stat count-up (skips non-numeric tiles like "AR + EN")
-                var counted = false;
-                function countUp(){
-                    if (counted) return; counted = true;
-                    document.querySelectorAll('#lp-stats-strip .lp-stat-num').forEach(function(el){
-                        var raw = el.textContent.trim(), num = parseFloat(raw.replace(/[^0-9.]/g,'')), suf = raw.replace(/[0-9.]/g,'');
-                        if (isNaN(num) || reduce) return;
-                        var t0 = null;
-                        function fr(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/1400, 1); el.textContent = Math.round(num * (1-Math.pow(1-p,3))) + suf; if (p < 1) requestAnimationFrame(fr); }
-                        requestAnimationFrame(fr);
-                    });
-                }
-                var so = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ countUp(); so.disconnect(); } }); }, {threshold: 0.3});
-                var ss = document.getElementById('lp-stats-strip'); if (ss) so.observe(ss);
-            })();
-            </script>
         </section>
 
         <!-- Demo-first proof: scripted sample transcript, runs fully in-browser -->
-        <section id="lp-demo" style="max-width:800px;margin:0 auto;padding:0 2rem 4rem;text-align:center;">
+        <section id="lp-demo" class="lps lps-narrow" style="text-align:center;">
             <div class="lp-demo-badge" data-i18n="landing_demo.badge">Demo · sample replies</div>
             <h2 class="lp-section-title" data-i18n="landing_demo.title">Try a demo conversation</h2>
             <p class="lp-section-sub" data-i18n="landing_demo.sub">Scripted sample replies running in your browser. Switch agents, send a message, and see how each one handles a real first exchange.</p>
@@ -35439,7 +35550,7 @@
         </section>
 
         <!-- Why Choose Digitivia -->
-        <section class="lp-align-start" style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
+        <section class="lp-align-start lps">
             <h2 class="lp-section-title" data-i18n="landing_why.title">Why Digitivia?</h2>
             <p class="lp-section-sub" data-i18n="landing_why.sub">Not a generic bot — an agent trained on your business, supervised by you.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1.2rem;">
@@ -35467,7 +35578,7 @@
         </section>
 
         <!-- Industry-Specific AI — Choose Your Agent -->
-        <section style="max-width:1200px;margin:0 auto;padding:0 2rem 4rem;">
+        <section class="lps">
             <h2 class="lp-section-title" data-i18n="landing_agents.title">Choose your AI agent</h2>
             <p class="lp-section-sub" data-i18n="landing_agents.sub">Two specialists. Pick the one that fits — or run both.</p>
 
@@ -35509,7 +35620,7 @@
         </section>
 
         <!-- How It Works -->
-        <section style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;">
+        <section class="lps lps-narrow" id="lp-how">
             <h2 class="lp-section-title" data-i18n="landing_how.title">Up and running in 3 steps</h2>
             <p class="lp-section-sub" data-i18n="landing_how.sub">No code. The setup wizard walks you through each one.</p>
             <div class="lp-how-grid">
@@ -35541,7 +35652,7 @@
 
 
         <!-- Features: capabilities grouped by user outcome -->
-        <section class="lp-features lp-align-start" id="lp-features">
+        <section class="lp-features lp-align-start lps" id="lp-features">
             <h2 class="lp-section-title" data-i18n="landing_caps.title">Everything you need in one place</h2>
             <p class="lp-section-sub" data-i18n="landing_caps.sub">Four outcomes, one platform — across WhatsApp, Messenger, Instagram, Telegram, and your website.</p>
             <div class="lp-features-grid">
@@ -35589,7 +35700,7 @@
         </section>
 
         <!-- Pricing (auto-detects currency) -->
-        <section class="lp-pricing" id="lp-pricing">
+        <section class="lp-pricing lps" id="lp-pricing">
             <h2 class="lp-section-title" data-i18n="landing_pricing.title">Simple, Transparent Pricing</h2>
             <p class="lp-section-sub" data-i18n="landing_pricing.sub">Scale your AI agents with the perfect plan. Prices include VAT.</p>
             <div class="lp-pricing-grid" id="lp-pricing-grid" style="padding-top:20px;"></div>
@@ -35773,7 +35884,7 @@
 
 
         <!-- FAQ -->
-        <section class="lp-faq" id="lp-faq" aria-labelledby="lp-faq-title">
+        <section class="lp-faq lps lps-narrow" id="lp-faq" aria-labelledby="lp-faq-title">
             <h2 class="lp-section-title" id="lp-faq-title" data-i18n="landing_faq.title">Frequently Asked Questions</h2>
             <p class="lp-section-sub" data-i18n="landing_faq.sub">Everything you need to know about Digitivia AI Agent.</p>
 
@@ -35797,7 +35908,7 @@
 
 
         <!-- Payment Methods -->
-        <section style="max-width:600px;margin:0 auto;padding:0 2rem 3rem;text-align:center;" aria-label="Payment methods">
+        <section class="lps lps-narrow" style="text-align:center;" aria-label="Payment methods">
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-secondary);font-weight:600;margin-bottom:1.2rem;" data-i18n="landing_pay.label">Secure Payment Methods</div>
             <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
                 <div class="lp-pay-plate">
@@ -35815,7 +35926,7 @@
         </section>
 
         <!-- Trust Badges -->
-        <section class="lp-trust" aria-label="Security and compliance">
+        <section class="lp-trust lps" aria-label="Security and compliance">
             <h2 class="lp-section-title" data-i18n="landing_trust.title">Trusted & Secure</h2>
             <div class="lp-trust-badges">
                 <div class="lp-trust-badge">
@@ -35838,7 +35949,7 @@
         </section>
 
         <!-- CTA -->
-        <section class="lp-hero" style="padding-top:0;padding-bottom:2rem;">
+        <section class="lp-hero lps lps-cta">
             <div class="lp-final-panel">
             <h2 style="font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;margin-bottom:1rem;" data-i18n="landing_final.title">Never miss another customer message.</h2>
             <p style="opacity:0.82;margin-bottom:0.5rem;" data-i18n="landing_final.sub">Connect a channel, configure your agent, go live.</p>
@@ -35874,7 +35985,7 @@
         </script>
 
         <!-- Footer -->
-        <footer class="lp-footer" style="text-align:start;padding:2rem;">
+        <footer class="lp-footer" style="text-align:start;">
             <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;">
                 <div>
                     <div style="font-weight:700;font-size:1rem;color:var(--theme-color);margin-bottom:0.8rem;">Digitivia</div>

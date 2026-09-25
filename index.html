@@ -403,6 +403,19 @@
                 "hero_btn": "Install the app"
             },
             "landing_hero": {
+                "hx_live": "Live",
+                "hx_eyebrow": "AI agents for social media, sales and operations",
+                "hx_eyebrow_short": "AI agents for social media and sales",
+                "hx_title_a": "AI agents that work",
+                "hx_title_grad": "every conversation",
+                "hx_title_b": ", on every channel.",
+                "hx_sub": "Cartiva and Opsy answer Instagram, WhatsApp, Messenger and Facebook in seconds, save every lead, confirm orders, book appointments and follow up, while you watch it happen.",
+                "hx_watch": "Watch it work",
+                "hx_micro_1": "Arabic and English",
+                "hx_micro_2": "Guided setup",
+                "hx_micro_3": "Plans from $79 a month",
+                "hx_pause": "Pause motion",
+                "hx_play": "Play motion",
                 "eyebrow": "WhatsApp · Instagram · Messenger · Telegram · Website",
                 "title_a": "Never miss another",
                 "title_grad": "sale or booking",
@@ -2465,6 +2478,19 @@
                 "hero_btn": "ثبّت التطبيق"
             },
             "landing_hero": {
+                "hx_live": "مباشر",
+                "hx_eyebrow": "وكلاء ذكاء اصطناعي للسوشيال ميديا والمبيعات والعمليات",
+                "hx_eyebrow_short": "وكلاء ذكاء اصطناعي للسوشيال ميديا",
+                "hx_title_a": "وكلاء ذكاء اصطناعي",
+                "hx_title_grad": "بيشتغلوا على كل محادثة",
+                "hx_title_b": "، في كل قناة.",
+                "hx_sub": "كارتيفا وأوبسي بيردّوا على إنستجرام وواتساب وماسنجر وفيسبوك في ثواني، بيسجّلوا كل عميل محتمل، بيأكدوا الطلبات، بيحجزوا المواعيد وبيتابعوا، وإنت شايف كل ده بيحصل قدامك.",
+                "hx_watch": "شوفه وهو شغال",
+                "hx_micro_1": "عربي وإنجليزي",
+                "hx_micro_2": "إعداد موجّه",
+                "hx_micro_3": "باقات تبدأ من ٧٩ دولار شهريًا",
+                "hx_pause": "إيقاف الحركة",
+                "hx_play": "تشغيل الحركة",
                 "eyebrow": "واتساب · إنستجرام · ماسنجر · تيليجرام · موقعك",
                 "title_a": "مفيش بيع أو حجز يضيع منك تاني",
                 "title_grad": "الذكاء الاصطناعي بيرد في ثوانٍ،",
@@ -34688,141 +34714,379 @@
         })();
         </script>
 
-        <!-- Hero -->
-        <section class="lp-hero lpx-hero" id="landing-top">
-            <div class="lpx-grid">
-                <div class="lpx-copy">
-                    <div class="lp-hero-badge" data-i18n="landing_hero.eyebrow">WhatsApp · Instagram · Messenger · Telegram · Website</div>
-                    <h1 style="text-wrap:balance;"><span data-i18n="landing_hero.title_a">Never miss another</span> <span class="lp-gradient-text" data-i18n="landing_hero.title_grad">sale or booking</span><br><span data-i18n="landing_hero.title_b">— AI replies in seconds, 24/7</span></h1>
-                    <p data-i18n="landing_hero.sub">Cartiva and Opsy answer every WhatsApp, Instagram and website chat from one inbox and save each lead to your CRM. Start free, with a guided setup.</p>
-                    <div class="lpx-ctas">
-                        <button onclick="showLandingSignup()" class="lp-btn lp-btn-primary" data-i18n="landing_hero.cta_primary">Start Free</button>
-                        <button id="lp-install-btn" onclick="triggerPwaInstall()" class="lp-btn lp-btn-outline" style="display:none;" data-i18n="install_app.hero_btn">Install the app</button>
+        <!-- Hero: the owner's pick C1 (2026-09-25). Three phones answered live by Cartiva and Opsy,
+             on a light ground, with the platforms we work with sliding behind on a tilted wall.
+             Built by the script at the end of this section; motion pauses with the button, when the
+             hero is off screen or the tab is hidden, and stands still under reduced motion. -->
+        <section class="hx" id="landing-top" aria-labelledby="hx-title">
+            <style>
+                .hx {
+                    --ink: #0f1330; --ink-2: #2b3052; --mut: #565c7a; --dim: #878ca6; --line: rgba(15, 19, 48, .08);
+                    --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #1f6f72; --ok: #11845a;
+                    --shadow-1: 0 1px 2px rgba(20, 24, 60, .06), 0 10px 24px -14px rgba(20, 24, 60, .22);
+                    --ease: cubic-bezier(.22, 1, .36, 1);
+                    position: relative; overflow: hidden; isolation: isolate; color: var(--ink); background: var(--ground);
+                    min-height: clamp(640px, calc(100svh - 64px), 940px); display: flex; flex-direction: column;
+                    font-family: "Inter", "Tajawal", system-ui, sans-serif; container-type: inline-size; container-name: hx; text-align: start;
+                }
+                [dir="rtl"] .hx { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
+                .hx * { box-sizing: border-box; }
+                .hx-bg { position: absolute; inset: 0; z-index: -3; pointer-events: none;
+                    background: radial-gradient(46% 52% at 84% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 70% 92%, rgba(139, 108, 255, .16), transparent 72%),
+                        radial-gradient(44% 50% at 4% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%); }
+                [dir="rtl"] .hx-bg { transform: scaleX(-1); }
+                .hx-logos { position: absolute; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
+                /* The veil keeps the words on clean ground; the script measures where the words end. */
+                .hx-veil { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+                    background: linear-gradient(90deg, var(--ground) 0, var(--ground) calc(var(--copy-x, 40%) + 20px), rgba(245, 246, 251, .7) calc(var(--copy-x, 40%) + 70px), var(--ground-0) calc(var(--copy-x, 40%) + 150px)),
+                        linear-gradient(180deg, var(--ground) 0, var(--ground-0) 70px, var(--ground-0) calc(100% - 90px), rgba(245, 246, 251, .9) 100%); }
+                [dir="rtl"] .hx-veil { background: linear-gradient(270deg, var(--ground) 0, var(--ground) calc(var(--copy-x, 40%) + 20px), rgba(245, 246, 251, .7) calc(var(--copy-x, 40%) + 70px), var(--ground-0) calc(var(--copy-x, 40%) + 150px)),
+                        linear-gradient(180deg, var(--ground) 0, var(--ground-0) 70px, var(--ground-0) calc(100% - 90px), rgba(245, 246, 251, .9) 100%); }
+                .hx-body { position: relative; z-index: 2; flex: 1 0 auto; width: 100%; max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; align-content: center; padding: 28px 56px 60px; }
+                .hx-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: center; }
+                .hx-eyebrow { display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%; padding: 5px 14px 5px 5px; border-radius: 999px; background: rgba(255, 255, 255, .85); box-shadow: var(--shadow-1), 0 0 0 1px var(--line); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+                .hx-eyebrow .eb-s { display: none; }
+                .hx-live { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: rgba(42, 129, 132, .1); color: var(--teal-2); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+                [dir="rtl"] .hx-live { letter-spacing: 0; }
+                .hx-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #1fbf7f; animation: hx-ping 1.8s var(--ease) infinite; }
+                @keyframes hx-ping { 0% { box-shadow: 0 0 0 0 rgba(31, 191, 127, .5); } 80%, 100% { box-shadow: 0 0 0 7px rgba(31, 191, 127, 0); } }
+                .hx h1 { margin: 0; font-family: "Cairo", "Inter", system-ui, sans-serif; font-weight: 800; font-size: clamp(34px, 4.3cqw, 64px); line-height: 1.06; letter-spacing: -.025em; text-wrap: balance; color: var(--ink); }
+                [dir="rtl"] .hx h1 { letter-spacing: 0; line-height: 1.25; font-size: clamp(32px, 3.5cqw, 52px); }
+                .hx h1 em { font-style: normal; background: linear-gradient(90deg, #1f8a8c 0%, #6d4bd8 50%, #1f8a8c 100%) 0 0 / 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: hx-sheen 8s linear infinite; }
+                [dir="rtl"] .hx h1 em { animation-direction: reverse; }
+                @keyframes hx-sheen { to { background-position: 200% 0; } }
+                .hx-sub { margin: 0; font-size: clamp(16px, 1.25cqw, 18.5px); line-height: 1.6; color: var(--mut); max-width: 58ch; }
+                .hx-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+                .hx-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+                .hx-btn:focus-visible { outline: 2px solid #2a8184; outline-offset: 3px; }
+                .hx-btn-p { color: #fff; background: linear-gradient(180deg, #2f8f91, #227679); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 0 0 1px rgba(20, 96, 99, .6), 0 16px 32px -14px rgba(34, 118, 121, .85); }
+                .hx-btn-p::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .35), transparent); animation: hx-glint 6s var(--ease) 2.4s infinite; }
+                [dir="rtl"] .hx-btn-p::after { animation-name: hx-glint-rtl; left: auto; right: -60%; }
+                @keyframes hx-glint { 0% { transform: translateX(0); } 22%, 100% { transform: translateX(420%); } }
+                @keyframes hx-glint-rtl { 0% { transform: translateX(0); } 22%, 100% { transform: translateX(-420%); } }
+                .hx-btn-s { color: var(--ink); background: #fff; box-shadow: var(--shadow-1), 0 0 0 1px var(--line); padding-inline-start: 10px; }
+                .hx-btn-s .pl { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(42, 129, 132, .1); }
+                .hx-btn-s svg { width: 14px; height: 14px; fill: var(--teal-2); }
+                [dir="rtl"] .hx-btn-s svg { transform: scaleX(-1); }
+                .hx-micro { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--mut); }
+                .hx-micro span { display: inline-flex; align-items: center; gap: 7px; }
+                .hx-micro span::before { content: ""; width: 15px; height: 15px; border-radius: 50%; background: rgba(42, 129, 132, .12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231f6f72' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center / 10px no-repeat; }
+                .hx-visual { position: relative; min-width: 0; }
+                .hx-pause { position: absolute; z-index: 3; inset-block-end: 16px; inset-inline-start: 56px; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; font: inherit; font-size: 12px; font-weight: 600; color: var(--mut); background: rgba(255, 255, 255, .85); box-shadow: 0 0 0 1px var(--line); cursor: pointer; }
+                .hx-pause:hover { color: var(--ink); }
+                .hx-pause:focus-visible { outline: 2px solid #2a8184; outline-offset: 2px; }
+                .hx-pause svg { width: 12px; height: 12px; fill: currentColor; }
+                .hx-pause .i-play, .hx.is-paused .hx-pause .i-pause { display: none; }
+                .hx.is-paused .hx-pause .i-play { display: inline; }
+                .hx.still .hx-pause { display: none; }
+
+                /* the first second: words, then the phones, then the stack behind */
+                .hx.intro .hx-eyebrow, .hx.intro h1, .hx.intro .hx-sub, .hx.intro .hx-ctas, .hx.intro .hx-micro { animation: hx-rise 1s var(--ease) both; }
+                .hx.intro h1 { animation-delay: .12s; } .hx.intro .hx-sub { animation-delay: .32s; } .hx.intro .hx-ctas { animation-delay: .44s; } .hx.intro .hx-micro { animation-delay: .56s; }
+                .hx.intro .hx-visual { animation: hx-rise-big 1.3s var(--ease) .25s both; }
+                .hx.intro .hx-logos { animation: hx-fade 2.2s ease .5s both; }
+                @keyframes hx-rise { from { opacity: 0; transform: translateY(16px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+                @keyframes hx-rise-big { from { opacity: 0; transform: translateY(34px) scale(.97); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+                @keyframes hx-fade { from { opacity: 0; } to { opacity: 1; } }
+
+                /* the stack behind: a tilted wall of tiles */
+                .hx .bgw-plane { position: absolute; left: 62%; top: 50%; display: grid; gap: var(--gap); width: max-content; transform: translate(-50%, -50%) perspective(1800px) rotateX(34deg) rotateZ(-14deg); }
+                [dir="rtl"] .hx .bgw-plane { left: 38%; transform: translate(-50%, -50%) perspective(1800px) rotateX(34deg) rotateZ(14deg); }
+                .hx .bgw-row { position: relative; height: var(--tile); width: var(--pw); overflow: hidden; }
+                .hx .bgw-track { position: absolute; top: 0; left: 0; display: flex; gap: var(--gap); width: max-content; animation: hx-slide var(--d, 180s) linear infinite; }
+                .hx .bgw-row.rev .bgw-track { animation-direction: reverse; }
+                @keyframes hx-slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                .hx .bgw-tile { flex: none; width: var(--tile); height: var(--tile); border-radius: calc(var(--tile) * .28); display: grid; place-items: center; background: #fff;
+                    box-shadow: inset 0 -1px 0 rgba(15, 19, 48, .04), 0 0 0 1px rgba(15, 19, 48, .05), 0 14px 26px -18px rgba(20, 24, 60, .35); transition: box-shadow 1.1s var(--ease), transform 1.1s var(--ease); }
+                .hx .bgw-tile img { width: 50%; height: 50%; object-fit: contain; display: block; }
+                .hx .bgw-tile[data-id="woocommerce"] img { width: 78%; height: 78%; } .hx .bgw-tile[data-id="n8n"] img { width: 66%; height: 66%; }
+                .hx .bgw-tile.is-lit { transform: translateY(-5px); box-shadow: 0 0 0 1.5px rgba(42, 129, 132, .5), 0 0 0 6px rgba(42, 129, 132, .08), 0 22px 36px -18px rgba(42, 129, 132, .6); }
+
+                /* shared small pieces */
+                .hx .mz { display: inline-flex; flex: none; line-height: 0; } .hx .mz svg { display: block; width: 100%; height: 100%; }
+                .hx .lg { display: block; object-fit: contain; }
+                .hx .typing { display: inline-flex; gap: 4px; padding: 11px 13px; }
+                .hx .typing i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .35; animation: hx-dot 1.1s ease-in-out infinite; }
+                .hx .typing i:nth-child(2) { animation-delay: .15s; } .hx .typing i:nth-child(3) { animation-delay: .3s; }
+                @keyframes hx-dot { 0%, 100% { opacity: .3; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-2px); } }
+                .hx .pop { animation: hx-pop .65s var(--ease) both; }
+                @keyframes hx-pop { from { opacity: 0; transform: translateY(10px) scale(.96); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+                .hx .sw { animation: hx-word .32s ease both; }
+                @keyframes hx-word { from { opacity: 0; filter: blur(2px); } to { opacity: 1; filter: none; } }
+                .hx .ok { display: inline-flex; width: 18px; height: 18px; flex: none; border-radius: 50%; align-items: center; justify-content: center; background: rgba(17, 132, 90, .12); }
+                .hx .ok svg { width: 11px; height: 11px; fill: var(--ok); }
+
+                /* the phones */
+                .hx .cc { position: relative; height: 620px; }
+                .hx .cc-hub { position: absolute; top: 0; left: 50%; transform: translateX(-50%); z-index: 6; display: inline-flex; align-items: center; gap: 10px; padding: 6px 16px 6px 7px; border-radius: 999px; white-space: nowrap; color: var(--ink); background: rgba(255, 255, 255, .95); box-shadow: 0 0 0 1px var(--line), 0 16px 34px -16px rgba(20, 24, 60, .4); font-size: 13.5px; font-weight: 600; }
+                .hx .cc-hub .mz { width: 30px; height: 30px; }
+                .hx .cc-beams { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; overflow: visible; }
+                .hx .cc-beam { fill: none; stroke: rgba(86, 92, 150, .22); stroke-width: 1.4; stroke-dasharray: 3 6; transition: stroke .5s ease; }
+                .hx .cc-beam.is-hot { stroke: rgba(42, 129, 132, .8); animation: hx-flow .8s linear infinite; }
+                @keyframes hx-flow { to { stroke-dashoffset: -18; } }
+                .hx .cc-phone { position: absolute; top: 76px; left: 50%; width: 256px; height: 486px; padding: 7px; border-radius: 44px; z-index: 2; background: #121320;
+                    box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 50px 80px -40px rgba(20, 24, 60, .55), 0 18px 30px -18px rgba(20, 24, 60, .35); transition: transform 1s var(--ease), box-shadow .7s ease, filter .7s ease, opacity .7s ease; }
+                .hx .cc-scr { position: relative; height: 100%; border-radius: 37px; overflow: hidden; display: flex; flex-direction: column; }
+                .hx .cc-scr::before { content: ""; position: absolute; top: 9px; left: 50%; width: 76px; height: 22px; transform: translateX(-50%); border-radius: 999px; background: #121320; z-index: 3; }
+                .hx .cc-phone.pos-0 { transform: translateX(-138%) translateY(36px) rotate(-6deg) scale(.9); filter: saturate(.85) brightness(.97); }
+                .hx .cc-phone.pos-1 { transform: translateX(-50%); z-index: 3; }
+                .hx .cc-phone.pos-2 { transform: translateX(38%) translateY(36px) rotate(6deg) scale(.9); filter: saturate(.85) brightness(.97); }
+                .hx .cc-phone.is-busy { box-shadow: inset 0 0 0 1.5px #3a3c4e, 0 0 0 5px rgba(42, 129, 132, .16), 0 50px 80px -40px rgba(20, 24, 60, .55), 0 0 60px -12px rgba(42, 129, 132, .45); filter: none; }
+                .hx .cc-status { display: flex; justify-content: space-between; padding: 12px 24px 6px; font-size: 11px; font-weight: 700; }
+                .hx .cc-app { display: flex; align-items: center; gap: 9px; padding: 8px 14px 10px; }
+                .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: linear-gradient(135deg, #6d4bd8, #2a8184); }
+                .hx .cc-app .who { display: grid; min-width: 0; } .hx .cc-app .who b { font-size: 13px; } .hx .cc-app .who span { font-size: 10.5px; opacity: .65; }
+                .hx .cc-app .lg { margin-inline-start: auto; width: 20px; height: 20px; }
+                .hx .cc-body { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 12px; overflow: hidden; }
+                .hx .cc-msg { max-width: 84%; padding: 8px 11px; border-radius: 17px; font-size: 12.5px; line-height: 1.4; }
+                .hx .cc-msg.in { align-self: flex-start; transform-origin: bottom left; }
+                .hx .cc-msg.out { align-self: flex-end; transform-origin: bottom right; }
+                [dir="rtl"] .hx .cc-msg.in { transform-origin: bottom right; } [dir="rtl"] .hx .cc-msg.out { transform-origin: bottom left; }
+                .hx .cc-tag { align-self: flex-end; display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; opacity: .8; }
+                .hx .cc-tag .mz { width: 16px; height: 16px; }
+                .hx .cc-act { align-self: center; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 6px; border-radius: 999px; font-size: 11px; font-weight: 600; color: #0d6b48; background: rgba(17, 132, 90, .1); box-shadow: inset 0 0 0 1px rgba(17, 132, 90, .22); }
+                .hx .cc-act .ok { width: 15px; height: 15px; } .hx .cc-act .ok svg { width: 9px; height: 9px; }
+                .hx .cc-typing { align-self: flex-end; border-radius: 17px; padding: 0; }
+                .hx .cc-input { margin: 8px 12px 14px; padding: 9px 14px; border-radius: 999px; font-size: 11.5px; opacity: .7; }
+                .hx .th-ig { background: #fff; color: #0c0c0c; } .hx .th-ig .cc-app { border-bottom: 1px solid #efefef; }
+                .hx .th-ig .cc-msg.in { background: #efefef; } .hx .th-ig .cc-msg.out, .hx .th-ig .cc-typing { color: #fff; background: linear-gradient(135deg, #5b51d8, #833ab4 55%, #c13584); }
+                .hx .th-ig .cc-input { border: 1px solid #dbdbdb; }
+                .hx .th-wa { color: #111b21; background: #efeae2 radial-gradient(rgba(0, 0, 0, .035) 1px, transparent 1.4px) 0 0 / 14px 14px; }
+                .hx .th-wa .cc-status, .hx .th-wa .cc-app { background: #fff; } .hx .th-wa .cc-app { box-shadow: 0 1px 0 rgba(0, 0, 0, .06); }
+                .hx .th-wa .cc-msg.in { background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); } .hx .th-wa .cc-msg.out, .hx .th-wa .cc-typing { background: #d9fdd3; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); }
+                .hx .th-wa .cc-input { background: #fff; }
+                .hx .th-ms { background: #fff; color: #050505; } .hx .th-ms .cc-app { box-shadow: 0 1px 0 rgba(0, 0, 0, .06); }
+                .hx .th-ms .cc-msg.in { background: #f0f0f0; } .hx .th-ms .cc-msg.out, .hx .th-ms .cc-typing { color: #fff; background: linear-gradient(135deg, #0a7cff, #a33bf2); }
+                .hx .th-ms .cc-input { background: #f0f2f5; }
+                .hx .cc-ribbon { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; overflow: hidden; z-index: 5; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+                .hx .cc-track { position: absolute; top: 0; left: 0; display: flex; gap: 10px; width: max-content; height: 100%; align-items: center; animation: hx-slide 44s linear infinite; }
+                [dir="rtl"] .hx .cc-track { left: auto; right: 0; animation-name: hx-slide-rtl; }
+                @keyframes hx-slide-rtl { to { transform: translateX(50%); } }
+                .hx .cc-task { display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px 7px 7px; border-radius: 999px; font-size: 12.5px; font-weight: 600; white-space: nowrap; color: var(--ink); background: #fff; box-shadow: 0 0 0 1px var(--line), 0 8px 16px -12px rgba(20, 24, 60, .35); }
+                .hx .cc-task .lg { width: 16px; height: 16px; }
+
+                /* tablet and below: one column, the words centred above the phones */
+                @container hx (max-width: 1100px) {
+                    .hx-body { grid-template-columns: minmax(0, 1fr); gap: 44px; padding: 32px 32px 64px; }
+                    .hx-copy { justify-items: center; text-align: center; max-width: 680px; margin-inline: auto; }
+                    .hx h1 { font-size: clamp(38px, 5.6cqw, 56px); } [dir="rtl"] .hx h1 { font-size: clamp(36px, 5.2cqw, 52px); }
+                    .hx-sub { margin-inline: auto; }
+                    .hx-ctas, .hx-micro { justify-content: center; }
+                    .hx-veil, [dir="rtl"] .hx-veil { background: linear-gradient(180deg, var(--ground) 0, var(--ground) calc(var(--copy-y, 40%) + 8px), rgba(245, 246, 251, .7) calc(var(--copy-y, 40%) + 40px), var(--ground-0) calc(var(--copy-y, 40%) + 90px), var(--ground-0) calc(100% - 70px), rgba(245, 246, 251, .9) 100%); }
+                    .hx .bgw-plane, [dir="rtl"] .hx .bgw-plane { left: 50%; }
+                    .hx .cc { max-width: 720px; margin-inline: auto; width: 100%; }
+                    .hx-pause { inset-inline-start: 32px; }
+                }
+                @container hx (max-width: 600px) {
+                    .hx-body { padding: 16px 18px 56px; gap: 30px; }
+                    .hx-copy { gap: 16px; }
+                    .hx-eyebrow { font-size: 12px; gap: 8px; }
+                    .hx-eyebrow .eb-l { display: none; } .hx-eyebrow .eb-s { display: inline; }
+                    .hx h1 { font-size: 33px; } [dir="rtl"] .hx h1 { font-size: 30px; }
+                    .hx-sub { font-size: 15.5px; }
+                    .hx-ctas { display: grid; grid-template-columns: 1fr; width: 100%; }
+                    .hx-btn { width: 100%; }
+                    .hx-micro { font-size: 12.5px; gap: 6px 14px; }
+                    .hx .cc { height: 610px; }
+                    .hx .cc-phone { width: 266px; height: 476px; top: 72px; }
+                    .hx .cc-phone.pos-0, .hx .cc-phone.pos-2, .hx .cc-phone.pos-1:not(.is-front) { opacity: 0; transform: translateX(-50%) scale(.96); }
+                    .hx .cc-phone.is-front { opacity: 1; transform: translateX(-50%); z-index: 4; filter: none; }
+                    .hx .cc-hub { font-size: 12px; }
+                    .hx .cc-beams { display: none; }
+                    .hx-pause { inset-inline-start: 18px; }
+                }
+                /* paused: everything holds where it is; reduced motion: nothing moves at all */
+                .hx.is-paused *, .hx.is-paused *::before, .hx.is-paused *::after { animation-play-state: paused !important; }
+                .hx.still *, .hx.still *::before, .hx.still *::after { animation: none !important; transition: none !important; }
+            </style>
+            <div class="hx-bg" aria-hidden="true"></div>
+            <div class="hx-logos" aria-hidden="true"></div>
+            <div class="hx-veil" aria-hidden="true"></div>
+            <div class="hx-body">
+                <div class="hx-copy">
+                    <div class="hx-eyebrow"><span class="hx-live" data-i18n="landing_hero.hx_live">Live</span><span class="eb-l" data-i18n="landing_hero.hx_eyebrow">AI agents for social media, sales and operations</span><span class="eb-s" data-i18n="landing_hero.hx_eyebrow_short">AI agents for social media and sales</span></div>
+                    <h1 id="hx-title"><span data-i18n="landing_hero.hx_title_a">AI agents that work</span> <em data-i18n="landing_hero.hx_title_grad">every conversation</em><span data-i18n="landing_hero.hx_title_b">, on every channel.</span></h1>
+                    <p class="hx-sub" data-i18n="landing_hero.hx_sub">Cartiva and Opsy answer Instagram, WhatsApp, Messenger and Facebook in seconds, save every lead, confirm orders, book appointments and follow up, while you watch it happen.</p>
+                    <div class="hx-ctas">
+                        <button type="button" class="hx-btn hx-btn-p" onclick="showLandingSignup()" data-i18n="landing_hero.cta_primary">Start Free</button>
+                        <button type="button" class="hx-btn hx-btn-s" onclick="scrollToFeatures()"><span class="pl" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span data-i18n="landing_hero.hx_watch">Watch it work</span></button>
+                        <button id="lp-install-btn" type="button" onclick="triggerPwaInstall()" class="hx-btn hx-btn-s" style="display:none;" data-i18n="install_app.hero_btn">Install the app</button>
                     </div>
-                    <div><button type="button" onclick="scrollToFeatures()" class="lpx-how-link" data-i18n="landing_hero.cta_secondary">See a live demo ↓</button></div>
-                    <small class="lpx-micro" data-i18n="landing_hero.cta_micro">Start free · guided setup · Arabic + English</small>
-                    <small class="lpx-micro" data-i18n="landing_hero.obj_control">AI drafts, you approve — take over any chat in one tap.</small>
+                    <div class="hx-micro"><span data-i18n="landing_hero.hx_micro_1">Arabic and English</span><span data-i18n="landing_hero.hx_micro_2">Guided setup</span><span data-i18n="landing_hero.hx_micro_3">Plans from $79 a month</span></div>
                 </div>
-                <div class="lpx-visual">
-                    <div class="lpx-phone" data-agent="cartiva">
-                        <div class="lpx-phone-head">
-                            <div id="lpx-avatar"></div>
-                            <div style="flex:1;"><b id="lpx-agent-name">Cartiva AI</b><small data-i18n="landing_hero.chat_status">Online · replies instantly</small></div>
-                            <span class="lpx-dot" aria-hidden="true"></span>
-                        </div>
-                        <div class="lpx-toggle" role="group" aria-label="Agent preview">
-                            <button id="lpx-tab-cartiva" class="on-cartiva" aria-pressed="true" onclick="lpxSwitch('cartiva')" data-i18n="landing_hero.toggle_cartiva">Cartiva · Ecom</button>
-                            <button id="lpx-tab-opsy" aria-pressed="false" onclick="lpxSwitch('opsy')" data-i18n="landing_hero.toggle_opsy">Opsy · Services</button>
-                        </div>
-                        <div class="lpx-chat" id="lpx-chat" aria-live="off"></div>
-                        <div class="lpx-input"><span style="flex:1" data-i18n="landing_hero.input_ph">Ask anything…</span><span style="color:var(--theme-color);font-weight:800;" aria-hidden="true">↑</span></div>
-                        <div class="lpx-proof" data-i18n="landing_hero.proof_note">Sample conversation · saved to your CRM</div>
-                    </div>
-                </div>
+                <div class="hx-visual" id="hx-visual" aria-hidden="true"></div>
             </div>
+            <button type="button" class="hx-pause" id="hx-pause" aria-pressed="false">
+                <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                <span id="hx-pause-label" data-i18n="landing_hero.hx_pause">Pause motion</span>
+            </button>
             <script>
-            (function() {
-                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                var isAR = (document.documentElement.lang || 'en').indexOf('ar') === 0;
-                window.lpxMsgs = null;
-                // Chat mock loop
-                var scripts = {
-                    cartiva: isAR ? [
-                        {t:'in', x:'عندكم توصيل للتجمع؟'},
-                        {t:'out', x:'أيوه! التوصيل خلال ٢-٣ أيام، والدفع عند الاستلام. تحب أأكد الأوردر؟'},
-                        {t:'in', x:'تمام، أكده'}
-                    ] : [
-                        {t:'in', x:'Do you deliver to New Cairo?'},
-                        {t:'out', x:'Yes! 2–3 day delivery with cash on delivery. Want me to confirm your order?'},
-                        {t:'in', x:'Yes please'}
-                    ],
-                    opsy: isAR ? [
-                        {t:'in', x:'عايز أحجز كشف أسنان بكرة'},
-                        {t:'out', x:'أكيد! متاح بكرة ٥م و ٧م — أنسب ميعاد ليك إمتى؟'},
-                        {t:'in', x:'٥م مناسب'}
-                    ] : [
-                        {t:'in', x:'I need a dental checkup tomorrow'},
-                        {t:'out', x:'Of course! 5pm and 7pm are open — which suits you?'},
-                        {t:'in', x:'5pm works'}
-                    ]
+            (function () {
+                var root = document.getElementById('landing-top');
+                var visual = document.getElementById('hx-visual');
+                if (!root || !visual) return;
+                var layer = root.querySelector('.hx-logos');
+                // The platforms Digitivia already works with: the landing page's own list plus the channels.
+                var STACK = ['whatsapp', 'instagram', 'messenger', 'facebook', 'telegram', 'meta', 'openai', 'anthropic', 'google', 'gmail', 'gcalendar', 'shopify', 'woocommerce', 'stripe', 'wordpress', 'n8n', 'hostinger'];
+                var CH = { ig: { logo: 'instagram', th: 'th-ig', en: 'Instagram', ar: 'إنستجرام' }, wa: { logo: 'whatsapp', th: 'th-wa', en: 'WhatsApp', ar: 'واتساب' }, ms: { logo: 'messenger', th: 'th-ms', en: 'Messenger', ar: 'ماسنجر' }, fb: { logo: 'facebook', en: 'Facebook', ar: 'فيسبوك' }, tg: { logo: 'telegram', en: 'Telegram', ar: 'تيليجرام' } };
+                var TXT = {
+                    en: { hub: 'Cartiva and Opsy are answering 3 chats', message: 'Message', comment: 'Comment on your post', agent: { cartiva: 'Cartiva AI', opsy: 'Opsy AI' } },
+                    ar: { hub: 'كارتيفا وأوبسي بيردّوا على ٣ محادثات', message: 'رسالة', comment: 'تعليق على البوست بتاعك', agent: { cartiva: 'كارتيفا AI', opsy: 'أوبسي AI' } }
                 };
-                var mode = 'cartiva', chat = document.getElementById('lpx-chat');
-                function avatar(st, sz){ return (mode==='cartiva' ? window.cartivaBag : window.opsyGearOrb)(st||'idle', sz||44); }
-                function paintHead(){
-                    var a = document.getElementById('lpx-avatar');
-                    if (a && window.cartivaBag) a.innerHTML = avatar('idle');
-                    var n = document.getElementById('lpx-agent-name');
-                    if (n) n.textContent = mode==='cartiva' ? 'Cartiva AI' : 'Opsy AI';
-                    var ph = document.querySelector('.lpx-phone');
-                    if (ph) ph.setAttribute('data-agent', mode);
-                    var tc = document.getElementById('lpx-tab-cartiva'), to = document.getElementById('lpx-tab-opsy');
-                    if (tc && to){ tc.className = mode==='cartiva' ? 'on-cartiva' : ''; to.className = mode==='opsy' ? 'on-opsy' : ''; tc.setAttribute('aria-pressed', mode==='cartiva'); to.setAttribute('aria-pressed', mode==='opsy'); }
+                // Sample conversations, each ending in a real action the product takes.
+                var SC = [
+                    { ch: 'ig', agent: 'cartiva', who: { en: 'Nour', ar: 'نور' }, msg: { en: 'Is the black hoodie back in stock in M?', ar: 'الهودي الأسود رجع مقاس M؟' }, reply: { en: 'Yes! M just came back. Want me to reserve one and send you the checkout link?', ar: 'أيوه رجع! أحجزلك واحد وأبعتلك لينك الدفع؟' }, acts: [{ en: 'Order #4821 reserved', ar: 'تم حجز الطلب #4821' }, { en: 'Payment reminder set for 6 pm', ar: 'تذكير بالدفع الساعة ٦ م' }] },
+                    { ch: 'wa', agent: 'opsy', who: { en: 'Omar', ar: 'عمر' }, msg: { en: 'Can I book a cleaning on Saturday?', ar: 'ممكن أحجز تنظيف يوم السبت؟' }, reply: { en: 'Saturday at 5 pm is free. Shall I book it for you?', ar: 'السبت الساعة ٥ فاضي، أحجزهولك؟' }, acts: [{ en: 'Booked: Saturday, 5 pm', ar: 'تم الحجز: السبت ٥ م' }, { en: 'Reminder scheduled for Friday', ar: 'تذكير يوم الجمعة' }] },
+                    { ch: 'fb', agent: 'cartiva', comment: true, who: { en: 'Karim', ar: 'كريم' }, msg: { en: 'How much is this one?', ar: 'ده بكام؟' }, reply: { en: 'Hi Karim! I just sent you the price and sizes in a private message.', ar: 'أهلاً كريم! بعتلك السعر والمقاسات في رسالة خاصة.' }, acts: [{ en: 'Comment answered, DM sent', ar: 'اتردّ على التعليق واتبعتت رسالة خاصة' }, { en: 'Next post scheduled for 7 pm', ar: 'البوست الجاي متجدول الساعة ٧ م' }] },
+                    { ch: 'ms', agent: 'opsy', who: { en: 'Lina', ar: 'لينا' }, msg: { en: 'How much is it for a team of five?', ar: 'السعر كام لفريق من ٥؟' }, reply: { en: 'For five it is our Growth plan. I sent you the details. A quick call tomorrow?', ar: 'لـ ٥ أشخاص تناسبكم باقة Growth، بعتلك التفاصيل. نعمل مكالمة سريعة بكرة؟' }, acts: [{ en: 'Lead saved to CRM, score 86', ar: 'عميل جديد في CRM، التقييم ٨٦' }, { en: 'Follow-up tomorrow at 10 am', ar: 'متابعة بكرة الساعة ١٠ ص' }] },
+                    { ch: 'tg', agent: 'cartiva', who: { en: 'Hala', ar: 'هالة' }, msg: { en: 'Where is my order?', ar: 'طلبي فين؟' }, reply: { en: 'It is out for delivery and arrives tomorrow morning.', ar: 'طلبك خرج للتوصيل وهيوصلك بكرة الصبح.' }, acts: [{ en: 'Order #4790 tracked', ar: 'تمت متابعة الطلب #4790' }, { en: 'Delivery update set for tomorrow', ar: 'تحديث التوصيل متجدول بكرة' }] }
+                ];
+                var OK = '<span class="ok"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span>';
+                var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+                var paused = false; var inView = true; var timers = []; var built = '';
+                function h(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+                function logo(id) { var i = document.createElement('img'); i.className = 'lg'; i.alt = ''; i.src = 'logos/stack/' + id + '.svg'; return i; }
+                function mascot(agent, state) { var s = h('span', 'mz'); var fn = agent === 'cartiva' ? window.cartivaBag : window.opsyGearOrb; if (fn) s.innerHTML = fn(state || 'idle', 80); return s; }
+                function at(ms, fn) { var id = setTimeout(function () { timers = timers.filter(function (x) { return x !== id; }); fn(); }, ms); timers.push(id); }
+                function stopTimers() { timers.forEach(clearTimeout); timers = []; }
+                function lang() { return (document.documentElement.lang || 'en').indexOf('ar') === 0 ? 'ar' : 'en'; }
+                function size() { var w = root.clientWidth; return w <= 600 ? 'phone' : (w <= 1100 ? 'tab' : 'desk'); }
+                function running() { return !reduce && !paused && inView && !document.hidden; }
+                // The veil covers exactly the words, wherever the layout put them.
+                function veil() {
+                    var c = root.querySelector('.hx-copy'); var x = 0; var y = 0; var e = c;
+                    while (e && e !== root) { x += e.offsetLeft; y += e.offsetTop; e = e.offsetParent; }
+                    root.style.setProperty('--copy-x', Math.round(root.dir === 'rtl' || document.documentElement.dir === 'rtl' ? root.offsetWidth - x : x + c.offsetWidth) + 'px');
+                    root.style.setProperty('--copy-y', Math.round(y + c.offsetHeight) + 'px');
                 }
-                window.lpxSwitch = function(m){ mode = m; paintHead(); play(true); };
-                var timers = [];
-                function play(now){
-                    if (!chat) return;
-                    timers.forEach(clearTimeout); timers = [];
-                    chat.innerHTML = ''; paintHead();
-                    if (reduce){ scripts[mode].forEach(function(m){ var d=document.createElement('div'); d.className='lpx-msg '+m.t; d.textContent=m.x; chat.appendChild(d); }); return; }
-                    var delay = now ? 200 : 1200, i = 0;
-                    function step(){
-                        if (i >= scripts[mode].length){ timers.push(setTimeout(function(){ play(true); }, 6000)); return; }
-                        var m = scripts[mode][i];
-                        var tp = document.createElement('div'); tp.className = 'lpx-typing'; tp.innerHTML = '<i></i><i></i><i></i>';
-                        chat.appendChild(tp);
-                        timers.push(setTimeout(function(){
-                            tp.remove();
-                            var d = document.createElement('div'); d.className = 'lpx-msg ' + m.t; d.textContent = m.x;
-                            chat.appendChild(d); i++; timers.push(setTimeout(step, 900));
-                        }, m.t === 'out' ? 1100 : 700));
+                function wall(sz) {
+                    var S = { desk: { tile: 70, gap: 22, rows: 10, pw: 2500 }, tab: { tile: 66, gap: 20, rows: 14, pw: 2000 }, phone: { tile: 52, gap: 16, rows: 14, pw: 1150 } }[sz];
+                    var plane = h('div', 'bgw-plane');
+                    plane.style.setProperty('--tile', S.tile + 'px'); plane.style.setProperty('--gap', S.gap + 'px'); plane.style.setProperty('--pw', S.pw + 'px');
+                    var setW = STACK.length * (S.tile + S.gap); var copies = Math.max(1, Math.ceil(S.pw / setW));
+                    for (var r = 0; r < S.rows; r += 1) {
+                        var row = h('div', 'bgw-row' + (r % 2 ? ' rev' : '')); var track = h('div', 'bgw-track');
+                        for (var c = 0; c < copies * 2; c += 1) {
+                            for (var i = 0; i < STACK.length; i += 1) {
+                                var id = STACK[(i + r * 7) % STACK.length]; var tile = h('div', 'bgw-tile'); tile.dataset.id = id;
+                                var im = document.createElement('img'); im.src = 'logos/stack/' + id + '.svg'; im.alt = ''; im.decoding = 'async'; tile.appendChild(im); track.appendChild(tile);
+                            }
+                        }
+                        track.style.setProperty('--d', Math.round((copies * setW) / (11 + (r % 3) * 4)) + 's');
+                        track.style.animationDelay = '-' + ((r * 13) % 60) + 's';
+                        row.appendChild(track); plane.appendChild(row);
                     }
-                    timers.push(setTimeout(step, delay));
+                    layer.replaceChildren(plane);
+                    return plane;
                 }
-                document.addEventListener('visibilitychange', function(){ if (!document.hidden) play(true); });
-                if (window.cartivaBag) { paintHead(); play(false); }
-                else { var iv = setInterval(function(){ if (window.cartivaBag){ clearInterval(iv); paintHead(); play(false); } }, 300); }
-                // Animated stat count-up (skips non-numeric tiles like "AR + EN")
-                var counted = false;
-                function countUp(){
-                    if (counted) return; counted = true;
-                    document.querySelectorAll('#lp-stats-strip .lp-stat-num').forEach(function(el){
-                        var raw = el.textContent.trim(), num = parseFloat(raw.replace(/[^0-9.]/g,'')), suf = raw.replace(/[0-9.]/g,'');
-                        if (isNaN(num) || reduce) return;
-                        var t0 = null;
-                        function fr(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/1400, 1); el.textContent = Math.round(num * (1-Math.pow(1-p,3))) + suf; if (p < 1) requestAnimationFrame(fr); }
-                        requestAnimationFrame(fr);
+                // One tile at a time lights up where it can be seen, as if the system just used it.
+                function lightLoop(plane) {
+                    var H = root.getBoundingClientRect(); var V = visual.getBoundingClientRect(); var C = root.querySelector('.hx-copy').getBoundingClientRect();
+                    var stacked = root.clientWidth <= 1100; var rtl = document.documentElement.dir === 'rtl';
+                    var seen = Array.prototype.filter.call(plane.querySelectorAll('.bgw-tile:not(.is-lit)'), function (t) {
+                        var r = t.getBoundingClientRect(); var x = (r.left + r.right) / 2; var y = (r.top + r.bottom) / 2;
+                        if (x < H.left + 20 || x > H.right - 20 || y < H.top + 40 || y > H.bottom - 20) return false;
+                        if (x > V.left - 10 && x < V.right + 10 && y > V.top - 10 && y < V.bottom + 10) return false;
+                        if (stacked) return y > C.bottom + 60;
+                        return rtl ? x < C.left - 100 : x > C.right + 100;
                     });
+                    if (seen.length) { var t = seen[Math.floor(Math.random() * seen.length)]; t.classList.add('is-lit'); at(2200, function () { t.classList.remove('is-lit'); }); }
+                    at(1700, function () { lightLoop(plane); });
                 }
-                var so = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ countUp(); so.disconnect(); } }); }, {threshold: 0.3});
-                var ss = document.getElementById('lp-stats-strip'); if (ss) so.observe(ss);
+                function phonesView(L, sz, still) {
+                    var t = TXT[L];
+                    var wrap = h('div', 'cc');
+                    var hub = h('div', 'cc-hub'); hub.append(mascot('cartiva', 'working'), mascot('opsy', 'working'), document.createTextNode(t.hub));
+                    var NS = 'http://www.w3.org/2000/svg';
+                    var beams = document.createElementNS(NS, 'svg'); beams.setAttribute('class', 'cc-beams'); beams.setAttribute('viewBox', '0 0 1000 620'); beams.setAttribute('preserveAspectRatio', 'none');
+                    var beamEls = ['M500 40 C 420 60 300 60 245 144', 'M500 40 L500 76', 'M500 40 C 580 60 700 60 755 144'].map(function (d) { var p = document.createElementNS(NS, 'path'); p.setAttribute('class', 'cc-beam'); p.setAttribute('d', d); beams.appendChild(p); return p; });
+                    wrap.append(beams, hub);
+                    var phones = [{ ch: 'ig', sc: [SC[0], SC[2]] }, { ch: 'wa', sc: [SC[1], SC[4]] }, { ch: 'ms', sc: [SC[3]] }].map(function (a, i) {
+                        var ph = h('div', 'cc-phone pos-' + i); var scr = h('div', 'cc-scr ' + CH[a.ch].th);
+                        var status = h('div', 'cc-status'); status.append(h('span', null, '9:41'), h('span', null, '5G'));
+                        var app = h('div', 'cc-app'); var av = h('div', 'cc-av'); var who = h('div', 'who'); app.append(av, who, logo(CH[a.ch].logo));
+                        var body = h('div', 'cc-body');
+                        scr.append(status, app, body, h('div', 'cc-input', t.message)); ph.appendChild(scr); wrap.appendChild(ph);
+                        return { sc: a.sc, ph: ph, av: av, who: who, body: body, k: 0 };
+                    });
+                    var ribbon = h('div', 'cc-ribbon'); var track = h('div', 'cc-track');
+                    for (var n = 0; n < 2; n += 1) SC.forEach(function (sc) { sc.acts.forEach(function (a) { var p = h('span', 'cc-task'); p.innerHTML = OK; p.prepend(logo(CH[sc.ch].logo)); p.appendChild(document.createTextNode(a[L])); track.appendChild(p); }); });
+                    ribbon.appendChild(track); wrap.appendChild(ribbon);
+                    visual.replaceChildren(wrap);
+                    var one = sz === 'phone';
+                    function front(p) { if (one) phones.forEach(function (x) { x.ph.classList.toggle('is-front', x === p); }); }
+                    function head(p, sc) { p.av.textContent = sc.who[L].charAt(0); p.who.replaceChildren(h('b', null, sc.who[L]), h('span', null, sc.comment ? t.comment : CH[sc.ch][L])); }
+                    function act(p, sc, cls) { var a = h('div', 'cc-act' + cls); a.innerHTML = OK; a.appendChild(document.createTextNode(sc.acts[0][L])); p.body.appendChild(a); }
+                    if (still) {
+                        phones.forEach(function (p) { var sc = p.sc[0]; head(p, sc); p.body.append(h('div', 'cc-msg in', sc.msg[L]), h('div', 'cc-msg out', sc.reply[L])); act(p, sc, ''); });
+                        front(phones[1]);
+                        return;
+                    }
+                    // One exchange on one phone: the message, the agent typing, the reply word by word, the action.
+                    function converse(p, i, again) {
+                        var sc = p.sc[p.k % p.sc.length]; p.k += 1;
+                        head(p, sc); p.body.replaceChildren(); front(p);
+                        p.ph.classList.add('is-busy'); beamEls[i].classList.add('is-hot');
+                        at(300, function () { p.body.appendChild(h('div', 'cc-msg in pop', sc.msg[L])); });
+                        var typing = h('div', 'cc-msg out cc-typing pop'); typing.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
+                        at(1100, function () { var tag = h('div', 'cc-tag pop'); tag.append(mascot(sc.agent, 'thinking'), document.createTextNode(t.agent[sc.agent])); p.body.append(tag, typing); });
+                        at(2400, function () {
+                            typing.remove(); var out = h('div', 'cc-msg out pop'); p.body.appendChild(out);
+                            sc.reply[L].split(' ').forEach(function (w, j) { at(j * 46, function () { out.appendChild(h('span', 'sw', (j ? ' ' : '') + w)); }); });
+                        });
+                        at(4200, function () { act(p, sc, ' pop'); });
+                        at(5200, function () { p.ph.classList.remove('is-busy'); beamEls[i].classList.remove('is-hot'); });
+                        if (again) at(8200, function () { converse(p, i, true); });
+                    }
+                    if (one) { var j = 0; (function loop() { converse(phones[j % 3], j % 3, false); j += 1; at(6600, loop); })(); return; }
+                    phones.forEach(function (p, i) { at(i * 2700, function () { converse(p, i, true); }); });
+                }
+                // Draw (or redraw) the whole scene for the current language and width.
+                function build(intro) {
+                    if (!window.cartivaBag || !window.opsyGearOrb) { at(300, function () { build(intro); }); return; }
+                    stopTimers();
+                    // Paused, hidden or reduced: a complete still picture and no timers; otherwise the live scene.
+                    var L = lang(); var sz = size(); var live = running();
+                    built = L + sz;
+                    root.classList.toggle('still', reduce);
+                    root.classList.toggle('intro', !!intro && live);
+                    var plane = wall(sz);
+                    phonesView(L, sz, !live);
+                    veil();
+                    if (live) at(1600, function () { lightLoop(plane); });
+                }
+                function setPaused(p) {
+                    paused = p;
+                    root.classList.toggle('is-paused', p);
+                    var btn = document.getElementById('hx-pause'); var label = document.getElementById('hx-pause-label');
+                    btn.setAttribute('aria-pressed', p ? 'true' : 'false');
+                    var key = p ? 'landing_hero.hx_play' : 'landing_hero.hx_pause';
+                    label.setAttribute('data-i18n', key);
+                    var txt = p ? 'Play motion' : 'Pause motion';
+                    try { if (typeof window.t === 'function') { var v = window.t(key); if (v && v.indexOf('landing_hero.') !== 0) txt = v; } } catch (e) { /* the label keeps its English */ }
+                    label.textContent = txt;
+                    if (p) stopTimers(); else build(false);
+                }
+                document.getElementById('hx-pause').addEventListener('click', function () { setPaused(!paused); });
+                function wake() { if (running()) { root.classList.remove('is-paused'); build(false); } else { stopTimers(); if (!reduce) root.classList.add('is-paused'); } }
+                document.addEventListener('visibilitychange', wake);
+                if ('IntersectionObserver' in window) {
+                    new IntersectionObserver(function (es) { var v = es[es.length - 1].isIntersecting; if (v !== inView) { inView = v; wake(); } }, { threshold: 0.05 }).observe(root);
+                }
+                // A new language or a different size class redraws; anything else only re-measures the veil.
+                new MutationObserver(function () { if (lang() + size() !== built) build(false); else veil(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
+                if ('ResizeObserver' in window) {
+                    var rt = 0;
+                    new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { if (lang() + size() !== built) build(false); else veil(); }, 150); }).observe(root);
+                }
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(veil);
+                build(true);
             })();
             </script>
+        </section>
 
-            <!-- Channel Chips -->
-            <div class="lp-channels">
-                <div class="lp-channel-chip">
-                    <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="WhatsApp" width="18" height="18">
-                    WhatsApp
-                </div>
-                <div class="lp-channel-chip">
-                    <img src="https://cdn.simpleicons.org/messenger/0084FF" alt="Messenger" width="18" height="18">
-                    Messenger
-                </div>
-                <div class="lp-channel-chip">
-                    <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="Instagram" width="18" height="18">
-                    Instagram
-                </div>
-                <div class="lp-channel-chip">
-                    <img src="https://cdn.simpleicons.org/telegram/26A5E4" alt="Telegram" width="18" height="18">
-                    Telegram
-                </div>
-                <div class="lp-channel-chip">
-                    <svg viewBox="0 0 24 24" fill="var(--theme-color)" width="18" height="18"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-2 4l-6 3.5L6 8V6l6 3.5L18 6v2z"/></svg>
-                    Website Chat
-                </div>
-            </div>
-
+        <!-- Stats strip (kept from the previous hero, now just below it) -->
+        <section class="lpx-hero" style="padding-top:2.5rem;padding-bottom:1rem;">
             <!-- Social Proof Stats (Live Data) -->
             <div class="lp-stats lpx-bento" id="lp-stats-strip" style="border:none;padding:0;gap:0.9rem;">
                 <div class="lp-stat" style="padding:1rem 1.5rem;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);flex:1;min-width:140px;">
@@ -34850,6 +35114,25 @@
                     <div class="lp-stat-label">Arabic + English, RTL native</div>
                 </div>
             </div>
+            <script>
+            (function() {
+                var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                // Animated stat count-up (skips non-numeric tiles like "AR + EN")
+                var counted = false;
+                function countUp(){
+                    if (counted) return; counted = true;
+                    document.querySelectorAll('#lp-stats-strip .lp-stat-num').forEach(function(el){
+                        var raw = el.textContent.trim(), num = parseFloat(raw.replace(/[^0-9.]/g,'')), suf = raw.replace(/[0-9.]/g,'');
+                        if (isNaN(num) || reduce) return;
+                        var t0 = null;
+                        function fr(ts){ if(!t0) t0 = ts; var p = Math.min((ts-t0)/1400, 1); el.textContent = Math.round(num * (1-Math.pow(1-p,3))) + suf; if (p < 1) requestAnimationFrame(fr); }
+                        requestAnimationFrame(fr);
+                    });
+                }
+                var so = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ countUp(); so.disconnect(); } }); }, {threshold: 0.3});
+                var ss = document.getElementById('lp-stats-strip'); if (ss) so.observe(ss);
+            })();
+            </script>
         </section>
 
         <!-- Demo-first proof: scripted sample transcript, runs fully in-browser -->

@@ -16986,6 +16986,8 @@
            launcher, theme toggle, Sentry's report button) stands down while it
            shows, and the card carries its own theme and language switches. */
         body:has(#login-container[style*="display: flex"]) :is(.theme-float-btn, .aiw-root, #sentry-feedback) { display: none !important; }
+        /* Nor does the landing page (owner, 2026-09-25): no theme switch, bug button or assistant over the marketing page. */
+        body:has(#landing-page.active) :is(.theme-float-btn, .aiw-root, #sentry-feedback) { display: none !important; }
         /* The quiet split (.impeccable/surfaces/index-html.md): no floating
            card. One grid fills the screen; on phones it stacks the brand band,
            the form and the trust strip, and on wide screens the same three
@@ -34516,7 +34518,7 @@
                 --lp-card-shadow: 0 1px 2px rgba(20, 24, 60, .05), 0 18px 40px -26px rgba(20, 24, 60, .3), 0 0 0 1px rgba(15, 19, 48, .06);
                 --lp-ease: cubic-bezier(.22, 1, .36, 1);
                 --blue: #18174e; --blue-fade: linear-gradient(135deg, #18174e 0%, #4a48a8 100%); --blue-fade-hover: linear-gradient(135deg, #100f3a 0%, #3b3992 100%);
-                background: #f5f6fb; background-image: none; color: var(--lp-ink); color-scheme: light;
+                background: #f6f7fb; background-image: none; color: var(--lp-ink); color-scheme: light;
                 font-family: "Inter", "Tajawal", system-ui, sans-serif;
             }
             [dir="rtl"] #landing-page { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
@@ -34614,6 +34616,22 @@
             #landing-page .lp-footer { max-width: none; margin: 0; padding: 40px max(20px, calc((100% - 1200px) / 2 + 40px)) calc(28px + env(safe-area-inset-bottom, 0px)); background: #fff; border-top: 1px solid var(--lp-line); color: var(--lp-mut); }
             #landing-page .lp-footer a { color: var(--lp-ink-2); }
             #landing-page #lp-sticky-cta { background: rgba(255, 255, 255, .97); border-top: 1px solid var(--lp-line); }
+
+            /* ---- the page's background: the blue as a fine dot grid (the texture of the brand blue),
+               with two soft blue lights drifting slowly behind it; the dots slide a little as you
+               scroll. Fixed behind every section, moved only by the graphics card. ---- */
+            #lp-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: #f6f7fb; }
+            #lp-bg .lp-glow { position: absolute; width: 72vmax; height: 72vmax; border-radius: 50%; will-change: transform; }
+            #lp-bg .g1 { left: -24vmax; top: -30vmax; background: radial-gradient(closest-side, rgba(74, 72, 168, .17), rgba(74, 72, 168, 0)); }
+            #lp-bg .g2 { right: -28vmax; bottom: -34vmax; background: radial-gradient(closest-side, rgba(24, 23, 78, .13), rgba(24, 23, 78, 0)); }
+            #lp-bg .lp-dots { position: absolute; left: 0; right: 0; top: -40px; bottom: -40px; will-change: transform;
+                background-image: radial-gradient(rgba(24, 23, 78, .16) 1.1px, transparent 1.5px); background-size: 26px 26px; }
+            @media (prefers-reduced-motion: no-preference) {
+                #lp-bg .g1 { animation: lp-g1 34s ease-in-out infinite alternate; }
+                #lp-bg .g2 { animation: lp-g2 42s ease-in-out infinite alternate; }
+            }
+            @keyframes lp-g1 { to { transform: translate3d(34vw, 30vh, 0) scale(1.12); } }
+            @keyframes lp-g2 { to { transform: translate3d(-30vw, -26vh, 0) scale(1.08); } }
             /* ---- life on the page: things rise into place as they arrive, respond when pointed at,
                and the platforms drift in the margins. Transforms and opacity only, so none of it
                costs the scroll anything; people who ask for less motion get a still page. ---- */
@@ -34681,6 +34699,10 @@
 
             // The platforms drifting in the margins beside the sections, on screens wide enough to have margins.
             var LOGOS = ['whatsapp', 'openai', 'instagram', 'shopify', 'messenger', 'anthropic', 'gmail', 'telegram', 'woocommerce', 'gcalendar', 'meta', 'stripe', 'facebook', 'google', 'wordpress', 'n8n'];
+            var bgl = document.createElement('div'); bgl.id = 'lp-bg'; bgl.setAttribute('aria-hidden', 'true');
+            bgl.innerHTML = '<i class="lp-glow g1"></i><i class="lp-glow g2"></i><i class="lp-dots"></i>';
+            lp.insertBefore(bgl, lp.firstChild);
+            var dots = bgl.querySelector('.lp-dots');
             var drift = document.createElement('div'); drift.id = 'lp-drift'; drift.setAttribute('aria-hidden', 'true');
             lp.appendChild(drift);
             function placeDrift() {
@@ -34707,7 +34729,7 @@
             var queued = false;
             if (!reduce) lp.addEventListener('scroll', function () {
                 if (queued) return; queued = true;
-                requestAnimationFrame(function () { queued = false; drift.style.setProperty('--sc', lp.scrollTop + 'px'); });
+                requestAnimationFrame(function () { queued = false; drift.style.setProperty('--sc', lp.scrollTop + 'px'); dots.style.transform = 'translate3d(0,' + (-(lp.scrollTop * 0.12) % 26).toFixed(1) + 'px,0)'; });
             }, { passive: true });
             var rt = 0;
             function later() { clearTimeout(rt); rt = setTimeout(placeDrift, 250); }
@@ -34933,7 +34955,7 @@
                     --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #18174e; --ok: #11845a;
                     --shadow-1: 0 1px 2px rgba(20, 24, 60, .06), 0 10px 24px -14px rgba(20, 24, 60, .22);
                     --ease: cubic-bezier(.22, 1, .36, 1);
-                    position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink); background: var(--ground);
+                    position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink); background: transparent;
                     min-height: clamp(640px, calc(100svh - 64px), 940px); display: flex; flex-direction: column;
                     font-family: "Inter", "Tajawal", system-ui, sans-serif; container-type: inline-size; container-name: hx; text-align: start;
                 }
@@ -35283,36 +35305,6 @@
             </script>
         </section>
 
-        <!-- Stats strip (kept from the previous hero, now just below it) -->
-        <section class="lps lps-stats">
-            <!-- Social Proof Stats (Live Data) -->
-            <div class="lp-stats lpx-bento" id="lp-stats-strip">
-                <div class="lp-stat">
-                    <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:30px;">5</div>
-                    <div class="lp-stat-label">Live channels</div>
-                </div>
-                <div class="lp-stat">
-                    <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:30px;">2</div>
-                    <div class="lp-stat-label">AI agents · Cartiva + Opsy</div>
-                </div>
-                <div class="lp-stat">
-                    <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.24 14.24L11 13V7h1.5v5.25l4.5 2.67-.76 1.32z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:30px;">24/7</div>
-                    <div class="lp-stat-label">Replies + one-tap human takeover</div>
-                </div>
-                <div class="lp-stat">
-                    <div class="lp-stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm0 18H7V5h10v14z"/></svg></div>
-                    <div class="lp-stat-num" style="font-size:30px;">1</div>
-                    <div class="lp-stat-label">Inbox for every channel</div>
-                </div>
-                <div class="lp-stat">
-                    <div class="lp-stat-num" style="font-size:24px;">AR + EN</div>
-                    <div class="lp-stat-label">Arabic + English, RTL native</div>
-                </div>
-            </div>
-        </section>
 
         <!-- Demo-first proof: scripted sample transcript, runs fully in-browser -->
         <section id="lp-demo" class="lps lps-narrow" style="text-align:center;">

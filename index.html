@@ -34543,7 +34543,7 @@
             #landing-page .lp-menu a, #landing-page .lp-menu button.lpx-login-link { color: var(--lp-ink); font-weight: 500; }
             @media (max-width: 1100px) { #landing-page .lp-nav { padding-inline: 32px; } }
             @media (max-width: 600px) { #landing-page .lp-nav { padding-inline: 18px; } }
-            #landing-page .lp-scroll-progress { height: 2px; background: linear-gradient(90deg, #2a8184, #6d4bd8); }
+            #landing-page .lp-scroll-progress { height: 2px; background: #2a8184; }
 
             /* ---- one rhythm for every section ---- */
             #landing-page .lps { position: relative; box-sizing: border-box; max-width: 1200px; margin: 0 auto; padding: clamp(64px, 8vw, 112px) clamp(18px, 4vw, 40px) 0; }
@@ -34566,7 +34566,7 @@
             #landing-page .lp-feature-card { padding: 24px; }
             #landing-page .lp-feature-card h3 { font-size: 17px; font-weight: 700; margin: 14px 0 6px; }
             #landing-page .lp-feature-card p { font-size: 14.5px; line-height: 1.6; margin: 0; }
-            #landing-page .lp-feature-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #1f6f72; background: linear-gradient(135deg, rgba(42, 129, 132, .14), rgba(109, 75, 216, .12)); }
+            #landing-page .lp-feature-icon { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; color: #1f6f72; background: #e7f3f3; transition: transform .5s var(--lp-ease), background-color .35s ease, color .35s ease; }
             #landing-page .lp-feature-icon svg { width: 22px; height: 22px; }
             #landing-page :is(.lp-features-grid, .lp-glimpse-grid) { gap: 16px; }
             /* Grids fill their row instead of leaving one card alone on the next line. */
@@ -34584,18 +34584,19 @@
 
             /* ---- one button family ---- */
             #landing-page .lp-btn { border-radius: 14px; font-weight: 700; transition: transform .3s var(--lp-ease), box-shadow .3s ease; }
-            #landing-page .lp-btn-primary { color: #fff; border: 0; background: linear-gradient(180deg, #2f8f91, #227679);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 0 0 1px rgba(20, 96, 99, .6), 0 14px 28px -14px rgba(34, 118, 121, .85); }
+            #landing-page .lp-btn-primary { color: #fff; border: 0; background: #247d80; box-shadow: 0 14px 28px -14px rgba(34, 118, 121, .85); }
+            #landing-page .lp-final-panel { background: #0e3a3c; }
+            #landing-page .lp-final-panel .lp-btn-primary { background: #e8f4f4; color: #0b2426; box-shadow: none; }
             #landing-page .lp-btn-outline { color: var(--lp-ink); background: #fff; border: 0; box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px var(--lp-line); }
             #landing-page .lp-btn-outline:hover { box-shadow: 0 1px 2px rgba(20, 24, 60, .06), 0 0 0 1px rgba(42, 129, 132, .45); }
 
             /* ---- sections with their own parts ---- */
             #landing-page .lp-agent-card { padding: 28px; }
             #landing-page .lp-how-step { padding: 24px; }
-            #landing-page .lp-how-num { color: #fff; background: linear-gradient(135deg, #2a8184, #6d4bd8); }
+            #landing-page .lp-how-num { color: #fff; background: #2a8184; }
             #landing-page .lp-price-card { padding: 28px; }
             #landing-page .lp-price-card.popular { box-shadow: 0 0 0 2px #2a8184, 0 30px 60px -30px rgba(42, 129, 132, .55); }
-            #landing-page .lp-popular-tag { color: #fff; background: linear-gradient(135deg, #2a8184, #6d4bd8); }
+            #landing-page .lp-popular-tag { color: #fff; background: #2a8184; }
             #landing-page .lp-price-amount { color: var(--lp-ink); font-family: "Cairo", "Inter", sans-serif; }
             #landing-page .lp-faq-item { padding: 0; overflow: hidden; }
             #landing-page .lp-faq-q { color: var(--lp-ink); font-weight: 600; background: none; }
@@ -34611,7 +34612,110 @@
             #landing-page .lp-footer { max-width: none; margin: 0; padding: 40px max(20px, calc((100% - 1200px) / 2 + 40px)) calc(28px + env(safe-area-inset-bottom, 0px)); background: #fff; border-top: 1px solid var(--lp-line); color: var(--lp-mut); }
             #landing-page .lp-footer a { color: var(--lp-ink-2); }
             #landing-page #lp-sticky-cta { background: rgba(255, 255, 255, .97); border-top: 1px solid var(--lp-line); }
+            /* ---- life on the page: things rise into place as they arrive, respond when pointed at,
+               and the platforms drift in the margins. Transforms and opacity only, so none of it
+               costs the scroll anything; people who ask for less motion get a still page. ---- */
+            #landing-page > section, #landing-page > footer { position: relative; z-index: 1; }
+            #landing-page .lps > .lp-section-title { display: block; }
+            #landing-page .lps > .lp-section-title::before { content: ""; display: block; width: 36px; height: 3px; border-radius: 2px; background: #2a8184; margin: 0 auto 16px; }
+            #landing-page .lp-align-start > .lp-section-title::before { margin-inline: 0; }
+            @media (prefers-reduced-motion: no-preference) {
+                #landing-page.lp-motion [data-rv] { opacity: 0; translate: 0 34px; scale: .985;
+                    transition: opacity .9s var(--lp-ease) calc(var(--rv-i, 0) * 90ms), translate 1.1s var(--lp-ease) calc(var(--rv-i, 0) * 90ms), scale 1.1s var(--lp-ease) calc(var(--rv-i, 0) * 90ms), transform .5s var(--lp-ease), box-shadow .5s ease; }
+                #landing-page.lp-motion [data-rv].is-in { opacity: 1; translate: 0 0; scale: 1; }
+                #landing-page.lp-motion .lps > .lp-section-title::before { transform: scaleX(0); transition: transform .9s var(--lp-ease) .25s; }
+                #landing-page.lp-motion .lps > .lp-section-title.is-in::before { transform: scaleX(1); }
+            }
+            @media (hover: hover) {
+                #landing-page :is(.lp-feature-card, .lp-agent-card, .lp-price-card, .lp-glimpse-card, .lp-stat, .lp-how-step, .lp-trust-badge):hover {
+                    transform: translateY(-6px); box-shadow: 0 0 0 1px rgba(42, 129, 132, .35), 0 30px 50px -28px rgba(20, 24, 60, .45); }
+                #landing-page :is(.lp-stat, .lp-how-step, .lp-trust-badge) { transition: transform .5s var(--lp-ease), box-shadow .5s ease; }
+                #landing-page .lp-feature-card:hover .lp-feature-icon { background: #247d80; color: #fff; transform: scale(1.06) rotate(-6deg); }
+                #landing-page .lp-stat:hover .lp-stat-num { color: #1f6f72; }
+                #landing-page .lp-faq-item { transition: box-shadow .35s ease; }
+                #landing-page .lp-faq-item:hover { box-shadow: 0 0 0 1px rgba(42, 129, 132, .35), var(--lp-card-shadow); }
+                #landing-page .lp-btn-primary:hover { transform: translateY(-2px); background: #1c6a6d; box-shadow: 0 20px 34px -14px rgba(28, 106, 109, .9); }
+                #landing-page .lp-btn-outline:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .4), 0 0 0 1px rgba(42, 129, 132, .45); }
+                #landing-page .lp-final-panel .lp-btn-primary:hover { background: #ffffff; }
+                #landing-page .lpx-marquee .lp-logo-item { transition: transform .4s var(--lp-ease), box-shadow .4s ease; }
+                #landing-page .lpx-marquee .lp-logo-item:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 0 1px rgba(42, 129, 132, .4), 0 14px 24px -16px rgba(20, 24, 60, .4); }
+            }
+            /* the top bar's links: a solid underline that grows from the middle */
+            #landing-page .lp-nav-links a:not(.lp-btn)::after { display: block; content: ""; position: absolute; left: 12px; right: 12px; bottom: 8px; height: 2px; border-radius: 2px; background: #2a8184; transform: scaleX(0); transition: transform .35s var(--lp-ease); }
+            #landing-page .lp-nav-links a:not(.lp-btn):hover::after, #landing-page .lp-nav-links a:not(.lp-btn):focus-visible::after { transform: scaleX(1); }
+            #landing-page .lp-nav-links a:not(.lp-btn):hover { background: none; }
+            /* the platforms drifting in the margins, from the hero's wall down the page */
+            #lp-drift { position: absolute; top: 0; left: 0; right: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+            #lp-drift .dt { position: absolute; width: var(--s); height: var(--s); border-radius: calc(var(--s) * .28); background: #fff; display: grid; place-items: center;
+                box-shadow: 0 0 0 1px rgba(15, 19, 48, .05), 0 14px 26px -16px rgba(20, 24, 60, .35); opacity: var(--o, .9); translate: 0 calc((var(--ty, 0px) - var(--sc, 0px)) * var(--depth, .1)); }
+            #lp-drift .dt img { width: 52%; height: 52%; object-fit: contain; }
+            @media (prefers-reduced-motion: no-preference) {
+                #lp-drift .dt { animation: lp-float var(--dur, 9s) ease-in-out var(--del, 0s) infinite; }
+            }
+            @keyframes lp-float { 0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--r0, -4deg)); } 50% { transform: translate3d(0, -16px, 0) rotate(var(--r1, 4deg)); } }
         </style>
+        <script>
+        (function () {
+            var lp = document.getElementById('landing-page');
+            if (!lp) return;
+            var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+            var SEL = '.lps > .lp-section-title, .lps > .lp-section-sub, .lp-feature-card, .lp-agent-card, .lp-how-step, .lp-price-card, .lp-faq-item, .lp-stat, .lp-trust-badge, .lp-glimpse-card, .lp-demo-panel, .lp-final-panel, .lp-pay-plate, .lpx-marquee-track';
+            var io = (!reduce && 'IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
+                es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+            }, { root: lp, rootMargin: '0px 0px -8% 0px', threshold: 0.12 }) : null;
+            // Mark what should rise into place, in order within its row; pricing cards arrive later, so re-scan.
+            function scan() {
+                lp.querySelectorAll(SEL).forEach(function (el) {
+                    if (el.hasAttribute('data-rv') || el.closest('#landing-top')) return;
+                    var kin = Array.prototype.filter.call(el.parentNode.children, function (c) { return c.matches && c.matches(SEL); });
+                    el.style.setProperty('--rv-i', Math.min(kin.indexOf(el), 5));
+                    el.setAttribute('data-rv', '');
+                    if (io) io.observe(el); else el.classList.add('is-in');
+                });
+            }
+            scan();
+            if (io) lp.classList.add('lp-motion');
+            new MutationObserver(function () { clearTimeout(scan.t); scan.t = setTimeout(scan, 60); }).observe(lp, { childList: true, subtree: true });
+
+            // The platforms drifting in the margins beside the sections, on screens wide enough to have margins.
+            var LOGOS = ['whatsapp', 'openai', 'instagram', 'shopify', 'messenger', 'anthropic', 'gmail', 'telegram', 'woocommerce', 'gcalendar', 'meta', 'stripe', 'facebook', 'google', 'wordpress', 'n8n'];
+            var drift = document.createElement('div'); drift.id = 'lp-drift'; drift.setAttribute('aria-hidden', 'true');
+            lp.appendChild(drift);
+            function placeDrift() {
+                drift.replaceChildren();
+                var W = lp.clientWidth; var gutter = (W - 1200) / 2;
+                if (gutter < 70) { drift.style.height = '0px'; return; }
+                var hero = document.getElementById('landing-top'); var top0 = hero ? hero.offsetTop + hero.offsetHeight : 0;
+                var H = lp.scrollHeight; drift.style.height = H + 'px';
+                var s = Math.max(40, Math.min(64, gutter * 0.46)); var n = 0;
+                for (var y = top0 + 80; y < H - 300; y += 420) {
+                    [0, 1].forEach(function (side) {
+                        var d = document.createElement('div'); d.className = 'dt';
+                        var id = LOGOS[n % LOGOS.length]; var im = document.createElement('img'); im.src = 'logos/stack/' + id + '.svg'; im.alt = ''; im.decoding = 'async'; d.appendChild(im);
+                        var k = (n * 37) % 100 / 100; var size = Math.round(s * (0.8 + 0.4 * k));
+                        var x = side ? W - gutter / 2 - size / 2 + (k - 0.5) * gutter * 0.3 : gutter / 2 - size / 2 + (0.5 - k) * gutter * 0.3;
+                        var top = Math.round(y + (side ? 210 : 0) + k * 60);
+                        // Level with the middle of the screen, a tile sits exactly where it was placed.
+                        d.style.cssText = '--s:' + size + 'px;left:' + Math.round(x) + 'px;top:' + top + 'px;--ty:' + Math.round(top - lp.clientHeight / 2) + 'px;--dur:' + (8 + (n % 5)) + 's;--del:-' + (n % 7) + 's;--r0:' + (-3 - (n % 4)) + 'deg;--r1:' + (3 + (n % 3)) + 'deg;--depth:' + (0.06 + k * 0.1).toFixed(2) + ';--o:' + (0.75 + k * 0.2).toFixed(2);
+                        drift.appendChild(d); n += 1;
+                    });
+                }
+            }
+            // A little depth while scrolling: the margins move at their own pace (one write per frame).
+            var queued = false;
+            if (!reduce) lp.addEventListener('scroll', function () {
+                if (queued) return; queued = true;
+                requestAnimationFrame(function () { queued = false; drift.style.setProperty('--sc', lp.scrollTop + 'px'); });
+            }, { passive: true });
+            var rt = 0;
+            function later() { clearTimeout(rt); rt = setTimeout(placeDrift, 250); }
+            window.addEventListener('resize', later);
+            window.addEventListener('load', later);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+            new MutationObserver(later).observe(lp, { attributes: true, attributeFilter: ['class'] });
+            later();
+        })();
+        </script>
         <!-- Scroll Progress Bar -->
         <div class="lp-scroll-progress" id="lp-scroll-progress"></div>
 
@@ -34827,18 +34931,14 @@
                     --ground: #f5f6fb; --ground-0: rgba(245, 246, 251, 0); --teal-2: #1f6f72; --ok: #11845a;
                     --shadow-1: 0 1px 2px rgba(20, 24, 60, .06), 0 10px 24px -14px rgba(20, 24, 60, .22);
                     --ease: cubic-bezier(.22, 1, .36, 1);
-                    position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink);
-                    background: radial-gradient(46% 52% at 84% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 70% 92%, rgba(139, 108, 255, .16), transparent 72%),
-                        radial-gradient(44% 50% at 4% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%);
+                    position: relative; overflow: hidden; isolation: isolate; contain: layout paint; color: var(--ink); background: var(--ground);
                     min-height: clamp(640px, calc(100svh - 64px), 940px); display: flex; flex-direction: column;
                     font-family: "Inter", "Tajawal", system-ui, sans-serif; container-type: inline-size; container-name: hx; text-align: start;
                 }
                 [dir="rtl"] .hx { font-family: "Tajawal", "Inter", system-ui, sans-serif; }
                 .hx * { box-sizing: border-box; }
-                [dir="rtl"] .hx { background: radial-gradient(46% 52% at 16% 16%, rgba(98, 214, 215, .26), transparent 70%), radial-gradient(40% 46% at 30% 92%, rgba(139, 108, 255, .16), transparent 72%),
-                        radial-gradient(44% 50% at 96% 8%, rgba(139, 108, 255, .12), transparent 70%), linear-gradient(180deg, #f8f9fd 0%, #f4f5fb 100%); }
                 .hx-logos { position: absolute; inset: 0; z-index: -2; pointer-events: none; overflow: hidden; }
-                .hx-logos canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+                .hx-logos canvas { position: absolute; display: block; }
                 .hx-body { position: relative; z-index: 2; flex: 1 0 auto; width: 100%; max-width: 1480px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; align-content: center; padding: 28px 56px 60px; }
                 .hx-copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; align-content: center; }
                 .hx-eyebrow { display: inline-flex; align-items: center; gap: 10px; width: max-content; max-width: 100%; padding: 5px 14px 5px 5px; border-radius: 999px; background: rgba(255, 255, 255, .85); box-shadow: var(--shadow-1), 0 0 0 1px var(--line); font-size: 13px; font-weight: 600; color: var(--ink-2); }
@@ -34850,19 +34950,21 @@
                 @keyframes hx-ping { 50% { opacity: .35; } }
                 .hx h1 { margin: 0; font-family: "Cairo", "Inter", system-ui, sans-serif; font-weight: 800; font-size: clamp(34px, 4.3cqw, 64px); line-height: 1.06; letter-spacing: -.025em; text-wrap: balance; color: var(--ink); }
                 [dir="rtl"] .hx h1 { letter-spacing: 0; line-height: 1.25; font-size: clamp(32px, 3.5cqw, 52px); }
-                .hx h1 em { font-style: normal; background: linear-gradient(90deg, #1f8a8c 0%, #6d4bd8 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-                [dir="rtl"] .hx h1 em { background-image: linear-gradient(270deg, #1f8a8c 0%, #6d4bd8 100%); }
+                .hx h1 em { font-style: normal; color: #1f8a8c; }
                 .hx-sub { margin: 0; font-size: clamp(16px, 1.25cqw, 18.5px); line-height: 1.6; color: var(--mut); max-width: 58ch; }
                 .hx-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
                 .hx-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 24px; border: 0; border-radius: 14px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
                 .hx-btn:focus-visible { outline: 2px solid #2a8184; outline-offset: 3px; }
-                .hx-btn-p { color: #fff; background: linear-gradient(180deg, #2f8f91, #227679); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 0 0 1px rgba(20, 96, 99, .6), 0 16px 32px -14px rgba(34, 118, 121, .85); }
-                .hx-btn-p::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .35), transparent); animation: hx-glint 6s var(--ease) 2.4s infinite; }
-                [dir="rtl"] .hx-btn-p::after { animation-name: hx-glint-rtl; left: auto; right: -60%; }
-                @keyframes hx-glint { 0% { transform: translateX(0); } 22%, 100% { transform: translateX(420%); } }
-                @keyframes hx-glint-rtl { 0% { transform: translateX(0); } 22%, 100% { transform: translateX(-420%); } }
+                .hx-btn-p { color: #fff; background: #247d80; box-shadow: 0 14px 28px -14px rgba(34, 118, 121, .9); transition: transform .35s var(--ease), box-shadow .35s ease, background-color .25s ease; }
+                .hx-btn-s { transition: transform .35s var(--ease), box-shadow .35s ease; }
+                @media (hover: hover) {
+                    .hx-btn-p:hover { transform: translateY(-2px); background: #1c6a6d; box-shadow: 0 20px 34px -14px rgba(28, 106, 109, .9); }
+                    .hx-btn-s:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -18px rgba(20, 24, 60, .45), 0 0 0 1px rgba(42, 129, 132, .45); }
+                    .hx-btn-s:hover .pl { background: #247d80; } .hx-btn-s:hover .pl svg { fill: #fff; }
+                    .hx-btn:active { transform: translateY(0); }
+                }
                 .hx-btn-s { color: var(--ink); background: #fff; box-shadow: var(--shadow-1), 0 0 0 1px var(--line); padding-inline-start: 10px; }
-                .hx-btn-s .pl { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(42, 129, 132, .1); }
+                .hx-btn-s .pl { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(42, 129, 132, .1); transition: background-color .3s ease; }
                 .hx-btn-s svg { width: 14px; height: 14px; fill: var(--teal-2); }
                 [dir="rtl"] .hx-btn-s svg { transform: scaleX(-1); }
                 .hx-micro { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--mut); }
@@ -34921,7 +35023,7 @@
                 .hx .cc-phone.pos-2 { transform: translateX(38%) translateY(36px) rotate(6deg) scale(.9); }
                 .hx .cc-status { display: flex; justify-content: space-between; padding: 12px 24px 6px; font-size: 11px; font-weight: 700; }
                 .hx .cc-app { display: flex; align-items: center; gap: 9px; padding: 8px 14px 10px; }
-                .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: linear-gradient(135deg, #6d4bd8, #2a8184); }
+                .hx .cc-av { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; color: #fff; background: #2a8184; }
                 .hx .cc-app .who { display: grid; min-width: 0; } .hx .cc-app .who b { font-size: 13px; } .hx .cc-app .who span { font-size: 10.5px; opacity: .65; }
                 .hx .cc-app .lg { margin-inline-start: auto; width: 20px; height: 20px; }
                 .hx .cc-body { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 12px; overflow: hidden; }
@@ -34936,14 +35038,14 @@
                 .hx .cc-typing { align-self: flex-end; border-radius: 17px; padding: 0; }
                 .hx .cc-input { margin: 8px 12px 14px; padding: 9px 14px; border-radius: 999px; font-size: 11.5px; opacity: .7; }
                 .hx .th-ig { background: #fff; color: #0c0c0c; } .hx .th-ig .cc-app { border-bottom: 1px solid #efefef; }
-                .hx .th-ig .cc-msg.in { background: #efefef; } .hx .th-ig .cc-msg.out, .hx .th-ig .cc-typing { color: #fff; background: linear-gradient(135deg, #5b51d8, #833ab4 55%, #c13584); }
+                .hx .th-ig .cc-msg.in { background: #efefef; } .hx .th-ig .cc-msg.out, .hx .th-ig .cc-typing { color: #fff; background: #7547e8; }
                 .hx .th-ig .cc-input { border: 1px solid #dbdbdb; }
                 .hx .th-wa { color: #111b21; background: #efeae2 radial-gradient(rgba(0, 0, 0, .035) 1px, transparent 1.4px) 0 0 / 14px 14px; }
                 .hx .th-wa .cc-status, .hx .th-wa .cc-app { background: #fff; } .hx .th-wa .cc-app { box-shadow: 0 1px 0 rgba(0, 0, 0, .06); }
                 .hx .th-wa .cc-msg.in { background: #fff; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); } .hx .th-wa .cc-msg.out, .hx .th-wa .cc-typing { background: #d9fdd3; box-shadow: 0 1px .5px rgba(11, 20, 26, .13); }
                 .hx .th-wa .cc-input { background: #fff; }
                 .hx .th-ms { background: #fff; color: #050505; } .hx .th-ms .cc-app { box-shadow: 0 1px 0 rgba(0, 0, 0, .06); }
-                .hx .th-ms .cc-msg.in { background: #f0f0f0; } .hx .th-ms .cc-msg.out, .hx .th-ms .cc-typing { color: #fff; background: linear-gradient(135deg, #0a7cff, #a33bf2); }
+                .hx .th-ms .cc-msg.in { background: #f0f0f0; } .hx .th-ms .cc-msg.out, .hx .th-ms .cc-typing { color: #fff; background: #0a7cff; }
                 .hx .th-ms .cc-input { background: #f0f2f5; }
                 .hx .cc-ribbon { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; overflow: hidden; z-index: 5; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
                 .hx .cc-track { position: absolute; top: 0; left: 0; display: flex; gap: 10px; width: max-content; height: 100%; align-items: center; animation: hx-slide 44s linear infinite; will-change: transform; }
@@ -35050,73 +35152,79 @@
                 strip.onload = function () { stripReady = true; draw(performance.now()); };
                 strip.src = 'logos/stack/wall.svg';
                 var SPEC = { desk: { tile: 60, rows: 9 }, tab: { tile: 58, rows: 12 }, phone: { tile: 46, rows: 12 } };
-                var cache = { key: '', canvas: null };
+                // The strip rasterised once per row height and kept, so a frame only copies bitmaps.
+                // (One shared slot made every row re-rasterise the SVG on every frame: the lag the owner saw.)
+                var strips = {};
                 function stripAt(hPx) {
-                    // The strip rasterised once at the size it is drawn, then only copied.
-                    var key = String(hPx);
-                    if (cache.key === key) return cache.canvas;
+                    if (strips[hPx]) return strips[hPx];
                     var c = document.createElement('canvas'); c.width = Math.round(1564 * hPx / 92); c.height = hPx;
                     c.getContext('2d').drawImage(strip, 0, 0, c.width, c.height);
-                    cache.key = key; cache.canvas = c; return c;
+                    strips[hPx] = c; return c;
                 }
                 function wall() {
                     cv = document.createElement('canvas'); cx = cv.getContext('2d');
                     layer.replaceChildren(cv);
                     sizeCanvas(); draw(performance.now());
                 }
+                function relayout() { veil(); sizeCanvas(); draw(performance.now()); }
+                // The canvas covers only where the wall can be seen: beside the words on wide screens, under them
+                // on narrow ones. Less to draw, and the fade is drawn only along its edges.
+                var box = { x: 0, y: 0, w: 0, h: 0, dpr: 1 };
                 function sizeCanvas() {
                     if (!cv) return;
-                    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-                    cv.width = Math.round(root.clientWidth * dpr); cv.height = Math.round(root.clientHeight * dpr);
+                    var W = root.clientWidth; var H = root.clientHeight; var rtl = document.documentElement.dir === 'rtl';
+                    var cxv = parseFloat(root.style.getPropertyValue('--copy-x')) || W * 0.4; var cyv = parseFloat(root.style.getPropertyValue('--copy-y')) || H * 0.4;
+                    if (size() !== 'desk') box = { x: 0, y: Math.round(cyv + 8), w: W, h: Math.max(0, H - Math.round(cyv + 8)) };
+                    else box = { x: rtl ? 0 : Math.round(cxv + 20), y: 0, w: Math.max(0, W - Math.round(cxv + 20)), h: H };
+                    box.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+                    cv.style.left = box.x + 'px'; cv.style.top = box.y + 'px'; cv.style.width = box.w + 'px'; cv.style.height = box.h + 'px';
+                    cv.width = Math.round(box.w * box.dpr); cv.height = Math.round(box.h * box.dpr);
+                }
+                function band(x, y, w, h, x1, y1, x2, y2, a1, a2) {
+                    var g = cx.createLinearGradient(x1, y1, x2, y2); g.addColorStop(0, 'rgba(0,0,0,' + a1 + ')'); g.addColorStop(1, 'rgba(0,0,0,' + a2 + ')');
+                    cx.fillStyle = g; cx.fillRect(x, y, w, h);
                 }
                 function draw(now) {
-                    if (!cv || !stripReady || !cv.width) return;
-                    var W = cv.width; var H = cv.height; var dpr = W / root.clientWidth;
+                    if (!cv || !stripReady || !cv.width || !cv.height) return;
+                    var W = cv.width; var H = cv.height; var dpr = box.dpr;
                     var sz = size(); var S = SPEC[sz]; var rtl = document.documentElement.dir === 'rtl';
                     var t = (now - t0) / 1000;
                     cx.setTransform(1, 0, 0, 1, 0, 0); cx.clearRect(0, 0, W, H);
                     var stacked = sz !== 'desk';
-                    var ox = stacked ? W / 2 : (rtl ? W * 0.3 : W * 0.7); var oy = H / 2;
-                    cx.translate(ox, oy); cx.rotate((rtl ? 14 : -14) * Math.PI / 180);
+                    // The plane's centre in hero coordinates, moved into this canvas.
+                    var hw = root.clientWidth; var hh = root.clientHeight;
+                    var ox = (stacked ? hw / 2 : (rtl ? hw * 0.3 : hw * 0.7)) - box.x; var oy = hh / 2 - box.y;
+                    cx.translate(ox * dpr, oy * dpr); cx.rotate((rtl ? 14 : -14) * Math.PI / 180);
                     var baseH = Math.round(S.tile * 92 / 70 * dpr);
                     var rows = S.rows; var total = 0; var sc = [];
-                    for (var i = 0; i < rows; i += 1) { sc.push(0.8 + 0.4 * i / (rows - 1)); total += baseH * sc[i]; }
-                    var y = -total / 2; var span = Math.max(W, H) * 1.5;
+                    for (var i = 0; i < rows; i += 1) { sc.push(0.8 + 0.4 * i / (rows - 1)); total += Math.round(baseH * sc[i]); }
+                    var y = -total / 2; var span = Math.max(hw, hh) * 1.5 * dpr;
                     for (var r = 0; r < rows; r += 1) {
                         var hPx = Math.round(baseH * sc[r]); var img = stripAt(hPx); var setW = img.width;
+                        if (r === 0) window.__hxDraws = (window.__hxDraws || 0) + 1;
                         var speed = (11 + (r % 3) * 4) * dpr * sc[r]; var dir = r % 2 ? 1 : -1;
                         var start = ((r * 7) % 17) * setW / 17;
                         var x = ((start + dir * speed * t) % setW + setW) % setW;
-                        for (var px = -span / 2 - x; px < span / 2; px += setW) cx.drawImage(img, Math.round(px), Math.round(y), setW, hPx);
+                        for (var px = -span / 2 - x; px < span / 2; px += setW) cx.drawImage(img, px, y);
                         y += hPx;
                     }
-                    // The fade before the words, drawn into the same canvas from a mask made once per layout.
+                    // The fade, only along the edges: towards the words, under the top bar, and at the foot.
                     cx.setTransform(1, 0, 0, 1, 0, 0);
-                    cx.globalCompositeOperation = 'destination-in';
-                    cx.drawImage(maskFor(W, H, dpr, rtl, stacked), 0, 0);
+                    cx.globalCompositeOperation = 'destination-out';
+                    var fw = 130 * dpr;
+                    if (stacked) band(0, 0, W, 82 * dpr, 0, 0, 0, 82 * dpr, 1, 0);
+                    else if (rtl) band(W - fw, 0, fw, H, W - fw, 0, W, 0, 0, 1);
+                    else band(0, 0, fw, H, 0, 0, fw, 0, 1, 0);
+                    if (!stacked) band(0, 0, W, 70 * dpr, 0, 0, 0, 70 * dpr, 1, 0);
+                    band(0, H - 90 * dpr, W, 90 * dpr, 0, H - 90 * dpr, 0, H, 0, 0.9);
                     cx.globalCompositeOperation = 'source-over';
                     lastDraw = now;
                 }
-                var maskCache = { key: '', canvas: null };
-                function maskFor(W, H, dpr, rtl, stacked) {
-                    var cxv = parseFloat(root.style.getPropertyValue('--copy-x')) * dpr || W * 0.4; var cyv = parseFloat(root.style.getPropertyValue('--copy-y')) * dpr || H * 0.4;
-                    var key = [W, H, Math.round(cxv), Math.round(cyv), rtl, stacked].join(',');
-                    if (maskCache.key === key) return maskCache.canvas;
-                    var m = document.createElement('canvas'); m.width = W; m.height = H; var c = m.getContext('2d'); var g;
-                    if (stacked) { g = c.createLinearGradient(0, 0, 0, H); stops(g, H, [[0, 0], [cyv + 8 * dpr, 0], [cyv + 40 * dpr, .3], [cyv + 90 * dpr, 1], [H - 70 * dpr, 1], [H, .1]]); }
-                    else { g = rtl ? c.createLinearGradient(W, 0, 0, 0) : c.createLinearGradient(0, 0, W, 0); stops(g, W, [[0, 0], [cxv + 20 * dpr, 0], [cxv + 70 * dpr, .3], [cxv + 150 * dpr, 1], [W, 1]]); }
-                    c.fillStyle = g; c.fillRect(0, 0, W, H);
-                    c.globalCompositeOperation = 'destination-in';
-                    var gv = c.createLinearGradient(0, 0, 0, H); stops(gv, H, [[0, 0], [70 * dpr, 1], [H - 90 * dpr, 1], [H, .1]]);
-                    c.fillStyle = gv; c.fillRect(0, 0, W, H);
-                    maskCache.key = key; maskCache.canvas = m; return m;
-                }
-                function stops(g, len, list) { list.forEach(function (p) { g.addColorStop(Math.max(0, Math.min(1, p[0] / len)), 'rgba(0,0,0,' + p[1] + ')'); }); }
                 function loop(now) {
                     raf = 0;
                     if (!running()) return;
-                    // About 30 frames a second is smooth for a slow drift; while the page scrolls, hold still.
-                    if (now > scrollingUntil && now - lastDraw >= 32) draw(now);
+                    // Every frame, with sub-pixel positions, so the drift is smooth; while the page scrolls, hold still.
+                    if (now > scrollingUntil) draw(now);
                     raf = requestAnimationFrame(loop);
                 }
                 function startWall() { if (!raf && running()) raf = requestAnimationFrame(loop); }
@@ -35204,12 +35312,12 @@
                     new IntersectionObserver(function (es) { var v = es[es.length - 1].isIntersecting; if (v !== inView) { inView = v; wake(); } }, { threshold: 0.05 }).observe(root);
                 }
                 // A new language or a different size class redraws; anything else only re-measures the veil.
-                new MutationObserver(function () { if (lang() + size() !== built) build(false); else { veil(); draw(performance.now()); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
+                new MutationObserver(function () { if (lang() + size() !== built) build(false); else relayout(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
                 if ('ResizeObserver' in window) {
                     var rt = 0;
-                    new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { if (lang() + size() !== built) build(false); else { veil(); sizeCanvas(); draw(performance.now()); } }, 150); }).observe(root);
+                    new ResizeObserver(function () { clearTimeout(rt); rt = setTimeout(function () { if (lang() + size() !== built) build(false); else relayout(); }, 150); }).observe(root);
                 }
-                if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { veil(); draw(performance.now()); });
+                if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
                 build(true);
             })();
             </script>
@@ -35264,7 +35372,7 @@
             </div>
             <div class="lp-demo-panel">
                 <!-- Chat Header -->
-                <div id="lp-demo-header" style="padding:14px 18px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;gap:10px;transition:background 0.3s;">
+                <div id="lp-demo-header" style="padding:14px 18px;background:#2563eb;display:flex;align-items:center;gap:10px;transition:background 0.3s;">
                     <div id="demo-orb-header" style="width:36px;height:36px;flex-shrink:0;"></div>
                     <div style="flex:1;text-align:start;">
                         <div id="lp-demo-header-name" style="font-weight:700;font-size:0.9rem;color:#fff;">Opsy AI · Services demo</div>
@@ -35343,7 +35451,7 @@
             const AGENTS = {
                 opsy: {
                     headerKey: 'header_opsy',
-                    headerGradient: "linear-gradient(135deg,#1d4ed8,#3b82f6)",
+                    headerGradient: "#2563eb",
                     tabColor: "#3b82f6",
                     avatar: function(size) { try { return window.opsyGearOrb ? window.opsyGearOrb('idle', size) : ''; } catch (e) { return ''; } },
                     seed: ['t_opsy_1_in', 't_opsy_1_out', 't_opsy_2_in'],
@@ -35352,7 +35460,7 @@
                 },
                 cartiva: {
                     headerKey: 'header_cartiva',
-                    headerGradient: "linear-gradient(135deg,#ea580c,#f97316)",
+                    headerGradient: "#ea580c",
                     tabColor: "#f97316",
                     avatar: function(size) { try { return window.cartivaBag ? window.cartivaBag('idle', size) : ''; } catch (e) { return ''; } },
                     seed: ['t_cartiva_1_in', 't_cartiva_1_out', 't_cartiva_2_in'],
@@ -35585,7 +35693,7 @@
             <!-- Agent Selector Cards -->
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1.5rem;margin-bottom:2.5rem;">
                 <!-- Cartiva AI Card -->
-                <div class="lp-agent-card" style="padding:2rem;border-radius:20px;background:linear-gradient(135deg,rgba(249,115,22,0.06),rgba(251,191,36,0.03));border:1px solid rgba(249,115,22,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(249,115,22,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(249,115,22,0.2)';this.style.transform=''">
+                <div class="lp-agent-card" style="padding:2rem;border-radius:20px;background:#fff8f2;border:1px solid rgba(249,115,22,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(249,115,22,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(249,115,22,0.2)';this.style.transform=''">
                     <div id="lp-cartiva-card-avatar" style="margin-bottom:1rem;"></div>
                     <script>var _cca=document.getElementById('lp-cartiva-card-avatar');if(_cca&&window.cartivaBag)_cca.innerHTML=cartivaBag('idle',72);</script>
                     <h3 style="margin:0 0 4px;font-size:1.2rem;color:#f97316;font-weight:800;">Cartiva AI</h3>
@@ -35602,7 +35710,7 @@
                 </div>
 
                 <!-- Opsy AI Card -->
-                <div class="lp-agent-card" style="padding:2rem;border-radius:20px;background:linear-gradient(135deg,rgba(59,130,246,0.06),rgba(147,197,253,0.03));border:1px solid rgba(59,130,246,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(59,130,246,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(59,130,246,0.2)';this.style.transform=''">
+                <div class="lp-agent-card" style="padding:2rem;border-radius:20px;background:#f3f7ff;border:1px solid rgba(59,130,246,0.2);text-align:center;transition:all 0.3s ease;" onmouseover="this.style.borderColor='rgba(59,130,246,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(59,130,246,0.2)';this.style.transform=''">
                     <div id="lp-opsy-card-avatar" style="margin-bottom:1rem;"></div>
                     <script>var _oca=document.getElementById('lp-opsy-card-avatar');if(_oca&&window.opsyGearOrb)_oca.innerHTML=opsyGearOrb('idle',72);</script>
                     <h3 style="margin:0 0 4px;font-size:1.2rem;color:#3b82f6;font-weight:800;">Opsy AI</h3>

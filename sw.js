@@ -1,0 +1,263 @@
+// Bump on every index.html change, or an installed client keeps serving the old
+// page through a hard refresh. THIS STRING IS ALSO THE SENTRY RELEASE: `release`
+// in the Sentry.init block in index.html must be the identical literal, so an
+// error in Sentry names the exact bytes that produced it. Move them together, in
+// the same commit -- tests/sentry-config.test.js fails if they disagree.
+const CACHE_NAME = 'digitivia-v33';
+const OFFLINE_URLS = [
+  '/',
+  '/index.html',
+  '/privacy.html',
+  '/terms.html',
+  '/icon.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/icon-maskable-512.png',
+  '/favicon.png',
+  '/cropped-White.png',
+  '/meta-tech-provider.png',
+  '/manifest.json'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(OFFLINE_URLS))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+// Network-first with cache fallback for navigation, cache-first for static assets
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
+
+  // Skip non-GET and cross-origin requests
+  if (event.request.method !== 'GET' || url.origin !== self.location.origin) return;
+
+  // Skip API/Supabase requests
+  if (url.pathname.startsWith('/functions/') || url.pathname.startsWith('/rest/') || url.pathname.startsWith('/auth/')) return;
+
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Cache successful responses for static assets
+        if (response.ok && (url.pathname.endsWith('.html') || url.pathname.endsWith('.png') || url.pathname.endsWith('.json') || url.pathname === '/')) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      // Offline. Serve this exact request from the cache if we have it.
+      //
+      // The index.html fallback below is for NAVIGATIONS ONLY, and the word
+      // "only" is the whole point. It used to answer any failed same-origin
+      // GET, which meant a page asking for one file quietly received another:
+      // on a cold cache plus a network blip, `fetch('chatwindow.html')` in
+      // loadWebsiteWidgetPreview resolved with res.ok true, status 200, and
+      // 4.2MB of dashboard, which then went into iframe.srcdoc. That is where
+      // the about:srcdoc errors in Sentry came from -- three "SyntaxError:
+      // Unexpected token '<'", one per module, plus "TypeError: Failed to
+      // construct 'URL'", all on 2026-08-26. A caller that asks for a .js, a
+      // .json or a partial and is handed HTML cannot tell it went wrong until
+      // the parser does.
+      //
+      // For a navigation, answering with the app shell IS the right thing: the
+      // person typed a URL or followed a link and should get the offline app,
+      // not a browser error page. For everything else, a rejected fetch is the
+      // honest answer, and the caller's own error handling takes over.
+      .catch(() => caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        if (event.request.mode === 'navigate') return caches.match('/index.html');
+        return Response.error();
+      }))
+  );
+});
+
+function resolveTargetUrl(rawLink) {
+  const scopeUrl = new URL(self.registration.scope);
+
+  if (!rawLink) {
+    return scopeUrl.href;
+  }
+
+  if (rawLink.startsWith('#')) {
+    return `${scopeUrl.origin}${scopeUrl.pathname}${rawLink}`;
+  }
+
+  try {
+    return new URL(rawLink, scopeUrl.href).href;
+  } catch (_error) {
+    return scopeUrl.href;
+  }
+}
+
+function buildTargetLink(payload = {}) {
+  if (payload?.data?.link || payload.link) {
+    return payload?.data?.link || payload.link;
+  }
+
+  const entity = payload?.data?.entity || payload.entity || null;
+  const entityId = payload?.data?.entityId || payload.entity_id || null;
+  const eventKey = payload?.data?.eventKey || payload.event_key || null;
+  const notificationId = payload?.data?.notificationId || payload.notification_id || null;
+
+  // Route CRM/lead entities
+  if (entity === 'lead' || entity === 'crm' ||
+      (eventKey && (eventKey.startsWith('crm_') || eventKey.startsWith('crm_followup')))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('lead', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#crm?${p.toString()}`;
+  }
+
+  // Route team entities
+  if (entity === 'team' || (eventKey && eventKey.startsWith('team_'))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('member', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#team?${p.toString()}`;
+  }
+
+  // Route task entities
+  if (entity === 'task' || (eventKey && eventKey.startsWith('task_'))) {
+    const p = new URLSearchParams();
+    if (entityId) p.set('task', entityId);
+    if (eventKey) p.set('event', eventKey);
+    if (notificationId) p.set('notification_id', notificationId);
+    return `#task-manager?${p.toString()}`;
+  }
+
+  const params = new URLSearchParams();
+  if (entity) params.set('entity', entity);
+  if (entityId) params.set('id', entityId);
+  if (eventKey) params.set('event', eventKey);
+  if (notificationId) params.set('notification_id', notificationId);
+
+  const query = params.toString();
+  return query ? `#orders?${query}` : '#orders';
+}
+
+async function parsePushPayload(event) {
+  if (!event.data) return {};
+
+  try {
+    return await event.data.json();
+  } catch (_jsonError) {
+    try {
+      return JSON.parse(await event.data.text());
+    } catch (_textError) {
+      return {};
+    }
+  }
+}
+
+self.addEventListener('push', (event) => {
+  event.waitUntil((async () => {
+    const payload = await parsePushPayload(event);
+    const title = String(payload.title || 'Digitivia Notification');
+    const body = String(payload.body || payload.message || '');
+    const link = buildTargetLink(payload);
+    const notificationId = payload?.data?.notificationId || payload.notification_id || null;
+    const entity = payload?.data?.entity || payload.entity || null;
+    const entityId = payload?.data?.entityId || payload.entity_id || null;
+    const eventKey = payload?.data?.eventKey || payload.event_key || null;
+    const icon = payload.icon || payload.image || '/icon-192.png';
+    const badge = payload.badge || '/icon-192.png';
+    const tag = payload.tag || (notificationId ? `notification-${notificationId}` : `digitivia-${entity || 'push'}`);
+
+    await self.registration.showNotification(title, {
+      body,
+      icon,
+      badge,
+      tag,
+      data: {
+        link,
+        notificationId,
+        orgId: payload?.data?.orgId || payload.org_id || null,
+        entity,
+        entityId,
+        eventKey
+      }
+    });
+  })());
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  event.waitUntil((async () => {
+    const link = event.notification?.data?.link || '#orders';
+    const notificationId = event.notification?.data?.notificationId || null;
+    const entity = event.notification?.data?.entity || null;
+    const entityId = event.notification?.data?.entityId || null;
+    const eventKey = event.notification?.data?.eventKey || null;
+    const targetUrl = resolveTargetUrl(link);
+    const clientList = await self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    });
+
+    const existingClient = clientList.find((client) => {
+      try {
+        return new URL(client.url).origin === self.location.origin;
+      } catch (_error) {
+        return false;
+      }
+    });
+
+    if (existingClient) {
+      if ('navigate' in existingClient && existingClient.url !== targetUrl) {
+        try {
+          await existingClient.navigate(targetUrl);
+        } catch (_error) {
+        }
+      }
+
+      await existingClient.focus();
+      existingClient.postMessage({
+        type: 'push-notification-click',
+        link,
+        notificationId,
+        entity,
+        entityId,
+        eventKey
+      });
+      return;
+    }
+
+    const openedClient = await self.clients.openWindow(targetUrl);
+    if (openedClient) {
+      openedClient.postMessage({
+        type: 'push-notification-click',
+        link,
+        notificationId,
+        entity,
+        entityId,
+        eventKey
+      });
+    }
+  })());
+});
+
+self.addEventListener('pushsubscriptionchange', (event) => {
+  event.waitUntil((async () => {
+    const clientList = await self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    });
+
+    clientList.forEach((client) => {
+      client.postMessage({ type: 'push-subscription-change' });
+    });
+  })());
+});

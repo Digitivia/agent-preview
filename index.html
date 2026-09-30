@@ -36364,6 +36364,13 @@
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_crm">CRM</span>
                     </li>
+                    <!-- Staff-only merchant/subscription workspace. Hidden for
+                         everyone; revealed by the platform-staff check in
+                         fetchMyPermissions. Never shown to merchants. -->
+                    <li class="nav-item" id="nav-merchants-item" onclick="switchTab('merchants', this)" style="display:none">
+                        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg></div>
+                        <span class="nav-label">Merchants</span>
+                    </li>
                     <li class="nav-item" onclick="switchTab('task-manager', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_task_manager">Task Manager</span>
@@ -44098,6 +44105,57 @@
                 </div>
             </div>
 
+            <!-- MERCHANTS TAB (Digitivia staff only) -->
+            <div id="merchants" class="tab-content">
+                <style>
+                    #merchants .mw-wrap { padding: 1.2rem; max-width: 1100px; margin: 0 auto; }
+                    #merchants .mw-head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+                    #merchants .mw-title { margin: 0; font-size: 1.15rem; }
+                    #merchants .mw-filters { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 1rem; }
+                    @media (min-width: 720px) { #merchants .mw-filters { grid-template-columns: 2fr 1fr 1fr auto; } }
+                    #merchants .mw-input, #merchants .mw-select { min-height: 44px; border-radius: 10px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.04); color: var(--text-primary); padding: 0 12px; font-size: 0.9rem; width: 100%; box-sizing: border-box; }
+                    #merchants .mw-list { display: grid; gap: 10px; }
+                    #merchants .mw-card { border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,0.03); cursor: pointer; }
+                    #merchants .mw-card:hover { border-color: var(--theme-color); }
+                    #merchants .mw-card-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+                    #merchants .mw-name { font-weight: 700; font-size: 0.95rem; }
+                    #merchants .mw-sub { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+                    #merchants .mw-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+                    #merchants .mw-badge { font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+                    #merchants .mw-b-green { color: #34d399; border-color: rgba(52,211,153,0.4); background: rgba(52,211,153,0.08); }
+                    #merchants .mw-b-blue { color: #60a5fa; border-color: rgba(96,165,250,0.4); background: rgba(96,165,250,0.08); }
+                    #merchants .mw-b-amber { color: #fbbf24; border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+                    #merchants .mw-b-red { color: #f87171; border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); }
+                    #merchants .mw-b-gray { color: var(--text-secondary); border-color: rgba(148,163,184,0.4); background: rgba(148,163,184,0.08); }
+                    #merchants .mw-pager { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 1rem; }
+                    #merchants .mw-btn { min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: var(--text-primary); font-size: 0.88rem; font-weight: 600; cursor: pointer; touch-action: manipulation; }
+                    #merchants .mw-btn:disabled { opacity: 0.45; cursor: default; }
+                    #merchants .mw-btn-primary { background: var(--theme-color); border-color: transparent; color: #fff; }
+                    #merchants .mw-btn-danger { border-color: rgba(248,113,113,0.5); color: #f87171; }
+                    #merchants .mw-detail-head { display: flex; gap: 10px; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+                    #merchants .mw-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+                    @media (min-width: 860px) { #merchants .mw-grid { grid-template-columns: 1fr 1fr; } }
+                    #merchants .mw-sec { border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,0.02); }
+                    #merchants .mw-sec h3 { margin: 0 0 8px; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); }
+                    #merchants .mw-kv { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 0.85rem; border-bottom: 1px dashed rgba(148,163,184,0.15); }
+                    #merchants .mw-kv:last-child { border-bottom: none; }
+                    #merchants .mw-kv b { font-weight: 600; text-align: end; overflow-wrap: anywhere; }
+                    #merchants .mw-mono { font-family: monospace; font-size: 0.75rem; overflow-wrap: anywhere; }
+                    #merchants .mw-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+                    #merchants .mw-warn { border: 1px solid rgba(251,191,36,0.5); background: rgba(251,191,36,0.08); color: #fbbf24; border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 10px; }
+                    #merchants .mw-err { border: 1px solid rgba(248,113,113,0.5); background: rgba(248,113,113,0.08); color: #f87171; border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 10px; }
+                    #merchants .mw-usagebar { height: 8px; border-radius: 4px; background: rgba(148,163,184,0.2); overflow: hidden; margin-top: 4px; }
+                    #merchants .mw-usagebar i { display: block; height: 100%; background: var(--theme-color); border-radius: 4px; }
+                    #merchants .mw-modal-veil { position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 16px; }
+                    #merchants .mw-modal { width: min(440px, 100%); border-radius: 16px; background: var(--bg-dark); border: 1px solid var(--glass-border); padding: 18px; }
+                    #merchants .mw-modal h3 { margin: 0 0 12px; font-size: 1rem; }
+                    #merchants .mw-modal label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin: 10px 0 4px; }
+                    #merchants .mw-empty { text-align: center; color: var(--text-secondary); padding: 2rem 1rem; font-size: 0.9rem; }
+                </style>
+                <div class="mw-wrap" id="mw-root"></div>
+            </div>
+
+
             <!-- TASK MANAGER TAB -->
             <div id="task-manager" class="tab-content">
                 <div class="card glass" style="padding:0;overflow:hidden;">
@@ -45927,7 +45985,7 @@ Thank you for shopping with {store_name}!</textarea>
             website: 'group-agents', whatsapp: 'group-agents',
             page: 'group-agents', instagram: 'group-agents', telegram: 'group-agents',
             insights: 'group-live', inbox: 'group-live',
-            leads: 'group-data', crm: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
+            leads: 'group-data', crm: 'group-data', merchants: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
             'create-post': 'group-content', reviews: 'group-content',
             followups: 'group-live'
         };
@@ -46919,6 +46977,11 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'crm') {
                 color = '#7B5EA7'; // Purple for CRM
                 if (typeof initCrmTab === 'function') initCrmTab();
+            }
+            if (tabId === 'merchants') {
+                color = '#0E7C86'; // Deep teal for the staff Merchants workspace
+                if (window.isPlatformStaff !== true) { showPermissionDenied(); return false; }
+                if (typeof window.initMerchantsTab === 'function') window.initMerchantsTab();
             }
             if (tabId === 'task-manager') {
                 color = '#00897B'; // Teal-green for Task Manager
@@ -65196,6 +65259,319 @@ Thank you for shopping with {store_name}!</textarea>
         initLanguage();
         initFloatingAIWidget();
     </script>
+<script>
+            /* Staff-only Merchants workspace. Reads/writes go exclusively
+               through staff_* RPCs (platform-staff/admin gated server-side).
+               No shared CRM code is touched. English-only: internal tool. */
+            (function () {
+                'use strict';
+                var PAGE = 25;
+                var state = { search: '', plan: '', status: '', offset: 0, rows: [], total: 0, detail: null, loading: false };
+
+                function isAdmin() { return window.isPlatformStaffAdmin === true; }
+                function isStaff() { return window.isPlatformStaff === true; }
+                function fmtDate(s) {
+                    if (!s) return '—';
+                    try { return new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+                    catch (e) { return String(s).slice(0, 10); }
+                }
+                function money(cents, cur) {
+                    if (cents == null) return '—';
+                    try { return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: cur || 'USD' }); }
+                    catch (e) { return (cents / 100) + ' ' + (cur || ''); }
+                }
+
+                /* Pure logic (unit-tested in tests/staff-merchants-workspace.test.js) */
+                var STATUS_BADGE = {
+                    active: 'mw-b-green', trialing: 'mw-b-blue', past_due: 'mw-b-amber',
+                    expired: 'mw-b-gray', canceled: 'mw-b-red', cancelled: 'mw-b-red',
+                    incomplete: 'mw-b-amber', no_plan: 'mw-b-gray'
+                };
+                function mwStatusBadge(status) { return STATUS_BADGE[status] || 'mw-b-gray'; }
+                function mwStatusLabel(status) {
+                    var labels = { active: 'Active', trialing: 'Trial', past_due: 'Past due', expired: 'Expired', canceled: 'Cancelled', cancelled: 'Cancelled', incomplete: 'Incomplete', no_plan: 'No plan' };
+                    return labels[status] || status || 'Unknown';
+                }
+                /* State-aware action matrix. Renew/extend + plan change are
+                   admin-only (support is read-only by convention). Stripe
+                   links need stored Stripe ids. Change needs a live sub. */
+                var LIVE_FOR_CHANGE = { active: 1, trialing: 1, past_due: 1 };
+                function mwActionsForState(status, admin, hasStripe) {
+                    var acts = ['refresh'];
+                    if (hasStripe) acts.push('stripe');
+                    if (!admin) return acts;
+                    acts.push('renew');
+                    if (hasStripe && LIVE_FOR_CHANGE[status]) acts.push('change');
+                    return acts;
+                }
+                window.__mwActionsForState = mwActionsForState;
+                window.__mwStatusBadge = mwStatusBadge;
+
+                function root() { return document.getElementById('mw-root'); }
+                function errBox(msg) { return '<div class="mw-err">' + esc(msg) + '</div>'; }
+
+                async function rpc(fn, args) {
+                    var res = await supabaseClient.rpc(fn, args || {});
+                    if (res.error) throw new Error(res.error.message || ('RPC ' + fn + ' failed'));
+                    return res.data;
+                }
+
+                window.initMerchantsTab = function () {
+                    if (!isStaff()) { if (typeof showPermissionDenied === 'function') showPermissionDenied(); return; }
+                    renderShell();
+                    loadMerchants();
+                };
+
+                function renderShell() {
+                    root().innerHTML =
+                        '<div class="mw-head"><h2 class="mw-title">Merchants</h2>' +
+                        '<button class="mw-btn" id="mw-refresh-list">Refresh</button></div>' +
+                        '<div class="mw-filters">' +
+                        '<input class="mw-input" id="mw-q" placeholder="Search name or email" value="' + esc(state.search) + '">' +
+                        '<select class="mw-select" id="mw-plan"><option value="">All plans</option>' +
+                        ['starter', 'growth', 'pro', 'payg', 'free_trial'].map(function (p) {
+                            return '<option value="' + p + '"' + (state.plan === p ? ' selected' : '') + '>' + p + '</option>';
+                        }).join('') + '</select>' +
+                        '<select class="mw-select" id="mw-status"><option value="">All statuses</option>' +
+                        ['active', 'trialing', 'past_due', 'expired', 'canceled', 'no_plan'].map(function (s) {
+                            return '<option value="' + s + '"' + (state.status === s ? ' selected' : '') + '>' + mwStatusLabel(s) + '</option>';
+                        }).join('') + '</select>' +
+                        '<button class="mw-btn mw-btn-primary" id="mw-apply">Apply</button></div>' +
+                        '<div id="mw-list"></div><div id="mw-detail"></div>';
+                    document.getElementById('mw-apply').onclick = function () {
+                        state.search = document.getElementById('mw-q').value.trim();
+                        state.plan = document.getElementById('mw-plan').value;
+                        state.status = document.getElementById('mw-status').value;
+                        state.offset = 0;
+                        loadMerchants();
+                    };
+                    document.getElementById('mw-q').onkeydown = function (e) { if (e.key === 'Enter') document.getElementById('mw-apply').click(); };
+                    document.getElementById('mw-refresh-list').onclick = loadMerchants;
+                }
+
+                async function loadMerchants() {
+                    var list = document.getElementById('mw-list');
+                    var det = document.getElementById('mw-detail');
+                    if (det) det.innerHTML = '';
+                    if (list) list.innerHTML = '<div class="mw-empty">Loading…</div>';
+                    try {
+                        var rows = await rpc('staff_list_merchants', {
+                            p_search: state.search || null, p_plan: state.plan || null,
+                            p_status: state.status || null, p_limit: PAGE, p_offset: state.offset
+                        });
+                        state.rows = rows || [];
+                        state.total = state.rows.length ? (state.rows[0].total_count || 0) : 0;
+                        renderList();
+                    } catch (e) { if (list) list.innerHTML = errBox(e.message); }
+                }
+
+                function renderList() {
+                    var list = document.getElementById('mw-list');
+                    if (!state.rows.length) { list.innerHTML = '<div class="mw-empty">No merchants match.</div>'; return; }
+                    var html = '<div class="mw-list">' + state.rows.map(function (r, i) {
+                        var st = r.sub_status || 'no_plan';
+                        return '<div class="mw-card" data-i="' + i + '" tabindex="0" role="button" aria-label="' + esc(r.org_name || 'Merchant') + '">' +
+                            '<div class="mw-card-top"><span class="mw-name">' + esc(r.org_name || '—') + '</span>' +
+                            '<span class="mw-badges"><span class="mw-badge ' + mwStatusBadge(st) + '">' + esc(mwStatusLabel(st)) + '</span>' +
+                            (r.plan_slug ? '<span class="mw-badge mw-b-gray">' + esc(r.plan_slug) + '</span>' : '') + '</span></div>' +
+                            '<div class="mw-sub">' + esc(r.owner_email || '') +
+                            (r.period_end ? ' · renews ' + esc(fmtDate(r.period_end)) : '') +
+                            ' · ' + (r.channel_count || 0) + ' channels</div></div>';
+                    }).join('') + '</div>';
+                    var shown = state.offset + state.rows.length;
+                    html += '<div class="mw-pager"><button class="mw-btn" id="mw-prev"' + (state.offset === 0 ? ' disabled' : '') + '>Prev</button>' +
+                        '<span class="mw-sub">' + shown + ' of ' + state.total + '</span>' +
+                        '<button class="mw-btn" id="mw-next"' + (shown >= state.total ? ' disabled' : '') + '>Next</button></div>';
+                    list.innerHTML = html;
+                    list.querySelectorAll('.mw-card').forEach(function (c) {
+                        var open = function () { openMerchant(state.rows[+c.getAttribute('data-i')].org_id); };
+                        c.onclick = open;
+                        c.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
+                    });
+                    document.getElementById('mw-prev').onclick = function () { state.offset = Math.max(0, state.offset - PAGE); loadMerchants(); };
+                    document.getElementById('mw-next').onclick = function () { state.offset += PAGE; loadMerchants(); };
+                }
+
+                async function openMerchant(orgId) {
+                    var det = document.getElementById('mw-detail');
+                    det.innerHTML = '<div class="mw-empty">Loading merchant…</div>';
+                    det.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    try {
+                        state.detail = await rpc('staff_get_merchant_detail', { p_org_id: orgId });
+                        renderDetail();
+                    } catch (e) { det.innerHTML = errBox(e.message); }
+                }
+
+                function kv(k, v) { return '<div class="mw-kv"><span>' + esc(k) + '</span><b>' + v + '</b></div>'; }
+                function kvT(k, v) { return '<div class="mw-kv"><span>' + esc(k) + '</span><b>' + esc(v == null ? '—' : String(v)) + '</b></div>'; }
+
+                function renderDetail() {
+                    var d = state.detail, det = document.getElementById('mw-detail');
+                    var s = d.subscription || {};
+                    var st = s.status || 'no_plan';
+                    var hasStripe = !!(s.stripe_subscription_id || s.stripe_customer_id);
+                    var acts = mwActionsForState(st, isAdmin(), hasStripe);
+                    var html = '<div class="mw-detail-head"><button class="mw-btn" id="mw-back">← List</button>' +
+                        '<h2 class="mw-title">' + esc(d.org.name || 'Merchant') + '</h2>' +
+                        '<span class="mw-badge ' + mwStatusBadge(st) + '">' + esc(mwStatusLabel(st)) + '</span></div>';
+                    if (d.attention) html += '<div class="mw-warn">Billing needs attention: a webhook event for this merchant requires review.</div>';
+                    html += '<div class="mw-grid">';
+                    html += '<div class="mw-sec"><h3>Identity</h3>' +
+                        kv('Merchant ID', '<span class="mw-mono">' + esc(d.org.id) + '</span>') +
+                        kvT('Name', d.org.name) + kvT('Since', fmtDate(d.org.created_at)) +
+                        kvT('Owner', (d.members && d.members[0] && (d.members[0].name || d.members[0].email)) || '—') +
+                        kvT('Owner email', (d.members && d.members[0] && d.members[0].email) || '—') + '</div>';
+                    html += '<div class="mw-sec"><h3>Subscription</h3>' +
+                        kvT('Plan', s.plan_name ? (s.plan_name + ' (' + (s.plan_slug || '') + ')') : '—') +
+                        kvT('Status', mwStatusLabel(st)) +
+                        kvT('Period start', fmtDate(s.period_start)) +
+                        kvT('Renewal date', fmtDate(s.period_end)) +
+                        (st === 'trialing' ? kvT('Trial ends', fmtDate(s.period_end)) : '') +
+                        kvT('Cancel at period end', s.cancel_at_period_end ? 'Yes' : 'No') +
+                        kvT('Provider', s.provider || '—') + '</div>';
+                    var prices = (d.prices || []).map(function (p) {
+                        return '<div class="mw-kv"><span>' + esc(p.currency) + ' / ' + esc(p.billing_interval) + '</span><b>' + esc(money(p.unit_amount_cents, p.currency)) + '</b></div>';
+                    }).join('') || '<div class="mw-sub">No prices on file.</div>';
+                    html += '<div class="mw-sec"><h3>Billing</h3>' + prices +
+                        kv('Subscription ID', s.stripe_subscription_id ? '<span class="mw-mono">' + esc(s.stripe_subscription_id) + '</span>' : '—') +
+                        kv('Customer ID', s.stripe_customer_id ? '<span class="mw-mono">' + esc(s.stripe_customer_id) + '</span>' : '—') + '</div>';
+                    var lim = d.limits || {};
+                    var u = d.usage || {};
+                    var convLimit = lim.conversations_limit, convUsed = u.conversations_used;
+                    var pct = (convLimit && convUsed != null) ? Math.min(100, Math.round(convUsed / convLimit * 100)) : null;
+                    html += '<div class="mw-sec"><h3>Usage & limits</h3>' +
+                        kvT('Conversations', convUsed != null && convLimit ? (convUsed + ' / ' + convLimit) : '—') +
+                        (pct != null ? '<div class="mw-usagebar"><i style="width:' + pct + '%"></i></div>' : '') +
+                        kvT('Coins', u.coins_used != null ? (u.coins_used + ' / ' + (u.coins_total != null ? u.coins_total : '—')) : '—') +
+                        kvT('Messages (trial meter)', u.messages_used != null ? u.messages_used : '—') + '</div>';
+                    var chans = (d.channels || []).map(function (c) {
+                        return '<div class="mw-kv"><span>' + esc(c.platform) + '</span><b>' + esc(c.is_active ? 'connected' : 'off') + ' · ' + esc(c.account_name || '') + '</b></div>';
+                    }).join('') || '<div class="mw-sub">No channels.</div>';
+                    html += '<div class="mw-sec"><h3>Connected services</h3>' + chans + '</div>';
+                    var tl = (d.timeline || []).map(function (e) {
+                        return '<div class="mw-kv"><span>' + esc(fmtDate(e.at)) + '</span><b>' + esc(e.kind + ': ' + e.label + (e.state ? ' (' + e.state + ')' : '')) + '</b></div>';
+                    }).join('') || '<div class="mw-sub">No history recorded.</div>';
+                    html += '<div class="mw-sec"><h3>Timeline</h3>' + tl + '</div></div>';
+                    html += '<div class="mw-actions">';
+                    var labels = { refresh: 'Refresh', stripe: 'Open in Stripe', renew: 'Renew / extend', change: 'Change plan' };
+                    acts.forEach(function (a) {
+                        var cls = a === 'renew' ? 'mw-btn mw-btn-primary' : 'mw-btn';
+                        html += '<button class="' + cls + '" data-act="' + a + '">' + labels[a] + '</button>';
+                    });
+                    if (!isAdmin()) html += '<div class="mw-sub">Read-only: your staff role is support. Plan changes and renewals need an admin.</div>';
+                    html += '</div><div id="mw-act"></div>';
+                    det.innerHTML = html;
+                    document.getElementById('mw-back').onclick = function () { det.innerHTML = ''; };
+                    det.querySelectorAll('[data-act]').forEach(function (b) {
+                        b.onclick = function () { doAction(b.getAttribute('data-act')); };
+                    });
+                }
+
+                function actBox(html) { document.getElementById('mw-act').innerHTML = html; }
+
+                function doAction(a) {
+                    if (a === 'refresh') { openMerchant(state.detail.org.id); return; }
+                    if (a === 'stripe') {
+                        var s = state.detail.subscription || {};
+                        var url = s.stripe_subscription_id
+                            ? 'https://dashboard.stripe.com/subscriptions/' + encodeURIComponent(s.stripe_subscription_id)
+                            : 'https://dashboard.stripe.com/customers/' + encodeURIComponent(s.stripe_customer_id);
+                        rpc('staff_log_workspace_action', { p_org_id: state.detail.org.id, p_action: 'subscription.open_stripe', p_details: {} })
+                            .catch(function () {});
+                        window.open(url, '_blank', 'noopener');
+                        return;
+                    }
+                    if (a === 'renew') return renewModal();
+                    if (a === 'change') return changeModal();
+                }
+
+                function modal(title, bodyHtml) {
+                    actBox('<div class="mw-modal-veil" id="mw-veil"><div class="mw-modal" role="dialog" aria-label="' + esc(title) + '">' +
+                        '<h3>' + esc(title) + '</h3><div id="mw-mbody">' + bodyHtml + '</div><div id="mw-merr"></div>' +
+                        '<div class="mw-actions"><button class="mw-btn mw-btn-primary" id="mw-ok">Confirm</button>' +
+                        '<button class="mw-btn" id="mw-cancel">Cancel</button></div></div></div>');
+                    document.getElementById('mw-cancel').onclick = function () { actBox(''); };
+                    document.getElementById('mw-veil').onclick = function (e) { if (e.target.id === 'mw-veil') actBox(''); };
+                }
+                function merr(msg) { document.getElementById('mw-merr').innerHTML = errBox(msg); }
+
+                function renewModal() {
+                    modal('Renew / extend subscription',
+                        '<label>Period (days, 1–400)</label><input class="mw-input" id="mw-days" type="number" value="30" min="1" max="400">' +
+                        '<label>Amount received, in cents (optional, blank for free extension)</label><input class="mw-input" id="mw-amt" type="number" min="0" placeholder="e.g. 7900">' +
+                        '<label>Currency</label><select class="mw-select" id="mw-cur"><option>USD</option><option>EGP</option><option>EUR</option></select>' +
+                        '<label>Note (recorded in audit)</label><input class="mw-input" id="mw-note" placeholder="Reason">');
+                    document.getElementById('mw-ok').onclick = async function () {
+                        var btn = document.getElementById('mw-ok'); btn.disabled = true;
+                        try {
+                            var days = Math.max(1, Math.min(400, parseInt(document.getElementById('mw-days').value, 10) || 30));
+                            var amtRaw = document.getElementById('mw-amt').value.trim();
+                            var res = await rpc('staff_renew_subscription', {
+                                p_org_id: state.detail.org.id, p_period_days: days,
+                                p_amount_cents: amtRaw === '' ? null : parseInt(amtRaw, 10),
+                                p_currency: document.getElementById('mw-cur').value,
+                                p_note: document.getElementById('mw-note').value.trim() || null
+                            });
+                            actBox('<div class="mw-sec"><h3>Renewed</h3>' +
+                                kvT('Was', (res.before && res.before.status) + ' → ' + fmtDate(res.before && res.before.current_period_end)) +
+                                kvT('Now', (res.after && res.after.status) + ' → ' + fmtDate(res.after && res.after.current_period_end)) + '</div>');
+                            if (typeof showToast === 'function') showToast('Subscription renewed', 'success');
+                            loadMerchants();
+                        } catch (e) { btn.disabled = false; merr(e.message); }
+                    };
+                }
+
+                function changeModal() {
+                    modal('Change plan (via Stripe, prorated)',
+                        '<label>New plan</label><select class="mw-select" id="mw-plan2">' +
+                        ['starter', 'growth', 'pro', 'payg'].map(function (p) { return '<option>' + p + '</option>'; }).join('') + '</select>' +
+                        '<label>Currency</label><select class="mw-select" id="mw-cur2"><option>USD</option><option>EGP</option><option>EUR</option></select>' +
+                        '<div class="mw-sub">Stripe updates the live subscription in place with proration. The workspace polls the database until the new plan is confirmed — success is shown only then.</div>');
+                    document.getElementById('mw-ok').onclick = async function () {
+                        var btn = document.getElementById('mw-ok'); btn.disabled = true;
+                        try {
+                            var session = await supabaseClient.auth.getSession();
+                            var token = session && session.data && session.data.session && session.data.session.access_token;
+                            if (!token) throw new Error('No active session');
+                            var r = await supabaseClient.functions.invoke('billing-create-checkout-session', {
+                                body: {
+                                    plan_slug: document.getElementById('mw-plan2').value,
+                                    currency: document.getElementById('mw-cur2').value,
+                                    billing_period: 'month', change: true,
+                                    org_id: state.detail.org.id,
+                                    success_url: window.location.href.split('?')[0],
+                                    cancel_url: window.location.href.split('?')[0],
+                                    access_token: token
+                                },
+                                headers: { Authorization: 'Bearer ' + token }
+                            });
+                            if (r.error) throw new Error(r.error.message || 'Plan change failed');
+                            actBox('<div class="mw-empty">Applying in Stripe — waiting for database confirmation…</div>');
+                            var ok = await pollPlan(document.getElementById('mw-plan2').value);
+                            await rpc('staff_log_workspace_action', {
+                                p_org_id: state.detail.org.id, p_action: 'subscription.change_plan',
+                                p_details: { plan: document.getElementById('mw-plan2').value, confirmed: ok }
+                            }).catch(function () {});
+                            if (!ok) throw new Error('Stripe accepted the change but the database did not confirm it yet. Check the timeline, then refresh.');
+                            actBox('');
+                            if (typeof showToast === 'function') showToast('Plan changed and confirmed', 'success');
+                            openMerchant(state.detail.org.id); loadMerchants();
+                        } catch (e) { btn.disabled = false; merr(e.message); }
+                    };
+                }
+
+                async function pollPlan(slug) {
+                    for (var i = 0; i < 15; i++) {
+                        await new Promise(function (r) { setTimeout(r, 2000); });
+                        try {
+                            var d = await rpc('staff_get_merchant_detail', { p_org_id: state.detail.org.id });
+                            if (d && d.subscription && d.subscription.plan_slug === slug) { state.detail = d; return true; }
+                        } catch (e) {}
+                    }
+                    return false;
+                }
+            })();
+    </script>
     <script>
         const STRIPE_PUBLIC_KEY = 'pk_test_placeholder'; // User to replace
 
@@ -83324,6 +83700,20 @@ Thank you for shopping with {store_name}!</textarea>
                     } catch (e) {
                         window.isPlatformStaff = false;
                         console.warn('platform staff check skipped:', e && e.message);
+                    }
+                    // Staff-only Merchants workspace (subscriptions). Separate
+                    // try/catch; admin flag gates the write buttons inside it.
+                    try {
+                        const nav = document.getElementById('nav-merchants-item');
+                        if (nav) nav.style.display = window.isPlatformStaff ? '' : 'none';
+                        window.isPlatformStaffAdmin = false;
+                        if (window.isPlatformStaff) {
+                            const { data: isAdmin } = await supabaseClient.rpc('is_platform_admin');
+                            window.isPlatformStaffAdmin = isAdmin === true;
+                        }
+                    } catch (e) {
+                        window.isPlatformStaffAdmin = false;
+                        console.warn('staff admin check skipped:', e && e.message);
                     }
                 } catch (e) {
                     console.error('Failed to fetch permissions:', e);

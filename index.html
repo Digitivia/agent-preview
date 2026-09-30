@@ -65273,12 +65273,12 @@ Thank you for shopping with {store_name}!</textarea>
                 function isAdmin() { return window.isPlatformStaffAdmin === true; }
                 function isStaff() { return window.isPlatformStaff === true; }
                 function fmtDate(s) {
-                    if (!s) return '—';
+                    if (!s) return 'No date';
                     try { return new Date(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
                     catch (e) { return String(s).slice(0, 10); }
                 }
                 function money(cents, cur) {
-                    if (cents == null) return '—';
+                    if (cents == null) return 'No amount';
                     try { return (cents / 100).toLocaleString('en-US', { style: 'currency', currency: cur || 'USD' }); }
                     catch (e) { return (cents / 100) + ' ' + (cur || ''); }
                 }
@@ -65298,12 +65298,15 @@ Thank you for shopping with {store_name}!</textarea>
                    admin-only (support is read-only by convention). Stripe
                    links need stored Stripe ids. Change needs a live sub. */
                 var LIVE_FOR_CHANGE = { active: 1, trialing: 1, past_due: 1 };
+                var CANCELABLE = { active: 1, trialing: 1, past_due: 1 };
                 function mwActionsForState(status, admin, hasStripe) {
                     var acts = ['refresh'];
                     if (hasStripe) acts.push('stripe');
                     if (!admin) return acts;
                     acts.push('renew');
                     if (hasStripe && LIVE_FOR_CHANGE[status]) acts.push('change');
+                    if (CANCELABLE[status]) acts.push('cancel');
+                    if (!hasStripe && status !== 'expired' && status !== 'no_plan') acts.push('expire');
                     return acts;
                 }
                 window.__mwActionsForState = mwActionsForState;
@@ -65373,7 +65376,7 @@ Thank you for shopping with {store_name}!</textarea>
                     var html = '<div class="mw-list">' + state.rows.map(function (r, i) {
                         var st = r.sub_status || 'no_plan';
                         return '<div class="mw-card" data-i="' + i + '" tabindex="0" role="button" aria-label="' + esc(r.org_name || 'Merchant') + '">' +
-                            '<div class="mw-card-top"><span class="mw-name">' + esc(r.org_name || '—') + '</span>' +
+                            '<div class="mw-card-top"><span class="mw-name">' + esc(r.org_name || 'None') + '</span>' +
                             '<span class="mw-badges"><span class="mw-badge ' + mwStatusBadge(st) + '">' + esc(mwStatusLabel(st)) + '</span>' +
                             (r.plan_slug ? '<span class="mw-badge mw-b-gray">' + esc(r.plan_slug) + '</span>' : '') + '</span></div>' +
                             '<div class="mw-sub">' + esc(r.owner_email || '') +
@@ -65405,7 +65408,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 function kv(k, v) { return '<div class="mw-kv"><span>' + esc(k) + '</span><b>' + v + '</b></div>'; }
-                function kvT(k, v) { return '<div class="mw-kv"><span>' + esc(k) + '</span><b>' + esc(v == null ? '—' : String(v)) + '</b></div>'; }
+                function kvT(k, v) { return '<div class="mw-kv"><span>' + esc(k) + '</span><b>' + esc(v == null ? 'None' : String(v)) + '</b></div>'; }
 
                 function renderDetail() {
                     var d = state.detail, det = document.getElementById('mw-detail');
@@ -65413,7 +65416,7 @@ Thank you for shopping with {store_name}!</textarea>
                     var st = s.status || 'no_plan';
                     var hasStripe = !!(s.stripe_subscription_id || s.stripe_customer_id);
                     var acts = mwActionsForState(st, isAdmin(), hasStripe);
-                    var html = '<div class="mw-detail-head"><button class="mw-btn" id="mw-back">← List</button>' +
+                    var html = '<div class="mw-detail-head"><button class="mw-btn" id="mw-back">Back to list</button>' +
                         '<h2 class="mw-title">' + esc(d.org.name || 'Merchant') + '</h2>' +
                         '<span class="mw-badge ' + mwStatusBadge(st) + '">' + esc(mwStatusLabel(st)) + '</span></div>';
                     if (d.attention) html += '<div class="mw-warn">Billing needs attention: a webhook event for this merchant requires review.</div>';
@@ -65421,41 +65424,42 @@ Thank you for shopping with {store_name}!</textarea>
                     html += '<div class="mw-sec"><h3>Identity</h3>' +
                         kv('Merchant ID', '<span class="mw-mono">' + esc(d.org.id) + '</span>') +
                         kvT('Name', d.org.name) + kvT('Since', fmtDate(d.org.created_at)) +
-                        kvT('Owner', (d.members && d.members[0] && (d.members[0].name || d.members[0].email)) || '—') +
-                        kvT('Owner email', (d.members && d.members[0] && d.members[0].email) || '—') + '</div>';
+                        kvT('Owner', (d.members && d.members[0] && (d.members[0].name || d.members[0].email)) || 'None') +
+                        kvT('Owner email', (d.members && d.members[0] && d.members[0].email) || 'None') + '</div>';
                     html += '<div class="mw-sec"><h3>Subscription</h3>' +
-                        kvT('Plan', s.plan_name ? (s.plan_name + ' (' + (s.plan_slug || '') + ')') : '—') +
+                        kvT('Plan', s.plan_name ? (s.plan_name + ' (' + (s.plan_slug || '') + ')') : 'No plan') +
                         kvT('Status', mwStatusLabel(st)) +
                         kvT('Period start', fmtDate(s.period_start)) +
                         kvT('Renewal date', fmtDate(s.period_end)) +
                         (st === 'trialing' ? kvT('Trial ends', fmtDate(s.period_end)) : '') +
                         kvT('Cancel at period end', s.cancel_at_period_end ? 'Yes' : 'No') +
-                        kvT('Provider', s.provider || '—') + '</div>';
+                        kvT('Provider', s.provider || 'None') + '</div>';
                     var prices = (d.prices || []).map(function (p) {
                         return '<div class="mw-kv"><span>' + esc(p.currency) + ' / ' + esc(p.billing_interval) + '</span><b>' + esc(money(p.unit_amount_cents, p.currency)) + '</b></div>';
                     }).join('') || '<div class="mw-sub">No prices on file.</div>';
                     html += '<div class="mw-sec"><h3>Billing</h3>' + prices +
-                        kv('Subscription ID', s.stripe_subscription_id ? '<span class="mw-mono">' + esc(s.stripe_subscription_id) + '</span>' : '—') +
-                        kv('Customer ID', s.stripe_customer_id ? '<span class="mw-mono">' + esc(s.stripe_customer_id) + '</span>' : '—') + '</div>';
+                        kv('Subscription ID', s.stripe_subscription_id ? '<span class="mw-mono">' + esc(s.stripe_subscription_id) + '</span>' : 'None') +
+                        kv('Customer ID', s.stripe_customer_id ? '<span class="mw-mono">' + esc(s.stripe_customer_id) + '</span>' : 'None') + '</div>';
                     var lim = d.limits || {};
                     var u = d.usage || {};
                     var convLimit = lim.conversations_limit, convUsed = u.conversations_used;
                     var pct = (convLimit && convUsed != null) ? Math.min(100, Math.round(convUsed / convLimit * 100)) : null;
                     html += '<div class="mw-sec"><h3>Usage & limits</h3>' +
-                        kvT('Conversations', convUsed != null && convLimit ? (convUsed + ' / ' + convLimit) : '—') +
+                        kvT('Conversations', convUsed != null && convLimit ? (convUsed + ' / ' + convLimit) : 'None') +
                         (pct != null ? '<div class="mw-usagebar"><i style="width:' + pct + '%"></i></div>' : '') +
-                        kvT('Coins', u.coins_used != null ? (u.coins_used + ' / ' + (u.coins_total != null ? u.coins_total : '—')) : '—') +
-                        kvT('Messages (trial meter)', u.messages_used != null ? u.messages_used : '—') + '</div>';
+                        kvT('Coins', u.coins_used != null ? (u.coins_used + ' / ' + (u.coins_total != null ? u.coins_total : 'None')) : 'None') +
+                        kvT('Messages (trial meter)', u.messages_used != null ? u.messages_used : 'None') + '</div>';
                     var chans = (d.channels || []).map(function (c) {
                         return '<div class="mw-kv"><span>' + esc(c.platform) + '</span><b>' + esc(c.is_active ? 'connected' : 'off') + ' · ' + esc(c.account_name || '') + '</b></div>';
                     }).join('') || '<div class="mw-sub">No channels.</div>';
                     html += '<div class="mw-sec"><h3>Connected services</h3>' + chans + '</div>';
                     var tl = (d.timeline || []).map(function (e) {
-                        return '<div class="mw-kv"><span>' + esc(fmtDate(e.at)) + '</span><b>' + esc(e.kind + ': ' + e.label + (e.state ? ' (' + e.state + ')' : '')) + '</b></div>';
+                        var who = e.actor ? ' by ' + String(e.actor).slice(0, 8) : '';
+                        return '<div class="mw-kv"><span>' + esc(fmtDate(e.at)) + '</span><b>' + esc(e.kind + ': ' + e.label + (e.state ? ' (' + e.state + ')' : '') + who) + '</b></div>';
                     }).join('') || '<div class="mw-sub">No history recorded.</div>';
                     html += '<div class="mw-sec"><h3>Timeline</h3>' + tl + '</div></div>';
                     html += '<div class="mw-actions">';
-                    var labels = { refresh: 'Refresh', stripe: 'Open in Stripe', renew: 'Renew / extend', change: 'Change plan' };
+                    var labels = { refresh: 'Refresh', stripe: 'Open in Stripe', renew: 'Renew / extend', change: 'Change plan', cancel: 'Cancel subscription', expire: 'Mark expired' };
                     acts.forEach(function (a) {
                         var cls = a === 'renew' ? 'mw-btn mw-btn-primary' : 'mw-btn';
                         html += '<button class="' + cls + '" data-act="' + a + '">' + labels[a] + '</button>';
@@ -65485,6 +65489,8 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                     if (a === 'renew') return renewModal();
                     if (a === 'change') return changeModal();
+                    if (a === 'cancel') return cancelModal();
+                    if (a === 'expire') return expireModal();
                 }
 
                 function modal(title, bodyHtml) {
@@ -65499,7 +65505,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 function renewModal() {
                     modal('Renew / extend subscription',
-                        '<label>Period (days, 1–400)</label><input class="mw-input" id="mw-days" type="number" value="30" min="1" max="400">' +
+                        '<label>Period (days, 1 to 400)</label><input class="mw-input" id="mw-days" type="number" value="30" min="1" max="400">' +
                         '<label>Amount received, in cents (optional, blank for free extension)</label><input class="mw-input" id="mw-amt" type="number" min="0" placeholder="e.g. 7900">' +
                         '<label>Currency</label><select class="mw-select" id="mw-cur"><option>USD</option><option>EGP</option><option>EUR</option></select>' +
                         '<label>Note (recorded in audit)</label><input class="mw-input" id="mw-note" placeholder="Reason">');
@@ -65515,8 +65521,8 @@ Thank you for shopping with {store_name}!</textarea>
                                 p_note: document.getElementById('mw-note').value.trim() || null
                             });
                             actBox('<div class="mw-sec"><h3>Renewed</h3>' +
-                                kvT('Was', (res.before && res.before.status) + ' → ' + fmtDate(res.before && res.before.current_period_end)) +
-                                kvT('Now', (res.after && res.after.status) + ' → ' + fmtDate(res.after && res.after.current_period_end)) + '</div>');
+                                kvT('Was', (res.before && res.before.status) + ' to ' + fmtDate(res.before && res.before.current_period_end)) +
+                                kvT('Now', (res.after && res.after.status) + ' to ' + fmtDate(res.after && res.after.current_period_end)) + '</div>');
                             if (typeof showToast === 'function') showToast('Subscription renewed', 'success');
                             loadMerchants();
                         } catch (e) { btn.disabled = false; merr(e.message); }
@@ -65528,7 +65534,7 @@ Thank you for shopping with {store_name}!</textarea>
                         '<label>New plan</label><select class="mw-select" id="mw-plan2">' +
                         ['starter', 'growth', 'pro', 'payg'].map(function (p) { return '<option>' + p + '</option>'; }).join('') + '</select>' +
                         '<label>Currency</label><select class="mw-select" id="mw-cur2"><option>USD</option><option>EGP</option><option>EUR</option></select>' +
-                        '<div class="mw-sub">Stripe updates the live subscription in place with proration. The workspace polls the database until the new plan is confirmed — success is shown only then.</div>');
+                        '<div class="mw-sub">Stripe updates the live subscription in place with proration. The workspace polls the database until the new plan is confirmed. Success shows only then.</div>');
                     document.getElementById('mw-ok').onclick = async function () {
                         var btn = document.getElementById('mw-ok'); btn.disabled = true;
                         try {
@@ -65548,7 +65554,7 @@ Thank you for shopping with {store_name}!</textarea>
                                 headers: { Authorization: 'Bearer ' + token }
                             });
                             if (r.error) throw new Error(r.error.message || 'Plan change failed');
-                            actBox('<div class="mw-empty">Applying in Stripe — waiting for database confirmation…</div>');
+                            actBox('<div class="mw-empty">Applying in Stripe. Confirmation shows when the database catches up.</div>');
                             var ok = await pollPlan(document.getElementById('mw-plan2').value);
                             await rpc('staff_log_workspace_action', {
                                 p_org_id: state.detail.org.id, p_action: 'subscription.change_plan',
@@ -65571,6 +65577,80 @@ Thank you for shopping with {store_name}!</textarea>
                         } catch (e) {}
                     }
                     return false;
+                }
+
+                async function pollSubCond(check) {
+                    for (var i = 0; i < 20; i++) {
+                        await new Promise(function (r) { setTimeout(r, 3000); });
+                        try {
+                            var d = await rpc('staff_get_merchant_detail', { p_org_id: state.detail.org.id });
+                            if (d && d.subscription && check(d.subscription)) { state.detail = d; return true; }
+                        } catch (e) {}
+                    }
+                    return false;
+                }
+
+                function cancelModal() {
+                    var s = state.detail.subscription || {};
+                    var striped = !!(s.stripe_subscription_id);
+                    modal('Cancel subscription',
+                        '<div class="mw-sub">Merchant: ' + esc(state.detail.org.name || '') + '</div>' +
+                        (striped
+                            ? '<label>How</label><select class="mw-select" id="mw-cancelmode"><option value="at_period_end">At period end (service runs on)</option><option value="immediate">Immediately</option></select>' +
+                              '<div class="mw-sub">Runs through Stripe. The row updates when the Stripe webhook arrives. Nothing is final until then.</div>'
+                            : '<div class="mw-sub">No Stripe subscription on file. This cancels locally, immediately, and is recorded in audit.</div>') +
+                        '<label>Reason (recorded in audit)</label><input class="mw-input" id="mw-cancelnote" placeholder="Reason">');
+                    document.getElementById('mw-ok').onclick = async function () {
+                        var btn = document.getElementById('mw-ok'); btn.disabled = true;
+                        try {
+                            var note = document.getElementById('mw-cancelnote').value.trim() || null;
+                            if (striped) {
+                                var mode = document.getElementById('mw-cancelmode').value;
+                                var session = await supabaseClient.auth.getSession();
+                                var token = session && session.data && session.data.session && session.data.session.access_token;
+                                if (!token) throw new Error('No active session');
+                                var r = await supabaseClient.functions.invoke('staff-cancel-subscription', {
+                                    body: { org_id: state.detail.org.id, mode: mode, note: note, access_token: token },
+                                    headers: { Authorization: 'Bearer ' + token }
+                                });
+                                if (r.error) throw new Error(r.error.message || 'Cancel failed');
+                                if (!r.data || !r.data.ok) throw new Error((r.data && r.data.error) || 'Cancel refused');
+                                actBox('<div class="mw-empty">Stripe accepted. Waiting for the webhook to confirm in the database…</div>');
+                                var ok = await pollSubCond(function (x) {
+                                    return x.cancel_at_period_end === true || ['canceled', 'cancelled', 'expired'].indexOf(x.status) !== -1;
+                                });
+                                if (!ok) throw new Error('Stripe accepted, but no confirmation arrived yet. Check the timeline, then refresh.');
+                            } else {
+                                var res = await rpc('staff_cancel_subscription', { p_org_id: state.detail.org.id, p_mode: 'cancel', p_note: note });
+                                actBox('<div class="mw-sec"><h3>Cancelled</h3>' +
+                                    kvT('Was', (res.before && res.before.status) || 'None') +
+                                    kvT('Now', (res.after && res.after.status) || 'None') + '</div>');
+                            }
+                            if (typeof showToast === 'function') showToast('Subscription cancelled', 'success');
+                            openMerchant(state.detail.org.id); loadMerchants();
+                        } catch (e) { btn.disabled = false; merr(e.message); }
+                    };
+                }
+
+                function expireModal() {
+                    modal('Mark subscription expired',
+                        '<div class="mw-sub">Merchant: ' + esc(state.detail.org.name || '') + '</div>' +
+                        '<div class="mw-sub">Local record only (no Stripe subscription on file). Recorded in audit.</div>' +
+                        '<label>Reason (recorded in audit)</label><input class="mw-input" id="mw-expirenote" placeholder="Reason">');
+                    document.getElementById('mw-ok').onclick = async function () {
+                        var btn = document.getElementById('mw-ok'); btn.disabled = true;
+                        try {
+                            var res = await rpc('staff_cancel_subscription', {
+                                p_org_id: state.detail.org.id, p_mode: 'mark_expired',
+                                p_note: document.getElementById('mw-expirenote').value.trim() || null
+                            });
+                            actBox('<div class="mw-sec"><h3>Marked expired</h3>' +
+                                kvT('Was', (res.before && res.before.status) || 'None') +
+                                kvT('Now', (res.after && res.after.status) || 'None') + '</div>');
+                            if (typeof showToast === 'function') showToast('Marked expired', 'success');
+                            openMerchant(state.detail.org.id); loadMerchants();
+                        } catch (e) { btn.disabled = false; merr(e.message); }
+                    };
                 }
             })();
     </script>

@@ -65329,7 +65329,7 @@ Thank you for shopping with {store_name}!</textarea>
                         '<div class="mw-filters">' +
                         '<input class="mw-input" id="mw-q" placeholder="Search name or email" value="' + esc(state.search) + '">' +
                         '<select class="mw-select" id="mw-plan"><option value="">All plans</option>' +
-                        ['starter', 'growth', 'pro', 'payg', 'free_trial'].map(function (p) {
+                        ['starter', 'growth', 'pro', 'free_trial'].map(function (p) {
                             return '<option value="' + p + '"' + (state.plan === p ? ' selected' : '') + '>' + p + '</option>';
                         }).join('') + '</select>' +
                         '<select class="mw-select" id="mw-status"><option value="">All statuses</option>' +
@@ -65356,7 +65356,7 @@ Thank you for shopping with {store_name}!</textarea>
                     if (list) list.innerHTML = '<div class="mw-empty">Loading…</div>';
                     try {
                         var rows = await rpc('staff_list_merchants', {
-                            p_search: state.search || null, p_plan: state.plan || null,
+                            p_search: state.search || null, p_plan_slug: state.plan || null,
                             p_status: state.status || null, p_limit: PAGE, p_offset: state.offset
                         });
                         state.rows = rows || [];

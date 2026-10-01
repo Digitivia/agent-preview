@@ -1,7 +1,7 @@
 /* GENERATED — do not edit. scripts/build-inbox-clone-css.mjs from
  * docs/prototype-reference/inbox.css. Prototype inbox CSS scoped to
  * #inbox-clone-root, which holds the prototype's exact .ix-wrap DOM. */
-#inbox-clone-root{--brand-teal:var(--theme-color,#5BAEB0);--tb-h:0px;--pad-page-x:0px;--font-mono:ui-monospace,SFMono-Regular,Consolas,monospace;font-family:'Google Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+#inbox-clone-root{--brand-accent:var(--theme-color,#18174e);--tb-h:0px;--pad-page-x:0px;--font-mono:ui-monospace,SFMono-Regular,Consolas,monospace;font-family:'Google Sans','Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
 /* source: inbox.css *//* ─────────────────────────────────────────────────────────────────────────
    AI Inbox — 3-pane chat workspace.
    Container queries on .ix-wrap so layout adapts to its own width, not the
@@ -114,8 +114,8 @@
   width: 14px; height: 14px;
   flex-shrink: 0;
   background:
-    radial-gradient(circle, var(--brand-teal) 0%, transparent 60%),
-    conic-gradient(from 0deg, var(--brand-teal), #8b5cf6, var(--brand-teal));
+    radial-gradient(circle, var(--brand-accent) 0%, transparent 60%),
+    conic-gradient(from 0deg, var(--brand-accent), #8b5cf6, var(--brand-accent));
   border-radius: 50%;
   mask: radial-gradient(circle at center, transparent 25%, #000 26%);
   -webkit-mask: radial-gradient(circle at center, transparent 25%, #000 26%);
@@ -123,15 +123,15 @@
 #inbox-clone-root .ix-new-btn {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 5px 9px;
-  background: rgba(91,174,176,0.10);
-  border: 1px solid rgba(91,174,176,0.25);
-  color: var(--brand-teal);
+  background: rgba(109, 107, 217,0.10);
+  border: 1px solid rgba(109, 107, 217,0.25);
+  color: var(--brand-accent);
   border-radius: 7px;
   font-size: 11px; font-weight: 700;
   cursor: pointer;
   flex-shrink: 0;
 }
-#inbox-clone-root .ix-new-btn:hover { background: rgba(91,174,176,0.18); }
+#inbox-clone-root .ix-new-btn:hover { background: rgba(109, 107, 217,0.18); }
 
 /* WhatsApp-style read filter chips (All / Unread) under the status tabs.
    44px-friendly touch targets on mobile via the media query below. */
@@ -152,15 +152,15 @@
   white-space: nowrap;
 }
 #inbox-clone-root .ix-read-filter button.on {
-  background: rgba(91,174,176,0.18);
-  border-color: var(--brand-teal, #5BAEB0);
+  background: rgba(109, 107, 217,0.18);
+  border-color: var(--brand-accent, #6d6bd9);
   color: var(--text-primary);
 }
 #inbox-clone-root .ix-read-filter .ix-rf-count {
   min-width: 16px; height: 16px;
   padding: 0 4px;
   border-radius: 999px;
-  background: var(--brand-teal, #5BAEB0);
+  background: var(--brand-accent, #6d6bd9);
   color: #fff;
   font-size: 10px; font-weight: 700;
   line-height: 16px; text-align: center;
@@ -192,8 +192,8 @@
 }
 #inbox-clone-root .ix-status-tabs button:hover { color: #fff; }
 #inbox-clone-root .ix-status-tabs button.on {
-  background: rgba(91,174,176,0.18);
-  color: var(--brand-teal);
+  background: rgba(109, 107, 217,0.18);
+  color: var(--brand-accent);
 }
 
 #inbox-clone-root .ix-section-label {
@@ -265,7 +265,7 @@
   font-variant-numeric: tabular-nums;
 }
 #inbox-clone-root .ix-channel .ch-unread {
-  background: var(--brand-teal); color: #0a1011;
+  background: var(--brand-accent); color: #0a1011;
   padding: 1px 6px; border-radius: 999px;
   font-size: 9.5px; font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -306,12 +306,12 @@
   color: #fff;
 }
 #inbox-clone-root .ix-stage.on {
-  background: color-mix(in srgb, var(--st-color, #5BAEB0) 14%, transparent);
+  background: color-mix(in srgb, var(--st-color, #6d6bd9) 14%, transparent);
   color: var(--st-color2, #fff);
 }
 #inbox-clone-root .ix-stage.on::before {
   content: ''; position: absolute; left: 0; top: 5px; bottom: 5px;
-  width: 3px; background: var(--st-color, var(--brand-teal));
+  width: 3px; background: var(--st-color, var(--brand-accent));
   border-radius: 0 2px 2px 0;
 }
 [dir="rtl"] #inbox-clone-root .ix-stage.on::before { left: auto; right: 0; border-radius: 2px 0 0 2px; }
@@ -340,7 +340,7 @@
 }
 #inbox-clone-root .ix-stage.on .st-count {
   color: var(--st-color2, #fff);
-  background: color-mix(in srgb, var(--st-color, #5BAEB0) 20%, transparent);
+  background: color-mix(in srgb, var(--st-color, #6d6bd9) 20%, transparent);
 }
 
 /* Icon-rail variant — when left pane collapses to icons-only */
@@ -421,7 +421,7 @@
 }
 #inbox-clone-root .ix-bubble.in .bb-body .fb-link,
 #inbox-clone-root .ix-bubble.ai .bb-body .fb-link {
-  color: var(--brand-teal);
+  color: var(--brand-accent);
 }
 #inbox-clone-root .bb-body .fb-link.fb-email { font-style: italic; }
 #inbox-clone-root .bb-body .fb-link.fb-phone {
@@ -453,7 +453,7 @@
   padding: 10px 12px 10px 14px;
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.06);
-  border-left: 3px solid var(--brand-teal);
+  border-left: 3px solid var(--brand-accent);
   overflow-x: auto;
   margin: 6px 0;
   color: #e5e7eb;
@@ -528,8 +528,8 @@
   font-variant-numeric: tabular-nums;
 }
 #inbox-clone-root .bb-body .fb-ref {
-  background: rgba(91,174,176,0.16);
-  color: var(--brand-teal);
+  background: rgba(109, 107, 217,0.16);
+  color: var(--brand-accent);
 }
 #inbox-clone-root .bb-body .fb-mention {
   background: rgba(139,92,246,0.16);
@@ -577,9 +577,9 @@
   min-width: 0;
 }
 #inbox-clone-root .ix-search:focus-within {
-  border-color: rgba(91,174,176,0.45);
-  background: rgba(91,174,176,0.05);
-  box-shadow: 0 0 0 3px rgba(91,174,176,0.10);
+  border-color: rgba(109, 107, 217,0.45);
+  background: rgba(109, 107, 217,0.05);
+  box-shadow: 0 0 0 3px rgba(109, 107, 217,0.10);
 }
 #inbox-clone-root .ix-search-ico { color: var(--text-muted); flex-shrink: 0; display: inline-grid; place-items: center; }
 #inbox-clone-root .ix-search input {
@@ -647,11 +647,11 @@
 [dir="rtl"] #inbox-clone-root .ix-item { text-align: right; }
 #inbox-clone-root .ix-item:hover { background: rgba(255,255,255,0.025); }
 #inbox-clone-root .ix-item.on {
-  background: rgba(91,174,176,0.10);
+  background: rgba(109, 107, 217,0.10);
 }
 #inbox-clone-root .ix-item.on::before {
   content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
-  width: 3px; background: var(--brand-teal);
+  width: 3px; background: var(--brand-accent);
   border-radius: 0 2px 2px 0;
 }
 [dir="rtl"] #inbox-clone-root .ix-item.on::before { left: auto; right: 0; border-radius: 2px 0 0 2px; }
@@ -705,7 +705,7 @@
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
 }
-#inbox-clone-root .ix-item.is-unread .item-time { color: var(--brand-teal); font-weight: 700; }
+#inbox-clone-root .ix-item.is-unread .item-time { color: var(--brand-accent); font-weight: 700; }
 
 #inbox-clone-root .item-row2 {
   font-size: 11.5px;
@@ -723,7 +723,7 @@
   min-width: 18px; height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: var(--brand-teal, #5BAEB0);
+  background: var(--brand-accent, #6d6bd9);
   color: #fff;
   font-size: 10.5px; font-weight: 700;
   line-height: 18px; text-align: center;
@@ -800,7 +800,7 @@
 
 #inbox-clone-root .item-unread {
   margin-left: auto;
-  background: var(--brand-teal);
+  background: var(--brand-accent);
   color: #0a1011;
   padding: 1px 7px;
   border-radius: 999px;
@@ -973,7 +973,7 @@
   padding: 18px 20px;
   display: flex; flex-direction: column;
   gap: 6px;
-  background: radial-gradient(800px 400px at 50% -10%, rgba(91,174,176,0.04), transparent 60%);
+  background: radial-gradient(800px 400px at 50% -10%, rgba(109, 107, 217,0.04), transparent 60%);
   scroll-behavior: smooth;
   min-width: 0;
 }
@@ -1016,10 +1016,10 @@
 }
 #inbox-clone-root .ix-bubble.out {
   align-self: flex-end;
-  background: linear-gradient(135deg, var(--brand-teal), #6fc1c3);
+  background: linear-gradient(135deg, var(--brand-accent), #8b89ea);
   color: #0a1011;
   border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 8px -2px rgba(91,174,176,0.3);
+  box-shadow: 0 2px 8px -2px rgba(109, 107, 217,0.3);
 }
 #inbox-clone-root .ix-bubble.ai {
   background: linear-gradient(135deg, rgba(139,92,246,0.16), rgba(139,92,246,0.06));
@@ -1081,8 +1081,8 @@
   white-space: nowrap;
 }
 #inbox-clone-root .ix-replymode button.on {
-  background: rgba(91,174,176,0.18);
-  color: var(--brand-teal);
+  background: rgba(109, 107, 217,0.18);
+  color: var(--brand-accent);
 }
 
 #inbox-clone-root .ix-templates {
@@ -1091,14 +1091,14 @@
 }
 #inbox-clone-root .ix-templates button {
   padding: 5px 10px;
-  background: rgba(91,174,176,0.06);
-  border: 1px solid rgba(91,174,176,0.25);
-  color: var(--brand-teal);
+  background: rgba(109, 107, 217,0.06);
+  border: 1px solid rgba(109, 107, 217,0.25);
+  color: var(--brand-accent);
   border-radius: 999px;
   font-size: 11px; font-weight: 600;
   cursor: pointer;
 }
-#inbox-clone-root .ix-templates button:hover { background: rgba(91,174,176,0.14); }
+#inbox-clone-root .ix-templates button:hover { background: rgba(109, 107, 217,0.14); }
 
 #inbox-clone-root .ix-composer-row {
   display: flex; align-items: flex-end; gap: 8px;
@@ -1119,9 +1119,9 @@
   font-family: inherit;
 }
 #inbox-clone-root .ix-composer-row textarea:focus {
-  border-color: rgba(91,174,176,0.45);
-  background: rgba(91,174,176,0.05);
-  box-shadow: 0 0 0 3px rgba(91,174,176,0.10);
+  border-color: rgba(109, 107, 217,0.45);
+  background: rgba(109, 107, 217,0.05);
+  box-shadow: 0 0 0 3px rgba(109, 107, 217,0.10);
 }
 #inbox-clone-root .ix-composer-row textarea::placeholder { color: var(--text-muted); }
 
@@ -1141,7 +1141,7 @@
 #inbox-clone-root .ic-mini:hover { background: rgba(255,255,255,0.06); color: #fff; }
 #inbox-clone-root .ix-send {
   padding: 8px 14px;
-  background: var(--brand-teal);
+  background: var(--brand-accent);
   color: #0a1011;
   border: none; border-radius: 8px;
   font-size: 12px; font-weight: 700;
@@ -1150,9 +1150,9 @@
   transition: background .12s;
   white-space: nowrap;
 }
-#inbox-clone-root .ix-send:hover:not(:disabled) { background: #6fc1c3; }
+#inbox-clone-root .ix-send:hover:not(:disabled) { background: #8b89ea; }
 #inbox-clone-root .ix-send:disabled {
-  background: rgba(91,174,176,0.18);
+  background: rgba(109, 107, 217,0.18);
   color: var(--text-muted);
   cursor: not-allowed;
 }
@@ -1288,9 +1288,9 @@
   border: 1px solid var(--glass-border);
 }
 #inbox-clone-root .ss-tag.add {
-  background: rgba(91,174,176,0.10);
-  color: var(--brand-teal);
-  border: 1px dashed rgba(91,174,176,0.35);
+  background: rgba(109, 107, 217,0.10);
+  color: var(--brand-accent);
+  border: 1px dashed rgba(109, 107, 217,0.35);
   cursor: pointer;
 }
 
@@ -1327,7 +1327,7 @@
   margin-top: 5px; flex-shrink: 0;
 }
 #inbox-clone-root .ss-context .dot.ai  { background: #8b5cf6; }
-#inbox-clone-root .ss-context .dot.crm { background: #5BAEB0; }
+#inbox-clone-root .ss-context .dot.crm { background: #6d6bd9; }
 #inbox-clone-root .ss-context .dot.ord { background: #ffca28; }
 
 /* Make the page padding very small for inbox so it can use the viewport */
@@ -1375,11 +1375,11 @@
   transition: background .12s;
 }
 #inbox-clone-root .ix-stage-pop button:hover {
-  background: color-mix(in srgb, var(--st-color, #5BAEB0) 14%, transparent);
+  background: color-mix(in srgb, var(--st-color, #6d6bd9) 14%, transparent);
   color: var(--st-color2, #fff);
 }
 #inbox-clone-root .ix-stage-pop button.on {
-  background: color-mix(in srgb, var(--st-color, #5BAEB0) 18%, transparent);
+  background: color-mix(in srgb, var(--st-color, #6d6bd9) 18%, transparent);
   color: var(--st-color2, #fff);
 }
 #inbox-clone-root .ix-stage-pop .st-glyph {
@@ -1439,7 +1439,7 @@
 :root[data-theme="light"] #inbox-clone-root .ix-left { background: #f8fafc; border-color: rgba(15,23,42,0.10); }
 :root[data-theme="light"] #inbox-clone-root .ix-mid  { background: #ffffff; border-color: rgba(15,23,42,0.10); }
 :root[data-theme="light"] #inbox-clone-root .ix-right { background: #ffffff; }
-:root[data-theme="light"] #inbox-clone-root .ix-item.on { background: rgba(47,143,145,0.10); }
+:root[data-theme="light"] #inbox-clone-root .ix-item.on { background: rgba(24, 23, 78,0.10); }
 :root[data-theme="light"] #inbox-clone-root .ix-bubble.in {
   background: #f1f5f9;
   border-color: rgba(15,23,42,0.08);
@@ -1460,7 +1460,7 @@
   background: #f8fafc;
   border-color: rgba(15,23,42,0.10);
 }
-:root[data-theme="light"] #inbox-clone-root .pipeline-chip:hover { background: rgba(47,143,145,0.08); }
+:root[data-theme="light"] #inbox-clone-root .pipeline-chip:hover { background: rgba(24, 23, 78,0.08); }
 /* Remaining white-text in light mode: mini-KPI/task values, plan-usage bold
    numbers, platform labels, usage row values */
 :root[data-theme="light"] #inbox-clone-root .pr-label {

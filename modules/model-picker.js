@@ -124,7 +124,7 @@
                under .whatsapp-theme), so every var(--accent,#7c5cff) below fell
                to a stray purple. Bind it to the app's real theme color on the
                picker container so borders, tints and badges match the brand. */
-            '.dmp-wrap{display:block;--accent:var(--theme-color,#5BAEB0);}',
+            '.dmp-wrap{display:block;--accent:var(--theme-color,#6d6bd9);}',
             '.dmp-group{margin-block-start:14px;}',
             '.dmp-group:first-child{margin-block-start:0;}',
             '.dmp-group-title{font-size:0.72rem;letter-spacing:0.04em;text-transform:uppercase;',
@@ -147,8 +147,8 @@
                unselected in light mode (the app default). Re-assert the accent
                border + tint at matching specificity. */
             ':root[data-theme="light"] .dmp-card[aria-pressed="true"]{',
-            'border-color:var(--accent,#5BAEB0);',
-            'background:color-mix(in srgb, var(--accent,#5BAEB0) 12%, transparent);}',
+            'border-color:var(--accent,#6d6bd9);',
+            'background:color-mix(in srgb, var(--accent,#6d6bd9) 12%, transparent);}',
             '.dmp-head{display:block;min-inline-size:0;}',
             '.dmp-titlerow{display:flex;align-items:center;gap:7px;min-inline-size:0;}',
             /* Vendor mark, exactly as published: sized by font-size since the
@@ -185,8 +185,8 @@
             '.dmp-card.dmp-locked{border-style:dashed;}',
             '.dmp-plan{align-self:flex-start;display:inline-flex;align-items:center;gap:5px;',
             'font-size:0.64rem;font-weight:600;padding:2px 8px;border-radius:999px;',
-            'color:var(--text-primary);background:color-mix(in srgb, var(--accent,#5BAEB0) 16%, transparent);',
-            'border:1px solid color-mix(in srgb, var(--accent,#5BAEB0) 40%, transparent);}',
+            'color:var(--text-primary);background:color-mix(in srgb, var(--accent,#6d6bd9) 16%, transparent);',
+            'border:1px solid color-mix(in srgb, var(--accent,#6d6bd9) 40%, transparent);}',
             '.dmp-lock-note{font-size:0.75rem;color:var(--text-secondary);margin-block-end:10px;line-height:1.5;}'
         ].join('');
         var style = document.createElement('style');

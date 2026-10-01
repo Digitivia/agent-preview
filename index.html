@@ -4769,6 +4769,59 @@
             "e_invalid_amount": "Enter an amount and a currency, or leave the amount empty.",
             "e_invalid_period": "That number of days is not allowed.",
             "e_manual_subscription": "This client is not billed by Stripe.",
+            "e_invalid_days": "Enter a number of days from 1 to 400.",
+            "e_ends_in_past": "That would end the plan before today. Use Deactivate now instead.",
+            "e_plan_not_adjustable": "This plan has no paid period to move.",
+            "e_plan_not_reactivatable": "This plan cannot be reactivated by hand. Use Change plan or Renew.",
+            "e_period_over": "The paid period is over. Add days, or use Renew for a fresh period.",
+            "e_not_ended": "This plan is not cancelled or expired, so there is nothing to reactivate.",
+            "e_no_end_date": "This plan has no end date to move.",
+            "act_panel": "Plan actions",
+            "act_group_keep": "Keep it running",
+            "act_group_stop": "Stop it",
+            "act_recommended": "Suggested",
+            "act_reactivate": "Reactivate",
+            "act_days": "Add or remove days",
+            "act_stop_end": "Stop at period end",
+            "act_deactivate": "Deactivate now",
+            "actd_renew": "New paid period, coins reset",
+            "actd_reactivate": "Undo the cancel or expiry",
+            "actd_days": "Move the end date, nothing else",
+            "actd_extend": "More days on the free trial",
+            "actd_resume": "Undo Stop at period end",
+            "actd_change": "Move to another plan",
+            "actd_stop_end": "Runs until {date}, then stops",
+            "actd_deactivate": "The agent stops replying today",
+            "actd_expire": "Record the plan as expired today",
+            "days_title": "Add or remove days for {name}",
+            "days_add": "Add days",
+            "days_remove": "Take back days",
+            "days_count": "Days (1 to 400)",
+            "days_quick": "Quick picks",
+            "days_notify": "Email the customer (they get the \"Your plan renewed\" email)",
+            "days_confirm_add": "Add {n}",
+            "days_confirm_remove": "Take back {n}",
+            "days_only_date": "Only the end date moves. Coins, payments and the start date stay as they are.",
+            "days_from_today": "The plan had already run out, so the days count from today.",
+            "days_clears_grace": "The grace period ends: the agent keeps replying without interruption.",
+            "days_cape_kept": "The plan is still set to stop at the new end date.",
+            "days_emailed": "The customer is emailed that the plan renewed.",
+            "days_done_add": "Added {n}. The plan now ends {date}.",
+            "days_done_remove": "Took back {n}. The plan now ends {date}.",
+            "react_title": "Reactivate {name}",
+            "react_days": "Days to add (0 to 400)",
+            "react_days_needed": "The paid period is over, so add at least one day.",
+            "react_status": "Status",
+            "react_agent": "The agent starts replying to customers again straight away.",
+            "react_coins": "Coins are not reset: {n} left. Use Renew instead for a fresh period with full coins.",
+            "react_notify": "Email the customer that their plan is live again",
+            "react_emailed": "The customer is emailed \"Your plan is live\".",
+            "react_done": "Reactivated. The plan runs until {date}.",
+            "stop_end_q": "Stop {name} at the end of the period?",
+            "deactivate_q": "Deactivate {name} now?",
+            "tla_subscription_add_days": "Days added",
+            "tla_subscription_remove_days": "Days taken back",
+            "tla_subscription_reactivate": "Reactivated",
             "chip_all": "All",
             "pill_active": "Active",
             "pill_expiring": "Expiring",
@@ -4812,7 +4865,7 @@
             "renew_confirm": "Confirm renewal",
             "renew_by_stripe": "Stripe renews this plan by itself. Nothing to do here.",
             "renew_by_shopify": "Shopify renews this plan. Renew it in Shopify.",
-            "renew_not_plan": "This plan is not renewed by hand. Use Change plan from More actions.",
+            "renew_not_plan": "This plan is not renewed by hand. Use Change plan below.",
             "cancel_q": "Cancel the subscription for {name}?",
             "cancel_now_check": "Stop it today instead",
             "cancel_keep": "Keep subscription",
@@ -5886,6 +5939,59 @@
             "e_invalid_amount": "أدخل المبلغ والعملة، أو اترك المبلغ فارغا.",
             "e_invalid_period": "عدد الأيام غير مسموح.",
             "e_manual_subscription": "هذا العميل لا يدفع عن طريق Stripe.",
+            "e_invalid_days": "أدخل عدد أيام من 1 إلى 400.",
+            "e_ends_in_past": "هذا سينهي الخطة قبل اليوم. استخدم «إيقاف الآن» بدلا من ذلك.",
+            "e_plan_not_adjustable": "هذه الخطة ليس لها فترة مدفوعة يمكن تعديلها.",
+            "e_plan_not_reactivatable": "لا يمكن إعادة تفعيل هذه الخطة يدويا. استخدم تغيير الخطة أو التجديد.",
+            "e_period_over": "انتهت الفترة المدفوعة. أضف أياما، أو استخدم التجديد لفترة جديدة.",
+            "e_not_ended": "هذه الخطة ليست ملغاة ولا منتهية، فلا يوجد ما يعاد تفعيله.",
+            "e_no_end_date": "هذه الخطة ليس لها تاريخ انتهاء يمكن تعديله.",
+            "act_panel": "إجراءات الخطة",
+            "act_group_keep": "استمرار الخدمة",
+            "act_group_stop": "إيقاف الخدمة",
+            "act_recommended": "مقترح",
+            "act_reactivate": "إعادة التفعيل",
+            "act_days": "إضافة أو خصم أيام",
+            "act_stop_end": "إيقاف عند نهاية الفترة",
+            "act_deactivate": "إيقاف الآن",
+            "actd_renew": "فترة مدفوعة جديدة مع إعادة ضبط الرصيد",
+            "actd_reactivate": "التراجع عن الإلغاء أو الانتهاء",
+            "actd_days": "تحريك تاريخ الانتهاء فقط",
+            "actd_extend": "أيام إضافية للتجربة المجانية",
+            "actd_resume": "التراجع عن الإيقاف عند نهاية الفترة",
+            "actd_change": "النقل إلى خطة أخرى",
+            "actd_stop_end": "تعمل حتى {date} ثم تتوقف",
+            "actd_deactivate": "الوكيل يتوقف عن الرد اليوم",
+            "actd_expire": "تسجيل الخطة كمنتهية اليوم",
+            "days_title": "إضافة أو خصم أيام لـ {name}",
+            "days_add": "إضافة أيام",
+            "days_remove": "خصم أيام",
+            "days_count": "عدد الأيام (1 إلى 400)",
+            "days_quick": "اختيار سريع",
+            "days_notify": "إرسال بريد للعميل (تصله رسالة «خطتك اتجددت»)",
+            "days_confirm_add": "إضافة {n}",
+            "days_confirm_remove": "خصم {n}",
+            "days_only_date": "يتغير تاريخ الانتهاء فقط. الرصيد والمدفوعات وتاريخ البداية كما هي.",
+            "days_from_today": "كانت الخطة قد انتهت، لذلك تحسب الأيام من اليوم.",
+            "days_clears_grace": "تنتهي فترة السماح: يستمر الوكيل في الرد دون انقطاع.",
+            "days_cape_kept": "ستظل الخطة متوقفة عند تاريخ الانتهاء الجديد.",
+            "days_emailed": "يصل للعميل بريد بأن الخطة تجددت.",
+            "days_done_add": "أضيفت {n}. تنتهي الخطة الآن في {date}.",
+            "days_done_remove": "خصمت {n}. تنتهي الخطة الآن في {date}.",
+            "react_title": "إعادة تفعيل {name}",
+            "react_days": "أيام تضاف (0 إلى 400)",
+            "react_days_needed": "انتهت الفترة المدفوعة، فأضف يوما واحدا على الأقل.",
+            "react_status": "الحالة",
+            "react_agent": "يعود الوكيل للرد على العملاء فورا.",
+            "react_coins": "لا يعاد ضبط الرصيد: متبق {n}. استخدم التجديد لفترة جديدة برصيد كامل.",
+            "react_notify": "إرسال بريد للعميل بأن خطته عادت للعمل",
+            "react_emailed": "يصل للعميل بريد «خطتك اتفعلت».",
+            "react_done": "أعيد التفعيل. تعمل الخطة حتى {date}.",
+            "stop_end_q": "إيقاف {name} عند نهاية الفترة؟",
+            "deactivate_q": "إيقاف {name} الآن؟",
+            "tla_subscription_add_days": "أضيفت أيام",
+            "tla_subscription_remove_days": "خصمت أيام",
+            "tla_subscription_reactivate": "أعيد التفعيل",
             "chip_all": "الكل",
             "pill_active": "نشط",
             "pill_expiring": "ينتهي قريبا",
@@ -5929,7 +6035,7 @@
             "renew_confirm": "تأكيد التجديد",
             "renew_by_stripe": "Stripe يجدد هذه الخطة تلقائيا. لا يوجد ما تفعله هنا.",
             "renew_by_shopify": "Shopify يجدد هذه الخطة. جددها من Shopify.",
-            "renew_not_plan": "هذه الخطة لا تجدد يدويا. استخدم تغيير الخطة من الإجراءات الأخرى.",
+            "renew_not_plan": "هذه الخطة لا تجدد يدويا. استخدم تغيير الخطة بالأسفل.",
             "cancel_q": "إلغاء اشتراك {name}؟",
             "cancel_now_check": "إيقافه اليوم بدلا من ذلك",
             "cancel_keep": "إبقاء الاشتراك",
@@ -65673,17 +65779,17 @@ Thank you for shopping with {store_name}!</textarea>
         .mw-host :is(.mw-btn, .mw-chip, .mw-input, .mw-select, .mw-textarea, .mw-row, a, summary):focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
 
         /* The pill, and the filter chips that use the same colours. */
-        .mw-host .mw-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--sp-r-pill); border: 1px solid; font-size: var(--sp-t-xs); font-weight: 700; white-space: nowrap; line-height: 1.6; }
-        .mw-host .mw-pill i, .mw-host .mw-chip i, .mw-host .mw-agent i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+        :is(.mw-host, .mw-dialog) .mw-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--sp-r-pill); border: 1px solid; font-size: var(--sp-t-xs); font-weight: 700; white-space: nowrap; line-height: 1.6; }
+        :is(.mw-host, .mw-dialog) .mw-pill i, .mw-host .mw-chip i, .mw-host .mw-agent i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
         .mw-host .mw-pill-big { font-size: var(--sp-t-sm); padding: 4px 12px; }
-        .mw-host .mw-pill-active { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        :is(.mw-host, .mw-dialog) .mw-pill-active { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
         .mw-host .mw-pill-expiring { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
-        .mw-host .mw-pill-expired { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
-        .mw-host :is(.mw-pill-cancelled, .mw-pill-none) { background: var(--sp-surface-2); color: var(--sp-ink-2); border-color: var(--sp-line-2); }
-        .mw-host :is(.mw-pill-active, .mw-chip-active, .mw-agent-active) i { background: var(--sp-ok); }
+        :is(.mw-host, .mw-dialog) .mw-pill-expired { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
+        :is(.mw-host, .mw-dialog) :is(.mw-pill-cancelled, .mw-pill-none) { background: var(--sp-surface-2); color: var(--sp-ink-2); border-color: var(--sp-line-2); }
+        :is(.mw-host, .mw-dialog) :is(.mw-pill-active, .mw-chip-active, .mw-agent-active) i { background: var(--sp-ok); }
         .mw-host :is(.mw-pill-expiring, .mw-chip-expiring, .mw-agent-expiring) i { background: var(--sp-warn); }
-        .mw-host :is(.mw-pill-expired, .mw-chip-expired, .mw-agent-expired) i { background: var(--sp-err); }
-        .mw-host :is(.mw-pill-cancelled, .mw-pill-none, .mw-chip-cancelled) i { background: var(--sp-ink-2); }
+        :is(.mw-host, .mw-dialog) :is(.mw-pill-expired, .mw-chip-expired, .mw-agent-expired) i { background: var(--sp-err); }
+        :is(.mw-host, .mw-dialog) :is(.mw-pill-cancelled, .mw-pill-none, .mw-chip-cancelled) i { background: var(--sp-ink-2); }
         .mw-host .mw-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-end: var(--sp-4); }
         .mw-host .mw-chip { min-height: 44px; padding: 0 var(--sp-3); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; touch-action: manipulation; }
         .mw-host .mw-chip:hover { border-color: var(--sp-accent); }
@@ -65742,6 +65848,35 @@ Thank you for shopping with {store_name}!</textarea>
         .mw-host .mw-facts a { color: var(--sp-ink); }
         .mw-host .mw-agent { display: flex; gap: var(--sp-2); align-items: center; margin: var(--sp-3) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); }
         .mw-host .mw-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: flex-start; }
+        /* Plan actions panel: every allowed action visible, one line each. */
+        .mw-host .mw-actpanel { margin-block-end: var(--sp-3); }
+        .mw-host .mw-actpanel > h4 { margin: 0 0 var(--sp-2); }
+        .mw-host .mw-actgroup + .mw-actgroup { margin-block-start: var(--sp-3); padding-block-start: var(--sp-3); border-block-start: 1px dashed var(--sp-line); }
+        .mw-host .mw-actgroup > h5 { margin: 0 0 var(--sp-2); font-size: var(--sp-t-xs); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--sp-ink-2); }
+        .mw-host .mw-actgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: var(--sp-2); }
+        .mw-host .mw-act { display: flex; align-items: center; gap: var(--sp-3); min-height: 60px; padding: var(--sp-2) var(--sp-3); text-align: start; border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); font: inherit; cursor: pointer; touch-action: manipulation; transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease; min-width: 0; }
+        .mw-host .mw-act:hover { border-color: var(--sp-accent); box-shadow: 0 6px 16px -10px rgba(24, 23, 78, .45); transform: translateY(-1px); }
+        .mw-host .mw-act:focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
+        .mw-host .mw-act-ico { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--sp-accent-soft); color: var(--sp-accent); }
+        .mw-host .mw-act-txt { display: flex; flex-direction: column; min-width: 0; }
+        .mw-host .mw-act-txt b { font-size: var(--sp-t-md); font-weight: 700; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+        .mw-host .mw-act-txt small { font-size: var(--sp-t-xs); color: var(--sp-ink-2); overflow-wrap: anywhere; }
+        .mw-host .mw-act-tag { font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 1px 7px; border-radius: 999px; background: rgba(255, 255, 255, .22); }
+        .mw-host .mw-act-rec { background: var(--brand-fade); border-color: transparent; color: #fff; box-shadow: var(--brand-shadow); }
+        .mw-host .mw-act-rec:hover { background: var(--brand-fade-hover); border-color: transparent; }
+        .mw-host .mw-act-rec .mw-act-ico { background: rgba(255, 255, 255, .18); color: #fff; }
+        .mw-host .mw-act-rec .mw-act-txt small { color: rgba(255, 255, 255, .85); }
+        .mw-host .mw-act-stop .mw-act-ico { background: var(--sp-err-soft); color: var(--sp-err-ink); }
+        .mw-host .mw-act-stop:hover { border-color: var(--sp-err); box-shadow: 0 6px 16px -10px rgba(185, 28, 28, .45); }
+        .mw-dialog .mw-seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-block-end: var(--sp-3); border-radius: var(--sp-r-md); background: var(--sp-surface-2); border: 1px solid var(--sp-line); }
+        .mw-dialog .mw-seg label { position: relative; display: block; cursor: pointer; }
+        .mw-dialog .mw-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+        .mw-dialog .mw-seg span { display: flex; align-items: center; justify-content: center; min-height: 40px; border-radius: calc(var(--sp-r-md) - 2px); font-weight: 700; font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
+        .mw-dialog .mw-seg input:checked + span { background: var(--brand-fade); color: #fff; box-shadow: var(--brand-shadow); }
+        .mw-dialog .mw-seg input:focus-visible + span { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
+        .mw-dialog .mw-quick { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: calc(-1 * var(--sp-2)) 0 var(--sp-3); }
+        .mw-dialog .mw-quick-btn { min-height: 44px; flex: 1 1 0; padding: 0 var(--sp-2); font-size: var(--sp-t-sm); }
+        .mw-dialog .mw-react-status { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin-block-end: var(--sp-3) !important; font-weight: 600; }
         .mw-host .mw-more { position: relative; }
         .mw-host .mw-more > summary { list-style: none; }
         .mw-host .mw-more > summary::-webkit-details-marker { display: none; }
@@ -65828,6 +65963,7 @@ Thank you for shopping with {store_name}!</textarea>
         .mw-dialog .mw-hint { font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 400; }
         .mw-dialog .mw-check { display: flex; gap: var(--sp-2); align-items: center; min-height: 44px; font-size: var(--sp-t-md); margin-block-end: var(--sp-2); cursor: pointer; }
         .mw-dialog .mw-check input { width: 20px; height: 20px; flex: 0 0 auto; }
+        .mw-dialog .mw-check[hidden] { display: none; }
         .mw-dialog .mw-preview { border-radius: var(--sp-r-md); padding: var(--sp-3); margin-block-end: var(--sp-3); background: var(--sp-surface-2); font-size: var(--sp-t-sm); }
         .mw-dialog .mw-preview p { margin: 0; }
         .mw-dialog .mw-preview p + p { margin-block-start: var(--sp-1); }
@@ -65993,6 +66129,7 @@ Thank you for shopping with {store_name}!</textarea>
                    Support staff (non-admin) only read. */
                 var LIVE = { active: 1, trialing: 1, past_due: 1 };
                 var UNPAID_PLANS = { free_trial: 1, payg: 1 };
+                var ENDED = { canceled: 1, cancelled: 1, expired: 1 };
                 function actionsFor(sub, admin) {
                     sub = sub || {};
                     var st = sub.status || 'no_plan';
@@ -66005,8 +66142,14 @@ Thank you for shopping with {store_name}!</textarea>
                     if (sub.stripe_subscription_id || sub.stripe_customer_id) acts.push('stripe');
                     if (!admin) return acts;
                     if (src === 'manual' && paid && st !== 'incomplete' && st !== 'incomplete_expired') acts.push('renew');
+                    // Undo a cancel or an expiry (staff_reactivate_subscription).
+                    if (src === 'manual' && paid && ENDED[st]) acts.push('reactivate');
+                    // Move the end date of a running plan (staff_adjust_subscription_days).
+                    if (src === 'manual' && paid && st === 'active') acts.push('days');
                     if (live && paid && (src === 'stripe' || src === 'manual')) acts.push('change');
-                    if (live && !cape && (src === 'stripe' || src === 'manual')) acts.push('cancel');
+                    // Two different stops, each its own button: at period end, or today.
+                    if (live && !cape && (src === 'stripe' || src === 'manual')) acts.push('stop_end');
+                    if (live && (src === 'stripe' || src === 'manual')) acts.push('cancel');
                     if (live && cape && (src === 'stripe' || src === 'manual')) acts.push('resume');
                     if (src === 'manual' && (live || st === 'incomplete')) acts.push('expire');
                     if (slug === 'free_trial' && (st === 'trialing' || st === 'expired') && src === 'manual') acts.push('extend');
@@ -66467,6 +66610,63 @@ Thank you for shopping with {store_name}!</textarea>
                     return '';
                 }
 
+                /* ---------- plan actions panel ---------- */
+                /* Every action the plan's state allows, on the page, never in a
+                   menu: what keeps the client running on one side, what stops
+                   them on the other. Each button says what it does in one line.
+                   The one that fits the state best wears the brand fade. */
+                var ACT_ICONS = {
+                    renew: 'M17.65 6.35A7.96 7.96 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z',
+                    reactivate: 'M8 5v14l11-7z',
+                    days: 'M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11zm-8-9h2v3h3v2h-3v3h-2v-3H8v-2h3z',
+                    extend: 'M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14v11zm-8-9h2v3h3v2h-3v3h-2v-3H8v-2h3z',
+                    resume: 'M12.5 8c-2.65 0-5.05 1-6.9 2.6L2 7v9h9l-3.62-3.62A7.95 7.95 0 0 1 12.5 10c3.54 0 6.55 2.31 7.6 5.5l2.37-.78A10.02 10.02 0 0 0 12.5 8z',
+                    change: 'M6.99 11 3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z',
+                    stop_end: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z',
+                    cancel: 'M13 3h-2v10h2V3zm4.83 2.17-1.42 1.42A6.92 6.92 0 0 1 19 12a7 7 0 1 1-11.42-5.42L6.17 5.17A8.93 8.93 0 0 0 3 12a9 9 0 0 0 18 0c0-2.74-1.23-5.18-3.17-6.83z',
+                    expire: 'M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6zm10 14.5V20H8v-3.5l4-4 4 4zm-4-5-4-4V4h8v3.5l-4 4z'
+                };
+                var ACT_KEEP = ['reactivate', 'renew', 'days', 'extend', 'resume', 'change'];
+                var ACT_STOP = ['stop_end', 'cancel', 'expire'];
+                function actTitle(a) {
+                    return tr({ renew: 'act_renew', reactivate: 'act_reactivate', days: 'act_days', extend: 'act_extend', resume: 'act_resume',
+                        change: 'act_change', stop_end: 'act_stop_end', cancel: 'act_deactivate', expire: 'act_expire' }[a]);
+                }
+                function actDesc(a, s) {
+                    if (a === 'stop_end') return tr('actd_stop_end', { date: fmtDate(s.period_end) });
+                    return tr({ renew: 'actd_renew', reactivate: 'actd_reactivate', days: 'actd_days', extend: 'actd_extend', resume: 'actd_resume',
+                        change: 'actd_change', cancel: 'actd_deactivate', expire: 'actd_expire' }[a]);
+                }
+                /* The one action that fits the state best. */
+                function recommendedAction(s, acts, disp) {
+                    var has = function (a) { return acts.indexOf(a) !== -1; };
+                    var future = s.period_end && Date.parse(s.period_end) > Date.now();
+                    if (ENDED[s.status]) return has('reactivate') && future ? 'reactivate' : (has('renew') ? 'renew' : (has('reactivate') ? 'reactivate' : null));
+                    if (has('extend')) return 'extend';
+                    if (has('renew') && (disp === 'expiring' || disp === 'expired' || s.status === 'past_due' || !future)) return 'renew';
+                    if (has('resume')) return 'resume';
+                    return has('renew') ? 'renew' : null;
+                }
+                function actButton(a, s, rec) {
+                    var stop = ACT_STOP.indexOf(a) !== -1;
+                    return '<button type="button" class="mw-act' + (a === rec ? ' mw-act-rec' : '') + (stop ? ' mw-act-stop' : '') + '" data-act="' + a + '">' +
+                        '<span class="mw-act-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false"><path d="' + ACT_ICONS[a] + '"/></svg></span>' +
+                        '<span class="mw-act-txt"><b>' + h(actTitle(a)) + (a === rec ? ' <em class="mw-act-tag">' + h(tr('act_recommended')) + '</em>' : '') + '</b>' +
+                        '<small>' + h(actDesc(a, s)) + '</small></span></button>';
+                }
+                function actionPanel(s, acts, disp) {
+                    var keep = ACT_KEEP.filter(function (a) { return acts.indexOf(a) !== -1; });
+                    var stop = ACT_STOP.filter(function (a) { return acts.indexOf(a) !== -1; });
+                    if (!keep.length && !stop.length) return '';
+                    var rec = recommendedAction(s, acts, disp);
+                    var group = function (key, list, cls) {
+                        return list.length ? '<div class="mw-actgroup' + cls + '" role="group" aria-label="' + h(tr(key)) + '"><h5>' + h(tr(key)) + '</h5>' +
+                            '<div class="mw-actgrid">' + list.map(function (a) { return actButton(a, s, rec); }).join('') + '</div></div>' : '';
+                    };
+                    return '<section class="mw-sec mw-actpanel" aria-labelledby="mw-act-h"><h4 id="mw-act-h">' + h(tr('act_panel')) + '</h4>' +
+                        group('act_group_keep', keep, '') + group('act_group_stop', stop, ' mw-actgroup-stop') + '</section>';
+                }
+
                 function renderDetail() {
                     var det = $('mw-detail');
                     var d = state.detail;
@@ -66484,22 +66684,15 @@ Thank you for shopping with {store_name}!</textarea>
                     var facts = '<li><span class="mw-k">' + h(tr('col_phone')) + '</span>' + (phone ? '<a href="tel:' + h(String(phone).replace(/[^\d+]/g, '')) + '" dir="ltr">' + h(phone) + '</a>' : h(tr('no_phone'))) + '</li>' +
                         (o.email ? '<li><span class="mw-k">' + h(tr('p_email')) + '</span><a href="mailto:' + h(o.email) + '" dir="ltr">' + h(o.email) + '</a></li>' : '') +
                         (o.name ? '<li><span class="mw-k">' + h(tr('p_owner')) + '</span>' + h(o.name) + '</li>' : '');
-                    var primary = '';
-                    if (acts.indexOf('renew') !== -1) primary += '<button type="button" class="mw-btn mw-btn-primary" data-act="renew">' + h(tr('act_renew')) + '</button>';
-                    if (acts.indexOf('cancel') !== -1) primary += '<button type="button" class="mw-btn mw-btn-danger-quiet" data-act="cancel">' + h(tr('act_cancel_short')) + '</button>';
-                    var moreLabels = { change: tr('act_change'), resume: tr('act_resume'), extend: tr('act_extend'), expire: tr('act_expire'), refresh: tr('refresh') };
-                    var more = ['change', 'resume', 'extend', 'expire', 'refresh'].filter(function (a) { return acts.indexOf(a) !== -1; }).map(function (a) {
-                        return '<button type="button" class="mw-btn" data-act="' + a + '">' + h(moreLabels[a]) + '</button>';
-                    }).join('');
+                    var panel = actionPanel(s, acts, disp);
                     html += '<header class="mw-top">' +
                         '<div class="mw-top-main"><div class="mw-top-title"><h3 id="mw-detail-title">' + h(d.org.name || d.org.id) + '</h3>' + pill(disp, true) + '</div>' +
                         '<ul class="mw-facts">' + facts + '</ul>' + serviceLine(d.service) +
                         (renewAbsentReason(s, acts, admin) ? '<p class="mw-muted mw-gap">' + h(renewAbsentReason(s, acts, admin)) + '</p>' : '') +
                         (!admin ? '<p class="mw-muted mw-gap">' + h(tr('act_readonly')) + '</p>' : '') + '</div>' +
-                        '<div class="mw-actions" role="group" aria-label="' + h(tr('act_label')) + '">' + primary +
-                        (more ? '<details class="mw-more"><summary class="mw-btn">' + h(tr('more_actions')) + '</summary><div class="mw-more-menu">' + more + '</div></details>' : '') +
-                        '</div></header>';
+                        '<div class="mw-actions"><button type="button" class="mw-btn" data-act="refresh">' + h(tr('refresh')) + '</button></div></header>';
                     html += '<div id="mw-act-status" role="status" aria-live="polite">' + (state.status_msg || '') + '</div>';
+                    html += panel;
                     (d.attention_reasons || []).forEach(function (r) {
                         if (r === 'expiring_soon') return;           // the pill already says it
                         html += '<div class="mw-alert mw-alert-warn"><p>' + h(tr('reason_' + r)) + '</p></div>';
@@ -66588,11 +66781,7 @@ Thank you for shopping with {store_name}!</textarea>
                     det.innerHTML = html;
                     wireBack();
                     det.querySelectorAll('[data-act]').forEach(function (b) {
-                        b.addEventListener('click', function () {
-                            var dd = b.closest('details.mw-more');
-                            if (dd) dd.open = false;
-                            doAction(b.getAttribute('data-act'), dd ? dd.querySelector('summary') : b);
-                        });
+                        b.addEventListener('click', function () { doAction(b.getAttribute('data-act'), b); });
                     });
                     det.querySelectorAll('[data-stripe-link]').forEach(function (l) {
                         l.addEventListener('click', function () {
@@ -66763,7 +66952,10 @@ Thank you for shopping with {store_name}!</textarea>
                     if (a === 'renew') return renewModal(opener);
                     if (a === 'change') return changeModal(opener);
                     if (a === 'cancel') return cancelModal(opener, 'cancel');
+                    if (a === 'stop_end') return cancelModal(opener, 'stop_end');
                     if (a === 'expire') return cancelModal(opener, 'expire');
+                    if (a === 'days') return daysModal(opener);
+                    if (a === 'reactivate') return reactivateModal(opener);
                     if (a === 'resume') return resumeModal(opener);
                     if (a === 'extend') return extendModal(opener);
                 }
@@ -66919,21 +67111,20 @@ Thank you for shopping with {store_name}!</textarea>
                     }, opener);
                 }
 
-                /* ---------- cancel / expire ---------- */
-                /* One clear question and its consequence, then Confirm. The
-                   default ends the plan when the paid period ends; stopping
-                   today is a box to tick, never the default. */
+                /* ---------- stop at period end / deactivate now / expire ---------- */
+                /* Each stop is its own button on the page, so the dialog asks
+                   one question and shows its one consequence: nothing to tick. */
                 function cancelModal(opener, kind) {
                     var d = state.detail, s = d.subscription || {}, orgId = d.org.id;
                     var stripe = s.billing_source === 'stripe';
                     var key = newKey();
                     var name = d.org.name || d.org.id;
                     var isExpire = kind === 'expire';
+                    var atEnd = kind === 'stop_end';
                     var trial = s.plan_slug === 'free_trial';
-                    var body = '<div id="mw-effect"></div>' + (isExpire ? '' :
-                        '<label class="mw-check"><input type="checkbox" data-v="now"> ' + h(tr('cancel_now_check')) + '</label>');
+                    var body = '<div id="mw-effect"></div>';
                     var effect = function (dlg) {
-                        var now = isExpire || readVals(dlg).now === true;
+                        var now = !atEnd;
                         var lines = [];
                         if (now) {
                             lines.push({ text: tr('stops_now'), danger: true });
@@ -66946,18 +67137,14 @@ Thank you for shopping with {store_name}!</textarea>
                         dlg.querySelector('#mw-effect').innerHTML = previewBox(lines);
                     };
                     openModal({
-                        title: isExpire ? tr('expire_title', { name: name }) : tr('cancel_q', { name: name }),
+                        title: isExpire ? tr('expire_title', { name: name }) : tr(atEnd ? 'stop_end_q' : 'deactivate_q', { name: name }),
                         body: body,
-                        confirm: isExpire ? tr('act_expire') : tr('act_cancel'),
+                        confirm: isExpire ? tr('act_expire') : tr(atEnd ? 'act_stop_end' : 'act_deactivate'),
                         closeLabel: isExpire ? tr('m_close') : tr('cancel_keep'),
                         danger: true,
-                        onOpen: function (dlg) {
-                            effect(dlg);
-                            var cb = dlg.querySelector('[data-v="now"]');
-                            if (cb) cb.addEventListener('change', function () { effect(dlg); });
-                        },
-                        onConfirm: async function (v) {
-                            var when = isExpire ? 'now' : (v.now === true ? 'now' : 'at_period_end');
+                        onOpen: function (dlg) { effect(dlg); },
+                        onConfirm: async function () {
+                            var when = atEnd ? 'at_period_end' : 'now';
                             if (!stripe) {
                                 var mode = isExpire ? 'mark_expired' : (when === 'now' ? 'cancel' : 'at_period_end');
                                 var r = await rpc('staff_cancel_subscription', { p_org_id: orgId, p_mode: mode, p_note: null, p_idempotency_key: key });
@@ -67009,6 +67196,156 @@ Thank you for shopping with {store_name}!</textarea>
                             var got = await pollDetail(orgId, function (x) { return x.cancel_at_period_end === false; });
                             if (state.selected !== orgId) return;
                             setStatus(got ? 'ok' : 'warn', got ? tr('resume_done') : tr('confirm_timeout'));
+                            await refreshAfterWrite(orgId);
+                        }
+                    }, opener);
+                }
+
+                /* ---------- add or take back days (hand-paid, running plans) ---------- */
+                /* A goodwill extension or a correction: only the end date moves.
+                   The dialog previews old end against new end on every change,
+                   and Confirm applies exactly what was previewed. */
+                function endsCompare(before, after, beforeDays, afterDays, beforeLabel, afterLabel) {
+                    var lapsed = !before || Date.parse(before) <= Date.now();
+                    return '<div class="mw-renew">' +
+                        '<div class="mw-renew-col"><span>' + h(beforeLabel || tr('renew_old_end')) + '</span><b id="mw-old-end">' + h(fmtDate(before)) + '</b>' +
+                        '<small>' + h(daysText(beforeDays, lapsed ? 'expired' : 'active')) + '</small></div>' + ARROW +
+                        '<div class="mw-renew-col mw-renew-new"><span>' + h(afterLabel || tr('renew_new_end')) + '</span><b id="mw-new-end">' + h(fmtDate(after)) + '</b>' +
+                        '<small>' + h(daysText(afterDays, 'active')) + '</small></div></div>';
+                }
+                function quickPicks(values) {
+                    return '<div class="mw-quick" role="group" aria-label="' + h(tr('days_quick')) + '">' + values.map(function (n) {
+                        return '<button type="button" class="mw-btn mw-quick-btn" data-quick="' + n + '">' + h(dayCount(n)) + '</button>';
+                    }).join('') + '</div>';
+                }
+                function daysModal(opener) {
+                    var d = state.detail, s = d.subscription || {}, orgId = d.org.id;
+                    var key = newKey();
+                    var previewed = null, pvSeq = 0, t = null;
+                    var sig = function (v) { return [v.dir, parseInt(v.days, 10), v.notify === true && v.dir === 'add'].join('|'); };
+                    openModal({
+                        title: tr('days_title', { name: d.org.name || '' }),
+                        body: '<div class="mw-seg" role="radiogroup" aria-label="' + h(tr('act_days')) + '">' +
+                                '<label><input type="radio" name="mw-days-dir" data-v="dir" value="add" checked><span>' + h(tr('days_add')) + '</span></label>' +
+                                '<label><input type="radio" name="mw-days-dir" data-v="dir" value="remove"><span>' + h(tr('days_remove')) + '</span></label></div>' +
+                            field(tr('days_count'), '<input class="mw-input" data-v="days" type="number" inputmode="numeric" min="1" max="400" value="7">') +
+                            quickPicks([7, 14, 30, 60]) +
+                            '<label class="mw-check" id="mw-days-notify"><input type="checkbox" data-v="notify"> ' + h(tr('days_notify')) + '</label>' +
+                            field(tr('note_label'), '<input class="mw-input" data-v="note" maxlength="280">') +
+                            '<div id="mw-pv-slot"></div>',
+                        confirm: tr('days_confirm_add', { n: dayCount(7) }),
+                        onOpen: function (dlg) {
+                            var ok = dlg.querySelector('#mw-dlg-ok');
+                            var run = async function () {
+                                var v = readVals(dlg);
+                                var my = ++pvSeq; previewed = null; ok.disabled = true; modalErr('');
+                                var n = parseInt(v.days, 10);
+                                var add = v.dir !== 'remove';
+                                dlg.querySelector('#mw-days-notify').hidden = !add;
+                                ok.textContent = tr(add ? 'days_confirm_add' : 'days_confirm_remove', { n: isNaN(n) ? '' : dayCount(n) });
+                                ok.className = 'mw-btn ' + (add ? 'mw-btn-primary' : 'mw-btn-danger');
+                                var slot = dlg.querySelector('#mw-pv-slot');
+                                if (isNaN(n) || n < 1 || n > 400) { slot.innerHTML = ''; modalErr(tr('e_invalid_days')); return; }
+                                slot.innerHTML = '<p class="mw-hint"><span class="mw-spin" aria-hidden="true"></span> ' + h(tr('m_checking')) + '</p>';
+                                try {
+                                    var pv = await rpc('staff_adjust_subscription_days', { p_org_id: orgId, p_days: add ? n : -n, p_notify: add && v.notify === true,
+                                        p_note: null, p_idempotency_key: null, p_preview: true });
+                                    if (my !== pvSeq || !modalState) return;
+                                    var lines = [tr('days_only_date')];
+                                    if (pv.from_today) lines.push(tr('days_from_today'));
+                                    if (pv.clears_grace) lines.push(tr('days_clears_grace'));
+                                    if (pv.cancel_at_period_end) lines.push(tr('days_cape_kept'));
+                                    lines.push(pv.customer_emailed ? tr('days_emailed') : tr('pv_no_email'));
+                                    slot.innerHTML = '<div class="mw-preview" id="mw-preview" aria-live="polite">' +
+                                        endsCompare(pv.period_end_before, pv.period_end_after, pv.days_left_before, pv.days_left_after) +
+                                        lines.map(function (l) { return '<p>' + h(l) + '</p>'; }).join('') + '</div>';
+                                    previewed = sig(v); ok.disabled = false;
+                                } catch (e) {
+                                    if (my !== pvSeq || !modalState) return;
+                                    slot.innerHTML = ''; modalErr(e && e.message);
+                                }
+                            };
+                            var later = function () { clearTimeout(t); ok.disabled = true; t = setTimeout(run, 300); };
+                            dlg.querySelector('[data-v="days"]').addEventListener('input', later);
+                            dlg.querySelectorAll('[data-v="dir"], [data-v="notify"]').forEach(function (n) { n.addEventListener('change', run); });
+                            dlg.querySelectorAll('[data-quick]').forEach(function (b) {
+                                b.addEventListener('click', function () { dlg.querySelector('[data-v="days"]').value = b.getAttribute('data-quick'); run(); });
+                            });
+                            run();
+                        },
+                        revalidate: function (dlg) { previewed = sig(readVals(dlg)); },
+                        onConfirm: async function (v) {
+                            if (previewed !== sig(v)) throw { message: tr('m_checking') };
+                            var n = parseInt(v.days, 10), add = v.dir !== 'remove';
+                            var r = await rpc('staff_adjust_subscription_days', { p_org_id: orgId, p_days: add ? n : -n, p_notify: add && v.notify === true,
+                                p_note: (v.note || '').trim() || null, p_idempotency_key: key, p_preview: false });
+                            finishModal();
+                            setStatus('ok', r && r.replayed ? tr('replayed') : tr(add ? 'days_done_add' : 'days_done_remove',
+                                { n: dayCount(n), date: fmtDate(r && r.after && r.after.current_period_end) }));
+                            await refreshAfterWrite(orgId);
+                        }
+                    }, opener);
+                }
+
+                /* ---------- reactivate (hand-paid, cancelled or expired) ---------- */
+                /* Undo a cancel or an expiry. With time left on the paid period,
+                   nothing to type; once it is over, the days field asks for at
+                   least one day. Old state against new state, then Confirm. */
+                function reactivateModal(opener) {
+                    var d = state.detail, s = d.subscription || {}, orgId = d.org.id;
+                    var key = newKey();
+                    var lapsed = !s.period_end || Date.parse(s.period_end) <= Date.now();
+                    var previewed = null, pvSeq = 0, t = null;
+                    var sig = function (v) { return [parseInt(v.days, 10) || 0, v.notify === true].join('|'); };
+                    openModal({
+                        title: tr('react_title', { name: d.org.name || '' }),
+                        body: field(tr('react_days'), '<input class="mw-input" data-v="days" type="number" inputmode="numeric" min="0" max="400" value="' + (lapsed ? 30 : 0) + '">',
+                                lapsed ? tr('react_days_needed') : '') +
+                            quickPicks([7, 14, 30]) +
+                            '<label class="mw-check"><input type="checkbox" data-v="notify" checked> ' + h(tr('react_notify')) + '</label>' +
+                            field(tr('note_label'), '<input class="mw-input" data-v="note" maxlength="280">') +
+                            '<div id="mw-pv-slot"></div>',
+                        confirm: tr('act_reactivate'),
+                        onOpen: function (dlg) {
+                            var ok = dlg.querySelector('#mw-dlg-ok');
+                            var run = async function () {
+                                var v = readVals(dlg);
+                                var my = ++pvSeq; previewed = null; ok.disabled = true; modalErr('');
+                                var raw = String(v.days || '').trim();
+                                var n = raw === '' ? 0 : parseInt(raw, 10);
+                                var slot = dlg.querySelector('#mw-pv-slot');
+                                if (isNaN(n) || n < 0 || n > 400) { slot.innerHTML = ''; modalErr(tr('e_invalid_days')); return; }
+                                slot.innerHTML = '<p class="mw-hint"><span class="mw-spin" aria-hidden="true"></span> ' + h(tr('m_checking')) + '</p>';
+                                try {
+                                    var pv = await rpc('staff_reactivate_subscription', { p_org_id: orgId, p_add_days: n || null, p_notify: v.notify === true,
+                                        p_note: null, p_idempotency_key: null, p_preview: true });
+                                    if (my !== pvSeq || !modalState) return;
+                                    slot.innerHTML = '<div class="mw-preview" id="mw-preview" aria-live="polite">' +
+                                        '<p class="mw-react-status"><span>' + h(tr('react_status')) + ':</span> ' + pill(pillKey(pv.status_before === 'expired' ? 'expired' : 'cancelled')) + ARROW + pill('active') + '</p>' +
+                                        endsCompare(pv.period_end_before, pv.period_end_after, pv.days_left_before, pv.days_left_after) +
+                                        [tr('react_agent'), tr('react_coins', { n: fmtNum(pv.coins_remaining) }), v.notify === true ? tr('react_emailed') : tr('pv_no_email')]
+                                            .map(function (l) { return '<p>' + h(l) + '</p>'; }).join('') + '</div>';
+                                    previewed = sig(v); ok.disabled = false;
+                                } catch (e) {
+                                    if (my !== pvSeq || !modalState) return;
+                                    slot.innerHTML = ''; modalErr(e && e.message);
+                                }
+                            };
+                            dlg.querySelector('[data-v="days"]').addEventListener('input', function () { clearTimeout(t); ok.disabled = true; t = setTimeout(run, 300); });
+                            dlg.querySelector('[data-v="notify"]').addEventListener('change', run);
+                            dlg.querySelectorAll('[data-quick]').forEach(function (b) {
+                                b.addEventListener('click', function () { dlg.querySelector('[data-v="days"]').value = b.getAttribute('data-quick'); run(); });
+                            });
+                            run();
+                        },
+                        revalidate: function (dlg) { previewed = sig(readVals(dlg)); },
+                        onConfirm: async function (v) {
+                            if (previewed !== sig(v)) throw { message: tr('m_checking') };
+                            var n = parseInt(String(v.days || '').trim() || '0', 10) || 0;
+                            var r = await rpc('staff_reactivate_subscription', { p_org_id: orgId, p_add_days: n || null, p_notify: v.notify === true,
+                                p_note: (v.note || '').trim() || null, p_idempotency_key: key, p_preview: false });
+                            finishModal();
+                            setStatus('ok', r && r.replayed ? tr('replayed') : tr('react_done', { date: fmtDate(r && r.after && r.after.current_period_end) }));
                             await refreshAfterWrite(orgId);
                         }
                     }, opener);

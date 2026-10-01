@@ -160,7 +160,7 @@
   min-width: 16px; height: 16px;
   padding: 0 4px;
   border-radius: 999px;
-  background: var(--brand-accent, #6d6bd9);
+  background: var(--brand-fade, var(--brand-accent));
   color: #fff;
   font-size: 10px; font-weight: 700;
   line-height: 16px; text-align: center;
@@ -265,7 +265,7 @@
   font-variant-numeric: tabular-nums;
 }
 #inbox-clone-root .ix-channel .ch-unread {
-  background: var(--brand-accent); color: #0a1011;
+  background: var(--brand-fade, var(--brand-accent)); color: #0a1011;
   padding: 1px 6px; border-radius: 999px;
   font-size: 9.5px; font-weight: 800;
   font-variant-numeric: tabular-nums;
@@ -651,7 +651,7 @@
 }
 #inbox-clone-root .ix-item.on::before {
   content: ''; position: absolute; left: 0; top: 6px; bottom: 6px;
-  width: 3px; background: var(--brand-accent);
+  width: 3px; background: var(--brand-fade, var(--brand-accent));
   border-radius: 0 2px 2px 0;
 }
 [dir="rtl"] #inbox-clone-root .ix-item.on::before { left: auto; right: 0; border-radius: 2px 0 0 2px; }
@@ -723,7 +723,7 @@
   min-width: 18px; height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: var(--brand-accent, #6d6bd9);
+  background: var(--brand-fade, var(--brand-accent));
   color: #fff;
   font-size: 10.5px; font-weight: 700;
   line-height: 18px; text-align: center;
@@ -800,7 +800,7 @@
 
 #inbox-clone-root .item-unread {
   margin-left: auto;
-  background: var(--brand-accent);
+  background: var(--brand-fade, var(--brand-accent));
   color: #0a1011;
   padding: 1px 7px;
   border-radius: 999px;
@@ -1141,7 +1141,7 @@
 #inbox-clone-root .ic-mini:hover { background: rgba(255,255,255,0.06); color: #fff; }
 #inbox-clone-root .ix-send {
   padding: 8px 14px;
-  background: var(--brand-accent);
+  background: var(--brand-fade, var(--brand-accent));
   color: #0a1011;
   border: none; border-radius: 8px;
   font-size: 12px; font-weight: 700;

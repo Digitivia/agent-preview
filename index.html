@@ -31774,7 +31774,11 @@
             background: rgba(255,255,255,0.04);
             border: 1px solid var(--crmx-border);
             border-radius: 12px;
+            /* On a phone the views scroll inside the switcher instead of
+               widening the page. */
+            max-width: 100%; overflow-x: auto; scrollbar-width: none;
         }
+        #crm .crmx-seg::-webkit-scrollbar { display: none; }
         #crm .crmx-seg button {
             padding: 6px 12px;
             font-size: 12.5px; font-weight: 600;
@@ -31783,6 +31787,7 @@
             display: inline-flex; align-items: center; gap: 6px;
             background: none; border: none; cursor: pointer;
             transition: color .18s, background .18s;
+            flex: 0 0 auto; white-space: nowrap;
         }
         #crm .crmx-seg button:hover { color: var(--crmx-text-strong); }
         #crm .crmx-seg button.active {
@@ -31879,6 +31884,10 @@
             gap: 14px; align-items: start;
         }
         #crm .crmx-split > * { min-width: 0; }
+        /* Merchants view (staff): the lead-only parts of the page step aside
+           and the workspace takes the full width under the CRM header. */
+        #crm .crmx-page.crmx-merchants-mode :is(.crmx-kpi-row, .crmx-tagfilter-row, .crmx-rail, .crmx-head .crmx-actions, .crmx-head-tag, .crmx-head .crmx-sub, .crmx-toolbar > :not(.crmx-seg)) { display: none !important; }
+        #crm .crmx-page.crmx-merchants-mode .crmx-split { display: block; }
         @container crmx (min-width: 1080px) {
             #crm .crmx-split { grid-template-columns: minmax(0,1fr) clamp(280px, 22vw, 340px); }
         }
@@ -36936,13 +36945,6 @@
                     <li class="nav-item" onclick="switchTab('crm', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
                         <span class="nav-label" data-i18n="sidebar.nav_crm">CRM</span>
-                    </li>
-                    <!-- Staff-only merchant/subscription workspace. Hidden for
-                         everyone; revealed by the platform-staff check in
-                         fetchMyPermissions. Never shown to merchants. -->
-                    <li class="nav-item" id="nav-merchants-item" data-feature="merchants" onclick="switchTab('merchants', this)" style="display:none">
-                        <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg></div>
-                        <span class="nav-label" data-i18n="sidebar.nav_merchants">Merchants</span>
                     </li>
                     <li class="nav-item" onclick="switchTab('task-manager', this)">
                         <div class="nav-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
@@ -44622,17 +44624,6 @@
                 </div>
             </div>
 
-            <!-- MERCHANTS TAB (Digitivia staff only). Built by the workspace
-                 script near STRIPE_PUBLIC_KEY; its styles sit beside that
-                 script, outside this template literal. -->
-            <div id="merchants" class="tab-content">
-                <div class="mw-page">
-                    <div data-feature-notice="merchants"></div>
-                    <div class="mw-wrap" id="mw-root"></div>
-                </div>
-            </div>
-
-
             <!-- TASK MANAGER TAB -->
             <div id="task-manager" class="tab-content">
                 <div class="card glass" style="padding:0;overflow:hidden;">
@@ -46437,7 +46428,7 @@ Thank you for shopping with {store_name}!</textarea>
             website: 'group-agents', whatsapp: 'group-agents',
             page: 'group-agents', instagram: 'group-agents', telegram: 'group-agents',
             insights: 'group-live', inbox: 'group-live',
-            leads: 'group-data', crm: 'group-data', merchants: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
+            leads: 'group-data', crm: 'group-data', 'task-manager': 'group-data', orders: 'group-data',
             'create-post': 'group-content', reviews: 'group-content',
             followups: 'group-live'
         };
@@ -47369,14 +47360,6 @@ Thank you for shopping with {store_name}!</textarea>
                 console.warn('Tab not found:', tabId);
                 return false;
             }
-            // Staff-only tab: refuse BEFORE anything is deactivated, so a
-            // non-staff click leaves the current screen exactly as it was.
-            // The database refuses every staff_* call regardless; this is
-            // the front door, not the lock.
-            if (tabId === 'merchants' && window.isPlatformStaff !== true) {
-                if (typeof showPermissionDenied === 'function') showPermissionDenied();
-                return false;
-            }
 
             const activeTabBeforeSwitch = document.querySelector('.tab-content.active')?.id || '';
             // Remember where the user was scrolled in the CRM so returning to it
@@ -47436,14 +47419,6 @@ Thank you for shopping with {store_name}!</textarea>
             if (tabId === 'crm') {
                 color = '#7B5EA7'; // Purple for CRM
                 if (typeof initCrmTab === 'function') initCrmTab();
-            }
-            if (tabId === 'merchants') {
-                color = '#0E7C86'; // Deep teal for the staff Merchants workspace
-                // Guarded like partners: a workspace that fails to draw is a
-                // blemish, a tab switch that throws is an outage (2026-09-07).
-                try {
-                    if (typeof window.initMerchantsTab === 'function') window.initMerchantsTab();
-                } catch (e) { console.error('initMerchantsTab failed', e); }
             }
             if (tabId === 'task-manager') {
                 color = '#00897B'; // Teal-green for Task Manager
@@ -65646,168 +65621,168 @@ Thank you for shopping with {store_name}!</textarea>
            properties throughout: the same rules lay out Arabic. The pill is
            the whole status language: green active, yellow ending within 7
            days, red ended, gray cancelled or no plan. */
-        #merchants .mw-page { padding: var(--sp-4); max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
-        #merchants .mw-page *, #merchants .mw-page *::before, #merchants .mw-page *::after { box-sizing: border-box; }
-        #merchants .mw-view[hidden] { display: none !important; }
-        #merchants .mw-head { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: flex-start; justify-content: space-between; margin-block-end: var(--sp-4); }
-        #merchants .mw-title { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); }
-        #merchants .mw-subtitle { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
-        #merchants .mw-toolbar { margin-block-end: var(--sp-3); }
-        #merchants .mw-search { max-width: 520px; }
-        @media (max-width: 719.98px) { #merchants .mw-page { padding: 0; } }
-        #merchants .mw-field { display: flex; flex-direction: column; gap: var(--sp-1); min-width: 0; }
-        #merchants .mw-field > span, #merchants .mw-label { font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
-        #merchants .mw-vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-        #merchants .mw-input, #merchants .mw-select, #merchants .mw-textarea { width: 100%; min-height: 44px; border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); padding: 0 var(--sp-3); font: inherit; font-size: var(--sp-t-md); }
-        #merchants .mw-textarea { min-height: 72px; padding: var(--sp-2) var(--sp-3); resize: vertical; }
-        #merchants .mw-btn { min-height: 44px; padding: 0 var(--sp-4); border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface-2); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-md); font-weight: 600; cursor: pointer; touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); text-decoration: none; white-space: nowrap; }
-        #merchants .mw-btn:hover { border-color: var(--sp-accent); }
-        #merchants .mw-btn:disabled, #merchants .mw-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
-        #merchants .mw-btn-primary { background: var(--sp-accent); border-color: var(--sp-accent); color: var(--sp-accent-ink); }
-        #merchants .mw-btn-danger { background: var(--sp-err); border-color: var(--sp-err); color: #fff; }
-        #merchants .mw-btn-danger-quiet { background: transparent; border-color: var(--sp-err); color: var(--sp-err-ink); }
-        #merchants .mw-btn-quiet { background: transparent; }
-        #merchants :is(.mw-btn, .mw-chip, .mw-input, .mw-select, .mw-textarea, .mw-row, a, summary):focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
+        .mw-host { display: block; min-width: 0; }
+        .mw-host .mw-page { padding: 0; max-width: 1400px; box-sizing: border-box; }
+        .mw-host .mw-page *, .mw-host .mw-page *::before, .mw-host .mw-page *::after { box-sizing: border-box; }
+        .mw-host .mw-view[hidden] { display: none !important; }
+        .mw-host .mw-head { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: flex-start; justify-content: space-between; margin-block-end: var(--sp-4); }
+        .mw-host .mw-title { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); }
+        .mw-host .mw-subtitle { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
+        .mw-host .mw-toolbar { margin-block-end: var(--sp-3); }
+        .mw-host .mw-search { max-width: 520px; }
+        .mw-host .mw-field { display: flex; flex-direction: column; gap: var(--sp-1); min-width: 0; }
+        .mw-host .mw-field > span, .mw-host .mw-label { font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        .mw-host .mw-vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .mw-host .mw-input, .mw-host .mw-select, .mw-host .mw-textarea { width: 100%; min-height: 44px; border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); padding: 0 var(--sp-3); font: inherit; font-size: var(--sp-t-md); }
+        .mw-host .mw-textarea { min-height: 72px; padding: var(--sp-2) var(--sp-3); resize: vertical; }
+        .mw-host .mw-btn { min-height: 44px; padding: 0 var(--sp-4); border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface-2); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-md); font-weight: 600; cursor: pointer; touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); text-decoration: none; white-space: nowrap; }
+        .mw-host .mw-btn:hover { border-color: var(--sp-accent); }
+        .mw-host .mw-btn:disabled, .mw-host .mw-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+        .mw-host .mw-btn-primary { background: var(--sp-accent); border-color: var(--sp-accent); color: var(--sp-accent-ink); }
+        .mw-host .mw-btn-danger { background: var(--sp-err); border-color: var(--sp-err); color: #fff; }
+        .mw-host .mw-btn-danger-quiet { background: transparent; border-color: var(--sp-err); color: var(--sp-err-ink); }
+        .mw-host .mw-btn-quiet { background: transparent; }
+        .mw-host :is(.mw-btn, .mw-chip, .mw-input, .mw-select, .mw-textarea, .mw-row, a, summary):focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
 
         /* The pill, and the filter chips that use the same colours. */
-        #merchants .mw-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--sp-r-pill); border: 1px solid; font-size: var(--sp-t-xs); font-weight: 700; white-space: nowrap; line-height: 1.6; }
-        #merchants .mw-pill i, #merchants .mw-chip i, #merchants .mw-agent i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
-        #merchants .mw-pill-big { font-size: var(--sp-t-sm); padding: 4px 12px; }
-        #merchants .mw-pill-active { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
-        #merchants .mw-pill-expiring { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
-        #merchants .mw-pill-expired { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
-        #merchants :is(.mw-pill-cancelled, .mw-pill-none) { background: var(--sp-surface-2); color: var(--sp-ink-2); border-color: var(--sp-line-2); }
-        #merchants :is(.mw-pill-active, .mw-chip-active, .mw-agent-active) i { background: var(--sp-ok); }
-        #merchants :is(.mw-pill-expiring, .mw-chip-expiring, .mw-agent-expiring) i { background: var(--sp-warn); }
-        #merchants :is(.mw-pill-expired, .mw-chip-expired, .mw-agent-expired) i { background: var(--sp-err); }
-        #merchants :is(.mw-pill-cancelled, .mw-pill-none, .mw-chip-cancelled) i { background: var(--sp-ink-2); }
-        #merchants .mw-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-end: var(--sp-4); }
-        #merchants .mw-chip { min-height: 44px; padding: 0 var(--sp-3); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; touch-action: manipulation; }
-        #merchants .mw-chip:hover { border-color: var(--sp-accent); }
-        #merchants .mw-chip[aria-pressed="true"] { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
-        #merchants .mw-chip b { font-weight: 700; color: var(--sp-ink-2); }
+        .mw-host .mw-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--sp-r-pill); border: 1px solid; font-size: var(--sp-t-xs); font-weight: 700; white-space: nowrap; line-height: 1.6; }
+        .mw-host .mw-pill i, .mw-host .mw-chip i, .mw-host .mw-agent i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+        .mw-host .mw-pill-big { font-size: var(--sp-t-sm); padding: 4px 12px; }
+        .mw-host .mw-pill-active { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        .mw-host .mw-pill-expiring { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
+        .mw-host .mw-pill-expired { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
+        .mw-host :is(.mw-pill-cancelled, .mw-pill-none) { background: var(--sp-surface-2); color: var(--sp-ink-2); border-color: var(--sp-line-2); }
+        .mw-host :is(.mw-pill-active, .mw-chip-active, .mw-agent-active) i { background: var(--sp-ok); }
+        .mw-host :is(.mw-pill-expiring, .mw-chip-expiring, .mw-agent-expiring) i { background: var(--sp-warn); }
+        .mw-host :is(.mw-pill-expired, .mw-chip-expired, .mw-agent-expired) i { background: var(--sp-err); }
+        .mw-host :is(.mw-pill-cancelled, .mw-pill-none, .mw-chip-cancelled) i { background: var(--sp-ink-2); }
+        .mw-host .mw-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-end: var(--sp-4); }
+        .mw-host .mw-chip { min-height: 44px; padding: 0 var(--sp-3); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; touch-action: manipulation; }
+        .mw-host .mw-chip:hover { border-color: var(--sp-accent); }
+        .mw-host .mw-chip[aria-pressed="true"] { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
+        .mw-host .mw-chip b { font-weight: 700; color: var(--sp-ink-2); }
 
         /* The list: a table on wide screens, a card per merchant on phones,
            the same six facts either way. */
-        #merchants .mw-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
-        #merchants .mw-row { width: 100%; text-align: start; border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3); background: var(--sp-surface); color: var(--sp-ink); font: inherit; cursor: pointer; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2) var(--sp-3); align-items: center; }
-        #merchants .mw-row:hover { border-color: var(--sp-accent); }
-        #merchants .mw-c { min-width: 0; overflow-wrap: anywhere; font-size: var(--sp-t-sm); color: var(--sp-ink); }
-        #merchants .mw-c-name { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; }
-        #merchants .mw-name { font-weight: 700; font-size: var(--sp-t-md); overflow-wrap: anywhere; }
-        #merchants .mw-k { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
-        #merchants [dir="ltr"], .mw-dialog [dir="ltr"] { direction: ltr !important; unicode-bidi: isolate; }
-        #merchants .mw-c-days { font-weight: 700; }
-        #merchants .mw-days-expiring { color: var(--sp-warn-ink); }
-        #merchants .mw-days-expired { color: var(--sp-err-ink); }
-        #merchants :is(.mw-days-cancelled, .mw-days-none) { color: var(--sp-ink-2); font-weight: 600; }
-        #merchants .mw-thead { display: none; }
+        .mw-host .mw-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+        .mw-host .mw-row { width: 100%; text-align: start; border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3); background: var(--sp-surface); color: var(--sp-ink); font: inherit; cursor: pointer; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2) var(--sp-3); align-items: center; }
+        .mw-host .mw-row:hover { border-color: var(--sp-accent); }
+        .mw-host .mw-c { min-width: 0; overflow-wrap: anywhere; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        .mw-host .mw-c-name { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; }
+        .mw-host .mw-name { font-weight: 700; font-size: var(--sp-t-md); overflow-wrap: anywhere; }
+        .mw-host .mw-k { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        .mw-host [dir="ltr"], .mw-dialog [dir="ltr"] { direction: ltr !important; unicode-bidi: isolate; }
+        .mw-host .mw-c-days { font-weight: 700; }
+        .mw-host .mw-days-expiring { color: var(--sp-warn-ink); }
+        .mw-host .mw-days-expired { color: var(--sp-err-ink); }
+        .mw-host :is(.mw-days-cancelled, .mw-days-none) { color: var(--sp-ink-2); font-weight: 600; }
+        .mw-host .mw-thead { display: none; }
         @media (min-width: 900px) {
-            #merchants .mw-thead, #merchants .mw-row { display: grid; grid-template-columns: minmax(180px, 2.2fr) minmax(130px, 1.3fr) minmax(110px, 1fr) minmax(104px, 1fr) minmax(104px, 1fr) minmax(120px, 1.1fr); gap: var(--sp-3); align-items: center; }
-            #merchants .mw-thead { padding: 0 var(--sp-3) var(--sp-2); border: 1px solid transparent; font-size: var(--sp-t-xs); font-weight: 700; color: var(--sp-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
-            #merchants .mw-c-name { grid-column: auto; }
-            #merchants .mw-row .mw-k { display: none; }
+            .mw-host .mw-thead, .mw-host .mw-row { display: grid; grid-template-columns: minmax(180px, 2.2fr) minmax(130px, 1.3fr) minmax(110px, 1fr) minmax(104px, 1fr) minmax(104px, 1fr) minmax(120px, 1.1fr); gap: var(--sp-3); align-items: center; }
+            .mw-host .mw-thead { padding: 0 var(--sp-3) var(--sp-2); border: 1px solid transparent; font-size: var(--sp-t-xs); font-weight: 700; color: var(--sp-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
+            .mw-host .mw-c-name { grid-column: auto; }
+            .mw-host .mw-row .mw-k { display: none; }
         }
-        #merchants .mw-pager { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; margin-block-start: var(--sp-3); font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
-        #merchants .mw-empty { text-align: center; color: var(--sp-ink-2); padding: var(--sp-6) var(--sp-4); font-size: var(--sp-t-md); border: 1px dashed var(--sp-line-2); border-radius: var(--sp-r-lg); }
-        #merchants .mw-skel { height: 72px; border-radius: var(--sp-r-lg); background: var(--sp-surface-2); position: relative; overflow: hidden; }
-        #merchants .mw-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--sp-surface-3), transparent); animation: mw-shimmer 1.2s infinite; }
+        .mw-host .mw-pager { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; margin-block-start: var(--sp-3); font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
+        .mw-host .mw-empty { text-align: center; color: var(--sp-ink-2); padding: var(--sp-6) var(--sp-4); font-size: var(--sp-t-md); border: 1px dashed var(--sp-line-2); border-radius: var(--sp-r-lg); }
+        .mw-host .mw-skel { height: 72px; border-radius: var(--sp-r-lg); background: var(--sp-surface-2); position: relative; overflow: hidden; }
+        .mw-host .mw-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--sp-surface-3), transparent); animation: mw-shimmer 1.2s infinite; }
         @keyframes mw-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-        @media (prefers-reduced-motion: reduce) { #merchants .mw-skel::after { animation: none; } }
-        #merchants .mw-alert { border-radius: var(--sp-r-md); padding: var(--sp-3); font-size: var(--sp-t-sm); margin-block: var(--sp-3) 0; border: 1px solid; }
-        #merchants .mw-alert p { margin: 0; }
-        #merchants .mw-alert p + p { margin-block-start: var(--sp-1); }
-        #merchants .mw-alert-warn { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
-        #merchants .mw-alert-err { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
-        #merchants .mw-alert-ok { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
-        #merchants .mw-alert-info { background: var(--sp-accent-soft); color: var(--sp-ink); border-color: var(--sp-accent); }
+        @media (prefers-reduced-motion: reduce) { .mw-host .mw-skel::after { animation: none; } }
+        .mw-host .mw-alert { border-radius: var(--sp-r-md); padding: var(--sp-3); font-size: var(--sp-t-sm); margin-block: var(--sp-3) 0; border: 1px solid; }
+        .mw-host .mw-alert p { margin: 0; }
+        .mw-host .mw-alert p + p { margin-block-start: var(--sp-1); }
+        .mw-host .mw-alert-warn { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
+        .mw-host .mw-alert-err { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
+        .mw-host .mw-alert-ok { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        .mw-host .mw-alert-info { background: var(--sp-accent-soft); color: var(--sp-ink); border-color: var(--sp-accent); }
 
         /* The merchant's page: top, subscription, then usage and notes. */
-        #merchants .mw-detail-view { max-width: 1120px; outline: none; }
-        #merchants .mw-top { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: space-between; align-items: flex-start; padding: var(--sp-4); margin-block-start: var(--sp-3); border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); background: var(--sp-surface); }
-        #merchants .mw-top-main { flex: 1 1 300px; min-width: 0; }
-        #merchants .mw-top-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
-        #merchants .mw-top-title h3 { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); overflow-wrap: anywhere; min-width: 0; }
-        #merchants .mw-facts { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: var(--sp-3) 0 0; padding: 0; list-style: none; font-size: var(--sp-t-sm); color: var(--sp-ink); }
-        #merchants .mw-facts li { min-width: 0; overflow-wrap: anywhere; }
-        #merchants .mw-facts a { color: var(--sp-ink); }
-        #merchants .mw-agent { display: flex; gap: var(--sp-2); align-items: center; margin: var(--sp-3) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); }
-        #merchants .mw-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: flex-start; }
-        #merchants .mw-more { position: relative; }
-        #merchants .mw-more > summary { list-style: none; }
-        #merchants .mw-more > summary::-webkit-details-marker { display: none; }
-        #merchants .mw-more-menu { position: absolute; inset-inline-end: 0; inset-block-start: calc(100% + 4px); z-index: 5; display: grid; gap: var(--sp-1); min-width: 210px; padding: var(--sp-2); background: var(--sp-surface); border: 1px solid var(--sp-line-2); border-radius: var(--sp-r-md); box-shadow: var(--sp-shadow-overlay); }
-        #merchants .mw-more-menu .mw-btn { justify-content: flex-start; width: 100%; background: transparent; border-color: transparent; }
-        #merchants .mw-more-menu .mw-btn:hover { background: var(--sp-surface-2); }
+        .mw-host .mw-detail-view { max-width: 1120px; outline: none; }
+        .mw-host .mw-top { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: space-between; align-items: flex-start; padding: var(--sp-4); margin-block-start: var(--sp-3); border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); background: var(--sp-surface); }
+        .mw-host .mw-top-main { flex: 1 1 300px; min-width: 0; }
+        .mw-host .mw-top-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
+        .mw-host .mw-top-title h3 { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); overflow-wrap: anywhere; min-width: 0; }
+        .mw-host .mw-facts { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: var(--sp-3) 0 0; padding: 0; list-style: none; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        .mw-host .mw-facts li { min-width: 0; overflow-wrap: anywhere; }
+        .mw-host .mw-facts a { color: var(--sp-ink); }
+        .mw-host .mw-agent { display: flex; gap: var(--sp-2); align-items: center; margin: var(--sp-3) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        .mw-host .mw-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: flex-start; }
+        .mw-host .mw-more { position: relative; }
+        .mw-host .mw-more > summary { list-style: none; }
+        .mw-host .mw-more > summary::-webkit-details-marker { display: none; }
+        .mw-host .mw-more-menu { position: absolute; inset-inline-end: 0; inset-block-start: calc(100% + 4px); z-index: 5; display: grid; gap: var(--sp-1); min-width: 210px; padding: var(--sp-2); background: var(--sp-surface); border: 1px solid var(--sp-line-2); border-radius: var(--sp-r-md); box-shadow: var(--sp-shadow-overlay); }
+        .mw-host .mw-more-menu .mw-btn { justify-content: flex-start; width: 100%; background: transparent; border-color: transparent; }
+        .mw-host .mw-more-menu .mw-btn:hover { background: var(--sp-surface-2); }
         @media (max-width: 599.98px) {
-            #merchants .mw-actions { width: 100%; }
-            #merchants .mw-actions > .mw-btn { flex: 1 1 0; }
-            #merchants .mw-more { flex: 1 1 100%; }
-            #merchants .mw-more > summary { width: 100%; }
-            #merchants .mw-more-menu { position: static; margin-block-start: var(--sp-1); }
+            .mw-host .mw-actions { width: 100%; }
+            .mw-host .mw-actions > .mw-btn { flex: 1 1 0; }
+            .mw-host .mw-more { flex: 1 1 100%; }
+            .mw-host .mw-more > summary { width: 100%; }
+            .mw-host .mw-more-menu { position: static; margin-block-start: var(--sp-1); }
         }
-        #merchants .mw-gap { margin-block-start: var(--sp-3); }
-        #merchants .mw-sec { border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3) var(--sp-4); background: var(--sp-surface); min-width: 0; }
-        #merchants .mw-sec h4 { margin: 0 0 var(--sp-2); font-size: var(--sp-t-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--sp-ink-2); }
-        #merchants .mw-subcard { margin-block-start: var(--sp-3); }
-        #merchants .mw-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
-        @media (min-width: 720px) { #merchants .mw-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-        #merchants .mw-tile { border-radius: var(--sp-r-md); background: var(--sp-surface-2); padding: var(--sp-3); min-width: 0; }
-        #merchants .mw-tile > span { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
-        #merchants .mw-tile > b { display: block; font-size: var(--sp-t-lg); color: var(--sp-ink); margin-block-start: 2px; overflow-wrap: anywhere; }
-        #merchants .mw-tile > small { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); margin-block-start: 2px; overflow-wrap: anywhere; }
-        #merchants .mw-tile-active { background: var(--sp-ok-soft); }
-        #merchants .mw-tile-active > b { color: var(--sp-ok-ink); }
-        #merchants .mw-tile-expiring { background: var(--sp-warn-soft); }
-        #merchants .mw-tile-expiring > b { color: var(--sp-warn-ink); }
-        #merchants .mw-tile-expired { background: var(--sp-err-soft); }
-        #merchants .mw-tile-expired > b { color: var(--sp-err-ink); }
-        #merchants .mw-bottom { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); margin-block-start: var(--sp-3); align-items: start; }
-        @media (min-width: 1024px) { #merchants .mw-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
-        #merchants .mw-kv { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-3); padding: var(--sp-2) 0; font-size: var(--sp-t-sm); border-block-end: 1px solid var(--sp-line); }
-        #merchants .mw-kv:last-child { border-block-end: none; }
-        #merchants .mw-kv > span { color: var(--sp-ink-2); }
-        #merchants .mw-kv > b { font-weight: 600; text-align: end; overflow-wrap: anywhere; min-width: 0; color: var(--sp-ink); }
-        #merchants .mw-mono { font-family: var(--sp-font-mono); font-size: var(--sp-t-xs); overflow-wrap: anywhere; direction: ltr; unicode-bidi: isolate; }
-        #merchants .mw-meter { padding: var(--sp-2) 0; border-block-end: 1px solid var(--sp-line); font-size: var(--sp-t-sm); }
-        #merchants .mw-meter:last-child { border-block-end: none; }
-        #merchants .mw-meter-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-3); }
-        #merchants .mw-meter-top > span { color: var(--sp-ink-2); }
-        #merchants .mw-meter-top > b { font-weight: 600; color: var(--sp-ink); }
-        #merchants .mw-bar { display: block; height: 8px; border-radius: var(--sp-r-pill); background: var(--sp-surface-3); overflow: hidden; margin-block-start: var(--sp-1); width: 100%; }
-        #merchants .mw-bar > i { display: block; height: 100%; background: var(--sp-accent); }
-        #merchants .mw-bar > i.mw-bar-hot { background: var(--sp-err); }
-        #merchants .mw-note-form { display: grid; gap: var(--sp-2); }
-        #merchants .mw-note-form .mw-textarea { height: 76px; min-height: 76px; max-height: 240px; }
-        #merchants .mw-note-form .mw-btn { justify-self: start; }
-        #merchants .mw-tl { list-style: none; margin: var(--sp-3) 0 0; padding: 0; }
-        #merchants .mw-tl > li { position: relative; padding-block: var(--sp-2); padding-inline-start: var(--sp-4); border-inline-start: 2px solid var(--sp-line); }
-        #merchants .mw-tl > li::before { content: ""; position: absolute; inset-inline-start: -6px; inset-block-start: 15px; width: 10px; height: 10px; border-radius: 50%; background: var(--sp-line-2); }
-        #merchants .mw-tl > li.mw-tl-note::before { background: var(--sp-accent); }
-        #merchants .mw-tl-head { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2); align-items: baseline; font-size: var(--sp-t-sm); color: var(--sp-ink); }
-        #merchants .mw-tl p { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
-        #merchants .mw-moredetails { margin-block-start: var(--sp-3); }
-        #merchants .mw-moredetails > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--sp-2); font-weight: 600; color: var(--sp-ink-2); list-style: none; }
-        #merchants .mw-moredetails > summary::-webkit-details-marker { display: none; }
-        #merchants .mw-moredetails > summary::before { content: ""; width: 8px; height: 8px; border-inline-end: 2px solid currentColor; border-block-end: 2px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s ease; flex: 0 0 auto; }
-        [dir="rtl"] #merchants .mw-moredetails > summary::before { transform: rotate(45deg); }
-        #merchants .mw-moredetails[open] > summary::before { transform: rotate(45deg); }
-        [dir="rtl"] #merchants .mw-moredetails[open] > summary::before { transform: rotate(-45deg); }
-        @media (prefers-reduced-motion: reduce) { #merchants .mw-moredetails > summary::before { transition: none; } }
-        #merchants .mw-grid { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); }
-        @media (min-width: 1024px) { #merchants .mw-grid { grid-template-columns: 1fr 1fr; } }
-        #merchants .mw-plain { list-style: none; margin: 0; padding: 0; }
-        #merchants .mw-plain > li { padding: var(--sp-2) 0; border-block-end: 1px solid var(--sp-line); font-size: var(--sp-t-sm); overflow-wrap: anywhere; }
-        #merchants .mw-plain > li:last-child { border-block-end: none; }
-        #merchants .mw-row-top { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; }
-        #merchants .mw-badge { font-size: var(--sp-t-xs); font-weight: 700; padding: 2px var(--sp-2); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); white-space: nowrap; background: var(--sp-surface-2); color: var(--sp-ink-2); }
-        #merchants .mw-b-green { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
-        #merchants .mw-b-gray { background: var(--sp-surface-2); color: var(--sp-ink-2); }
-        #merchants .mw-sub { font-size: var(--sp-t-xs); color: var(--sp-ink-2); }
-        #merchants .mw-muted { color: var(--sp-ink-2); font-size: var(--sp-t-sm); margin: 0; }
-        #merchants .mw-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-inline-end-color: transparent; display: inline-block; animation: mw-rot 0.8s linear infinite; vertical-align: middle; }
+        .mw-host .mw-gap { margin-block-start: var(--sp-3); }
+        .mw-host .mw-sec { border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3) var(--sp-4); background: var(--sp-surface); min-width: 0; }
+        .mw-host .mw-sec h4 { margin: 0 0 var(--sp-2); font-size: var(--sp-t-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--sp-ink-2); }
+        .mw-host .mw-subcard { margin-block-start: var(--sp-3); }
+        .mw-host .mw-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
+        @media (min-width: 720px) { .mw-host .mw-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        .mw-host .mw-tile { border-radius: var(--sp-r-md); background: var(--sp-surface-2); padding: var(--sp-3); min-width: 0; }
+        .mw-host .mw-tile > span { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        .mw-host .mw-tile > b { display: block; font-size: var(--sp-t-lg); color: var(--sp-ink); margin-block-start: 2px; overflow-wrap: anywhere; }
+        .mw-host .mw-tile > small { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); margin-block-start: 2px; overflow-wrap: anywhere; }
+        .mw-host .mw-tile-active { background: var(--sp-ok-soft); }
+        .mw-host .mw-tile-active > b { color: var(--sp-ok-ink); }
+        .mw-host .mw-tile-expiring { background: var(--sp-warn-soft); }
+        .mw-host .mw-tile-expiring > b { color: var(--sp-warn-ink); }
+        .mw-host .mw-tile-expired { background: var(--sp-err-soft); }
+        .mw-host .mw-tile-expired > b { color: var(--sp-err-ink); }
+        .mw-host .mw-bottom { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); margin-block-start: var(--sp-3); align-items: start; }
+        @media (min-width: 1024px) { .mw-host .mw-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
+        .mw-host .mw-kv { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-3); padding: var(--sp-2) 0; font-size: var(--sp-t-sm); border-block-end: 1px solid var(--sp-line); }
+        .mw-host .mw-kv:last-child { border-block-end: none; }
+        .mw-host .mw-kv > span { color: var(--sp-ink-2); }
+        .mw-host .mw-kv > b { font-weight: 600; text-align: end; overflow-wrap: anywhere; min-width: 0; color: var(--sp-ink); }
+        .mw-host .mw-mono { font-family: var(--sp-font-mono); font-size: var(--sp-t-xs); overflow-wrap: anywhere; direction: ltr; unicode-bidi: isolate; }
+        .mw-host .mw-meter { padding: var(--sp-2) 0; border-block-end: 1px solid var(--sp-line); font-size: var(--sp-t-sm); }
+        .mw-host .mw-meter:last-child { border-block-end: none; }
+        .mw-host .mw-meter-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-3); }
+        .mw-host .mw-meter-top > span { color: var(--sp-ink-2); }
+        .mw-host .mw-meter-top > b { font-weight: 600; color: var(--sp-ink); }
+        .mw-host .mw-bar { display: block; height: 8px; border-radius: var(--sp-r-pill); background: var(--sp-surface-3); overflow: hidden; margin-block-start: var(--sp-1); width: 100%; }
+        .mw-host .mw-bar > i { display: block; height: 100%; background: var(--sp-accent); }
+        .mw-host .mw-bar > i.mw-bar-hot { background: var(--sp-err); }
+        .mw-host .mw-note-form { display: grid; gap: var(--sp-2); }
+        .mw-host .mw-note-form .mw-textarea { height: 76px; min-height: 76px; max-height: 240px; }
+        .mw-host .mw-note-form .mw-btn { justify-self: start; }
+        .mw-host .mw-tl { list-style: none; margin: var(--sp-3) 0 0; padding: 0; }
+        .mw-host .mw-tl > li { position: relative; padding-block: var(--sp-2); padding-inline-start: var(--sp-4); border-inline-start: 2px solid var(--sp-line); }
+        .mw-host .mw-tl > li::before { content: ""; position: absolute; inset-inline-start: -6px; inset-block-start: 15px; width: 10px; height: 10px; border-radius: 50%; background: var(--sp-line-2); }
+        .mw-host .mw-tl > li.mw-tl-note::before { background: var(--sp-accent); }
+        .mw-host .mw-tl-head { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2); align-items: baseline; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        .mw-host .mw-tl p { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+        .mw-host .mw-moredetails { margin-block-start: var(--sp-3); }
+        .mw-host .mw-moredetails > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--sp-2); font-weight: 600; color: var(--sp-ink-2); list-style: none; }
+        .mw-host .mw-moredetails > summary::-webkit-details-marker { display: none; }
+        .mw-host .mw-moredetails > summary::before { content: ""; width: 8px; height: 8px; border-inline-end: 2px solid currentColor; border-block-end: 2px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s ease; flex: 0 0 auto; }
+        [dir="rtl"] .mw-host .mw-moredetails > summary::before { transform: rotate(45deg); }
+        .mw-host .mw-moredetails[open] > summary::before { transform: rotate(45deg); }
+        [dir="rtl"] .mw-host .mw-moredetails[open] > summary::before { transform: rotate(-45deg); }
+        @media (prefers-reduced-motion: reduce) { .mw-host .mw-moredetails > summary::before { transition: none; } }
+        .mw-host .mw-grid { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); }
+        @media (min-width: 1024px) { .mw-host .mw-grid { grid-template-columns: 1fr 1fr; } }
+        .mw-host .mw-plain { list-style: none; margin: 0; padding: 0; }
+        .mw-host .mw-plain > li { padding: var(--sp-2) 0; border-block-end: 1px solid var(--sp-line); font-size: var(--sp-t-sm); overflow-wrap: anywhere; }
+        .mw-host .mw-plain > li:last-child { border-block-end: none; }
+        .mw-host .mw-row-top { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; }
+        .mw-host .mw-badge { font-size: var(--sp-t-xs); font-weight: 700; padding: 2px var(--sp-2); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); white-space: nowrap; background: var(--sp-surface-2); color: var(--sp-ink-2); }
+        .mw-host .mw-b-green { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        .mw-host .mw-b-gray { background: var(--sp-surface-2); color: var(--sp-ink-2); }
+        .mw-host .mw-sub { font-size: var(--sp-t-xs); color: var(--sp-ink-2); }
+        .mw-host .mw-muted { color: var(--sp-ink-2); font-size: var(--sp-t-sm); margin: 0; }
+        .mw-host .mw-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-inline-end-color: transparent; display: inline-block; animation: mw-rot 0.8s linear infinite; vertical-align: middle; }
         @keyframes mw-rot { to { transform: rotate(360deg); } }
-        @media (prefers-reduced-motion: reduce) { #merchants .mw-spin { animation: none; } }
+        @media (prefers-reduced-motion: reduce) { .mw-host .mw-spin { animation: none; } }
         /* Modal: one dialog, focus trapped, Esc closes. */
         .mw-veil { position: fixed; inset: 0; background: var(--sp-scrim); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: var(--sp-4); }
         .mw-dialog { width: min(520px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; border-radius: var(--sp-r-xl); background: var(--sp-surface); color: var(--sp-ink); border: 1px solid var(--sp-line-2); box-shadow: var(--sp-shadow-overlay); padding: var(--sp-5); box-sizing: border-box; font-family: var(--sp-font); }
@@ -65844,7 +65819,8 @@ Thank you for shopping with {store_name}!</textarea>
         @media (prefers-reduced-motion: reduce) { .mw-dialog .mw-spin { animation: none; } }
     </style>
     <script>
-            /* Staff-only Merchants workspace. Reads/writes go exclusively
+            /* Staff-only Merchants workspace, shown as the CRM's Merchants
+               view: the CRM hands it a slot through window.mountMerchantsView. Reads/writes go exclusively
                through staff_* RPCs and the staff-change-plan /
                staff-cancel-subscription edge functions, all of which check
                platform staff/admin server-side and audit themselves. No shared
@@ -66067,21 +66043,41 @@ Thank you for shopping with {store_name}!</textarea>
                 }
                 function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-                /* ---------- shell, list ---------- */
+                /* ---------- host, shell, list ---------- */
+                /* One host element for the life of the page. The CRM rebuilds
+                   its page with innerHTML on every repaint; mounting moves this
+                   node into the new slot instead of rebuilding it, so the list,
+                   an open merchant, the filters and any request in flight all
+                   survive a lead update. Lookups go through $() so work that
+                   finishes while the node is between slots still lands. */
+                var host = null;
+                function $(id) {
+                    var n = host ? host.querySelector('#' + id) : null;
+                    return n || document.getElementById(id);
+                }
                 /* Two views, never side by side: the list (every merchant, one
                    row each: name, phone, pill, start, end, days left) and the
                    merchant's own page. The list is sorted by urgency on the
                    server, so what needs a renewal is always at the top. */
-                function root() { return document.getElementById('mw-root'); }
+                function root() { return $('mw-root'); }
                 function isStaff() { return window.isPlatformStaff === true; }
                 function isAdmin() { return window.isPlatformStaffAdmin === true; }
                 var CHIPS = ['', 'active', 'expiring', 'expired', 'cancelled'];
 
-                window.initMerchantsTab = function () {
-                    var r = root();
-                    if (!r) return;
+                window.mountMerchantsView = function (slot) {
+                    if (!slot) return;
+                    if (!host) {
+                        host = document.createElement('div');
+                        host.className = 'mw-host';
+                        host.innerHTML = '<div data-feature-notice="merchants"></div><div class="mw-page"><div class="mw-wrap" id="mw-root"></div></div>';
+                    }
+                    if (host.parentNode !== slot) slot.appendChild(host);
+                    // The beta notice and the badges are painted per screen;
+                    // switching to this view is a new screen. Cosmetic: never fatal.
+                    try { if (typeof paintFeatureBadges === 'function') paintFeatureBadges(); } catch (e) {}
                     if (!isStaff()) { renderDenied(); return; }
-                    if (!state.shellReady || !document.getElementById('mw-list')) renderShell();
+                    if (state.shellReady && $('mw-list')) return;     // moved, not rebuilt
+                    renderShell();
                     loadOptions();
                     loadMerchants();
                     loadCounts();
@@ -66111,19 +66107,19 @@ Thank you for shopping with {store_name}!</textarea>
                         '<section class="mw-view mw-detail-view" id="mw-detail" tabindex="-1" aria-labelledby="mw-detail-title" hidden></section>';
                     renderChips();
                     var debounce = null;
-                    document.getElementById('mw-q').addEventListener('input', function (e) {
+                    $('mw-q').addEventListener('input', function (e) {
                         clearTimeout(debounce);
                         var v = e.target.value;
                         debounce = setTimeout(function () { state.search = v.trim(); state.offset = 0; loadMerchants(); loadCounts(); }, 350);
                     });
-                    document.getElementById('mw-refresh').addEventListener('click', function () { loadMerchants(); loadCounts(); });
+                    $('mw-refresh').addEventListener('click', function () { loadMerchants(); loadCounts(); });
                     state.shellReady = true;
                 }
 
                 /* The status filter is the pill itself: tap Expiring to see
                    everyone who needs a renewal this week. */
                 function renderChips() {
-                    var box = document.getElementById('mw-chips');
+                    var box = $('mw-chips');
                     if (!box) return;
                     var c = state.counts || {};
                     box.innerHTML = CHIPS.map(function (k) {
@@ -66169,7 +66165,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 async function loadMerchants() {
-                    var list = document.getElementById('mw-list');
+                    var list = $('mw-list');
                     if (!list) return;
                     var mySeq = ++state.seq;
                     state.loading = true;
@@ -66189,7 +66185,7 @@ Thank you for shopping with {store_name}!</textarea>
                         if (e && e.code === 'not_authorized') { renderDenied(); return; }
                         list.innerHTML = '<div class="mw-alert mw-alert-err" role="alert"><p>' + h(tr('error_title')) + '</p><p>' + h(e && e.message) +
                             '</p></div><button type="button" class="mw-btn" id="mw-list-retry">' + h(tr('retry')) + '</button>';
-                        var b = document.getElementById('mw-list-retry');
+                        var b = $('mw-list-retry');
                         if (b) b.addEventListener('click', loadMerchants);
                     } finally {
                         if (mySeq === state.seq) { state.loading = false; list.setAttribute('aria-busy', 'false'); }
@@ -66208,7 +66204,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 function renderList() {
-                    var list = document.getElementById('mw-list');
+                    var list = $('mw-list');
                     if (!list) return;
                     if (!state.rows.length) { list.innerHTML = '<div class="mw-empty">' + h(tr('empty')) + '</div>'; return; }
                     var html = '<div class="mw-thead" aria-hidden="true"><span>' + h(tr('col_name')) + '</span><span>' + h(tr('col_phone')) + '</span><span>' +
@@ -66234,8 +66230,8 @@ Thank you for shopping with {store_name}!</textarea>
                     list.querySelectorAll('.mw-row').forEach(function (b) {
                         b.addEventListener('click', function () { openMerchant(state.rows[+b.getAttribute('data-i')].org_id); });
                     });
-                    document.getElementById('mw-prev').addEventListener('click', function () { state.offset = Math.max(0, state.offset - PAGE); loadMerchants(); });
-                    document.getElementById('mw-next').addEventListener('click', function () { state.offset += PAGE; loadMerchants(); });
+                    $('mw-prev').addEventListener('click', function () { state.offset = Math.max(0, state.offset - PAGE); loadMerchants(); });
+                    $('mw-next').addEventListener('click', function () { state.offset += PAGE; loadMerchants(); });
                 }
 
                 /* ---------- detail ---------- */
@@ -66251,8 +66247,8 @@ Thank you for shopping with {store_name}!</textarea>
 
                 async function openMerchant(orgId, opts) {
                     opts = opts || {};
-                    var lv = document.getElementById('mw-list-view');
-                    var det = document.getElementById('mw-detail');
+                    var lv = $('mw-list-view');
+                    var det = $('mw-detail');
                     if (!lv || !det) return;
                     if (!opts.keepView && !lv.hidden) {
                         var sp = scrollParent(lv);
@@ -66284,25 +66280,26 @@ Thank you for shopping with {store_name}!</textarea>
                         det.innerHTML = backButton() + '<div class="mw-alert mw-alert-err" role="alert"><p>' + h(tr('error_title')) + '</p><p>' + h(e && e.message) + '</p></div>' +
                             '<button type="button" class="mw-btn" id="mw-detail-retry">' + h(tr('retry')) + '</button>';
                         wireBack();
-                        var rb = document.getElementById('mw-detail-retry');
+                        var rb = $('mw-detail-retry');
                         if (rb) rb.addEventListener('click', function () { openMerchant(orgId, { keepView: true }); });
                     }
                 }
 
                 function backButton() { return '<button type="button" class="mw-btn mw-back" id="mw-back">' + h(tr('back')) + '</button>'; }
                 function wireBack() {
-                    var b = document.getElementById('mw-back');
+                    var b = $('mw-back');
                     if (!b) return;
                     b.addEventListener('click', function () {
-                        var lv = document.getElementById('mw-list-view');
-                        var det = document.getElementById('mw-detail');
+                        var lv = $('mw-list-view');
+                        var det = $('mw-detail');
                         state.selected = null;
                         state.detailSeq++;
                         if (det) det.hidden = true;
                         if (lv) lv.hidden = false;
                         var sp = scrollParent(lv);
                         if (sp) sp.scrollTop = state.listScroll || 0;
-                        var cur = state.lastOpened && document.querySelector('#mw-list .mw-row[data-org="' + state.lastOpened + '"]');
+                        var list = $('mw-list');
+                        var cur = state.lastOpened && list && list.querySelector('.mw-row[data-org="' + state.lastOpened + '"]');
                         if (cur) { try { cur.focus({ preventScroll: true }); } catch (e) {} }
                     });
                 }
@@ -66381,7 +66378,7 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 function renderDetail() {
-                    var det = document.getElementById('mw-detail');
+                    var det = $('mw-detail');
                     var d = state.detail;
                     if (!det || !d || !d.org) return;
                     var s = d.subscription || {};
@@ -66514,10 +66511,10 @@ Thank you for shopping with {store_name}!</textarea>
                     });
                     var md = det.querySelector('.mw-moredetails');
                     if (md) md.addEventListener('toggle', function () { state.moreOpen = md.open; });
-                    var nf = document.getElementById('mw-note-form');
+                    var nf = $('mw-note-form');
                     if (nf) {
                         nf.addEventListener('submit', function (ev) { ev.preventDefault(); saveNote(); });
-                        var ta = document.getElementById('mw-note-body');
+                        var ta = $('mw-note-body');
                         ta.addEventListener('keydown', function (ev) {
                             if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); saveNote(); }
                         });
@@ -66528,16 +66525,16 @@ Thank you for shopping with {store_name}!</textarea>
                    and survives list reloads and re-renders. */
                 function setStatus(kind, text, spinning) {
                     state.status_msg = '<div class="mw-alert mw-alert-' + kind + '"><p>' + (spinning ? '<span class="mw-spin" aria-hidden="true"></span> ' : '') + h(text) + '</p></div>';
-                    var el = document.getElementById('mw-act-status');
+                    var el = $('mw-act-status');
                     if (el) el.innerHTML = state.status_msg;
                 }
 
                 /* Add Note is one press: no dialog, no second confirmation.
                    The note lands at the top of the history it sits above. */
                 async function saveNote() {
-                    var ta = document.getElementById('mw-note-body');
-                    var err = document.getElementById('mw-note-err');
-                    var btn = document.getElementById('mw-note-add');
+                    var ta = $('mw-note-body');
+                    var err = $('mw-note-err');
+                    var btn = $('mw-note-add');
                     var body = ta ? ta.value.trim() : '';
                     if (!state.detail || (btn && btn.disabled)) return;
                     if (!body) {
@@ -66552,7 +66549,7 @@ Thank you for shopping with {store_name}!</textarea>
                         await rpc('staff_add_merchant_note', { p_org_id: orgId, p_body: body });
                         setStatus('ok', tr('notes_saved'));
                         await openMerchant(orgId, { keepView: true });
-                        var again = document.getElementById('mw-note-body');
+                        var again = $('mw-note-body');
                         if (again) again.focus();
                     } catch (e) {
                         if (err) err.innerHTML = '<div class="mw-alert mw-alert-err"><p>' + h(e && e.message) + '</p></div>';
@@ -78981,6 +78978,16 @@ Thank you for shopping with {store_name}!</textarea>
                 renderCrmView(cachedLeads);
             } catch (e) { console.error('CRM repaint after a category change failed', e); }
         });
+        // The staff check finishes after login; a CRM already on screen gains
+        // (or loses) the Merchants view without a reload.
+        document.addEventListener('crm:staff-changed', () => {
+            try {
+                if (!document.getElementById('crm')?.classList.contains('active')) return;
+                if (!Array.isArray(cachedLeads)) return;
+                captureCrmxFilterState();
+                renderCrmView(cachedLeads);
+            } catch (e) { console.error('CRM repaint after the staff check failed', e); }
+        });
         document.addEventListener('crm:lead-statuses-changed', () => {
             try {
                 if (!document.getElementById('crm')?.classList.contains('active')) return;
@@ -79183,10 +79190,36 @@ Thank you for shopping with {store_name}!</textarea>
             `;
         }
 
+        // The Merchants view is Digitivia staff only (subscriptions of every
+        // workspace). A stale 'merchants' choice in localStorage from a staff
+        // session on a shared browser falls back to the pipeline for anyone
+        // else, the same way 'deals' falls back when its flag is off.
+        function crmxResolveView() {
+            let v = document.querySelector('.crmx-seg button.active')?.dataset.view;
+            if (!v) { try { v = localStorage.getItem('crmx_view'); } catch (_) {} }
+            v = v || 'pipeline';
+            if (v === 'merchants' && window.isPlatformStaff !== true) v = 'pipeline';
+            return v;
+        }
+        // In the Merchants view the lead-only parts of the page (KPIs, tag
+        // strip, rail, lead filters and lead actions) step aside: one class
+        // on the page, so a repaint can never leave half of them showing.
+        function crmxSyncMerchantsMode(view) {
+            const page = document.getElementById('crmx-page');
+            if (page) page.classList.toggle('crmx-merchants-mode', view === 'merchants');
+            // The switcher scrolls on a phone: keep the chosen view in sight.
+            // Cosmetic, so never fatal.
+            try {
+                const seg = page && page.querySelector('.crmx-seg');
+                const on = seg && seg.querySelector('button.active');
+                if (on && seg.scrollWidth > seg.clientWidth) {
+                    seg.scrollLeft = on.offsetLeft - (seg.clientWidth - on.offsetWidth) / 2;
+                }
+            } catch (_) {}
+        }
+
         function renderCrmxToolbar(leads) {
-            const currentView = document.querySelector('.crmx-seg button.active')?.dataset.view
-                || localStorage.getItem('crmx_view')
-                || 'pipeline';
+            const currentView = crmxResolveView();
 
             // Categories: Partner and Marketing are built in, older typed
             // values found in the data stay findable, and the workspace's own
@@ -79217,6 +79250,11 @@ Thank you for shopping with {store_name}!</textarea>
                         <button data-view="deals" class="${currentView==='deals'?'active':''}" onclick="setCrmView('deals',this)">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1H4.8c.12 2.19 1.76 3.42 3.7 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
                             ${esc(t('leads.view_btn_deals') || 'Deals')}
+                        </button>` : ''}
+                        ${window.isPlatformStaff === true ? `
+                        <button data-view="merchants" data-feature="merchants" class="${currentView==='merchants'?'active':''}" onclick="setCrmView('merchants',this)">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg>
+                            ${esc(t('sidebar.nav_merchants') || 'Merchants')}
                         </button>` : ''}
                     </div>
 
@@ -80036,9 +80074,19 @@ Thank you for shopping with {store_name}!</textarea>
             const slot = document.getElementById('crmx-view-slot');
             if (!slot) return;
 
-            const view = document.querySelector('.crmx-seg button.active')?.dataset.view
-                || localStorage.getItem('crmx_view')
-                || 'pipeline';
+            const view = crmxResolveView();
+            crmxSyncMerchantsMode(view);
+
+            // Merchants (staff) is not built from the lead rows either, and
+            // it lives in another script block: guarded, so a workspace that
+            // fails to draw never takes the CRM down with it (2026-09-07).
+            if (view === 'merchants') {
+                slot.innerHTML = '';
+                try {
+                    if (typeof window.mountMerchantsView === 'function') window.mountMerchantsView(slot);
+                } catch (e) { console.error('mountMerchantsView failed', e); }
+                return;
+            }
 
             // Deals view is driven by its own pipeline/deal caches, not the
             // lead rows, so route it before the lead-empty guard below.
@@ -85128,11 +85176,11 @@ Thank you for shopping with {store_name}!</textarea>
                         window.isPlatformStaff = false;
                         console.warn('platform staff check skipped:', e && e.message);
                     }
-                    // Staff-only Merchants workspace (subscriptions). Separate
-                    // try/catch; admin flag gates the write buttons inside it.
+                    // Staff-only Merchants view inside the CRM (subscriptions).
+                    // Separate try/catch; admin flag gates the write buttons
+                    // inside it. The CRM may already be on screen, so it is
+                    // told to offer (or withdraw) the view now.
                     try {
-                        const nav = document.getElementById('nav-merchants-item');
-                        if (nav) nav.style.display = window.isPlatformStaff ? '' : 'none';
                         window.isPlatformStaffAdmin = false;
                         if (window.isPlatformStaff) {
                             const { data: isAdmin } = await supabaseClient.rpc('is_platform_admin');
@@ -85142,6 +85190,7 @@ Thank you for shopping with {store_name}!</textarea>
                         window.isPlatformStaffAdmin = false;
                         console.warn('staff admin check skipped:', e && e.message);
                     }
+                    try { document.dispatchEvent(new Event('crm:staff-changed')); } catch (e) {}
                 } catch (e) {
                     console.error('Failed to fetch permissions:', e);
                     myEffectiveRole = getEffectiveRoleFromRaw(window.currentUserRole);

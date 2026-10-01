@@ -4598,16 +4598,8 @@
             "subtitle": "Every workspace, its plan and its billing. Visible to Digitivia staff only.",
             "refresh": "Refresh",
             "search_label": "Search merchants",
-            "search_ph": "Name, email or workspace ID",
-            "plan_label": "Plan",
-            "all_plans": "All plans",
+            "search_ph": "Name, email, phone or workspace ID",
             "status_label": "Status",
-            "all_statuses": "All statuses",
-            "sort_label": "Sort by",
-            "sort_created": "Newest first",
-            "sort_renewal": "Next renewal",
-            "sort_status": "Status",
-            "attention_filter": "Needs attention",
             "list_label": "Merchant list",
             "loading": "Loading merchants",
             "loading_detail": "Loading merchant",
@@ -4619,17 +4611,8 @@
             "count": "{from} to {to} of {total}",
             "prev": "Previous",
             "next": "Next",
-            "select_prompt": "Choose a merchant to see their plan, usage and history.",
             "back": "Back to list",
-            "renews_on": "Renews {date}",
-            "ends_on": "Ends {date}",
-            "trial_ends_on": "Trial ends {date}",
-            "expired_on": "Expired {date}",
-            "payment_failed_on": "Payment failed, period ended {date}",
-            "canceled_line": "Cancelled",
             "no_plan_line": "No plan",
-            "channels_count": "{n} channels",
-            "needs_attention": "Needs attention",
             "src_stripe": "Stripe",
             "src_manual": "Paid by hand",
             "src_shopify": "Shopify",
@@ -4661,21 +4644,10 @@
             "sec_payments": "Payments",
             "sec_topups": "Top ups",
             "sec_stripe": "Stripe",
-            "sec_notes": "Internal notes",
-            "sec_timeline": "Timeline",
             "f_plan": "Plan",
-            "f_status": "Status",
-            "f_source": "Billed by",
-            "f_period": "Current period",
-            "f_renewal": "Paid until",
-            "f_trial_ends": "Trial ends",
-            "f_cape": "Ends at period end",
             "f_grace_ends": "Grace ends",
-            "f_price": "Price",
             "f_since": "Customer since",
             "f_workspace_id": "Workspace ID",
-            "yes": "Yes",
-            "no": "No",
             "none": "None",
             "period_range": "{start} to {end}",
             "per_month": "per month",
@@ -4702,13 +4674,10 @@
             "ch_disconnected": "Disconnected {date}: {reason}",
             "ch_none": "No channels connected.",
             "p_owner": "Owner",
-            "p_owner_guess": "Owner (no owner role set, earliest member shown)",
             "p_email": "Email",
-            "p_phone": "Phone",
             "p_language": "Emails in",
             "lang_en": "English",
             "lang_ar": "Arabic",
-            "p_members": "Members",
             "role_owner": "Owner",
             "role_admin": "Admin",
             "role_member": "Member",
@@ -4718,19 +4687,16 @@
             "top_line": "{coins} coins, {source}",
             "st_sub_id": "Subscription",
             "st_cus_id": "Customer",
-            "st_open": "Open in Stripe",
             "st_none": "Not billed by Stripe.",
-            "notes_none": "No notes yet.",
             "notes_add_label": "Add a note",
-            "notes_ph": "What happened, and what was agreed",
-            "notes_add": "Save note",
+            "notes_ph": "Write a note: what happened, what was agreed",
+            "notes_add": "Add Note",
             "notes_saved": "Note saved.",
             "tl_none": "No history yet.",
             "tl_by": "by {email}",
             "kind_webhook": "Stripe",
             "kind_grace": "Grace",
             "kind_manual_renewal": "Renewed by hand",
-            "kind_staff_action": "Staff",
             "act_label": "Actions",
             "act_renew": "Renew",
             "act_change": "Change plan",
@@ -4744,15 +4710,8 @@
             "m_working": "Working",
             "m_checking": "Checking",
             "renew_title": "Renew {name}",
-            "renew_days": "Days to add",
-            "renew_amount": "Amount received (optional)",
-            "renew_amount_hint": "Leave empty for a free extension. Example: 149.00",
-            "renew_currency": "Currency",
             "note_label": "Note for the audit log",
-            "pv_new_period": "New period: {start} to {end}.",
             "pv_starts_after": "It starts when the current paid period ends, so no paid days are lost.",
-            "pv_amount": "Payment recorded: {amount}.",
-            "pv_no_amount": "No payment is recorded.",
             "pv_coins": "Coin balance resets to {n} (now {left} left).",
             "pv_email_renewed": "The customer will be emailed that their plan renewed.",
             "pv_email_activated": "The customer will be emailed that their plan is active.",
@@ -4774,17 +4733,10 @@
             "change_waiting": "Stripe accepted the change. Waiting for confirmation.",
             "change_done": "Plan changed to {plan}.",
             "change_timeout": "Stripe accepted the change but it has not reached us yet. Check the timeline in a minute, then press Refresh.",
-            "cancel_title": "Cancel {name}",
-            "cancel_when": "When should it end?",
-            "cancel_at_end": "At the end of the paid period ({date})",
-            "cancel_now": "Now",
             "cancel_at_end_effect": "Nothing changes today. The agent keeps answering until {date}, then the plan ends.",
             "stops_now": "The AI agent stops answering customers immediately.",
             "cancel_email": "The customer will be emailed that their plan was cancelled.",
             "cancel_email_later": "The customer is emailed when the plan ends.",
-            "type_name": "To confirm, type the merchant name: {name}",
-            "type_name_label": "Merchant name",
-            "reason_label": "Reason for the audit log",
             "cancel_waiting": "Stripe accepted. Waiting for confirmation.",
             "cancel_done": "Cancelled.",
             "cancel_done_at_end": "Set to end on {date}.",
@@ -4817,8 +4769,61 @@
             "e_invalid_amount": "Enter an amount and a currency, or leave the amount empty.",
             "e_invalid_period": "That number of days is not allowed.",
             "e_manual_subscription": "This merchant is not billed by Stripe.",
-            "e_name_mismatch": "The name does not match.",
-            "tz_label": "Cairo time"
+            "chip_all": "All",
+            "pill_active": "Active",
+            "pill_expiring": "Expiring",
+            "pill_expired": "Expired",
+            "pill_cancelled": "Cancelled",
+            "pill_none": "No plan",
+            "col_name": "Merchant",
+            "col_phone": "Phone",
+            "col_status": "Status",
+            "col_start": "Start date",
+            "col_end": "End date",
+            "col_days": "Days left",
+            "dl_today": "Ends today",
+            "dl_ended_today": "Ended today",
+            "dl_none": "No end date",
+            "no_phone": "No phone",
+            "ends_not_renews": "Set to end, will not renew",
+            "act_cancel_short": "Cancel",
+            "more_actions": "More actions",
+            "more_details": "More details: activity, channels, team, payments, Stripe",
+            "notes_timeline": "Notes and history",
+            "note_empty": "Write the note first.",
+            "kind_note": "Note",
+            "tl_new_end": "New end date: {date}",
+            "tla_subscription_renew": "Renewed",
+            "tla_subscription_cancel": "Cancelled now",
+            "tla_subscription_at_period_end": "Set to end at period end",
+            "tla_subscription_mark_expired": "Marked expired",
+            "tla_subscription_resume": "Resumed",
+            "tla_subscription_change_plan_manual": "Plan changed",
+            "tla_subscription_change_plan_stripe": "Plan changed in Stripe",
+            "tla_subscription_change_plan_stripe_requested": "Plan change sent to Stripe",
+            "tla_subscription_change_plan_stripe_failed": "Plan change failed in Stripe",
+            "tla_subscription_cancel_stripe": "Cancellation sent to Stripe",
+            "tla_subscription_resume_stripe": "Resume sent to Stripe",
+            "tla_trial_extend": "Trial extended",
+            "renew_old_end": "Old end",
+            "renew_new_end": "New end",
+            "renew_adds": "Adds {days} on the {plan} plan.",
+            "renew_from_today": "The old end has already passed, so the new period starts today.",
+            "renew_confirm": "Confirm renewal",
+            "renew_by_stripe": "Stripe renews this plan by itself. Nothing to do here.",
+            "renew_by_shopify": "Shopify renews this plan. Renew it in Shopify.",
+            "renew_not_plan": "This plan is not renewed by hand. Use Change plan from More actions.",
+            "cancel_q": "Cancel the subscription for {name}?",
+            "cancel_now_check": "Stop it today instead",
+            "cancel_keep": "Keep subscription",
+            "days_one": "1 day",
+            "days_other": "{n} days",
+            "dl_left": "{days} left",
+            "dl_ended": "Ended {days} ago",
+            "days_zero": "{n} days",
+            "days_two": "{n} days",
+            "days_few": "{n} days",
+            "days_many": "{n} days"
         };
         window.LANG_EN.aiUsage = {
             page_title: "AI Usage & Coins",
@@ -5698,16 +5703,8 @@
             "subtitle": "كل مساحات العمل وخططها وفواتيرها. تظهر لفريق ديجيتيفيا فقط.",
             "refresh": "تحديث",
             "search_label": "ابحث في التجار",
-            "search_ph": "الاسم أو البريد أو رقم مساحة العمل",
-            "plan_label": "الخطة",
-            "all_plans": "كل الخطط",
+            "search_ph": "الاسم أو البريد أو الهاتف أو معرف مساحة العمل",
             "status_label": "الحالة",
-            "all_statuses": "كل الحالات",
-            "sort_label": "الترتيب",
-            "sort_created": "الأحدث أولا",
-            "sort_renewal": "أقرب تجديد",
-            "sort_status": "الحالة",
-            "attention_filter": "يحتاج متابعة",
             "list_label": "قائمة التجار",
             "loading": "جاري تحميل التجار",
             "loading_detail": "جاري تحميل التاجر",
@@ -5719,17 +5716,8 @@
             "count": "{from} إلى {to} من {total}",
             "prev": "السابق",
             "next": "التالي",
-            "select_prompt": "اختر تاجرا لعرض خطته واستخدامه وسجله.",
             "back": "رجوع للقائمة",
-            "renews_on": "يتجدد {date}",
-            "ends_on": "ينتهي {date}",
-            "trial_ends_on": "التجربة تنتهي {date}",
-            "expired_on": "انتهى {date}",
-            "payment_failed_on": "فشل الدفع، انتهت الفترة {date}",
-            "canceled_line": "ملغي",
             "no_plan_line": "بدون خطة",
-            "channels_count": "{n} قنوات",
-            "needs_attention": "يحتاج متابعة",
             "src_stripe": "Stripe",
             "src_manual": "دفع يدوي",
             "src_shopify": "Shopify",
@@ -5761,21 +5749,10 @@
             "sec_payments": "المدفوعات",
             "sec_topups": "الشحن الإضافي",
             "sec_stripe": "Stripe",
-            "sec_notes": "ملاحظات داخلية",
-            "sec_timeline": "السجل",
             "f_plan": "الخطة",
-            "f_status": "الحالة",
-            "f_source": "طريقة الدفع",
-            "f_period": "الفترة الحالية",
-            "f_renewal": "مدفوع حتى",
-            "f_trial_ends": "نهاية التجربة",
-            "f_cape": "ينتهي بنهاية الفترة",
             "f_grace_ends": "نهاية فترة السماح",
-            "f_price": "السعر",
             "f_since": "عميل منذ",
             "f_workspace_id": "رقم مساحة العمل",
-            "yes": "نعم",
-            "no": "لا",
             "none": "لا يوجد",
             "period_range": "من {start} إلى {end}",
             "per_month": "شهريا",
@@ -5802,13 +5779,10 @@
             "ch_disconnected": "انفصلت {date}: {reason}",
             "ch_none": "لا توجد قنوات متصلة.",
             "p_owner": "المالك",
-            "p_owner_guess": "المالك (لا يوجد دور مالك، يظهر أول عضو)",
             "p_email": "البريد",
-            "p_phone": "الهاتف",
             "p_language": "لغة الرسائل",
             "lang_en": "الإنجليزية",
             "lang_ar": "العربية",
-            "p_members": "الأعضاء",
             "role_owner": "مالك",
             "role_admin": "مسؤول",
             "role_member": "عضو",
@@ -5818,19 +5792,16 @@
             "top_line": "{coins} رصيد، {source}",
             "st_sub_id": "الاشتراك",
             "st_cus_id": "العميل",
-            "st_open": "افتح في Stripe",
             "st_none": "لا يدفع عن طريق Stripe.",
-            "notes_none": "لا توجد ملاحظات بعد.",
             "notes_add_label": "أضف ملاحظة",
-            "notes_ph": "ماذا حدث، وما الذي تم الاتفاق عليه",
-            "notes_add": "احفظ الملاحظة",
+            "notes_ph": "اكتب ملاحظة: ماذا حدث وعلى ماذا اتفقنا",
+            "notes_add": "إضافة ملاحظة",
             "notes_saved": "تم حفظ الملاحظة.",
             "tl_none": "لا يوجد سجل بعد.",
             "tl_by": "بواسطة {email}",
             "kind_webhook": "Stripe",
             "kind_grace": "فترة السماح",
             "kind_manual_renewal": "تجديد يدوي",
-            "kind_staff_action": "الفريق",
             "act_label": "الإجراءات",
             "act_renew": "تجديد",
             "act_change": "تغيير الخطة",
@@ -5844,15 +5815,8 @@
             "m_working": "جاري التنفيذ",
             "m_checking": "جاري المراجعة",
             "renew_title": "تجديد {name}",
-            "renew_days": "عدد الأيام المضافة",
-            "renew_amount": "المبلغ المستلم (اختياري)",
-            "renew_amount_hint": "اتركه فارغا للتمديد المجاني. مثال: 149.00",
-            "renew_currency": "العملة",
             "note_label": "ملاحظة لسجل المراجعة",
-            "pv_new_period": "الفترة الجديدة: من {start} إلى {end}.",
             "pv_starts_after": "تبدأ عند نهاية الفترة المدفوعة الحالية، فلا يضيع أي يوم مدفوع.",
-            "pv_amount": "دفعة مسجلة: {amount}.",
-            "pv_no_amount": "لن تسجل أي دفعة.",
             "pv_coins": "الرصيد يرجع إلى {n} (المتبقي الآن {left}).",
             "pv_email_renewed": "سيصل للعميل بريد بأن خطته تجددت.",
             "pv_email_activated": "سيصل للعميل بريد بأن خطته أصبحت نشطة.",
@@ -5874,17 +5838,10 @@
             "change_waiting": "Stripe قبل التغيير. في انتظار التأكيد.",
             "change_done": "تم تغيير الخطة إلى {plan}.",
             "change_timeout": "Stripe قبل التغيير لكن التأكيد لم يصل بعد. راجع السجل بعد دقيقة ثم اضغط تحديث.",
-            "cancel_title": "إلغاء {name}",
-            "cancel_when": "متى ينتهي؟",
-            "cancel_at_end": "بنهاية الفترة المدفوعة ({date})",
-            "cancel_now": "الآن",
             "cancel_at_end_effect": "لا شيء يتغير اليوم. الايجنت يستمر في الرد حتى {date}، ثم تنتهي الخطة.",
             "stops_now": "الايجنت يتوقف عن الرد على العملاء فورا.",
             "cancel_email": "سيصل للعميل بريد بأن خطته ألغيت.",
             "cancel_email_later": "يصل للعميل بريد عند انتهاء الخطة.",
-            "type_name": "للتأكيد، اكتب اسم التاجر: {name}",
-            "type_name_label": "اسم التاجر",
-            "reason_label": "السبب لسجل المراجعة",
             "cancel_waiting": "Stripe قبل الطلب. في انتظار التأكيد.",
             "cancel_done": "تم الإلغاء.",
             "cancel_done_at_end": "سينتهي في {date}.",
@@ -5917,8 +5874,61 @@
             "e_invalid_amount": "أدخل المبلغ والعملة، أو اترك المبلغ فارغا.",
             "e_invalid_period": "عدد الأيام غير مسموح.",
             "e_manual_subscription": "هذا التاجر لا يدفع عن طريق Stripe.",
-            "e_name_mismatch": "الاسم غير مطابق.",
-            "tz_label": "بتوقيت القاهرة"
+            "chip_all": "الكل",
+            "pill_active": "نشط",
+            "pill_expiring": "ينتهي قريبا",
+            "pill_expired": "منتهي",
+            "pill_cancelled": "ملغي",
+            "pill_none": "بدون خطة",
+            "col_name": "التاجر",
+            "col_phone": "الهاتف",
+            "col_status": "الحالة",
+            "col_start": "تاريخ البدء",
+            "col_end": "تاريخ الانتهاء",
+            "col_days": "الأيام المتبقية",
+            "dl_today": "ينتهي اليوم",
+            "dl_ended_today": "انتهى اليوم",
+            "dl_none": "بدون تاريخ انتهاء",
+            "no_phone": "لا يوجد رقم",
+            "ends_not_renews": "سينتهي ولن يتجدد",
+            "act_cancel_short": "إلغاء",
+            "more_actions": "إجراءات أخرى",
+            "more_details": "تفاصيل أخرى: النشاط والقنوات والفريق والمدفوعات وStripe",
+            "notes_timeline": "الملاحظات والسجل",
+            "note_empty": "اكتب الملاحظة أولا.",
+            "kind_note": "ملاحظة",
+            "tl_new_end": "تاريخ الانتهاء الجديد: {date}",
+            "tla_subscription_renew": "تم التجديد",
+            "tla_subscription_cancel": "أُلغي فورا",
+            "tla_subscription_at_period_end": "سينتهي مع نهاية الفترة",
+            "tla_subscription_mark_expired": "تم إنهاؤه",
+            "tla_subscription_resume": "تم الاستئناف",
+            "tla_subscription_change_plan_manual": "تم تغيير الخطة",
+            "tla_subscription_change_plan_stripe": "تم تغيير الخطة في Stripe",
+            "tla_subscription_change_plan_stripe_requested": "أُرسل تغيير الخطة إلى Stripe",
+            "tla_subscription_change_plan_stripe_failed": "فشل تغيير الخطة في Stripe",
+            "tla_subscription_cancel_stripe": "أُرسل الإلغاء إلى Stripe",
+            "tla_subscription_resume_stripe": "أُرسل الاستئناف إلى Stripe",
+            "tla_trial_extend": "تم تمديد التجربة",
+            "renew_old_end": "النهاية الحالية",
+            "renew_new_end": "النهاية الجديدة",
+            "renew_adds": "يضيف {days} على خطة {plan}.",
+            "renew_from_today": "النهاية الحالية فاتت بالفعل، لذلك تبدأ الفترة الجديدة من اليوم.",
+            "renew_confirm": "تأكيد التجديد",
+            "renew_by_stripe": "Stripe يجدد هذه الخطة تلقائيا. لا يوجد ما تفعله هنا.",
+            "renew_by_shopify": "Shopify يجدد هذه الخطة. جددها من Shopify.",
+            "renew_not_plan": "هذه الخطة لا تجدد يدويا. استخدم تغيير الخطة من الإجراءات الأخرى.",
+            "cancel_q": "إلغاء اشتراك {name}؟",
+            "cancel_now_check": "إيقافه اليوم بدلا من ذلك",
+            "cancel_keep": "إبقاء الاشتراك",
+            "days_zero": "{n} يوم",
+            "days_one": "يوم واحد",
+            "days_two": "يومين",
+            "days_few": "{n} أيام",
+            "days_many": "{n} يوما",
+            "days_other": "{n} يوم",
+            "dl_left": "باقي {days}",
+            "dl_ended": "انتهى منذ {days}"
         };
         window.LANG_AR.aiUsage = {
             page_title: "استهلاك الذكاء الاصطناعي والمحادثات",
@@ -65633,79 +65643,127 @@ Thank you for shopping with {store_name}!</textarea>
     <style id="merchants-workspace-style">
         /* Staff Merchants workspace. Reads the --sp-* system tokens only, so
            light and dark both come from the one theme source. Logical
-           properties throughout: the same rules lay out Arabic. */
+           properties throughout: the same rules lay out Arabic. The pill is
+           the whole status language: green active, yellow ending within 7
+           days, red ended, gray cancelled or no plan. */
         #merchants .mw-page { padding: var(--sp-4); max-width: 1400px; margin: 0 auto; box-sizing: border-box; }
         #merchants .mw-page *, #merchants .mw-page *::before, #merchants .mw-page *::after { box-sizing: border-box; }
+        #merchants .mw-view[hidden] { display: none !important; }
         #merchants .mw-head { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: flex-start; justify-content: space-between; margin-block-end: var(--sp-4); }
         #merchants .mw-title { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); }
         #merchants .mw-subtitle { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
-        #merchants .mw-toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); margin-block-end: var(--sp-4); align-items: end; }
-        #merchants .mw-toolbar > .mw-field:first-child { grid-column: 1 / -1; }
-        @media (max-width: 719.98px) {
-            #merchants .mw-page { padding: 0; }
-            #merchants .mw-toolbar > .mw-field:nth-child(4) { grid-column: 1 / 2; }
-        }
-        @media (min-width: 720px) {
-            #merchants .mw-toolbar { grid-template-columns: minmax(200px, 2fr) repeat(3, minmax(120px, 1fr)) auto; }
-            #merchants .mw-toolbar > .mw-field:first-child { grid-column: auto; }
-        }
+        #merchants .mw-toolbar { margin-block-end: var(--sp-3); }
+        #merchants .mw-search { max-width: 520px; }
+        @media (max-width: 719.98px) { #merchants .mw-page { padding: 0; } }
         #merchants .mw-field { display: flex; flex-direction: column; gap: var(--sp-1); min-width: 0; }
         #merchants .mw-field > span, #merchants .mw-label { font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        #merchants .mw-vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
         #merchants .mw-input, #merchants .mw-select, #merchants .mw-textarea { width: 100%; min-height: 44px; border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); padding: 0 var(--sp-3); font: inherit; font-size: var(--sp-t-md); }
-        #merchants .mw-textarea { min-height: 88px; padding: var(--sp-2) var(--sp-3); resize: vertical; }
+        #merchants .mw-textarea { min-height: 72px; padding: var(--sp-2) var(--sp-3); resize: vertical; }
         #merchants .mw-btn { min-height: 44px; padding: 0 var(--sp-4); border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface-2); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-md); font-weight: 600; cursor: pointer; touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); text-decoration: none; white-space: nowrap; }
         #merchants .mw-btn:hover { border-color: var(--sp-accent); }
         #merchants .mw-btn:disabled, #merchants .mw-btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
         #merchants .mw-btn-primary { background: var(--sp-accent); border-color: var(--sp-accent); color: var(--sp-accent-ink); }
         #merchants .mw-btn-danger { background: var(--sp-err); border-color: var(--sp-err); color: #fff; }
+        #merchants .mw-btn-danger-quiet { background: transparent; border-color: var(--sp-err); color: var(--sp-err-ink); }
         #merchants .mw-btn-quiet { background: transparent; }
-        #merchants .mw-chip-toggle[aria-pressed="true"] { background: var(--sp-warn-soft); border-color: var(--sp-warn); color: var(--sp-warn-ink); }
-        #merchants :is(.mw-btn, .mw-input, .mw-select, .mw-textarea, .mw-row, a):focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
-        #merchants .mw-layout { display: grid; grid-template-columns: 1fr; gap: var(--sp-4); align-items: start; }
-        @media (min-width: 1024px) {
-            #merchants .mw-layout { grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); }
-            #merchants .mw-detail-pane { position: sticky; top: var(--sp-4); max-height: calc(100vh - 32px); overflow-y: auto; }
-            #merchants .mw-back { display: none; }
-        }
-        @media (max-width: 1023.98px) {
-            #merchants .mw-layout.mw-show-detail .mw-list-pane { display: none; }
-            #merchants .mw-layout:not(.mw-show-detail) .mw-detail-pane { display: none; }
-        }
+        #merchants :is(.mw-btn, .mw-chip, .mw-input, .mw-select, .mw-textarea, .mw-row, a, summary):focus-visible { outline: 2px solid var(--sp-focus); outline-offset: 2px; }
+
+        /* The pill, and the filter chips that use the same colours. */
+        #merchants .mw-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: var(--sp-r-pill); border: 1px solid; font-size: var(--sp-t-xs); font-weight: 700; white-space: nowrap; line-height: 1.6; }
+        #merchants .mw-pill i, #merchants .mw-chip i, #merchants .mw-agent i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+        #merchants .mw-pill-big { font-size: var(--sp-t-sm); padding: 4px 12px; }
+        #merchants .mw-pill-active { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        #merchants .mw-pill-expiring { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
+        #merchants .mw-pill-expired { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
+        #merchants :is(.mw-pill-cancelled, .mw-pill-none) { background: var(--sp-surface-2); color: var(--sp-ink-2); border-color: var(--sp-line-2); }
+        #merchants :is(.mw-pill-active, .mw-chip-active, .mw-agent-active) i { background: var(--sp-ok); }
+        #merchants :is(.mw-pill-expiring, .mw-chip-expiring, .mw-agent-expiring) i { background: var(--sp-warn); }
+        #merchants :is(.mw-pill-expired, .mw-chip-expired, .mw-agent-expired) i { background: var(--sp-err); }
+        #merchants :is(.mw-pill-cancelled, .mw-pill-none, .mw-chip-cancelled) i { background: var(--sp-ink-2); }
+        #merchants .mw-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-end: var(--sp-4); }
+        #merchants .mw-chip { min-height: 44px; padding: 0 var(--sp-3); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-sm); font-weight: 600; display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; touch-action: manipulation; }
+        #merchants .mw-chip:hover { border-color: var(--sp-accent); }
+        #merchants .mw-chip[aria-pressed="true"] { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
+        #merchants .mw-chip b { font-weight: 700; color: var(--sp-ink-2); }
+
+        /* The list: a table on wide screens, a card per merchant on phones,
+           the same six facts either way. */
         #merchants .mw-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
-        #merchants .mw-row { width: 100%; text-align: start; display: block; border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3); background: var(--sp-surface); color: var(--sp-ink); font: inherit; cursor: pointer; }
+        #merchants .mw-row { width: 100%; text-align: start; border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3); background: var(--sp-surface); color: var(--sp-ink); font: inherit; cursor: pointer; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2) var(--sp-3); align-items: center; }
         #merchants .mw-row:hover { border-color: var(--sp-accent); }
-        #merchants .mw-row[aria-current="true"] { border-color: var(--sp-accent); background: var(--sp-accent-soft); }
-        #merchants .mw-row-top { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; }
-        #merchants .mw-name { font-weight: 700; font-size: var(--sp-t-md); overflow-wrap: anywhere; min-width: 0; }
-        #merchants .mw-meta { display: block; font-size: var(--sp-t-sm); color: var(--sp-ink-2); margin-block-start: var(--sp-1); overflow-wrap: anywhere; }
-        #merchants .mw-badges { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
-        #merchants .mw-badge { font-size: var(--sp-t-xs); font-weight: 700; padding: 2px var(--sp-2); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); white-space: nowrap; background: var(--sp-surface-2); color: var(--sp-ink-2); }
-        #merchants .mw-b-green { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
-        #merchants .mw-b-blue { background: var(--sp-accent-soft); color: var(--sp-ink); border-color: var(--sp-accent); }
-        #merchants .mw-b-amber { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
-        #merchants .mw-b-red { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
-        #merchants .mw-b-gray { background: var(--sp-surface-2); color: var(--sp-ink-2); }
+        #merchants .mw-c { min-width: 0; overflow-wrap: anywhere; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        #merchants .mw-c-name { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; }
+        #merchants .mw-name { font-weight: 700; font-size: var(--sp-t-md); overflow-wrap: anywhere; }
+        #merchants .mw-k { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        #merchants [dir="ltr"], .mw-dialog [dir="ltr"] { direction: ltr !important; unicode-bidi: isolate; }
+        #merchants .mw-c-days { font-weight: 700; }
+        #merchants .mw-days-expiring { color: var(--sp-warn-ink); }
+        #merchants .mw-days-expired { color: var(--sp-err-ink); }
+        #merchants :is(.mw-days-cancelled, .mw-days-none) { color: var(--sp-ink-2); font-weight: 600; }
+        #merchants .mw-thead { display: none; }
+        @media (min-width: 900px) {
+            #merchants .mw-thead, #merchants .mw-row { display: grid; grid-template-columns: minmax(180px, 2.2fr) minmax(130px, 1.3fr) minmax(110px, 1fr) minmax(104px, 1fr) minmax(104px, 1fr) minmax(120px, 1.1fr); gap: var(--sp-3); align-items: center; }
+            #merchants .mw-thead { padding: 0 var(--sp-3) var(--sp-2); border: 1px solid transparent; font-size: var(--sp-t-xs); font-weight: 700; color: var(--sp-ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
+            #merchants .mw-c-name { grid-column: auto; }
+            #merchants .mw-row .mw-k { display: none; }
+        }
         #merchants .mw-pager { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; margin-block-start: var(--sp-3); font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
         #merchants .mw-empty { text-align: center; color: var(--sp-ink-2); padding: var(--sp-6) var(--sp-4); font-size: var(--sp-t-md); border: 1px dashed var(--sp-line-2); border-radius: var(--sp-r-lg); }
         #merchants .mw-skel { height: 72px; border-radius: var(--sp-r-lg); background: var(--sp-surface-2); position: relative; overflow: hidden; }
         #merchants .mw-skel::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, var(--sp-surface-3), transparent); animation: mw-shimmer 1.2s infinite; }
         @keyframes mw-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
         @media (prefers-reduced-motion: reduce) { #merchants .mw-skel::after { animation: none; } }
-        #merchants .mw-alert { border-radius: var(--sp-r-md); padding: var(--sp-3); font-size: var(--sp-t-sm); margin-block-end: var(--sp-3); border: 1px solid; }
+        #merchants .mw-alert { border-radius: var(--sp-r-md); padding: var(--sp-3); font-size: var(--sp-t-sm); margin-block: var(--sp-3) 0; border: 1px solid; }
         #merchants .mw-alert p { margin: 0; }
         #merchants .mw-alert p + p { margin-block-start: var(--sp-1); }
         #merchants .mw-alert-warn { background: var(--sp-warn-soft); color: var(--sp-warn-ink); border-color: var(--sp-warn); }
         #merchants .mw-alert-err { background: var(--sp-err-soft); color: var(--sp-err-ink); border-color: var(--sp-err); }
         #merchants .mw-alert-ok { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
         #merchants .mw-alert-info { background: var(--sp-accent-soft); color: var(--sp-ink); border-color: var(--sp-accent); }
-        #merchants .mw-detail-head { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; margin-block-end: var(--sp-3); }
-        #merchants .mw-detail-head h3 { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); overflow-wrap: anywhere; min-width: 0; flex: 1 1 200px; }
-        #merchants .mw-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-block-end: var(--sp-4); }
-        #merchants .mw-grid { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); }
-        @media (min-width: 1280px) { #merchants .mw-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* The merchant's page: top, subscription, then usage and notes. */
+        #merchants .mw-detail-view { max-width: 1120px; outline: none; }
+        #merchants .mw-top { display: flex; flex-wrap: wrap; gap: var(--sp-4); justify-content: space-between; align-items: flex-start; padding: var(--sp-4); margin-block-start: var(--sp-3); border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); background: var(--sp-surface); }
+        #merchants .mw-top-main { flex: 1 1 300px; min-width: 0; }
+        #merchants .mw-top-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
+        #merchants .mw-top-title h3 { margin: 0; font-size: var(--sp-t-xl); color: var(--sp-ink); overflow-wrap: anywhere; min-width: 0; }
+        #merchants .mw-facts { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: var(--sp-3) 0 0; padding: 0; list-style: none; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        #merchants .mw-facts li { min-width: 0; overflow-wrap: anywhere; }
+        #merchants .mw-facts a { color: var(--sp-ink); }
+        #merchants .mw-agent { display: flex; gap: var(--sp-2); align-items: center; margin: var(--sp-3) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        #merchants .mw-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: flex-start; }
+        #merchants .mw-more { position: relative; }
+        #merchants .mw-more > summary { list-style: none; }
+        #merchants .mw-more > summary::-webkit-details-marker { display: none; }
+        #merchants .mw-more-menu { position: absolute; inset-inline-end: 0; inset-block-start: calc(100% + 4px); z-index: 5; display: grid; gap: var(--sp-1); min-width: 210px; padding: var(--sp-2); background: var(--sp-surface); border: 1px solid var(--sp-line-2); border-radius: var(--sp-r-md); box-shadow: var(--sp-shadow-overlay); }
+        #merchants .mw-more-menu .mw-btn { justify-content: flex-start; width: 100%; background: transparent; border-color: transparent; }
+        #merchants .mw-more-menu .mw-btn:hover { background: var(--sp-surface-2); }
+        @media (max-width: 599.98px) {
+            #merchants .mw-actions { width: 100%; }
+            #merchants .mw-actions > .mw-btn { flex: 1 1 0; }
+            #merchants .mw-more { flex: 1 1 100%; }
+            #merchants .mw-more > summary { width: 100%; }
+            #merchants .mw-more-menu { position: static; margin-block-start: var(--sp-1); }
+        }
+        #merchants .mw-gap { margin-block-start: var(--sp-3); }
         #merchants .mw-sec { border: 1px solid var(--sp-line); border-radius: var(--sp-r-lg); padding: var(--sp-3) var(--sp-4); background: var(--sp-surface); min-width: 0; }
         #merchants .mw-sec h4 { margin: 0 0 var(--sp-2); font-size: var(--sp-t-sm); text-transform: uppercase; letter-spacing: 0.06em; color: var(--sp-ink-2); }
-        #merchants .mw-sec-wide { grid-column: 1 / -1; }
+        #merchants .mw-subcard { margin-block-start: var(--sp-3); }
+        #merchants .mw-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); }
+        @media (min-width: 720px) { #merchants .mw-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        #merchants .mw-tile { border-radius: var(--sp-r-md); background: var(--sp-surface-2); padding: var(--sp-3); min-width: 0; }
+        #merchants .mw-tile > span { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        #merchants .mw-tile > b { display: block; font-size: var(--sp-t-lg); color: var(--sp-ink); margin-block-start: 2px; overflow-wrap: anywhere; }
+        #merchants .mw-tile > small { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); margin-block-start: 2px; overflow-wrap: anywhere; }
+        #merchants .mw-tile-active { background: var(--sp-ok-soft); }
+        #merchants .mw-tile-active > b { color: var(--sp-ok-ink); }
+        #merchants .mw-tile-expiring { background: var(--sp-warn-soft); }
+        #merchants .mw-tile-expiring > b { color: var(--sp-warn-ink); }
+        #merchants .mw-tile-expired { background: var(--sp-err-soft); }
+        #merchants .mw-tile-expired > b { color: var(--sp-err-ink); }
+        #merchants .mw-bottom { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); margin-block-start: var(--sp-3); align-items: start; }
+        @media (min-width: 1024px) { #merchants .mw-bottom { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); } }
         #merchants .mw-kv { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-1) var(--sp-3); padding: var(--sp-2) 0; font-size: var(--sp-t-sm); border-block-end: 1px solid var(--sp-line); }
         #merchants .mw-kv:last-child { border-block-end: none; }
         #merchants .mw-kv > span { color: var(--sp-ink-2); }
@@ -65719,14 +65777,34 @@ Thank you for shopping with {store_name}!</textarea>
         #merchants .mw-bar { display: block; height: 8px; border-radius: var(--sp-r-pill); background: var(--sp-surface-3); overflow: hidden; margin-block-start: var(--sp-1); width: 100%; }
         #merchants .mw-bar > i { display: block; height: 100%; background: var(--sp-accent); }
         #merchants .mw-bar > i.mw-bar-hot { background: var(--sp-err); }
+        #merchants .mw-note-form { display: grid; gap: var(--sp-2); }
+        #merchants .mw-note-form .mw-textarea { height: 76px; min-height: 76px; max-height: 240px; }
+        #merchants .mw-note-form .mw-btn { justify-self: start; }
+        #merchants .mw-tl { list-style: none; margin: var(--sp-3) 0 0; padding: 0; }
+        #merchants .mw-tl > li { position: relative; padding-block: var(--sp-2); padding-inline-start: var(--sp-4); border-inline-start: 2px solid var(--sp-line); }
+        #merchants .mw-tl > li::before { content: ""; position: absolute; inset-inline-start: -6px; inset-block-start: 15px; width: 10px; height: 10px; border-radius: 50%; background: var(--sp-line-2); }
+        #merchants .mw-tl > li.mw-tl-note::before { background: var(--sp-accent); }
+        #merchants .mw-tl-head { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-2); align-items: baseline; font-size: var(--sp-t-sm); color: var(--sp-ink); }
+        #merchants .mw-tl p { margin: var(--sp-1) 0 0; font-size: var(--sp-t-sm); color: var(--sp-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+        #merchants .mw-moredetails { margin-block-start: var(--sp-3); }
+        #merchants .mw-moredetails > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--sp-2); font-weight: 600; color: var(--sp-ink-2); list-style: none; }
+        #merchants .mw-moredetails > summary::-webkit-details-marker { display: none; }
+        #merchants .mw-moredetails > summary::before { content: ""; width: 8px; height: 8px; border-inline-end: 2px solid currentColor; border-block-end: 2px solid currentColor; transform: rotate(-45deg); transition: transform 0.15s ease; flex: 0 0 auto; }
+        [dir="rtl"] #merchants .mw-moredetails > summary::before { transform: rotate(45deg); }
+        #merchants .mw-moredetails[open] > summary::before { transform: rotate(45deg); }
+        [dir="rtl"] #merchants .mw-moredetails[open] > summary::before { transform: rotate(-45deg); }
+        @media (prefers-reduced-motion: reduce) { #merchants .mw-moredetails > summary::before { transition: none; } }
+        #merchants .mw-grid { display: grid; grid-template-columns: 1fr; gap: var(--sp-3); }
+        @media (min-width: 1024px) { #merchants .mw-grid { grid-template-columns: 1fr 1fr; } }
         #merchants .mw-plain { list-style: none; margin: 0; padding: 0; }
         #merchants .mw-plain > li { padding: var(--sp-2) 0; border-block-end: 1px solid var(--sp-line); font-size: var(--sp-t-sm); overflow-wrap: anywhere; }
         #merchants .mw-plain > li:last-child { border-block-end: none; }
+        #merchants .mw-row-top { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; justify-content: space-between; }
+        #merchants .mw-badge { font-size: var(--sp-t-xs); font-weight: 700; padding: 2px var(--sp-2); border-radius: var(--sp-r-pill); border: 1px solid var(--sp-line-2); white-space: nowrap; background: var(--sp-surface-2); color: var(--sp-ink-2); }
+        #merchants .mw-b-green { background: var(--sp-ok-soft); color: var(--sp-ok-ink); border-color: var(--sp-ok); }
+        #merchants .mw-b-gray { background: var(--sp-surface-2); color: var(--sp-ink-2); }
         #merchants .mw-sub { font-size: var(--sp-t-xs); color: var(--sp-ink-2); }
         #merchants .mw-muted { color: var(--sp-ink-2); font-size: var(--sp-t-sm); margin: 0; }
-        #merchants .mw-note-form { display: grid; gap: var(--sp-2); margin-block-start: var(--sp-3); }
-        #merchants .mw-note-form .mw-btn { justify-self: start; }
-        #merchants .mw-placeholder { color: var(--sp-ink-2); padding: var(--sp-7) var(--sp-4); text-align: center; border: 1px dashed var(--sp-line-2); border-radius: var(--sp-r-lg); }
         #merchants .mw-spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-inline-end-color: transparent; display: inline-block; animation: mw-rot 0.8s linear infinite; vertical-align: middle; }
         @keyframes mw-rot { to { transform: rotate(360deg); } }
         @media (prefers-reduced-motion: reduce) { #merchants .mw-spin { animation: none; } }
@@ -65739,14 +65817,22 @@ Thank you for shopping with {store_name}!</textarea>
         .mw-dialog .mw-input, .mw-dialog .mw-select, .mw-dialog .mw-textarea { width: 100%; min-height: 44px; border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface); color: var(--sp-ink); padding: 0 var(--sp-3); font: inherit; font-size: var(--sp-t-md); font-weight: 400; }
         .mw-dialog .mw-textarea { min-height: 72px; padding: var(--sp-2) var(--sp-3); }
         .mw-dialog .mw-hint { font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 400; }
-        .mw-dialog fieldset { border: 1px solid var(--sp-line); border-radius: var(--sp-r-md); padding: var(--sp-2) var(--sp-3); margin: 0 0 var(--sp-3); }
-        .mw-dialog legend { font-size: var(--sp-t-sm); color: var(--sp-ink-2); font-weight: 600; padding: 0 var(--sp-1); }
-        .mw-dialog .mw-radio { display: flex; gap: var(--sp-2); align-items: center; min-height: 44px; font-size: var(--sp-t-md); }
-        .mw-dialog .mw-radio input { width: 20px; height: 20px; flex: 0 0 auto; }
+        .mw-dialog .mw-check { display: flex; gap: var(--sp-2); align-items: center; min-height: 44px; font-size: var(--sp-t-md); margin-block-end: var(--sp-2); cursor: pointer; }
+        .mw-dialog .mw-check input { width: 20px; height: 20px; flex: 0 0 auto; }
         .mw-dialog .mw-preview { border-radius: var(--sp-r-md); padding: var(--sp-3); margin-block-end: var(--sp-3); background: var(--sp-surface-2); font-size: var(--sp-t-sm); }
         .mw-dialog .mw-preview p { margin: 0; }
         .mw-dialog .mw-preview p + p { margin-block-start: var(--sp-1); }
         .mw-dialog .mw-preview .mw-danger-line { color: var(--sp-err); font-weight: 700; }
+        .mw-dialog .mw-renew { display: flex; align-items: center; gap: var(--sp-2); margin-block-end: var(--sp-3); }
+        .mw-dialog .mw-renew-col { flex: 1 1 0; min-width: 0; border-radius: var(--sp-r-md); padding: var(--sp-3); background: var(--sp-surface); border: 1px solid var(--sp-line); }
+        .mw-dialog .mw-renew-col > span { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); font-weight: 600; }
+        .mw-dialog .mw-renew-col > b { display: block; font-size: var(--sp-t-lg); margin-block-start: 2px; overflow-wrap: anywhere; }
+        .mw-dialog .mw-renew-col > small { display: block; font-size: var(--sp-t-xs); color: var(--sp-ink-2); margin-block-start: 2px; }
+        .mw-dialog .mw-renew-new { border-color: var(--sp-ok); background: var(--sp-ok-soft); }
+        .mw-dialog .mw-renew-new > b { color: var(--sp-ok-ink); }
+        .mw-dialog .mw-arrow { flex: 0 0 auto; color: var(--sp-ink-2); }
+        .mw-dialog[dir="rtl"] .mw-arrow { transform: scaleX(-1); }
+        @media (max-width: 420px) { .mw-dialog .mw-renew-col > b { font-size: var(--sp-t-md); } .mw-dialog .mw-renew-col { padding: var(--sp-2); } }
         .mw-dialog .mw-err { border-radius: var(--sp-r-md); padding: var(--sp-3); margin-block-end: var(--sp-3); background: var(--sp-err-soft); color: var(--sp-err-ink); border: 1px solid var(--sp-err); font-size: var(--sp-t-sm); }
         .mw-dialog .mw-dialog-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: flex-end; margin-block-start: var(--sp-2); }
         .mw-dialog .mw-btn { min-height: 44px; padding: 0 var(--sp-4); border-radius: var(--sp-r-md); border: 1px solid var(--sp-line-2); background: var(--sp-surface-2); color: var(--sp-ink); font: inherit; font-size: var(--sp-t-md); font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: var(--sp-2); }
@@ -65775,10 +65861,9 @@ Thank you for shopping with {store_name}!</textarea>
                 var POLL_TRIES = 20;          // x 3s = 60s for a Stripe webhook
                 var POLL_MS = 3000;
                 var state = {
-                    search: '', plan: '', status: '', sort: 'created', attention: false,
-                    offset: 0, rows: [], total: 0, loading: false, seq: 0,
-                    options: null, selected: null, detail: null, detailSeq: 0,
-                    listScroll: 0, shellReady: false
+                    search: '', display: '', offset: 0, rows: [], total: 0, counts: null,
+                    loading: false, seq: 0, countSeq: 0, options: null, selected: null, lastOpened: null,
+                    detail: null, detailSeq: 0, listScroll: 0, shellReady: false, moreOpen: false
                 };
 
                 /* ---------- language, formatting (pure) ---------- */
@@ -65804,20 +65889,6 @@ Thank you for shopping with {store_name}!</textarea>
                         .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
                 }
                 function locale() { return lang() === 'ar' ? 'ar-EG' : 'en-GB'; }
-                /* Dates are shown with time, in ONE stated zone (Cairo), never the
-                   browser's: staff work across zones and a bare date is a day
-                   off at night. */
-                function fmtWhen(v) {
-                    if (v == null || v === '') return tr('none');
-                    var d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
-                    if (isNaN(d.getTime())) return String(v);
-                    try {
-                        return new Intl.DateTimeFormat(locale(), {
-                            timeZone: 'Africa/Cairo', year: 'numeric', month: 'short', day: 'numeric',
-                            hour: '2-digit', minute: '2-digit'
-                        }).format(d) + ' ' + tr('tz_label');
-                    } catch (e) { return d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC'; }
-                }
                 function fmtMoney(cents, cur) {
                     if (cents == null || cents === '' || isNaN(Number(cents))) return tr('none');
                     var c = String(cur || 'USD').toUpperCase();
@@ -65828,56 +65899,83 @@ Thank you for shopping with {store_name}!</textarea>
                     if (n == null || n === '' || isNaN(Number(n))) return tr('none');
                     try { return new Intl.NumberFormat(locale()).format(Number(n)); } catch (e) { return String(n); }
                 }
-                /* "149", "149.5", "149,50" or Arabic-Indic digits -> cents.
-                   '' -> null (no payment). Anything else -> NaN (refused). */
-                function parseAmountToCents(raw) {
-                    var s = String(raw == null ? '' : raw).trim();
-                    if (s === '') return null;
-                    s = s.replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 0x0660); })
-                        .replace(/[۰-۹]/g, function (d) { return String(d.charCodeAt(0) - 0x06F0); })
-                        .replace(/٫/g, '.').replace(',', '.');
-                    if (!/^\d+(\.\d{1,2})?$/.test(s)) return NaN;
-                    return Math.round(parseFloat(s) * 100);
+                /* DD MMM YYYY, on the Cairo calendar: the zone every date on
+                   these screens is read in, so a period ending late at night is
+                   never shown a day off. Month names are fixed rather than
+                   taken from Intl, which writes "Sept" in some engines. */
+                var MONTHS = {
+                    en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    ar: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
+                };
+                function cairoParts(v) {
+                    var d = typeof v === 'number' ? new Date(v * 1000) : new Date(v);
+                    if (isNaN(d.getTime())) return null;
+                    try {
+                        var p = {};
+                        new Intl.DateTimeFormat('en-US', {
+                            timeZone: 'Africa/Cairo', year: 'numeric', month: 'numeric', day: 'numeric',
+                            hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+                        }).formatToParts(d).forEach(function (x) { p[x.type] = x.value; });
+                        return { y: +p.year, m: +p.month, d: +p.day, hh: p.hour, mm: p.minute };
+                    } catch (e) {
+                        return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate(),
+                            hh: String(d.getUTCHours()).padStart(2, '0'), mm: String(d.getUTCMinutes()).padStart(2, '0') };
+                    }
                 }
-                function nameMatches(typed, name) {
-                    var a = String(typed || '').trim().toLowerCase().replace(/\s+/g, ' ');
-                    var b = String(name || '').trim().toLowerCase().replace(/\s+/g, ' ');
-                    return a.length > 0 && a === b;
+                /* Arabic screens use Arabic-Indic digits everywhere (fmtNum does
+                   the same through ar-EG), so a date never mixes scripts with
+                   the day count beside it. */
+                function digits(str) {
+                    return lang() === 'ar' ? String(str).replace(/[0-9]/g, function (c) { return String.fromCharCode(0x0660 + Number(c)); }) : String(str);
+                }
+                function fmtDate(v) {
+                    if (v == null || v === '') return tr('none');
+                    var p = cairoParts(v);
+                    if (!p) return String(v);
+                    return digits((p.d < 10 ? '0' : '') + p.d) + ' ' + MONTHS[lang() === 'ar' ? 'ar' : 'en'][p.m - 1] + ' ' + digits(p.y);
+                }
+                /* A history entry needs the time as well as the day. */
+                function fmtStamp(v) {
+                    if (v == null || v === '') return tr('none');
+                    var p = cairoParts(v);
+                    if (!p) return String(v);
+                    return fmtDate(v) + ', ' + digits(p.hh + ':' + p.mm);
+                }
+                /* days_left and the pill come from the server (one definition,
+                   _staff_days_left / _staff_display_status); this only puts them
+                   into words. */
+                /* "3 days", "1 day"; in Arabic the grammatical number too
+                   (يومان, ٣ أيام, ٣٠ يوما), chosen by Intl.PluralRules. */
+                function dayCount(n) {
+                    var cat = 'other';
+                    try { cat = new Intl.PluralRules(lang() === 'ar' ? 'ar' : 'en').select(n); } catch (e) {}
+                    return tr(dict(lang())['days_' + cat] != null ? 'days_' + cat : 'days_other', { n: fmtNum(n) });
+                }
+                function daysText(n, display) {
+                    if (n == null || n === '') return display === 'none' ? tr('pill_none') : tr('dl_none');
+                    n = Number(n);
+                    if (display === 'cancelled' && n >= 0) return tr('pill_cancelled');
+                    if (n > 0) return tr('dl_left', { days: dayCount(n) });
+                    if (n === 0) return display === 'expired' ? tr('dl_ended_today') : tr('dl_today');
+                    return tr('dl_ended', { days: dayCount(-n) });
+                }
+                var PILLS = { active: 1, expiring: 1, expired: 1, cancelled: 1, none: 1 };
+                function pillKey(display) { return PILLS[display] ? display : 'none'; }
+                function pill(display, big) {
+                    var k = pillKey(display);
+                    return '<span class="mw-pill mw-pill-' + k + (big ? ' mw-pill-big' : '') + '"><i aria-hidden="true"></i>' + h(tr('pill_' + k)) + '</span>';
                 }
                 function newKey() {
                     try { if (window.crypto && crypto.randomUUID) return 'mw-' + crypto.randomUUID(); } catch (e) {}
                     return 'mw-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
                 }
 
-                var STATUS_BADGE = {
-                    active: 'mw-b-green', trialing: 'mw-b-blue', past_due: 'mw-b-amber',
-                    incomplete: 'mw-b-amber', unpaid: 'mw-b-amber', expired: 'mw-b-gray',
-                    incomplete_expired: 'mw-b-gray', canceled: 'mw-b-red', cancelled: 'mw-b-red',
-                    no_plan: 'mw-b-gray'
-                };
-                function statusBadge(s) { return STATUS_BADGE[s] || 'mw-b-gray'; }
                 function statusLabel(s) {
                     var k = s === 'cancelled' ? 'canceled' : (s || 'no_plan');
                     var v = dict(lang())['status_' + k];
                     return v || tr('status_unknown') + (s ? ' (' + s + ')' : '');
                 }
                 function sourceLabel(src) { return src ? tr('src_' + src) : tr('none'); }
-
-                /* What the list says under a merchant's name, by status. An
-                   expired or cancelled plan does not "renew". */
-                function listDateLine(row) {
-                    var st = row.sub_status || 'no_plan';
-                    if (st === 'no_plan') return tr('no_plan_line');
-                    if (st === 'canceled' || st === 'cancelled') return tr('canceled_line');
-                    if (st === 'trialing' || row.plan_slug === 'free_trial') {
-                        if (st === 'expired') return tr('expired_on', { date: fmtWhen(row.trial_ends_at || row.period_end) });
-                        return tr('trial_ends_on', { date: fmtWhen(row.trial_ends_at || row.period_end) });
-                    }
-                    if (st === 'expired' || st === 'incomplete_expired') return tr('expired_on', { date: fmtWhen(row.period_end) });
-                    if (st === 'past_due') return tr('payment_failed_on', { date: fmtWhen(row.period_end) });
-                    if (row.cancel_at_period_end) return tr('ends_on', { date: fmtWhen(row.period_end) });
-                    return tr('renews_on', { date: fmtWhen(row.period_end) });
-                }
 
                 /* State-aware action matrix (unit-tested). Who bills the plan
                    decides the path: Stripe changes go through Stripe, hand-paid
@@ -65907,10 +66005,8 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 window.__mwActionsForState = actionsFor;
-                window.__mwStatusBadge = statusBadge;
-                window.__mwListDateLine = listDateLine;
-                window.__mwParseAmount = parseAmountToCents;
-                window.__mwNameMatches = nameMatches;
+                window.__mwFmtDate = fmtDate;
+                window.__mwDaysText = daysText;
                 window.__mwFmtMoney = fmtMoney;
 
                 /* ---------- server calls ---------- */
@@ -65972,9 +66068,14 @@ Thank you for shopping with {store_name}!</textarea>
                 function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
                 /* ---------- shell, list ---------- */
+                /* Two views, never side by side: the list (every merchant, one
+                   row each: name, phone, pill, start, end, days left) and the
+                   merchant's own page. The list is sorted by urgency on the
+                   server, so what needs a renewal is always at the top. */
                 function root() { return document.getElementById('mw-root'); }
                 function isStaff() { return window.isPlatformStaff === true; }
                 function isAdmin() { return window.isPlatformStaffAdmin === true; }
+                var CHIPS = ['', 'active', 'expiring', 'expired', 'cancelled'];
 
                 window.initMerchantsTab = function () {
                     var r = root();
@@ -65983,6 +66084,7 @@ Thank you for shopping with {store_name}!</textarea>
                     if (!state.shellReady || !document.getElementById('mw-list')) renderShell();
                     loadOptions();
                     loadMerchants();
+                    loadCounts();
                     if (state.selected) openMerchant(state.selected, { keepView: true });
                 };
 
@@ -65995,66 +66097,69 @@ Thank you for shopping with {store_name}!</textarea>
                 function renderShell() {
                     var r = root();
                     r.innerHTML =
+                        '<div class="mw-view" id="mw-list-view">' +
                         '<div class="mw-head"><div><h2 class="mw-title">' + h(tr('title')) + '</h2>' +
                         '<p class="mw-subtitle">' + h(tr('subtitle')) + '</p></div>' +
                         '<button type="button" class="mw-btn" id="mw-refresh">' + h(tr('refresh')) + '</button></div>' +
                         '<div class="mw-toolbar" role="search">' +
-                        '<label class="mw-field"><span>' + h(tr('search_label')) + '</span>' +
+                        '<label class="mw-field mw-search"><span>' + h(tr('search_label')) + '</span>' +
                         '<input class="mw-input" id="mw-q" type="search" autocomplete="off" placeholder="' + h(tr('search_ph')) + '" value="' + h(state.search) + '"></label>' +
-                        '<label class="mw-field"><span>' + h(tr('plan_label')) + '</span><select class="mw-select" id="mw-plan"></select></label>' +
-                        '<label class="mw-field"><span>' + h(tr('status_label')) + '</span><select class="mw-select" id="mw-status"></select></label>' +
-                        '<label class="mw-field"><span>' + h(tr('sort_label')) + '</span><select class="mw-select" id="mw-sort">' +
-                        ['created', 'renewal', 'status'].map(function (s) {
-                            return '<option value="' + s + '"' + (state.sort === s ? ' selected' : '') + '>' + h(tr('sort_' + s)) + '</option>';
-                        }).join('') + '</select></label>' +
-                        '<button type="button" class="mw-btn mw-chip-toggle" id="mw-attn" aria-pressed="' + (state.attention ? 'true' : 'false') + '">' + h(tr('attention_filter')) + '</button>' +
                         '</div>' +
-                        '<div class="mw-layout" id="mw-layout">' +
-                        '<section class="mw-list-pane" aria-label="' + h(tr('list_label')) + '"><div id="mw-list" aria-busy="false"></div></section>' +
-                        '<section class="mw-detail-pane" id="mw-detail" aria-live="off" tabindex="-1">' +
-                        '<div class="mw-placeholder">' + h(tr('select_prompt')) + '</div></section>' +
-                        '</div>';
-                    fillFilterSelects();
+                        '<div class="mw-chips" id="mw-chips" role="group" aria-label="' + h(tr('status_label')) + '"></div>' +
+                        '<div id="mw-list" aria-busy="false"></div>' +
+                        '</div>' +
+                        '<section class="mw-view mw-detail-view" id="mw-detail" tabindex="-1" aria-labelledby="mw-detail-title" hidden></section>';
+                    renderChips();
                     var debounce = null;
                     document.getElementById('mw-q').addEventListener('input', function (e) {
                         clearTimeout(debounce);
                         var v = e.target.value;
-                        debounce = setTimeout(function () { state.search = v.trim(); state.offset = 0; loadMerchants(); }, 350);
+                        debounce = setTimeout(function () { state.search = v.trim(); state.offset = 0; loadMerchants(); loadCounts(); }, 350);
                     });
-                    document.getElementById('mw-plan').addEventListener('change', function (e) { state.plan = e.target.value; state.offset = 0; loadMerchants(); });
-                    document.getElementById('mw-status').addEventListener('change', function (e) { state.status = e.target.value; state.offset = 0; loadMerchants(); });
-                    document.getElementById('mw-sort').addEventListener('change', function (e) { state.sort = e.target.value; state.offset = 0; loadMerchants(); });
-                    document.getElementById('mw-attn').addEventListener('click', function (e) {
-                        state.attention = !state.attention;
-                        e.currentTarget.setAttribute('aria-pressed', state.attention ? 'true' : 'false');
-                        state.offset = 0; loadMerchants();
-                    });
-                    document.getElementById('mw-refresh').addEventListener('click', function () {
-                        loadMerchants();
-                        if (state.selected) openMerchant(state.selected, { keepView: true });
-                    });
+                    document.getElementById('mw-refresh').addEventListener('click', function () { loadMerchants(); loadCounts(); });
                     state.shellReady = true;
                 }
 
-                function fillFilterSelects() {
-                    var planSel = document.getElementById('mw-plan');
-                    var stSel = document.getElementById('mw-status');
-                    if (!planSel || !stSel) return;
-                    var o = state.options || { plans: [], statuses: [] };
-                    planSel.innerHTML = '<option value="">' + h(tr('all_plans')) + '</option>' +
-                        (o.plans || []).map(function (p) {
-                            return '<option value="' + h(p.slug) + '"' + (state.plan === p.slug ? ' selected' : '') + '>' + h(p.name || p.slug) + '</option>';
-                        }).join('');
-                    stSel.innerHTML = '<option value="">' + h(tr('all_statuses')) + '</option>' +
-                        (o.statuses || []).map(function (s) {
-                            return '<option value="' + h(s) + '"' + (state.status === s ? ' selected' : '') + '>' + h(statusLabel(s)) + '</option>';
-                        }).join('');
+                /* The status filter is the pill itself: tap Expiring to see
+                   everyone who needs a renewal this week. */
+                function renderChips() {
+                    var box = document.getElementById('mw-chips');
+                    if (!box) return;
+                    var c = state.counts || {};
+                    box.innerHTML = CHIPS.map(function (k) {
+                        var label = k ? tr('pill_' + k) : tr('chip_all');
+                        var n = k ? c[k] : c.all;
+                        return '<button type="button" class="mw-chip' + (k ? ' mw-chip-' + k : '') + '" data-d="' + k + '" aria-pressed="' + (state.display === k ? 'true' : 'false') + '">' +
+                            (k ? '<i aria-hidden="true"></i>' : '') + '<span>' + h(label) + '</span>' + (n != null ? '<b>' + h(fmtNum(n)) + '</b>' : '') + '</button>';
+                    }).join('');
+                    box.querySelectorAll('.mw-chip').forEach(function (b) {
+                        b.addEventListener('click', function () {
+                            state.display = b.getAttribute('data-d');
+                            state.offset = 0;
+                            renderChips();
+                            loadMerchants();
+                        });
+                    });
                 }
 
-                async function loadOptions() {
-                    if (state.options) { fillFilterSelects(); return; }
-                    try { state.options = await rpc('staff_merchant_filter_options', {}); fillFilterSelects(); }
-                    catch (e) { /* filters stay at "All": the list still works */ }
+                async function loadCounts() {
+                    var mySeq = ++state.countSeq;
+                    var q = state.search || null;
+                    try {
+                        var res = await Promise.all(CHIPS.map(function (k) {
+                            return rpc('staff_list_merchants_v2', { p_search: q, p_display: k || null, p_limit: 1, p_offset: 0, p_sort: 'urgency' });
+                        }));
+                        if (mySeq !== state.countSeq) return;
+                        var counts = {};
+                        CHIPS.forEach(function (k, i) { counts[k || 'all'] = res[i] && res[i].length ? Number(res[i][0].total_count || 0) : 0; });
+                        state.counts = counts;
+                        renderChips();
+                    } catch (e) { /* the chips work without counts */ }
+                }
+
+                function loadOptions() {
+                    if (state.options) return;
+                    rpc('staff_merchant_filter_options', {}).then(function (o) { state.options = o; }).catch(function () {});
                 }
 
                 function skeleton(n) {
@@ -66071,10 +66176,9 @@ Thank you for shopping with {store_name}!</textarea>
                     list.setAttribute('aria-busy', 'true');
                     if (!state.rows.length) list.innerHTML = skeleton(5);
                     try {
-                        var rows = await rpc('staff_list_merchants', {
-                            p_search: state.search || null, p_plan_slug: state.plan || null,
-                            p_status: state.status || null, p_limit: PAGE, p_offset: state.offset,
-                            p_sort: state.sort, p_attention: state.attention
+                        var rows = await rpc('staff_list_merchants_v2', {
+                            p_search: state.search || null, p_display: state.display || null,
+                            p_limit: PAGE, p_offset: state.offset, p_sort: 'urgency'
                         });
                         if (mySeq !== state.seq) return;          // a newer search won
                         state.rows = rows || [];
@@ -66092,21 +66196,33 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                 }
 
+                function phoneHtml(p) {
+                    return p ? '<span dir="ltr" class="mw-phone">' + h(p) + '</span>' : '<span class="mw-sub">' + h(tr('no_phone')) + '</span>';
+                }
+                /* Plan, plus the one status word the pill does not carry. */
+                function planLine(planName, status, source) {
+                    var parts = [planName || tr('no_plan_line')];
+                    if (status === 'trialing' || status === 'past_due' || status === 'incomplete') parts.push(statusLabel(status));
+                    if (source) parts.push(sourceLabel(source));
+                    return parts.join(', ');
+                }
+
                 function renderList() {
                     var list = document.getElementById('mw-list');
                     if (!list) return;
                     if (!state.rows.length) { list.innerHTML = '<div class="mw-empty">' + h(tr('empty')) + '</div>'; return; }
-                    var html = '<ul class="mw-list">' + state.rows.map(function (r, i) {
-                        var st = r.sub_status || 'no_plan';
-                        return '<li><button type="button" class="mw-row" data-i="' + i + '"' + (state.selected === r.org_id ? ' aria-current="true"' : '') + '>' +
-                            '<span class="mw-row-top"><span class="mw-name">' + h(r.org_name || r.org_id) + '</span>' +
-                            '<span class="mw-badges"><span class="mw-badge ' + statusBadge(st) + '">' + h(statusLabel(st)) + '</span>' +
-                            (r.plan_name ? '<span class="mw-badge">' + h(r.plan_name) + '</span>' : '') +
-                            (r.billing_source ? '<span class="mw-badge">' + h(sourceLabel(r.billing_source)) + '</span>' : '') +
-                            (r.needs_attention ? '<span class="mw-badge mw-b-amber">' + h(tr('needs_attention')) + '</span>' : '') +
-                            '</span></span>' +
-                            '<span class="mw-meta">' + h(r.owner_email || '') + '</span>' +
-                            '<span class="mw-meta">' + h(listDateLine(r)) + ', ' + h(tr('channels_count', { n: fmtNum(r.channel_count || 0) })) + '</span>' +
+                    var html = '<div class="mw-thead" aria-hidden="true"><span>' + h(tr('col_name')) + '</span><span>' + h(tr('col_phone')) + '</span><span>' +
+                        h(tr('col_status')) + '</span><span>' + h(tr('col_start')) + '</span><span>' + h(tr('col_end')) + '</span><span>' + h(tr('col_days')) + '</span></div>';
+                    html += '<ul class="mw-list">' + state.rows.map(function (r, i) {
+                        var disp = pillKey(r.display_status);
+                        return '<li><button type="button" class="mw-row" data-i="' + i + '" data-org="' + h(r.org_id) + '">' +
+                            '<span class="mw-c mw-c-name"><span class="mw-name">' + h(r.org_name || r.org_id) + '</span>' +
+                            '<span class="mw-sub">' + h(planLine(r.plan_name, r.sub_status, r.billing_source)) + '</span></span>' +
+                            '<span class="mw-c mw-c-phone"><span class="mw-k">' + h(tr('col_phone')) + '</span>' + phoneHtml(r.owner_phone) + '</span>' +
+                            '<span class="mw-c mw-c-status">' + pill(disp) + '</span>' +
+                            '<span class="mw-c"><span class="mw-k">' + h(tr('col_start')) + '</span>' + h(fmtDate(r.period_start)) + '</span>' +
+                            '<span class="mw-c"><span class="mw-k">' + h(tr('col_end')) + '</span>' + h(fmtDate(r.period_end)) + '</span>' +
+                            '<span class="mw-c mw-c-days mw-days-' + disp + '"><span class="mw-k">' + h(tr('col_days')) + '</span>' + h(daysText(r.days_left, disp)) + '</span>' +
                             '</button></li>';
                     }).join('') + '</ul>';
                     var from = state.offset + 1, to = state.offset + state.rows.length;
@@ -66132,37 +66248,35 @@ Thank you for shopping with {store_name}!</textarea>
                     }
                     return document.scrollingElement || document.documentElement;
                 }
-                function narrow() { return !(window.matchMedia && window.matchMedia('(min-width: 1024px)').matches); }
 
                 async function openMerchant(orgId, opts) {
                     opts = opts || {};
-                    var layout = document.getElementById('mw-layout');
+                    var lv = document.getElementById('mw-list-view');
                     var det = document.getElementById('mw-detail');
-                    if (!layout || !det) return;
-                    if (!opts.keepView && narrow()) {
-                        var sp = scrollParent(layout);
+                    if (!lv || !det) return;
+                    if (!opts.keepView && !lv.hidden) {
+                        var sp = scrollParent(lv);
                         state.listScroll = sp ? sp.scrollTop : 0;
                     }
                     if (state.selected !== orgId) state.status_msg = null;
                     state.selected = orgId;
-                    layout.classList.add('mw-show-detail');
-                    document.querySelectorAll('#mw-list .mw-row').forEach(function (b) {
-                        var i = +b.getAttribute('data-i');
-                        if (state.rows[i] && state.rows[i].org_id === orgId) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
-                    });
+                    state.lastOpened = orgId;
+                    lv.hidden = true;
+                    det.hidden = false;
                     var mySeq = ++state.detailSeq;
                     if (!state.detail || !state.detail.org || state.detail.org.id !== orgId) {
-                        det.innerHTML = '<div class="mw-skel" style="height:48px"></div><p class="mw-muted" role="status">' + h(tr('loading_detail')) + '</p>';
+                        det.innerHTML = backButton() + '<div class="mw-skel" style="height:96px"></div><p class="mw-muted" role="status">' + h(tr('loading_detail')) + '</p>';
+                        wireBack();
                     }
-                    if (!opts.keepView && narrow()) { var sp2 = scrollParent(layout); if (sp2) sp2.scrollTop = 0; }
+                    if (!opts.keepView) { var sp2 = scrollParent(det); if (sp2) sp2.scrollTop = 0; }
                     try {
                         var d = await rpc('staff_get_merchant_detail', { p_org_id: orgId });
-                        if (mySeq !== state.detailSeq) return;
+                        if (mySeq !== state.detailSeq || state.selected !== orgId) return;
                         state.detail = d;
                         renderDetail();
                         if (!opts.keepView) {
                             try { rpc('staff_log_workspace_action', { p_org_id: orgId, p_action: 'merchant.view', p_details: {} }).catch(function () {}); } catch (e0) {}
-                            try { det.focus({ preventScroll: !narrow() }); } catch (e1) {}
+                            try { det.focus({ preventScroll: true }); } catch (e1) {}
                         }
                     } catch (e) {
                         if (mySeq !== state.detailSeq) return;
@@ -66180,11 +66294,15 @@ Thank you for shopping with {store_name}!</textarea>
                     var b = document.getElementById('mw-back');
                     if (!b) return;
                     b.addEventListener('click', function () {
-                        var layout = document.getElementById('mw-layout');
-                        if (layout) layout.classList.remove('mw-show-detail');
-                        var sp = scrollParent(layout);
+                        var lv = document.getElementById('mw-list-view');
+                        var det = document.getElementById('mw-detail');
+                        state.selected = null;
+                        state.detailSeq++;
+                        if (det) det.hidden = true;
+                        if (lv) lv.hidden = false;
+                        var sp = scrollParent(lv);
                         if (sp) sp.scrollTop = state.listScroll || 0;
-                        var cur = document.querySelector('#mw-list .mw-row[aria-current="true"]');
+                        var cur = state.lastOpened && document.querySelector('#mw-list .mw-row[data-org="' + state.lastOpened + '"]');
                         if (cur) { try { cur.focus({ preventScroll: true }); } catch (e) {} }
                     });
                 }
@@ -66205,6 +66323,62 @@ Thank you for shopping with {store_name}!</textarea>
                     return '<div class="mw-meter"><div class="mw-meter-top"><span>' + h(label) + '</span><b>' + h(text) + '</b></div>' + bar + (extraHtml || '') + '</div>';
                 }
                 function roleLabel(r) { var v = dict(lang())['role_' + r]; return v || r || ''; }
+                function tile(label, value, sub, cls) {
+                    return '<div class="mw-tile' + (cls ? ' ' + cls : '') + '"><span>' + h(label) + '</span><b>' + h(value) + '</b>' + (sub ? '<small>' + h(sub) + '</small>' : '') + '</div>';
+                }
+
+                /* Notes and the merchant's history, newest first, in one list.
+                   A staff renewal is shown with the end date it produced. */
+                var TL_HIDDEN = { 'staff.note.add': 1, 'staff.merchant.view': 1, 'staff.subscription.open_stripe': 1 };
+                function tlLabel(e) {
+                    if (e.kind === 'staff_action') {
+                        var k = 'tla_' + String(e.label || '').replace(/^staff\./, '').replace(/[^a-z_]/g, '_');
+                        var v = dict(lang())[k] || dict('en')[k];
+                        return v || String(e.label || '').replace(/^staff\./, '');
+                    }
+                    if (e.kind === 'manual_renewal') return tr('kind_manual_renewal');
+                    return tr('kind_' + e.kind) + (e.label ? ': ' + e.label : '') + (e.state && e.kind === 'webhook' ? ' (' + e.state + ')' : '');
+                }
+                function historyItems(d) {
+                    var items = (d.notes || []).map(function (n) {
+                        return { at: n.created_at, note: true, title: tr('kind_note'), body: n.body, who: n.author_email };
+                    });
+                    var renewals = (d.timeline || []).filter(function (e) { return e.kind === 'manual_renewal'; });
+                    var used = {};
+                    (d.timeline || []).forEach(function (e) {
+                        if (e.kind === 'manual_renewal') return;
+                        if (e.kind === 'staff_action' && TL_HIDDEN[e.label]) return;
+                        var item = { at: e.at, title: tlLabel(e), who: e.actor_email };
+                        if (e.label === 'staff.subscription.renew') {
+                            var t = Date.parse(e.at);
+                            renewals.forEach(function (m, i) {
+                                if (!used[i] && Math.abs(Date.parse(m.at) - t) < 120000) { used[i] = 1; item.body = tr('tl_new_end', { date: fmtDate(m.period_end) }); }
+                            });
+                        }
+                        items.push(item);
+                    });
+                    renewals.forEach(function (m, i) {
+                        if (!used[i]) items.push({ at: m.at, title: tlLabel(m), body: m.period_end ? tr('tl_new_end', { date: fmtDate(m.period_end) }) : '' });
+                    });
+                    return items.sort(function (a, b) { return Date.parse(b.at) - Date.parse(a.at); });
+                }
+
+                function serviceLine(sv) {
+                    sv = sv || {};
+                    var text = sv.state === 'grace' ? tr('service_grace', { date: fmtDate(sv.grace_ends_at) })
+                        : sv.state === 'stopped' ? tr('service_stopped')
+                        : sv.state === 'no_plan' ? tr('service_no_plan') : tr('service_active');
+                    var cls = sv.state === 'active' ? 'active' : sv.state === 'grace' ? 'expiring' : 'expired';
+                    return '<p class="mw-agent mw-agent-' + cls + '"><i aria-hidden="true"></i><span><strong>' + h(tr('service_title')) + ':</strong> ' + h(text) + '</span></p>';
+                }
+                /* Why Renew is not on the page, when it is not. */
+                function renewAbsentReason(s, acts, admin) {
+                    if (!admin || acts.indexOf('renew') !== -1) return '';
+                    if (s.billing_source === 'stripe') return tr('renew_by_stripe');
+                    if (s.billing_source === 'shopify') return tr('renew_by_shopify');
+                    if (s.plan_slug === 'free_trial' || s.plan_slug === 'payg') return tr('renew_not_plan');
+                    return '';
+                }
 
                 function renderDetail() {
                     var det = document.getElementById('mw-detail');
@@ -66212,59 +66386,52 @@ Thank you for shopping with {store_name}!</textarea>
                     if (!det || !d || !d.org) return;
                     var s = d.subscription || {};
                     var st = s.status || 'no_plan';
+                    var disp = pillKey(s.display_status || d.display_status);
                     var admin = isAdmin() && !(d.viewer && d.viewer.is_admin === false);
                     var acts = actionsFor(s, admin);
+                    var o = d.owner || {};
+                    var phone = o.phone || ((d.channels || []).filter(function (c) { return c.phone; })[0] || {}).phone || null;
                     var html = backButton();
-                    html += '<div class="mw-detail-head"><h3 id="mw-detail-title">' + h(d.org.name || d.org.id) + '</h3>' +
-                        '<span class="mw-badges"><span class="mw-badge ' + statusBadge(st) + '">' + h(statusLabel(st)) + '</span>' +
-                        (s.billing_source ? '<span class="mw-badge">' + h(sourceLabel(s.billing_source)) + '</span>' : '') + '</span></div>';
+
+                    // Top: who this is and where they stand.
+                    var facts = '<li><span class="mw-k">' + h(tr('col_phone')) + '</span>' + (phone ? '<a href="tel:' + h(String(phone).replace(/[^\d+]/g, '')) + '" dir="ltr">' + h(phone) + '</a>' : h(tr('no_phone'))) + '</li>' +
+                        (o.email ? '<li><span class="mw-k">' + h(tr('p_email')) + '</span><a href="mailto:' + h(o.email) + '" dir="ltr">' + h(o.email) + '</a></li>' : '') +
+                        (o.name ? '<li><span class="mw-k">' + h(tr('p_owner')) + '</span>' + h(o.name) + '</li>' : '');
+                    var primary = '';
+                    if (acts.indexOf('renew') !== -1) primary += '<button type="button" class="mw-btn mw-btn-primary" data-act="renew">' + h(tr('act_renew')) + '</button>';
+                    if (acts.indexOf('cancel') !== -1) primary += '<button type="button" class="mw-btn mw-btn-danger-quiet" data-act="cancel">' + h(tr('act_cancel_short')) + '</button>';
+                    var moreLabels = { change: tr('act_change'), resume: tr('act_resume'), extend: tr('act_extend'), expire: tr('act_expire'), refresh: tr('refresh') };
+                    var more = ['change', 'resume', 'extend', 'expire', 'refresh'].filter(function (a) { return acts.indexOf(a) !== -1; }).map(function (a) {
+                        return '<button type="button" class="mw-btn" data-act="' + a + '">' + h(moreLabels[a]) + '</button>';
+                    }).join('');
+                    html += '<header class="mw-top">' +
+                        '<div class="mw-top-main"><div class="mw-top-title"><h3 id="mw-detail-title">' + h(d.org.name || d.org.id) + '</h3>' + pill(disp, true) + '</div>' +
+                        '<ul class="mw-facts">' + facts + '</ul>' + serviceLine(d.service) +
+                        (renewAbsentReason(s, acts, admin) ? '<p class="mw-muted mw-gap">' + h(renewAbsentReason(s, acts, admin)) + '</p>' : '') +
+                        (!admin ? '<p class="mw-muted mw-gap">' + h(tr('act_readonly')) + '</p>' : '') + '</div>' +
+                        '<div class="mw-actions" role="group" aria-label="' + h(tr('act_label')) + '">' + primary +
+                        (more ? '<details class="mw-more"><summary class="mw-btn">' + h(tr('more_actions')) + '</summary><div class="mw-more-menu">' + more + '</div></details>' : '') +
+                        '</div></header>';
                     html += '<div id="mw-act-status" role="status" aria-live="polite">' + (state.status_msg || '') + '</div>';
                     (d.attention_reasons || []).forEach(function (r) {
+                        if (r === 'expiring_soon') return;           // the pill already says it
                         html += '<div class="mw-alert mw-alert-warn"><p>' + h(tr('reason_' + r)) + '</p></div>';
                     });
 
-                    // The one question support is asked first: is the agent answering?
-                    var sv = d.service || {};
-                    var svText = sv.state === 'grace' ? tr('service_grace', { date: fmtWhen(sv.grace_ends_at) })
-                        : sv.state === 'stopped' ? tr('service_stopped')
-                        : sv.state === 'no_plan' ? tr('service_no_plan') : tr('service_active');
-                    var svCls = sv.state === 'active' ? 'mw-alert-ok' : sv.state === 'grace' ? 'mw-alert-warn' : 'mw-alert-err';
-                    html += '<div class="mw-alert ' + svCls + '"><p><strong>' + h(tr('service_title')) + ':</strong> ' + h(svText) + '</p></div>';
+                    // Middle: the subscription in four numbers.
+                    var planSub = [st !== 'active' && st !== 'no_plan' ? statusLabel(st) : '', sourceLabel(s.billing_source)].filter(Boolean).join(', ');
+                    html += '<section class="mw-sec mw-subcard" aria-labelledby="mw-sub-h"><h4 id="mw-sub-h">' + h(tr('sec_subscription')) + '</h4><div class="mw-tiles">' +
+                        tile(tr('col_start'), fmtDate(s.period_start)) +
+                        tile(tr('col_end'), fmtDate(s.period_end), s.cancel_at_period_end ? tr('ends_not_renews') : '') +
+                        tile(tr('col_days'), daysText(s.days_left, disp), '', 'mw-tile-' + disp) +
+                        tile(tr('f_plan'), s.plan_name || tr('no_plan_line'), planSub) +
+                        '</div>' + (s.grace_ends_at ? '<p class="mw-muted mw-gap">' + h(tr('f_grace_ends')) + ': ' + h(fmtDate(s.grace_ends_at)) + '</p>' : '') + '</section>';
 
-                    html += '<div class="mw-actions" role="group" aria-label="' + h(tr('act_label')) + '">';
-                    var labels = { refresh: tr('refresh'), renew: tr('act_renew'), change: tr('act_change'), cancel: tr('act_cancel'),
-                        resume: tr('act_resume'), expire: tr('act_expire'), extend: tr('act_extend') };
-                    acts.forEach(function (a) {
-                        if (a === 'stripe' || a === 'note') return;
-                        var cls = a === 'renew' ? 'mw-btn mw-btn-primary' : (a === 'cancel' || a === 'expire') ? 'mw-btn mw-btn-quiet' : 'mw-btn';
-                        html += '<button type="button" class="' + cls + '" data-act="' + a + '">' + h(labels[a]) + '</button>';
-                    });
-                    html += '</div>';
-                    if (!admin) html += '<p class="mw-muted">' + h(tr('act_readonly')) + '</p>';
-
-                    html += '<div class="mw-grid">';
-                    // Subscription
-                    var price = (d.prices || []).filter(function (p) {
-                        return (!s.currency || String(p.currency).toUpperCase() === String(s.currency).toUpperCase()) &&
-                            (!s.billing_interval || p.billing_interval === s.billing_interval);
-                    })[0];
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_subscription')) + '</h4>' +
-                        kvt(tr('f_plan'), s.plan_name ? s.plan_name + ' (' + s.plan_slug + ')' : tr('no_plan_line')) +
-                        kvt(tr('f_status'), statusLabel(st)) +
-                        kvt(tr('f_source'), sourceLabel(s.billing_source)) +
-                        kvt(tr('f_period'), s.period_start || s.period_end ? tr('period_range', { start: fmtWhen(s.period_start), end: fmtWhen(s.period_end) }) : tr('none')) +
-                        (s.trial_ends_at ? kvt(tr('f_trial_ends'), fmtWhen(s.trial_ends_at)) : kvt(tr('f_renewal'), fmtWhen(s.period_end))) +
-                        kvt(tr('f_cape'), s.cancel_at_period_end ? tr('yes') : tr('no')) +
-                        (s.grace_ends_at ? kvt(tr('f_grace_ends'), fmtWhen(s.grace_ends_at)) : '') +
-                        (price ? kvt(tr('f_price'), fmtMoney(price.unit_amount_cents, price.currency) + ' ' + tr(price.billing_interval === 'year' ? 'per_year' : 'per_month')) : '') +
-                        kvt(tr('f_since'), fmtWhen(d.org.created_at)) +
-                        kv(tr('f_workspace_id'), '<span class="mw-mono">' + h(d.org.id) + '</span>') + '</section>';
-
-                    // Usage and limits
+                    // Bottom: usage, then notes and history.
                     var u = d.usage || {};
                     var lim = d.limits || {};
                     var c = d.counts || {};
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_usage')) + '</h4>' +
+                    var usage = '<section class="mw-sec"><h4>' + h(tr('sec_usage')) + '</h4>' +
                         meterRow(tr('u_coins'), u.coins_used, u.coins_total, '<span class="mw-sub" style="display:block">' + h(tr('u_remaining', { n: fmtNum(u.coins_remaining) })) +
                             (Number(u.coins_topup || 0) > 0 ? ', ' + h(tr('u_topup', { n: fmtNum(u.coins_topup) })) : '') + '</span>') +
                         meterRow(tr('u_conversations'), u.conversations_used, lim.conversations_limit) +
@@ -66272,59 +66439,53 @@ Thank you for shopping with {store_name}!</textarea>
                         meterRow(tr('u_leads'), c.leads, lim.lead_limit) +
                         (s.plan_slug === 'free_trial' ? meterRow(tr('u_messages'), u.messages_used, lim.messages_limit) : '') +
                         '</section>';
+                    var items = historyItems(d);
+                    var notes = '<section class="mw-sec"><h4>' + h(tr('notes_timeline')) + '</h4>' +
+                        (acts.indexOf('note') !== -1 ? '<form class="mw-note-form" id="mw-note-form"><label class="mw-field"><span class="mw-vh">' + h(tr('notes_add_label')) + '</span>' +
+                            '<textarea class="mw-textarea" id="mw-note-body" maxlength="4000" rows="2" placeholder="' + h(tr('notes_ph')) + '"></textarea></label>' +
+                            '<button type="submit" class="mw-btn mw-btn-primary" id="mw-note-add">' + h(tr('notes_add')) + '</button><div id="mw-note-err" role="alert"></div></form>' : '') +
+                        (items.length ? '<ul class="mw-tl">' + items.map(function (it) {
+                            return '<li' + (it.note ? ' class="mw-tl-note"' : '') + '><div class="mw-tl-head"><strong>' + h(it.title) + '</strong><span class="mw-sub">' + h(fmtStamp(it.at)) +
+                                (it.who ? ', ' + h(tr('tl_by', { email: it.who })) : '') + '</span></div>' + (it.body ? '<p>' + h(it.body) + '</p>' : '') + '</li>';
+                        }).join('') + '</ul>' : '<p class="mw-muted mw-gap">' + h(tr('tl_none')) + '</p>') + '</section>';
+                    html += '<div class="mw-bottom">' + usage + notes + '</div>';
 
-                    // Activity
+                    // Everything else stays one click away, folded.
                     var a = d.activity || {};
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_activity')) + '</h4>' +
-                        kvt(tr('a_last_inbound'), a.last_inbound_at ? fmtWhen(a.last_inbound_at) : tr('a_never')) +
-                        kvt(tr('a_last_ai'), a.last_ai_reply_at ? fmtWhen(a.last_ai_reply_at) : tr('a_never')) +
-                        kvt(tr('a_last_human'), a.last_human_reply_at ? fmtWhen(a.last_human_reply_at) : tr('a_never')) + '</section>';
-
-                    // Channels
+                    var more2 = '<section class="mw-sec"><h4>' + h(tr('sec_activity')) + '</h4>' +
+                        kvt(tr('a_last_inbound'), a.last_inbound_at ? fmtStamp(a.last_inbound_at) : tr('a_never')) +
+                        kvt(tr('a_last_ai'), a.last_ai_reply_at ? fmtStamp(a.last_ai_reply_at) : tr('a_never')) +
+                        kvt(tr('a_last_human'), a.last_human_reply_at ? fmtStamp(a.last_human_reply_at) : tr('a_never')) + '</section>';
                     var ch = (d.channels || []).map(function (x) {
                         var lines = [];
                         if (x.webhook_ok === false && x.webhook_error) lines.push(tr('ch_problem', { error: x.webhook_error }));
                         else if (x.webhook_ok === true) lines.push(tr('ch_receiving'));
-                        if (x.last_inbound_at) lines.push(tr('ch_last_inbound', { date: fmtWhen(x.last_inbound_at) }));
-                        if (x.token_expires_at) lines.push(tr('ch_token_expires', { date: fmtWhen(x.token_expires_at) }));
-                        if (x.last_disconnect_reason) lines.push(tr('ch_disconnected', { date: fmtWhen(x.last_disconnect_at), reason: x.last_disconnect_reason }));
+                        if (x.last_inbound_at) lines.push(tr('ch_last_inbound', { date: fmtStamp(x.last_inbound_at) }));
+                        if (x.token_expires_at) lines.push(tr('ch_token_expires', { date: fmtDate(x.token_expires_at) }));
+                        if (x.last_disconnect_reason) lines.push(tr('ch_disconnected', { date: fmtDate(x.last_disconnect_at), reason: x.last_disconnect_reason }));
                         return '<li><span class="mw-row-top"><strong>' + h(x.platform) + '</strong><span class="mw-badge ' + (x.is_active ? 'mw-b-green' : 'mw-b-gray') + '">' +
                             h(x.is_active ? tr('ch_active') : tr('ch_off')) + '</span></span>' +
                             '<span class="mw-sub" style="display:block">' + h(x.account_name || '') + '</span>' +
                             lines.map(function (l) { return '<span class="mw-sub" style="display:block">' + h(l) + '</span>'; }).join('') + '</li>';
                     }).join('');
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_channels')) + '</h4>' + (ch ? '<ul class="mw-plain">' + ch + '</ul>' : '<p class="mw-muted">' + h(tr('ch_none')) + '</p>') + '</section>';
-
-                    // Owner and team
-                    var o = d.owner || null;
-                    var people = '';
-                    if (o) {
-                        people += kvt(o.by_role ? tr('p_owner') : tr('p_owner_guess'), o.name || o.email) +
-                            kv(tr('p_email'), o.email ? '<span class="mw-mono">' + h(o.email) + '</span>' : h(tr('none'))) +
-                            kv(tr('p_phone'), o.phone ? '<span class="mw-mono">' + h(o.phone) + '</span>' : h(tr('none'))) +
-                            kvt(tr('p_language'), o.language === 'ar' ? tr('lang_ar') : tr('lang_en'));
-                    }
+                    more2 += '<section class="mw-sec"><h4>' + h(tr('sec_channels')) + '</h4>' + (ch ? '<ul class="mw-plain">' + ch + '</ul>' : '<p class="mw-muted">' + h(tr('ch_none')) + '</p>') + '</section>';
                     var mem = (d.members || []).map(function (m) {
                         return '<li><strong>' + h(m.name || m.email || '') + '</strong> <span class="mw-badge">' + h(roleLabel(m.role)) + '</span>' +
                             '<span class="mw-sub" style="display:block"><span class="mw-mono">' + h(m.email || '') + '</span>' + (m.phone ? ', <span class="mw-mono">' + h(m.phone) + '</span>' : '') + '</span></li>';
                     }).join('');
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_people')) + '</h4>' + (people || '<p class="mw-muted">' + h(tr('none')) + '</p>') +
-                        (mem ? '<p class="mw-label" style="margin:12px 0 0">' + h(tr('p_members')) + '</p><ul class="mw-plain">' + mem + '</ul>' : '') + '</section>';
-
-                    // Payments
+                    more2 += '<section class="mw-sec"><h4>' + h(tr('sec_people')) + '</h4>' +
+                        (o.email ? kvt(tr('p_language'), o.language === 'ar' ? tr('lang_ar') : tr('lang_en')) : '') +
+                        (mem ? '<ul class="mw-plain">' + mem + '</ul>' : '<p class="mw-muted">' + h(tr('none')) + '</p>') + '</section>';
                     var pays = (d.payments || []).map(function (p) {
                         return '<li><strong>' + h(fmtMoney(p.amount_cents, p.currency)) + '</strong> <span class="mw-badge">' + h(p.status || '') + '</span>' +
-                            '<span class="mw-sub" style="display:block">' + h(fmtWhen(p.recorded_at)) + ', ' + h(p.source || '') + (p.plan_slug ? ', ' + h(p.plan_slug) : '') + '</span>' +
-                            (p.period_start ? '<span class="mw-sub" style="display:block">' + h(tr('period_range', { start: fmtWhen(p.period_start), end: fmtWhen(p.period_end) })) + '</span>' : '') + '</li>';
+                            '<span class="mw-sub" style="display:block">' + h(fmtDate(p.recorded_at)) + ', ' + h(p.source || '') + (p.plan_slug ? ', ' + h(p.plan_slug) : '') + '</span>' +
+                            (p.period_start ? '<span class="mw-sub" style="display:block">' + h(tr('period_range', { start: fmtDate(p.period_start), end: fmtDate(p.period_end) })) + '</span>' : '') + '</li>';
                     }).join('');
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_payments')) + '</h4>' + (pays ? '<ul class="mw-plain">' + pays + '</ul>' : '<p class="mw-muted">' + h(tr('pay_none')) + '</p>') + '</section>';
-
-                    // Top ups
+                    more2 += '<section class="mw-sec"><h4>' + h(tr('sec_payments')) + '</h4>' + (pays ? '<ul class="mw-plain">' + pays + '</ul>' : '<p class="mw-muted">' + h(tr('pay_none')) + '</p>') + '</section>';
                     var tops = (d.topups || []).map(function (t) {
-                        return '<li>' + h(tr('top_line', { coins: fmtNum(t.coins), source: t.source || '' })) + '<span class="mw-sub" style="display:block">' + h(fmtWhen(t.created_at)) + '</span></li>';
+                        return '<li>' + h(tr('top_line', { coins: fmtNum(t.coins), source: t.source || '' })) + '<span class="mw-sub" style="display:block">' + h(fmtDate(t.created_at)) + '</span></li>';
                     }).join('');
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_topups')) + '</h4>' + (tops ? '<ul class="mw-plain">' + tops + '</ul>' : '<p class="mw-muted">' + h(tr('top_none')) + '</p>') + '</section>';
-
+                    more2 += '<section class="mw-sec"><h4>' + h(tr('sec_topups')) + '</h4>' + (tops ? '<ul class="mw-plain">' + tops + '</ul>' : '<p class="mw-muted">' + h(tr('top_none')) + '</p>') + '</section>';
                     // Stripe: link targets only, nothing is fetched from Stripe here.
                     var stripeHtml = '';
                     if (s.stripe_subscription_id) {
@@ -66333,39 +66494,34 @@ Thank you for shopping with {store_name}!</textarea>
                     if (s.stripe_customer_id) {
                         stripeHtml += kv(tr('st_cus_id'), '<a class="mw-mono" data-stripe-link href="https://dashboard.stripe.com/customers/' + encodeURIComponent(s.stripe_customer_id) + '" target="_blank" rel="noopener noreferrer">' + h(s.stripe_customer_id) + '</a>');
                     }
-                    html += '<section class="mw-sec"><h4>' + h(tr('sec_stripe')) + '</h4>' + (stripeHtml || '<p class="mw-muted">' + h(tr('st_none')) + '</p>') + '</section>';
-
-                    // Notes
-                    var notes = (d.notes || []).map(function (n) {
-                        return '<li>' + h(n.body) + '<span class="mw-sub" style="display:block">' + h(fmtWhen(n.created_at)) + (n.author_email ? ', ' + h(tr('tl_by', { email: n.author_email })) : '') + '</span></li>';
-                    }).join('');
-                    html += '<section class="mw-sec mw-sec-wide"><h4>' + h(tr('sec_notes')) + '</h4>' +
-                        (notes ? '<ul class="mw-plain">' + notes + '</ul>' : '<p class="mw-muted">' + h(tr('notes_none')) + '</p>') +
-                        (acts.indexOf('note') !== -1 ? '<form class="mw-note-form" id="mw-note-form"><label class="mw-field"><span>' + h(tr('notes_add_label')) + '</span>' +
-                            '<textarea class="mw-textarea" id="mw-note-body" maxlength="4000" placeholder="' + h(tr('notes_ph')) + '"></textarea></label>' +
-                            '<button type="submit" class="mw-btn">' + h(tr('notes_add')) + '</button><div id="mw-note-err"></div></form>' : '') + '</section>';
-
-                    // Timeline
-                    var tl = (d.timeline || []).map(function (e) {
-                        var label = e.kind === 'staff_action' ? String(e.label || '').replace(/^staff\./, '') : (e.label || '');
-                        return '<li><strong>' + h(tr('kind_' + e.kind)) + '</strong>: ' + h(label) + (e.state && e.kind === 'webhook' ? ' (' + h(e.state) + ')' : '') +
-                            '<span class="mw-sub" style="display:block">' + h(fmtWhen(e.at)) + (e.actor_email ? ', ' + h(tr('tl_by', { email: e.actor_email })) : '') + '</span></li>';
-                    }).join('');
-                    html += '<section class="mw-sec mw-sec-wide"><h4>' + h(tr('sec_timeline')) + '</h4>' + (tl ? '<ul class="mw-plain">' + tl + '</ul>' : '<p class="mw-muted">' + h(tr('tl_none')) + '</p>') + '</section>';
-                    html += '</div>';
+                    more2 += '<section class="mw-sec"><h4>' + h(tr('sec_stripe')) + '</h4>' + (stripeHtml || '<p class="mw-muted">' + h(tr('st_none')) + '</p>') +
+                        kv(tr('f_workspace_id'), '<span class="mw-mono">' + h(d.org.id) + '</span>') + kvt(tr('f_since'), fmtDate(d.org.created_at)) + '</section>';
+                    html += '<details class="mw-moredetails"' + (state.moreOpen ? ' open' : '') + '><summary>' + h(tr('more_details')) + '</summary><div class="mw-grid">' + more2 + '</div></details>';
 
                     det.innerHTML = html;
                     wireBack();
                     det.querySelectorAll('[data-act]').forEach(function (b) {
-                        b.addEventListener('click', function () { doAction(b.getAttribute('data-act'), b); });
+                        b.addEventListener('click', function () {
+                            var dd = b.closest('details.mw-more');
+                            if (dd) dd.open = false;
+                            doAction(b.getAttribute('data-act'), dd ? dd.querySelector('summary') : b);
+                        });
                     });
                     det.querySelectorAll('[data-stripe-link]').forEach(function (l) {
                         l.addEventListener('click', function () {
                             try { rpc('staff_log_workspace_action', { p_org_id: d.org.id, p_action: 'subscription.open_stripe', p_details: { href: l.getAttribute('href') } }).catch(function () {}); } catch (e) {}
                         });
                     });
+                    var md = det.querySelector('.mw-moredetails');
+                    if (md) md.addEventListener('toggle', function () { state.moreOpen = md.open; });
                     var nf = document.getElementById('mw-note-form');
-                    if (nf) nf.addEventListener('submit', function (ev) { ev.preventDefault(); saveNote(); });
+                    if (nf) {
+                        nf.addEventListener('submit', function (ev) { ev.preventDefault(); saveNote(); });
+                        var ta = document.getElementById('mw-note-body');
+                        ta.addEventListener('keydown', function (ev) {
+                            if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); saveNote(); }
+                        });
+                    }
                 }
 
                 /* The result of an action lives here, inside the detail pane,
@@ -66376,20 +66532,30 @@ Thank you for shopping with {store_name}!</textarea>
                     if (el) el.innerHTML = state.status_msg;
                 }
 
+                /* Add Note is one press: no dialog, no second confirmation.
+                   The note lands at the top of the history it sits above. */
                 async function saveNote() {
                     var ta = document.getElementById('mw-note-body');
                     var err = document.getElementById('mw-note-err');
-                    var btn = document.querySelector('#mw-note-form button[type="submit"]');
+                    var btn = document.getElementById('mw-note-add');
                     var body = ta ? ta.value.trim() : '';
-                    if (!body || !state.detail) return;
+                    if (!state.detail || (btn && btn.disabled)) return;
+                    if (!body) {
+                        if (err) err.innerHTML = '<p class="mw-muted mw-gap">' + h(tr('note_empty')) + '</p>';
+                        if (ta) ta.focus();
+                        return;
+                    }
                     var orgId = state.detail.org.id;
                     if (btn) btn.disabled = true;
+                    if (err) err.innerHTML = '';
                     try {
                         await rpc('staff_add_merchant_note', { p_org_id: orgId, p_body: body });
                         setStatus('ok', tr('notes_saved'));
                         await openMerchant(orgId, { keepView: true });
+                        var again = document.getElementById('mw-note-body');
+                        if (again) again.focus();
                     } catch (e) {
-                        if (err) err.innerHTML = '<div class="mw-alert mw-alert-err" role="alert"><p>' + h(e && e.message) + '</p></div>';
+                        if (err) err.innerHTML = '<div class="mw-alert mw-alert-err"><p>' + h(e && e.message) + '</p></div>';
                         if (btn) btn.disabled = false;
                     }
                 }
@@ -66408,7 +66574,7 @@ Thank you for shopping with {store_name}!</textarea>
                     return Array.prototype.slice.call(el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
                         .filter(function (n) { return !n.disabled && n.offsetParent !== null; });
                 }
-                /* spec: { title, body (html), confirm, danger, onOpen(dialog), onConfirm(values) } */
+                /* spec: { title, body (html), confirm, closeLabel, danger, onOpen(dialog), onConfirm(values) } */
                 function openModal(spec, opener) {
                     if (modalState) { modalState.busy = false; closeModal(); }
                     var veil = document.createElement('div');
@@ -66416,7 +66582,7 @@ Thank you for shopping with {store_name}!</textarea>
                     veil.innerHTML = '<div class="mw-dialog" role="dialog" aria-modal="true" aria-labelledby="mw-dlg-title" dir="' + (lang() === 'ar' ? 'rtl' : 'ltr') + '">' +
                         '<h3 id="mw-dlg-title">' + h(spec.title) + '</h3><div id="mw-dlg-body">' + spec.body + '</div>' +
                         '<div id="mw-dlg-err" role="alert"></div>' +
-                        '<div class="mw-dialog-actions"><button type="button" class="mw-btn" id="mw-dlg-close">' + h(tr('m_close')) + '</button>' +
+                        '<div class="mw-dialog-actions"><button type="button" class="mw-btn" id="mw-dlg-close">' + h(spec.closeLabel || tr('m_close')) + '</button>' +
                         '<button type="button" class="mw-btn ' + (spec.danger ? 'mw-btn-danger' : 'mw-btn-primary') + '" id="mw-dlg-ok">' + h(spec.confirm || tr('m_confirm')) + '</button></div></div>';
                     document.body.appendChild(veil);
                     var dlg = veil.querySelector('.mw-dialog');
@@ -66443,6 +66609,7 @@ Thank you for shopping with {store_name}!</textarea>
                         var values = {};
                         dlg.querySelectorAll('[data-v]').forEach(function (n) {
                             if (n.type === 'radio') { if (n.checked) values[n.getAttribute('data-v')] = n.value; }
+                            else if (n.type === 'checkbox') values[n.getAttribute('data-v')] = n.checked;
                             else values[n.getAttribute('data-v')] = n.value;
                         });
                         m.busy = true;
@@ -66515,71 +66682,62 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 /* ---------- renew (hand-paid plans only) ---------- */
+                /* Nothing to type. The server works out both dates (from the
+                   later of now and the current end, by the plan's own length),
+                   the dialog shows the old end beside the new one, and Confirm
+                   applies exactly that. The renewal is audited server-side
+                   with who, when and both dates. */
+                var ARROW = '<svg class="mw-arrow" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"></path><path d="M13 6l6 6l-6 6"></path></svg>';
+                function renewPreviewHtml(pv) {
+                    var lapsed = !pv.period_end_before || Date.parse(pv.period_end_before) <= Date.now();
+                    var lines = [{ text: tr('renew_adds', { days: dayCount(Number(pv.period_days)), plan: pv.plan_name || pv.plan_slug || '' }) },
+                        { text: lapsed ? tr('renew_from_today') : tr('pv_starts_after') },
+                        { text: tr('pv_coins', { n: fmtNum(pv.coins_reset_to), left: fmtNum(pv.coins_remaining_before) }) },
+                        { text: pv.email_event === 'subscription_activated' ? tr('pv_email_activated') : tr('pv_email_renewed') }];
+                    if (pv.agent_resumes) lines.push({ text: tr('pv_agent_resumes') });
+                    return '<div class="mw-preview" id="mw-preview" aria-live="polite">' +
+                        '<div class="mw-renew">' +
+                        '<div class="mw-renew-col"><span>' + h(tr('renew_old_end')) + '</span><b id="mw-old-end">' + h(fmtDate(pv.period_end_before)) + '</b>' +
+                        '<small>' + h(daysText(pv.days_left_before, lapsed ? 'expired' : 'active')) + '</small></div>' + ARROW +
+                        '<div class="mw-renew-col mw-renew-new"><span>' + h(tr('renew_new_end')) + '</span><b id="mw-new-end">' + h(fmtDate(pv.new_period_end)) + '</b>' +
+                        '<small>' + h(daysText(pv.days_left_after, 'active')) + '</small></div>' +
+                        '</div>' + lines.map(function (l) { return '<p>' + h(l.text) + '</p>'; }).join('') + '</div>';
+                }
                 function renewModal(opener) {
-                    var d = state.detail, s = d.subscription || {}, orgId = d.org.id;
+                    var d = state.detail, orgId = d.org.id;
                     var key = newKey();          // one request id for this dialog: a retry reuses it
-                    var curs = ['EGP', 'USD', 'EUR'];
-                    var defCur = String(s.currency || 'EGP').toUpperCase();
-                    if (curs.indexOf(defCur) === -1) curs.unshift(defCur);
-                    var previewed = null, pvSeq = 0;
+                    var ready = false;
                     openModal({
                         title: tr('renew_title', { name: d.org.name || '' }),
-                        body: field(tr('renew_days'), '<input class="mw-input" data-v="days" type="number" inputmode="numeric" min="1" max="400" value="' + (s.plan_period_days || 30) + '">') +
-                            field(tr('renew_amount'), '<input class="mw-input" data-v="amount" inputmode="decimal" autocomplete="off">', tr('renew_amount_hint')) +
-                            field(tr('renew_currency'), '<select class="mw-select" data-v="currency">' + curs.map(function (c) {
-                                return '<option' + (c === defCur ? ' selected' : '') + '>' + h(c) + '</option>'; }).join('') + '</select>') +
-                            field(tr('note_label'), '<input class="mw-input" data-v="note" maxlength="280">') +
-                            '<div id="mw-pv-slot"></div>',
-                        confirm: tr('act_renew'),
-                        onOpen: function (dlg) {
+                        body: '<div id="mw-pv-slot"><p class="mw-hint"><span class="mw-spin" aria-hidden="true"></span> ' + h(tr('m_checking')) + '</p></div>',
+                        confirm: tr('renew_confirm'),
+                        onOpen: async function (dlg) {
                             var ok = dlg.querySelector('#mw-dlg-ok');
-                            var run = async function () {
-                                var my = ++pvSeq;
-                                previewed = null; ok.disabled = true;
-                                var vals = readVals(dlg);
-                                var cents = parseAmountToCents(vals.amount);
-                                var slot = dlg.querySelector('#mw-pv-slot');
-                                if (Number.isNaN(cents)) { slot.innerHTML = ''; modalErr(tr('e_invalid_amount')); return; }
-                                modalErr('');
-                                slot.innerHTML = '<p class="mw-hint"><span class="mw-spin" aria-hidden="true"></span> ' + h(tr('m_checking')) + '</p>';
-                                try {
-                                    var pv = await rpc('staff_renew_subscription', {
-                                        p_org_id: orgId, p_period_days: parseInt(vals.days, 10) || null,
-                                        p_amount_cents: cents, p_currency: cents == null ? null : vals.currency, p_note: null,
-                                        p_idempotency_key: null, p_preview: true
-                                    });
-                                    if (my !== pvSeq || !modalState) return;
-                                    var lines = [{ text: tr('pv_new_period', { start: fmtWhen(pv.new_period_start), end: fmtWhen(pv.new_period_end) }) }];
-                                    if (pv.period_end_before && new Date(pv.period_end_before) > new Date()) lines.push({ text: tr('pv_starts_after') });
-                                    lines.push({ text: pv.amount_cents != null ? tr('pv_amount', { amount: fmtMoney(pv.amount_cents, pv.currency) }) : tr('pv_no_amount') });
-                                    lines.push({ text: tr('pv_coins', { n: fmtNum(pv.coins_reset_to), left: fmtNum(pv.coins_remaining_before) }) });
-                                    lines.push({ text: pv.email_event === 'subscription_activated' ? tr('pv_email_activated') : tr('pv_email_renewed') });
-                                    if (pv.agent_resumes) lines.push({ text: tr('pv_agent_resumes') });
-                                    slot.innerHTML = previewBox(lines);
-                                    previewed = { days: vals.days, cents: cents, currency: vals.currency };
-                                    ok.disabled = false;
-                                } catch (e) {
-                                    if (my !== pvSeq || !modalState) return;
-                                    slot.innerHTML = ''; modalErr(e && e.message);
-                                }
-                            };
-                            var t = null;
-                            dlg.querySelectorAll('[data-v="days"], [data-v="amount"], [data-v="currency"]').forEach(function (n) {
-                                n.addEventListener('input', function () { clearTimeout(t); ok.disabled = true; t = setTimeout(run, 300); });
-                                n.addEventListener('change', function () { clearTimeout(t); ok.disabled = true; t = setTimeout(run, 50); });
-                            });
-                            run();
+                            ok.disabled = true;
+                            try {
+                                var pv = await rpc('staff_renew_subscription', {
+                                    p_org_id: orgId, p_period_days: null, p_amount_cents: null, p_currency: null,
+                                    p_note: null, p_idempotency_key: null, p_preview: true
+                                });
+                                if (!modalState || modalState.dlg !== dlg) return;
+                                dlg.querySelector('#mw-pv-slot').innerHTML = renewPreviewHtml(pv);
+                                ready = true;
+                                ok.disabled = false;
+                                try { ok.focus(); } catch (e0) {}
+                            } catch (e) {
+                                if (!modalState || modalState.dlg !== dlg) return;
+                                dlg.querySelector('#mw-pv-slot').innerHTML = '';
+                                modalErr(e && e.message);
+                            }
                         },
-                        onConfirm: async function (v) {
-                            var cents = parseAmountToCents(v.amount);
-                            if (!previewed || previewed.days !== v.days || previewed.cents !== cents || previewed.currency !== v.currency) throw { message: tr('m_checking') };
+                        onConfirm: async function () {
+                            if (!ready) throw { message: tr('m_checking') };
                             var res = await rpc('staff_renew_subscription', {
-                                p_org_id: orgId, p_period_days: parseInt(v.days, 10) || null, p_amount_cents: cents,
-                                p_currency: cents == null ? null : v.currency, p_note: (v.note || '').trim() || null,
-                                p_idempotency_key: key, p_preview: false
+                                p_org_id: orgId, p_period_days: null, p_amount_cents: null, p_currency: null,
+                                p_note: null, p_idempotency_key: key, p_preview: false
                             });
                             finishModal();
-                            setStatus('ok', res && res.replayed ? tr('replayed') : tr('renew_done', { date: fmtWhen(res && res.after && res.after.current_period_end) }));
+                            setStatus('ok', res && res.replayed ? tr('replayed') : tr('renew_done', { date: fmtDate(res && res.after && res.after.current_period_end) }));
                             await refreshAfterWrite(orgId);
                         }
                     }, opener);
@@ -66588,6 +66746,7 @@ Thank you for shopping with {store_name}!</textarea>
                     var v = {};
                     dlg.querySelectorAll('[data-v]').forEach(function (n) {
                         if (n.type === 'radio') { if (n.checked) v[n.getAttribute('data-v')] = n.value; }
+                        else if (n.type === 'checkbox') v[n.getAttribute('data-v')] = n.checked;
                         else v[n.getAttribute('data-v')] = n.value;
                     });
                     return v;
@@ -66629,7 +66788,7 @@ Thank you for shopping with {store_name}!</textarea>
                                         lines.push({ text: tr('change_new', { plan: pv.to_plan_name, amount: fmtMoney(pv.new_unit_amount_cents, pv.currency), interval: per }) });
                                         if (pv.basis === 'estimate') lines.push({ text: tr('change_estimate', { amount: fmtMoney(pv.proration_amount_cents, pv.currency) }) });
                                         else {
-                                            lines.push({ text: tr('change_proration', { amount: fmtMoney(pv.proration_amount_cents, pv.currency), date: fmtWhen(pv.next_invoice_at) }) });
+                                            lines.push({ text: tr('change_proration', { amount: fmtMoney(pv.proration_amount_cents, pv.currency), date: fmtDate(pv.next_invoice_at) }) });
                                             if (pv.next_invoice_total_cents != null) lines.push({ text: tr('change_next_total', { amount: fmtMoney(pv.next_invoice_total_cents, pv.currency) }) });
                                         }
                                         if (pv.cancel_at_period_end) lines.push({ text: tr('change_cape_kept') });
@@ -66637,7 +66796,7 @@ Thank you for shopping with {store_name}!</textarea>
                                         var mp = await rpc('staff_change_plan_manual', { p_org_id: orgId, p_plan_slug: slug, p_note: null, p_idempotency_key: null, p_preview: true });
                                         if (my !== pvSeq || !modalState) return;
                                         lines.push({ text: tr('change_new_plain', { plan: mp.to_plan_name }) });
-                                        lines.push({ text: tr('change_manual', { n: fmtNum(mp.coins_reset_to), date: fmtWhen(mp.period_end) }) });
+                                        lines.push({ text: tr('change_manual', { n: fmtNum(mp.coins_reset_to), date: fmtDate(mp.period_end) }) });
                                         lines.push({ text: tr('pv_no_email') });
                                     }
                                     slot.innerHTML = previewBox(lines);
@@ -66673,7 +66832,10 @@ Thank you for shopping with {store_name}!</textarea>
                     }, opener);
                 }
 
-                /* ---------- cancel / expire (typed confirmation) ---------- */
+                /* ---------- cancel / expire ---------- */
+                /* One clear question and its consequence, then Confirm. The
+                   default ends the plan when the paid period ends; stopping
+                   today is a box to tick, never the default. */
                 function cancelModal(opener, kind) {
                     var d = state.detail, s = d.subscription || {}, orgId = d.org.id;
                     var stripe = s.billing_source === 'stripe';
@@ -66681,58 +66843,45 @@ Thank you for shopping with {store_name}!</textarea>
                     var name = d.org.name || d.org.id;
                     var isExpire = kind === 'expire';
                     var trial = s.plan_slug === 'free_trial';
-                    var body = '';
-                    if (!isExpire) {
-                        body += '<fieldset><legend>' + h(tr('cancel_when')) + '</legend>' +
-                            '<label class="mw-radio"><input type="radio" name="mw-when" data-v="when" value="at_period_end" checked> ' + h(tr('cancel_at_end', { date: fmtWhen(s.period_end) })) + '</label>' +
-                            '<label class="mw-radio"><input type="radio" name="mw-when" data-v="when" value="now"> ' + h(tr('cancel_now')) + '</label></fieldset>';
-                    }
-                    body += '<div id="mw-effect"></div>' +
-                        field(tr('type_name', { name: name }), '<input class="mw-input" data-v="typed" autocomplete="off" aria-describedby="mw-effect">') +
-                        field(tr('reason_label'), '<input class="mw-input" data-v="note" maxlength="280">');
+                    var body = '<div id="mw-effect"></div>' + (isExpire ? '' :
+                        '<label class="mw-check"><input type="checkbox" data-v="now"> ' + h(tr('cancel_now_check')) + '</label>');
                     var effect = function (dlg) {
-                        var when = isExpire ? 'now' : (readVals(dlg).when || 'at_period_end');
+                        var now = isExpire || readVals(dlg).now === true;
                         var lines = [];
-                        if (when === 'now') {
+                        if (now) {
                             lines.push({ text: tr('stops_now'), danger: true });
                             if (isExpire) lines.push({ text: s.grace_started_at && !trial ? tr('expire_email_grace') : tr('pv_no_email') });
                             else lines.push({ text: trial ? tr('pv_no_email') : tr('cancel_email') });
                         } else {
-                            lines.push({ text: tr('cancel_at_end_effect', { date: fmtWhen(s.period_end) }) });
+                            lines.push({ text: tr('cancel_at_end_effect', { date: fmtDate(s.period_end) }) });
                             lines.push({ text: trial ? tr('pv_no_email') : tr('cancel_email_later') });
                         }
                         dlg.querySelector('#mw-effect').innerHTML = previewBox(lines);
                     };
-                    var gate = function (dlg) {
-                        var ok = dlg.querySelector('#mw-dlg-ok');
-                        ok.disabled = !nameMatches(readVals(dlg).typed, name);
-                    };
                     openModal({
-                        title: isExpire ? tr('expire_title', { name: name }) : tr('cancel_title', { name: name }),
+                        title: isExpire ? tr('expire_title', { name: name }) : tr('cancel_q', { name: name }),
                         body: body,
                         confirm: isExpire ? tr('act_expire') : tr('act_cancel'),
+                        closeLabel: isExpire ? tr('m_close') : tr('cancel_keep'),
                         danger: true,
-                        revalidate: gate,
                         onOpen: function (dlg) {
-                            effect(dlg); gate(dlg);
-                            dlg.querySelectorAll('[data-v="when"]').forEach(function (r) { r.addEventListener('change', function () { effect(dlg); }); });
-                            dlg.querySelector('[data-v="typed"]').addEventListener('input', function () { gate(dlg); });
+                            effect(dlg);
+                            var cb = dlg.querySelector('[data-v="now"]');
+                            if (cb) cb.addEventListener('change', function () { effect(dlg); });
                         },
                         onConfirm: async function (v) {
-                            if (!nameMatches(v.typed, name)) throw { message: tr('e_name_mismatch') };
-                            var when = isExpire ? 'now' : (v.when || 'at_period_end');
-                            var note = (v.note || '').trim() || null;
+                            var when = isExpire ? 'now' : (v.now === true ? 'now' : 'at_period_end');
                             if (!stripe) {
                                 var mode = isExpire ? 'mark_expired' : (when === 'now' ? 'cancel' : 'at_period_end');
-                                var r = await rpc('staff_cancel_subscription', { p_org_id: orgId, p_mode: mode, p_note: note, p_idempotency_key: key });
+                                var r = await rpc('staff_cancel_subscription', { p_org_id: orgId, p_mode: mode, p_note: null, p_idempotency_key: key });
                                 finishModal();
                                 if (r && r.replayed) setStatus('ok', tr('replayed'));
                                 else if (r && r.unchanged) setStatus('info', tr('unchanged'));
-                                else setStatus('ok', isExpire ? tr('expire_done') : (when === 'now' ? tr('cancel_done') : tr('cancel_done_at_end', { date: fmtWhen(s.period_end) })));
+                                else setStatus('ok', isExpire ? tr('expire_done') : (when === 'now' ? tr('cancel_done') : tr('cancel_done_at_end', { date: fmtDate(s.period_end) })));
                                 await refreshAfterWrite(orgId);
                                 return;
                             }
-                            var res = await invoke('staff-cancel-subscription', { org_id: orgId, mode: when === 'now' ? 'immediate' : 'at_period_end', idempotency_key: key, note: note });
+                            var res = await invoke('staff-cancel-subscription', { org_id: orgId, mode: when === 'now' ? 'immediate' : 'at_period_end', idempotency_key: key, note: null });
                             finishModal();
                             if (res.unchanged) { setStatus('info', tr('unchanged')); await refreshAfterWrite(orgId); return; }
                             setStatus('info', tr('cancel_waiting'), true);
@@ -66740,7 +66889,7 @@ Thank you for shopping with {store_name}!</textarea>
                                 return when === 'now' ? (x.status === 'canceled' || x.status === 'cancelled') : x.cancel_at_period_end === true;
                             });
                             if (state.selected !== orgId) return;
-                            if (got) setStatus('ok', when === 'now' ? tr('cancel_done') : tr('cancel_done_at_end', { date: fmtWhen(s.period_end) }));
+                            if (got) setStatus('ok', when === 'now' ? tr('cancel_done') : tr('cancel_done_at_end', { date: fmtDate(s.period_end) }));
                             else setStatus('warn', tr('confirm_timeout'));
                             await refreshAfterWrite(orgId);
                         }
@@ -66754,7 +66903,7 @@ Thank you for shopping with {store_name}!</textarea>
                     var key = newKey();
                     openModal({
                         title: tr('resume_title', { name: d.org.name || '' }),
-                        body: previewBox([{ text: tr('resume_effect', { date: fmtWhen(s.period_end) }) }]) +
+                        body: previewBox([{ text: tr('resume_effect', { date: fmtDate(s.period_end) }) }]) +
                             field(tr('note_label'), '<input class="mw-input" data-v="note" maxlength="280">'),
                         confirm: tr('act_resume'),
                         onConfirm: async function (v) {
@@ -66798,7 +66947,7 @@ Thank you for shopping with {store_name}!</textarea>
                                     var pv = await rpc('staff_extend_trial', { p_org_id: orgId, p_days: isNaN(days) ? null : days, p_note: null, p_idempotency_key: null, p_preview: true });
                                     if (my !== pvSeq || !modalState) return;
                                     slot.innerHTML = previewBox([
-                                        { text: tr('extend_preview', { date: fmtWhen(pv.new_trial_ends), old: fmtWhen(pv.trial_ends_before) }) },
+                                        { text: tr('extend_preview', { date: fmtDate(pv.new_trial_ends), old: fmtDate(pv.trial_ends_before) }) },
                                         { text: tr('extend_messages', { used: fmtNum(pv.messages_used || 0), limit: fmtNum(pv.messages_limit) }) },
                                         { text: tr('pv_no_email') }
                                     ]);
@@ -66817,7 +66966,7 @@ Thank you for shopping with {store_name}!</textarea>
                             if (previewedDays !== days) throw { message: tr('m_checking') };
                             var r = await rpc('staff_extend_trial', { p_org_id: orgId, p_days: days, p_note: (v.note || '').trim() || null, p_idempotency_key: key, p_preview: false });
                             finishModal();
-                            setStatus('ok', r && r.replayed ? tr('replayed') : tr('extend_done', { date: fmtWhen(r && r.trial_ends_after) }));
+                            setStatus('ok', r && r.replayed ? tr('replayed') : tr('extend_done', { date: fmtDate(r && r.trial_ends_after) }));
                             await refreshAfterWrite(orgId);
                         }
                     }, opener);

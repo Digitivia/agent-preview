@@ -34525,6 +34525,17 @@
         :root[data-theme="light"] .inbox-read-filter .irf-btn.active {
             background: rgba(24, 23, 78,0.12); color: #0f172a;
         }
+        /* The chosen filter is filled, the way a segmented control shows its choice, so which
+           view the list is in is read at a glance rather than inferred from an outline. */
+        body:not(.omnio) #inbox .inbox-read-filter .irf-btn.active {
+            background: var(--brand-fade); border-color: transparent; color: #fff;
+            box-shadow: 0 4px 12px -4px rgba(91, 89, 201, 0.7);
+        }
+        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-read-filter .irf-btn.active {
+            background: var(--brand-fade); color: #fff; box-shadow: 0 4px 12px -5px rgba(24, 23, 78, 0.6);
+        }
+        body:not(.omnio) #inbox .inbox-read-filter .irf-btn.active .irf-count { background: rgba(255, 255, 255, 0.24); color: #fff; }
+        body:not(.omnio) #inbox .inbox-read-filter .irf-btn:not(.active):hover { border-color: rgba(139, 137, 234, 0.5); }
         /* The list toolbar: "N conversations" and Mark all read, IN WORDS, on one quiet line
            between the filters and the list, at every width. Mark all read used to be a full
            -width bar, then a bare check mark and a number at the end of the chip row; the
@@ -34690,9 +34701,22 @@
         body:not(.omnio) #inbox .inbox-header-avatar:not([hidden]) {
             display: inline-flex; align-items: center; justify-content: center; flex: none;
             inline-size: 34px; block-size: 34px; border-radius: 50%;
-            font-size: 13px; font-weight: 700; color: #fff; background: hsl(var(--av-hue, 262) 42% 46%);
+            font-size: 13px; font-weight: 700; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+            background: linear-gradient(150deg, hsl(var(--av-hue, 262) 62% 60%) 0%, hsl(var(--av-hue, 262) 50% 40%) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
         }
-        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-header-avatar:not([hidden]) { background: hsl(var(--av-hue, 262) 55% 52%); }
+        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-header-avatar:not([hidden]) {
+            background: linear-gradient(150deg, hsl(var(--av-hue, 262) 72% 64%) 0%, hsl(var(--av-hue, 262) 58% 46%) 100%);
+        }
+        /* Under the name: which channel, and the number or handle (set as data-sub by
+           loadInboxMessages). Drawn by CSS so the title element, which other code inserts
+           buttons beside, keeps its exact place in the header. */
+        body:not(.omnio) #inbox #inbox-header-title { line-height: 1.25; }
+        body:not(.omnio) #inbox #inbox-header-title[data-sub]::after {
+            content: attr(data-sub); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--text-muted, #8a93a6);
+        }
+        :root[data-theme="light"] body:not(.omnio) #inbox #inbox-header-title[data-sub]::after { color: #64748b; }
         /* The name sits beside its avatar, as in every messaging app (it was centred). */
         body:not(.omnio) #inbox .inbox-header #inbox-header-title { text-align: start; }
         body:not(.omnio) #inbox .inbox-header #inbox-header-avatar:not([hidden]) ~ #inbox-header-title { flex: 1 1 0; min-inline-size: 4.5rem; }
@@ -34710,17 +34734,31 @@
         body:not(.omnio) #contact-list .contact-avatar {
             inline-size: 44px; block-size: 44px; min-inline-size: 44px; flex: none;
             font-size: 15px; font-weight: 700; letter-spacing: .02em; color: #fff;
-            background: hsl(var(--av-hue, 262) 42% 46%);
+            background: linear-gradient(150deg, hsl(var(--av-hue, 262) 62% 60%) 0%, hsl(var(--av-hue, 262) 50% 40%) 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
         }
         /* !important only because the light theme paints every .contact-avatar grey with !important. */
-        :root[data-theme="light"] body:not(.omnio) #contact-list .contact-avatar { background: hsl(var(--av-hue, 262) 55% 52%) !important; color: #fff !important; }
+        :root[data-theme="light"] body:not(.omnio) #contact-list .contact-avatar {
+            background: linear-gradient(150deg, hsl(var(--av-hue, 262) 72% 64%) 0%, hsl(var(--av-hue, 262) 58% 46%) 100%) !important; color: #fff !important;
+        }
         body:not(.omnio) #contact-list .contact-name { font-size: 15px; font-weight: 600; }
         body:not(.omnio) #contact-list .contact-item.is-unread .contact-name { font-weight: 800; }
         body:not(.omnio) #contact-list .ci-time { font-size: 11.5px; color: var(--text-muted, #8a93a6); font-variant-numeric: tabular-nums; }
         body:not(.omnio) #contact-list .contact-item.is-unread .ci-time { color: #a9a7ff; font-weight: 700; }
         :root[data-theme="light"] body:not(.omnio) #contact-list .contact-item.is-unread .ci-time { color: #3b3992; }
         body:not(.omnio) #contact-list .ci-unread-badge { min-width: 20px; height: 20px; border-radius: 10px; font-size: 11px; font-weight: 800; }
-        body:not(.omnio) #contact-list .contact-item.active { border-inline-start: 0; background: rgba(109, 107, 217, 0.14); }
+        body:not(.omnio) #contact-list .contact-item { position: relative; transition: background .12s; }
+        body:not(.omnio) #contact-list .contact-item:hover { background: rgba(127, 127, 127, 0.07); }
+        body:not(.omnio) #contact-list .contact-item.active { border-inline-start: 0; background: rgba(109, 107, 217, 0.16); }
+        /* The open conversation carries an accent bar on its leading edge (right in Arabic). */
+        body:not(.omnio) #contact-list .contact-item.active::before {
+            content: ''; position: absolute; inset-block: 12px; inset-inline-start: 0; inline-size: 3px;
+            border-radius: 0 3px 3px 0; background: var(--brand-fade);
+        }
+        [dir="rtl"] body:not(.omnio) #contact-list .contact-item.active::before { border-radius: 3px 0 0 3px; }
+        :root[data-theme="light"] body:not(.omnio) #contact-list .contact-item.active { background: #eeedfb; }
+        
         .ci-handoff {
             display: inline-flex; align-items: center; flex: none; padding: 1px 7px; border-radius: 999px;
             font-size: 10.5px; font-weight: 700; line-height: 1.5; white-space: nowrap;
@@ -34729,6 +34767,44 @@
         :root[data-theme="light"] .ci-handoff { color: #92400e; background: #fffbeb; border-color: #fcd34d; }
         .irf-count.irf-count-warn { background: #d97706; }
         .inbox-empty-state { padding: 32px 20px; text-align: center; color: var(--text-muted, #8a93a6); font-size: 14px; line-height: 1.5; }
+        /* The reading pane before a conversation is opened (desktop): no header full of controls
+           that act on nothing, an illustration in the brand colours, and the work waiting. */
+        @media (min-width: 769px) {
+            body:not(.omnio) #inbox .inbox-main:has(#inbox-messages > #inbox-thread-placeholder) > .inbox-header { display: none; }
+        }
+        .itp-art { position: relative; inline-size: 88px; block-size: 72px; margin-block-end: 18px; }
+        .itp-bubble { position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 20px; }
+        .itp-bubble-a {
+            inset-inline-start: 0; inset-block-start: 0; inline-size: 50px; block-size: 40px;
+            background: rgba(139, 137, 234, 0.18); border: 1px solid rgba(139, 137, 234, 0.3);
+        }
+        .itp-bubble-b {
+            inset-inline-end: 0; inset-block-end: 0; inline-size: 60px; block-size: 50px;
+            background: var(--brand-fade);
+            box-shadow: 0 10px 24px -8px rgba(91, 89, 201, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+        :root[data-theme="light"] .itp-bubble-a { background: #eeedfb; border-color: #dcdaf5; }
+                .itp-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-block-start: 22px; }
+        .itp-stats:empty { display: none; }
+        .itp-stat {
+            display: inline-flex; align-items: baseline; gap: 6px; padding: 9px 16px; border-radius: 999px; cursor: pointer;
+            font: inherit; font-size: 13px; font-weight: 600; color: var(--text-main, #e5e7eb);
+            background: rgba(139, 137, 234, 0.12); border: 1px solid rgba(139, 137, 234, 0.32);
+            transition: background .12s, transform .12s;
+        }
+        .itp-stat b { font-size: 16px; font-weight: 800; color: #a9a7ff; font-variant-numeric: tabular-nums; }
+        .itp-stat:hover { background: rgba(139, 137, 234, 0.22); transform: translateY(-1px); }
+        .itp-stat:focus-visible { outline: 2px solid #8b89ea; outline-offset: 2px; }
+        .itp-stat-warn { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.4); }
+        .itp-stat-warn b { color: #fbbf24; }
+        .itp-stat-warn:hover { background: rgba(245, 158, 11, 0.2); }
+        :root[data-theme="light"] .itp-stat { color: #0f172a; background: #f3f2fd; border-color: #dcdaf5; }
+        :root[data-theme="light"] .itp-stat b { color: #3b3992; }
+        :root[data-theme="light"] .itp-stat-warn { background: #fffbeb; border-color: #fcd34d; }
+        :root[data-theme="light"] .itp-stat-warn b { color: #b45309; }
+        .itp-calm { font-size: 13px; font-weight: 600; color: #4ade80; }
+        :root[data-theme="light"] .itp-calm { color: #15803d; }
+        @media (prefers-reduced-motion: reduce) { .itp-stat:hover { transform: none; } }
         /* The floating buttons (AI launcher, theme, Sentry's report) sit over the bottom of the
            list on a phone: give the list enough room to scroll its last rows clear of them. */
         @media (max-width: 768px) { body:not(.omnio) #contact-list { padding-bottom: 150px; } }
@@ -34760,16 +34836,40 @@
         body:not(.omnio) #inbox .ics-trigger:focus-visible { outline: 2px solid var(--theme-color, #6d6bd9); outline-offset: 2px; }
         body:not(.omnio) #inbox .ics-icon { display: inline-flex; flex: none; }
         body:not(.omnio) #inbox .ics-icon:empty { display: none; }
-        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon {
-            inline-size: 30px; block-size: 30px; border-radius: 50%; flex: none;
-            display: inline-flex; align-items: center; justify-content: center; color: #fff; fill: #fff;
+        /* Channel tiles: the channel's own brand colours (sampled from each brand's current app
+           icon), a white glyph, a soft top light and a shadow in the same hue, so a channel is
+           recognised before its name is read. Every surface that shows a channel uses these. */
+        .pb-icon[data-ch] {
+            --ch-shadow: rgba(0, 0, 0, 0.25);
+            display: inline-flex; align-items: center; justify-content: center; flex: none;
+            color: #fff; border-radius: 30%;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.12), 0 3px 8px -2px var(--ch-shadow);
         }
-        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon :is(svg, img) { inline-size: 17px; block-size: 17px; }
+        .pb-icon[data-ch] svg { display: block; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.18)); }
+        .pb-icon[data-ch="whatsapp"]  { background: linear-gradient(160deg, #5FFC7B 0%, #28D146 55%, #1DAA61 100%); --ch-shadow: rgba(29, 170, 97, 0.55); }
+        .pb-icon[data-ch="page"]      { background: linear-gradient(225deg, #FF6968 0%, #A334FA 45%, #0695FF 100%); --ch-shadow: rgba(110, 70, 250, 0.5); }
+        .pb-icon[data-ch="instagram"] { background: radial-gradient(circle at 28% 108%, #FFDD55 0%, #FFDD55 10%, #FF543E 48%, #C837AB 72%, #5B51D8 100%); --ch-shadow: rgba(200, 55, 171, 0.5); }
+        .pb-icon[data-ch="telegram"]  { background: linear-gradient(180deg, #37BBFE 0%, #229ED9 60%, #007DBB 100%); --ch-shadow: rgba(34, 158, 217, 0.55); }
+        .pb-icon[data-ch="website"]   { background: var(--brand-fade); --ch-shadow: rgba(91, 89, 201, 0.55); }
+        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon { inline-size: 32px; block-size: 32px; }
+        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon svg { inline-size: 19px; block-size: 19px; }
+        body:not(.omnio) #inbox .ics-icon .pb-icon { inline-size: 30px; block-size: 30px; }
+        body:not(.omnio) #inbox .ics-icon .pb-icon svg { inline-size: 17px; block-size: 17px; }
         body:not(.omnio) #inbox .ics-name { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        /* Unread waiting in the OTHER channels: their tiles, overlapped, and how many. A bare red
+           number beside "WhatsApp" read as WhatsApp's own count. */
         body:not(.omnio) #inbox .ics-others {
-            flex: none; min-inline-size: 18px; block-size: 18px; padding: 0 5px; border-radius: 9px;
-            background: #ef5350; color: #fff; font-size: 10.5px; font-weight: 800; line-height: 18px; text-align: center;
+            flex: none; display: inline-flex; align-items: center; gap: 5px; margin-inline-start: auto;
+            padding: 2px 8px 2px 3px; border-radius: 999px; background: rgba(239, 83, 80, 0.12);
+            color: #ff8a80; font-size: 11px; font-weight: 800; line-height: 1;
         }
+        body:not(.omnio) #inbox .ics-others .ics-tiles { display: inline-flex; }
+        body:not(.omnio) #inbox .ics-others .pb-icon { inline-size: 18px; block-size: 18px; border-radius: 30%; box-shadow: 0 0 0 2px var(--bg-card, #16161d); }
+        body:not(.omnio) #inbox .ics-others .pb-icon + .pb-icon { margin-inline-start: -6px; }
+        body:not(.omnio) #inbox .ics-others .pb-icon svg { inline-size: 11px; block-size: 11px; filter: none; }
+        body:not(.omnio) #inbox .ics-others:not([hidden]) ~ .ics-chev { margin-inline-start: 0; }
+        :root[data-theme="light"] body:not(.omnio) #inbox .ics-others { color: #c62828; background: #fdecea; }
+        :root[data-theme="light"] body:not(.omnio) #inbox .ics-others .pb-icon { box-shadow: 0 0 0 2px #fdecea; }
         body:not(.omnio) #inbox .ics-others[hidden] { display: none; }
         body:not(.omnio) #inbox .ics-chev { flex: none; margin-inline-start: auto; opacity: .65; transition: transform .15s; }
         body:not(.omnio) #inbox .ics-trigger[aria-expanded="true"] .ics-chev { transform: rotate(180deg); }
@@ -34788,13 +34888,42 @@
             flex-direction: column; flex-wrap: nowrap; gap: 2px; padding: 6px; border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
             border-radius: 14px; background: var(--bg-card, #16161d); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
         }
-        body:not(.omnio) #inbox .platform-selector.open { display: flex; }
-        :root[data-theme="light"] body:not(.omnio) #inbox .platform-selector { background: #fff; border-color: rgba(15, 23, 42, 0.1); box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16); }
-        body:not(.omnio) #inbox .platform-selector .platform-btn {
-            inline-size: 100%; block-size: 46px; border-radius: 10px; padding-inline: 8px 12px;
-            display: flex; align-items: center; justify-content: flex-start; gap: 12px;
-            background: transparent; color: inherit; font: inherit; font-size: 14.5px; font-weight: 600; transform: none;
+        body:not(.omnio) #inbox .platform-selector.open { display: flex; animation: ics-pop .14s ease-out; }
+        @keyframes ics-pop { from { opacity: 0; transform: translateY(-4px) scale(.985); } }
+        @media (prefers-reduced-motion: reduce) { body:not(.omnio) #inbox .platform-selector.open { animation: none; } }
+        .pbm-title { display: none; }
+        body:not(.omnio) #inbox .platform-selector .pbm-title {
+            display: block; padding: 6px 10px 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+            color: var(--text-muted, #8a93a6);
         }
+        :root[data-theme="light"] body:not(.omnio) #inbox .platform-selector { background: #fff; border-color: rgba(15, 23, 42, 0.1); box-shadow: 0 16px 40px rgba(15, 23, 42, 0.16); }
+        /* Each channel row: tile, name over its status ("4 unread" / "All caught up"), and the
+           count or the check mark of the channel you are in. */
+        body:not(.omnio) #inbox .platform-selector .platform-btn {
+            inline-size: 100%; block-size: auto; min-block-size: 52px; border-radius: 12px; padding: 7px 12px 7px 8px;
+            display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto;
+            column-gap: 12px; row-gap: 1px; align-items: center; justify-items: start; text-align: start;
+            background: transparent; color: inherit; font: inherit; font-size: 14.5px; font-weight: 700; transform: none; filter: none;
+        }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-icon { grid-row: 1 / 3; grid-column: 1; }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-label { grid-row: 1; grid-column: 2; line-height: 1.2; }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-sub {
+            grid-row: 2; grid-column: 2; font-size: 11.5px; font-weight: 500; line-height: 1.25; color: var(--text-muted, #8a93a6);
+            max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-sub:empty { display: none; }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-sub.has-unread { color: #ff8a80; font-weight: 700; }
+        :root[data-theme="light"] body:not(.omnio) #inbox .platform-selector .platform-btn > .pb-sub.has-unread { color: #c62828; }
+        body:not(.omnio) #inbox .platform-selector .platform-btn > .platform-unread-badge { grid-row: 1 / 3; grid-column: 3; justify-self: end; }
+        body:not(.omnio) #inbox .platform-selector .platform-btn.active::after {
+            content: ''; grid-row: 1 / 3; grid-column: 3; justify-self: end; inline-size: 18px; block-size: 18px;
+            background: #8b89ea;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat;
+                    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat;
+        }
+        :root[data-theme="light"] body:not(.omnio) #inbox .platform-selector .platform-btn.active::after { background: #3b3992; }
+        /* The badge and the check share a cell: the channel you are in shows the check. */
+        body:not(.omnio) #inbox .platform-selector .platform-btn.active > .platform-unread-badge { display: none; }
         body:not(.omnio) #inbox .platform-selector .platform-btn:hover,
         body:not(.omnio) #inbox .platform-selector .platform-btn:focus-visible { background: rgba(127, 127, 127, 0.12); }
         body:not(.omnio) #inbox .platform-selector .platform-btn.active { background: rgba(109, 107, 217, 0.16); box-shadow: none; outline: 0; }
@@ -34809,6 +34938,9 @@
             display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
             padding: 4px 10px 6px; margin-bottom: 0; position: static; border-bottom: 0; background: transparent;
         }
+        /* The light theme paints every .inbox-search-container as a separate white card with a
+           shadow (!important); here the search row is part of the list header, not a box on it. */
+        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-search-container { background: transparent !important; box-shadow: none; }
         body:not(.omnio) #inbox .inbox-search-container > .help-inline-host { flex: 1 1 90px; min-inline-size: 0; }
         body:not(.omnio) #inbox .inbox-search-input-wrapper { margin-bottom: 0; }
         body:not(.omnio) #inbox #inbox-search-input { block-size: 38px; padding-block: 0; border-radius: 19px; font-size: 14px; }
@@ -46431,11 +46563,16 @@
             </div>`;
 
             // C. LIVE INBOX TAB
-            const iconWebsite = `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
-            const iconWhatsapp = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.whatsapp}" alt="WhatsApp">`;
-            const iconMessenger = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.page}" alt="Messenger">`;
-            const iconInstagram = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.instagram}" alt="Instagram">`;
-            const iconTelegram = `<img class="platform-icon-img" src="${SOCIAL_ICON_URLS.telegram}" alt="Telegram">`;
+            // The channel tiles in the inbox switcher: one white glyph on the channel's own brand
+            // colour (painted by .pb-icon[data-ch] in CSS), so every channel reads the same way and
+            // nothing depends on an image host. Telegram's was a PNG on a third-party host.
+            const inboxGlyphs = {
+                website: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`,
+                whatsapp: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></svg>`,
+                page: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0C5.24 0 0 4.95 0 11.64c0 3.5 1.43 6.52 3.77 8.61.2.18.31.42.32.68l.07 2.14a.96.96 0 0 0 1.35.85l2.39-1.05a.96.96 0 0 1 .64-.05c1.09.3 2.26.46 3.46.46 6.76 0 12-4.95 12-11.64S18.76 0 12 0zm7.2 8.95-3.52 5.6a1.8 1.8 0 0 1-2.6.48l-2.8-2.1a.72.72 0 0 0-.87 0l-3.79 2.87c-.5.39-1.17-.22-.82-.75l3.52-5.6a1.8 1.8 0 0 1 2.6-.48l2.8 2.1c.26.2.61.2.87 0l3.79-2.87c.5-.39 1.17.22.82.75z"/></svg>`,
+                instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" aria-hidden="true"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"/><circle cx="12" cy="12" r="4.1"/><circle cx="17.3" cy="6.7" r="1.15" fill="#fff" stroke="none"/></svg>`,
+                telegram: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M21.6 3.4 2.9 10.6c-1.27.51-1.26 1.22-.23 1.54l4.8 1.5 1.84 5.66c.22.62.11.86.76.86.5 0 .72-.23 1-.5l2.35-2.28 4.88 3.6c.9.5 1.55.24 1.77-.83l3.2-15.1c.33-1.31-.5-1.9-1.37-1.5zM8.9 13.3l9.6-6.06c.48-.29.92-.13.56.2l-8.22 7.42-.32 3.41-1.62-4.97z"/></svg>`,
+            };
 
             html += `
             <div id="inbox" class="tab-content">
@@ -46471,11 +46608,12 @@
                                     </button>
                                 </div>
                                 <div class="platform-selector" id="inbox-channel-menu">
-                                    <button class="platform-btn" onclick="loadInbox('website', false)" aria-label="Website"><span class="pb-icon" style="background:var(--brand-fade)">${iconWebsite}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span></button>
-                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp"><span class="pb-icon" style="background:#57B078">${iconWhatsapp}</span><span class="pb-label">WhatsApp</span></button>
-                                    <button class="platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger"><span class="pb-icon" style="background:#5B89CE">${iconMessenger}</span><span class="pb-label">Messenger</span></button>
-                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram"><span class="pb-icon" style="background:#C66B8D">${iconInstagram}</span><span class="pb-label">Instagram</span></button>
-                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram"><span class="pb-icon" style="background:#2AABEE">${iconTelegram}</span><span class="pb-label">Telegram</span></button>
+                                    <div class="pbm-title" aria-hidden="true">${currentLang === 'ar' ? 'القنوات' : 'Channels'}</div>
+                                    <button class="platform-btn" onclick="loadInbox('website', false)" aria-label="Website"><span class="pb-icon" data-ch="website">${inboxGlyphs.website}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp"><span class="pb-icon" data-ch="whatsapp">${inboxGlyphs.whatsapp}</span><span class="pb-label">WhatsApp</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger"><span class="pb-icon" data-ch="page">${inboxGlyphs.page}</span><span class="pb-label">Messenger</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram"><span class="pb-icon" data-ch="instagram">${inboxGlyphs.instagram}</span><span class="pb-label">Instagram</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram"><span class="pb-icon" data-ch="telegram">${inboxGlyphs.telegram}</span><span class="pb-label">Telegram</span><span class="pb-sub"></span></button>
                                 </div>
                                 <div class="ixp-platform-label" style="display:none;" data-i18n="inbox.label_platform">Select Platform</div>
                                 <!-- Delta Phase 2: lead-stage groups rail (hidden unless body.omnio) -->
@@ -46645,10 +46783,16 @@
                                      people to a booking link they did not need. It now simply invites
                                      them to pick a chat; the genuine no-channels case is handled by
                                      the sidebar's own empty state (renderInboxSidebarState). -->
-                                <div id="inbox-thread-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--text-secondary); text-align:center; padding:40px;">
-                                    <div style="margin-bottom:16px; display:flex; color:var(--text-secondary); opacity:0.5;"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+                                <!-- 2026-10-08: the empty pane also answers "what is waiting for me?": the
+                                     unread and Needs you counts as one-click shortcuts (renderInboxPickStats). -->
+                                <div id="inbox-thread-placeholder" class="inbox-thread-placeholder" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--text-secondary); text-align:center; padding:40px;">
+                                    <div class="itp-art" aria-hidden="true">
+                                        <span class="itp-bubble itp-bubble-a"></span>
+                                        <span class="itp-bubble itp-bubble-b"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></span>
+                                    </div>
                                     <h3 style="margin:0 0 6px; font-size:1.05rem; color:var(--text-primary);" data-i18n="inbox.pick_conversation_title">Select a conversation</h3>
                                     <p style="margin:0; font-size:.88rem; max-width:340px;" data-i18n="inbox.pick_conversation_text">Choose a chat on the left to read the history and reply.</p>
+                                    <div class="itp-stats" id="itp-stats"></div>
                                 </div>
                             </div>
                             <div id="inbox-human-composer" class="inbox-human-composer hidden">
@@ -52393,11 +52537,25 @@ Thank you for shopping with {store_name}!</textarea>
                 nameEl.removeAttribute('data-i18n');
             }
             if (othersEl) {
+                // The other channels that have unread, as their own tiles, then the total: says
+                // "Messenger and Instagram are waiting" without opening the menu.
                 const counts = window._inboxUnreadByPlatform || {};
-                const other = Object.keys(counts).reduce((n, p) => n + (p === currentInboxPlatform ? 0 : (counts[p] || 0)), 0);
+                let other = 0;
+                const tiles = [];
+                document.querySelectorAll('.platform-selector .platform-btn').forEach((btn) => {
+                    const p = INBOX_PLATFORM_BY_LABEL[(btn.getAttribute('aria-label') || '').toLowerCase()];
+                    const n = (p && p !== currentInboxPlatform && counts[p]) || 0;
+                    if (n <= 0) return;
+                    other += n;
+                    const ic = btn.querySelector('.pb-icon');
+                    if (ic && tiles.length < 3) tiles.push(ic.outerHTML);
+                });
                 othersEl.hidden = !(other > 0);
-                othersEl.textContent = other > 99 ? '99+' : String(other);
-                othersEl.title = currentLang === 'ar' ? 'رسائل غير مقروءة في قنوات أخرى' : 'Unread in other channels';
+                othersEl.innerHTML = other > 0
+                    ? `<span class="ics-tiles">${tiles.join('')}</span><span class="ics-others-n">${other > 99 ? '99+' : other}</span>` : '';
+                const tip = currentLang === 'ar' ? `${other} غير مقروءة في قنوات أخرى` : `${other} unread in other channels`;
+                othersEl.title = tip;
+                othersEl.setAttribute('aria-label', tip);
             }
         }
         function setInboxChannelMenu(open) {
@@ -52439,6 +52597,15 @@ Thank you for shopping with {store_name}!</textarea>
                     badge.textContent = count > 99 ? '99+' : String(count);
                 } else if (badge) {
                     badge.remove();
+                }
+                // The row's second line in the channel menu: what is waiting there, in words.
+                const sub = btn.querySelector('.pb-sub');
+                if (sub) {
+                    const ar = currentLang === 'ar';
+                    sub.textContent = count > 0
+                        ? (ar ? `${count > 99 ? '99+' : count} غير مقروءة` : `${count > 99 ? '99+' : count} unread`)
+                        : (ar ? 'لا يوجد جديد' : 'All caught up');
+                    sub.classList.toggle('has-unread', count > 0);
                 }
             });
             try { renderInboxChannelTrigger(); } catch (e) { /* decorative */ }
@@ -53200,6 +53367,19 @@ Thank you for shopping with {store_name}!</textarea>
             if (changed && platform === currentInboxPlatform) renderInboxContactList();
         }
 
+        // The empty reading pane's shortcuts: "3 unread", "2 need you", each opening that view of
+        // the list; or "All caught up" when nothing waits. Same numbers as the chips.
+        function renderInboxPickStats(unread, handoff) {
+            const box = document.getElementById('itp-stats');
+            if (!box) return;
+            const ar = currentLang === 'ar';
+            const parts = [];
+            if (unread > 0) parts.push(`<button type="button" class="itp-stat" onclick="setInboxReadFilter('unread')"><b>${unread > 99 ? '99+' : unread}</b> <span>${ar ? 'غير مقروءة' : 'unread'}</span></button>`);
+            if (handoff > 0) parts.push(`<button type="button" class="itp-stat itp-stat-warn" onclick="setInboxReadFilter('handoff')"><b>${handoff > 99 ? '99+' : handoff}</b> <span>${ar ? 'تحتاجك' : 'need you'}</span></button>`);
+            box.innerHTML = parts.length ? parts.join('')
+                : `<span class="itp-calm">${ar ? 'لا يوجد ما ينتظرك الآن' : 'You are all caught up'}</span>`;
+        }
+
         function renderInboxContactList() {
             const list = document.getElementById('contact-list');
             if (!list) return;
@@ -53220,6 +53400,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const handoff = conversations.reduce((t, c) => t + (c.ai_paused === true ? 1 : 0), 0);
                 const hEl = document.getElementById('irf-handoff-count');
                 if (hEl) { hEl.textContent = handoff > 99 ? '99+' : String(handoff); hEl.style.display = handoff > 0 ? '' : 'none'; }
+                try { renderInboxPickStats(unreadConvs, handoff); } catch (e) { /* decorative */ }
             }
             if ((window.inboxReadFilter || 'all') === 'unread') {
                 conversations = conversations.filter(c => (c.unread_count || 0) > 0);
@@ -53306,6 +53487,9 @@ Thank you for shopping with {store_name}!</textarea>
                             timeLabel = msgDate.toLocaleTimeString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' });
                         } else if (msgDay.getTime() === yesterday.getTime()) {
                             timeLabel = currentLang === 'ar' ? 'أمس' : 'Yesterday';
+                        } else if (today.getTime() - msgDay.getTime() < 6.5 * 86400000) {
+                            // This week: the day's name, as WhatsApp shows it.
+                            timeLabel = msgDate.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { weekday: 'short' });
                         } else {
                             timeLabel = msgDate.toLocaleDateString(currentLang === 'ar' ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric' });
                         }
@@ -54332,7 +54516,7 @@ Thank you for shopping with {store_name}!</textarea>
             const box = document.getElementById('inbox-messages');
             if (box) box.innerHTML = '';
             const title = document.getElementById('inbox-header-title');
-            if (title) title.innerText = t('inbox.no_conversation') || 'Select a conversation';
+            if (title) { title.innerText = t('inbox.no_conversation') || 'Select a conversation'; title.removeAttribute('data-sub'); }
             // On mobile the thread is a separate full-screen panel from the list
             // (see showChatOnMobile/hideChatOnMobile) - clearing the thread's
             // content alone leaves that panel showing, empty, with no way back
@@ -56720,7 +56904,20 @@ Thank you for shopping with {store_name}!</textarea>
             if (!isAutoRefresh) {
                 // The person's name, as every messaging app titles a chat; "Chat with" added nothing
                 // and on a phone pushed the name into an ellipsis.
-                document.getElementById('inbox-header-title').innerText = contactName || t('inbox.chat_with', { name: '' });
+                const headerTitle = document.getElementById('inbox-header-title');
+                headerTitle.innerText = contactName || t('inbox.chat_with', { name: '' });
+                // Second line: the channel and the number (or handle), as every inbox shows who
+                // you are talking to and where. Decorative: a failure leaves the name alone.
+                try {
+                    const convs = window.inboxLoadedConvs || [];
+                    const conv = convs.find((c) => c && (c.contact_id === contactId || (c.contact && c.contact.id === contactId)));
+                    let handle = conv && conv.contact ? inboxContactSubline(conv.contact) : '';
+                    if (/^\d{8,15}$/.test(handle)) handle = '+' + handle;
+                    if (handle && handle === contactName) handle = '';
+                    const activeLabel = document.querySelector('.platform-selector .platform-btn.active .pb-label');
+                    const sub = [activeLabel ? activeLabel.textContent.trim() : '', handle].filter(Boolean).join(' · ');
+                    if (sub) headerTitle.setAttribute('data-sub', sub); else headerTitle.removeAttribute('data-sub');
+                } catch (e) { headerTitle.removeAttribute('data-sub'); }
                 // Same colour and initials as the person's row in the list.
                 try {
                     const av = document.getElementById('inbox-header-avatar');

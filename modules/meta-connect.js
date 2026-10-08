@@ -601,6 +601,9 @@
 .mc-pick-sub{font-size:var(--sp-t-xs,.75rem);color:var(--sp-ink-2,var(--text-secondary))}
 .mc-pick-note{font-size:var(--sp-t-xs,.75rem);font-weight:600;color:var(--sp-ink-2,var(--text-secondary));white-space:nowrap}
 .mc-pick-note:empty{display:none}
+.mc-pick-blocked{flex-wrap:wrap;cursor:default}
+.mc-pick-why{margin-top:2px;font-size:var(--sp-t-xs,.75rem);line-height:1.5;color:var(--sp-warn-ink,var(--sp-ink-2,var(--text-secondary)));overflow-wrap:anywhere}
+.meta-connect-card .mc-pick-again{width:auto;max-width:none;min-height:36px;padding:6px 14px;flex:0 0 auto}
 .mc-picker-actions{display:flex;gap:8px;flex-wrap:wrap}
 .meta-connect-card .mc-picker-actions .lp-btn{width:auto;max-width:none;min-height:40px;padding:8px 18px}
 .meta-connect-card .mc-picker-go:disabled{opacity:.5;cursor:not-allowed;filter:none;transform:none}
@@ -614,6 +617,7 @@
   .mc-account-actions{justify-content:flex-start}
   .mc-picker-actions{flex-direction:column}
   .meta-connect-card .mc-picker-actions .lp-btn{width:100%;min-height:44px}
+  .meta-connect-card .mc-pick-blocked .mc-pick-again{width:100%;min-height:44px}
 }
 .mc-dash{container:mc-dash/inline-size;margin-bottom:var(--sp-5,24px);padding:var(--sp-5,20px);border-radius:var(--sp-r-lg,14px);background:var(--sp-surface,rgba(127,127,127,.05));border:1px solid var(--sp-line,rgba(127,127,127,.16))}
 .mc-dash-head{display:flex;flex-direction:column;gap:10px;margin-bottom:var(--sp-4,16px)}
@@ -1096,23 +1100,59 @@
                 why = `${tr('meta_connect.missing_permissions', 'Your Facebook login did not grant these required permissions:')} ${missing.join(', ')}. ${tr('meta_connect.rerequest_hint', 'Click Connect again and approve every permission, and make sure you tick the Pages you manage in the Facebook dialog.')}`;
             } else if (discovery && discovery.business_count > 0 && (discovery.page_count === 0)) {
                 why = tr('meta_connect.business_no_pages', 'Your Facebook Business was connected, but it has no Pages this app can manage. In the Facebook dialog make sure the Page itself is ticked, and that your user has a Page role (Admin) on it.');
+            } else if (discovery && discovery.all_assets_grant && !(pagesBeforeIgFilter > 0)) {
+                // "Opt in to all current and future Pages": Facebook approved
+                // access but named no Page, so there is nothing to pick. Say
+                // which choice works; the old copy recommended this very one.
+                why = tr('meta_connect.all_pages_unlisted', 'You chose "Opt in to all current and future Pages". Facebook approved it but did not tell Digitivia which Pages that includes, so there is nothing to connect yet. Click Connect again, choose "Opt in to current Pages only", and tick the Page you want.');
             } else if (scopesUnknown) {
                 why = tr('meta_connect.scopes_unknown', 'Facebook did not tell us which permissions you granted, so we cannot say what is missing. Click Connect again and approve every permission, ticking the Page you manage in the Facebook dialog.');
             } else if (platform === 'instagram' && typeof pagesBeforeIgFilter === 'number' && pagesBeforeIgFilter > 0) {
                 why = tr('instagram_connect.no_ig_account', 'No Instagram Professional account found linked to your Pages. Go to Instagram Settings → Account → Switch to Professional Account, then link it to your Facebook Page and try again.');
             } else if (platform === 'instagram') {
-                why = tr('instagram_connect.no_pages_selected', 'Facebook returned no Pages for your login. In the Facebook dialog, choose "Opt in to all current and future Pages" (or tick your Page), then try again. If you already connected before, open facebook.com → Settings → Business integrations, remove Digitivia, and reconnect.');
+                why = tr('instagram_connect.no_pages_selected', 'Facebook returned no Pages for your login. Click Connect again, choose "Opt in to current Pages only" in the Facebook dialog, and tick your Page. If you connected before and the dialog does not offer that choice, open facebook.com, go to Settings, then Business integrations, remove Digitivia, and connect again.');
             } else {
-                why = tr('messenger_connect.no_pages_selected', 'Facebook returned no Pages for your login. In the Facebook dialog, choose "Opt in to all current and future Pages" (or tick your Page), then try again. If you already connected before, open facebook.com → Settings → Business integrations, remove Digitivia, and reconnect.');
+                why = tr('messenger_connect.no_pages_selected', 'Facebook returned no Pages for your login. Click Connect again, choose "Opt in to current Pages only" in the Facebook dialog, and tick your Page. If you connected before and the dialog does not offer that choice, open facebook.com, go to Settings, then Business integrations, remove Digitivia, and connect again.');
             }
-            body.innerHTML = `<div class="mc-callout" role="status">${esc(why)}</div>`;
+            // Every reason above ends in "connect again", so the button to do
+            // it sits right under the sentence, and a toast says it went wrong
+            // even when the card is scrolled out of view.
+            body.innerHTML = `<div class="mc-picker"><div class="mc-callout" role="alert"></div>
+              <div class="mc-picker-actions"><button type="button" class="lp-btn lp-btn-primary mc-retry-connect"></button></div></div>`;
+            body.querySelector('.mc-callout').textContent = why;
+            const retry = body.querySelector('.mc-retry-connect');
+            retry.textContent = tr('meta_connect.connect_again', 'Connect again');
+            retry.addEventListener('click', () => handleConnect(card, platform, options));
+            toast(tr('meta_connect.nothing_connected', 'Nothing was connected. See the card for what to do next.'), 'error');
             card.dataset.mode = 'status';
             return;
         }
         await renderPicker(card, platform, pages, token, {
             ownedOnly,
             preselect: options.preselect || '',
+            fromKnownPages: !!(discovery && discovery.from_known_pages),
+            lostPages: (discovery && Array.isArray(discovery.lost_pages)) ? discovery.lost_pages : [],
+            reconnect: () => handleConnect(card, platform, options),
         });
+    }
+
+    // A Page the login did not grant (or whose key Meta refuses) is listed but
+    // cannot be picked: connecting it would save a token that fails on every
+    // call. The server sets these on every Page it lists; the browser-only
+    // fallback sets nothing, and then nothing is blocked.
+    function blockedState(page) {
+        if (!page || page.granted !== false) return null;
+        return page.grant_problem === 'token_invalid' ? 'token_invalid' : 'not_granted';
+    }
+
+    function blockedReason(state, isIG, name) {
+        if (state === 'token_invalid') {
+            return fill(tr('meta_connect.token_invalid_why',
+                'Facebook did not accept the key it gave for {name}. Connect again, tick it and approve every permission.'), { name });
+        }
+        return fill(isIG
+            ? tr('meta_connect.not_granted_why_ig', 'Facebook did not give Digitivia AI Agent access to {name}. Connect again, and in Facebook\'s window tick this account and its Facebook Page.')
+            : tr('meta_connect.not_granted_why', 'Facebook did not give Digitivia AI Agent access to {name}. Connect again, and in Facebook\'s window tick this Page.'), { name });
     }
 
     // Choose any number of Pages (or Instagram accounts) and connect them in
@@ -1131,6 +1171,11 @@
             let state = 'new';
             if (row) state = needsAttention(row) ? 'reconnect' : 'connected';
             else if (opts.ownedOnly && !opts.ownedOnly.has(id)) state = 'needs_plan';
+            // Not granted beats every state but "connected": a healthy
+            // connection (another person's login may hold it) stays as it is,
+            // and everything else cannot be fixed by picking it.
+            const blocked = blockedState(page);
+            if (blocked && state !== 'connected') state = blocked;
             return { page, id, state };
         });
         const selectable = items.filter((it) => it.state === 'new' || it.state === 'reconnect');
@@ -1139,6 +1184,7 @@
           <div class="mc-picker">
             <div class="mc-picker-title"></div>
             <div class="mc-picker-note" hidden></div>
+            <div class="mc-picker-note mc-picker-lost" role="status" hidden></div>
             <div class="mc-picker-list" role="list"></div>
             <div class="mc-picker-actions">
               <button type="button" class="lp-btn lp-btn-primary mc-picker-go" disabled></button>
@@ -1153,6 +1199,21 @@
             note.hidden = false;
             note.textContent = tr('meta_connect.owned_only_note',
                 'Your plan has ended, so you can reconnect accounts you already had. Choose a plan to add new ones.');
+        } else if (opts.fromKnownPages) {
+            const note = body.querySelector('.mc-picker-note');
+            note.hidden = false;
+            note.textContent = tr('meta_connect.known_pages_note',
+                'Facebook did not list your Pages, so these are the ones you connected before. To add a different Page, click Cancel, connect again and choose "Opt in to current Pages only".');
+        }
+        // Connected Pages this very login switched off (Facebook keeps one list
+        // of allowed Pages per login, and the newest login replaces it).
+        const lost = (opts.lostPages || []).map((l) => String((l && l.name) || '')).filter(Boolean);
+        if (lost.length) {
+            const lostNote = body.querySelector('.mc-picker-lost');
+            lostNote.hidden = false;
+            lostNote.textContent = fill(tr('meta_connect.lost_pages_note',
+                'This Facebook login no longer includes: {names}. They were connected before and have stopped working. Connect again and tick them too.'),
+            { names: lost.join(tr('meta_connect.list_sep', ', ')) });
         }
         const list = body.querySelector('.mc-picker-list');
         const go = body.querySelector('.mc-picker-go');
@@ -1178,20 +1239,34 @@
 
         items.forEach((it, idx) => {
             try {
-                const disabled = it.state === 'connected' || it.state === 'needs_plan';
+                const blocked = it.state === 'not_granted' || it.state === 'token_invalid';
+                const disabled = it.state === 'connected' || it.state === 'needs_plan' || blocked;
                 const ig = it.page.instagram_business_account;
                 const pic = isIG
                     ? ((ig && ig.profile_picture_url) || '')
                     : ((it.page.picture && it.page.picture.data && it.page.picture.data.url) || '');
-                const pick = document.createElement('label');
-                pick.className = 'mc-pick' + (disabled ? ' mc-pick-disabled' : '');
+                // A blocked row has nothing to tick, so it is a plain row with
+                // its reason and the one action that fixes it, not a label
+                // wrapped around a button.
+                const pick = document.createElement(blocked ? 'div' : 'label');
+                pick.className = 'mc-pick' + (disabled ? ' mc-pick-disabled' : '') + (blocked ? ' mc-pick-blocked' : '');
                 pick.setAttribute('role', 'listitem');
                 pick.innerHTML = `
-                  <input type="checkbox" data-idx="${idx}" ${disabled ? 'disabled' : ''}>
+                  ${blocked ? '' : `<input type="checkbox" data-idx="${idx}" ${disabled ? 'disabled' : ''}>`}
                   ${pic ? `<img class="mc-pick-pic" src="${esc(pic)}" alt="">` : '<span class="mc-pick-pic"></span>'}
-                  <span class="mc-pick-text"><span class="mc-pick-name"></span><span class="mc-pick-sub"></span></span>
+                  <span class="mc-pick-text"><span class="mc-pick-name"></span><span class="mc-pick-sub"></span>${blocked ? '<span class="mc-pick-why"></span>' : ''}</span>
                   <span class="mc-pick-note"></span>`;
-                pick.querySelector('.mc-pick-name').textContent = isIG ? `@${ig.username}` : String(it.page.name || '');
+                const shownName = isIG ? `@${ig.username}` : String(it.page.name || '');
+                pick.querySelector('.mc-pick-name').textContent = shownName;
+                if (blocked) {
+                    pick.querySelector('.mc-pick-why').textContent = blockedReason(it.state, isIG, shownName);
+                    const again = document.createElement('button');
+                    again.type = 'button';
+                    again.className = 'lp-btn lp-btn-outline mc-pick-again';
+                    again.textContent = tr('meta_connect.connect_again', 'Connect again');
+                    again.addEventListener('click', () => { if (opts.reconnect) opts.reconnect(); });
+                    pick.appendChild(again);
+                }
                 const sub = pick.querySelector('.mc-pick-sub');
                 if (isIG) sub.textContent = String(it.page.name || ''); else sub.remove();
                 const note = pick.querySelector('.mc-pick-note');
@@ -1200,10 +1275,12 @@
                     : it.state === 'needs_plan' ? tr('meta_connect.needs_plan', 'Needs a plan')
                     : '';
                 const box = pick.querySelector('input');
-                if (!disabled && (selectable.length === 1 || (opts.preselect && opts.preselect === it.id))) {
-                    box.checked = true;
+                if (box) {
+                    if (!disabled && (selectable.length === 1 || (opts.preselect && opts.preselect === it.id))) {
+                        box.checked = true;
+                    }
+                    box.addEventListener('change', refreshGo);
                 }
-                box.addEventListener('change', refreshGo);
                 list.appendChild(pick);
             } catch (e) {
                 console.warn('[meta-connect] picker row failed to render', e);
@@ -1295,7 +1372,15 @@
             const r = await fetch(META_TOKEN_URL(), { method: 'POST', headers, body: JSON.stringify(reqBody) });
             const j = await r.json().catch(() => ({}));
             if (!r.ok || (j && j.error)) {
-                return { page, name, ok: false, error: String((j && j.error) || `HTTP ${r.status}`) };
+                // page_not_granted / token_unusable: the server refused to save
+                // a token Facebook will not honour, and wrote its sentence for
+                // the person in both languages. Retrying cannot fix either.
+                const refused = j && (j.error === 'page_not_granted' || j.error === 'token_unusable');
+                return {
+                    page, name, ok: false, error: String((j && j.error) || `HTTP ${r.status}`),
+                    refused: !!refused,
+                    refusedText: refused ? String((window.currentLang === 'ar' ? j.message_ar : j.message) || j.message || '') : '',
+                };
             }
             if (isIG) {
                 try {
@@ -1316,13 +1401,35 @@
                 console.warn('[meta-connect] webhook subscription failed:', subscribeResult);
                 return { page, name, ok: false, subscribeFailed: true };
             }
-            return { page, name, ok: true };
+            // Saved and working, but the login may not carry every permission
+            // (Insights, publishing). The card says which, instead of "connected".
+            const missing = (j && Array.isArray(j.missing_permissions)) ? j.missing_permissions.map(String) : [];
+            return { page, name, ok: true, missing };
         } catch (e) {
             return { page, name, ok: false, error: String((e && e.message) || e) };
         }
     }
 
+    // What a connected account is allowed to do, and what it is not, in the
+    // words a merchant uses. Messages always work once an account is connected.
+    function permissionLines(name, missing) {
+        const lacksInsights = missing.some((p) => p === 'read_insights' || p === 'instagram_manage_insights');
+        const lacksPublishing = missing.some((p) => p === 'pages_manage_posts' || p === 'instagram_content_publish');
+        const sep = tr('meta_connect.list_sep', ', ');
+        const allowed = [tr('meta_connect.perm_messages', 'messages')];
+        const notYet = [];
+        (lacksInsights ? notYet : allowed).push(tr('meta_connect.perm_insights', 'insights'));
+        (lacksPublishing ? notYet : allowed).push(tr('meta_connect.perm_publishing', 'publishing'));
+        return fill(tr('meta_connect.allowed_line', '{name} is connected. Allowed: {allowed}.'), { name, allowed: allowed.join(sep) })
+            + ' ' + fill(tr('meta_connect.missing_line',
+                'Not allowed yet: {missing}. Connect again and tick every permission in Facebook\'s window.'), { missing: notYet.join(sep) });
+    }
+
     function failureText(result) {
+        if (result.refused) {
+            return result.refusedText || fill(tr('meta_connect.not_granted_why',
+                'Facebook did not give Digitivia AI Agent access to {name}. Connect again, and in Facebook\'s window tick this Page.'), { name: result.name });
+        }
         if (result.subscribeFailed) {
             return tr('meta_connect.subscribe_failed',
                 'Connected, but we could not enable message delivery for this account. Messages will not arrive yet. Please disconnect and connect again, granting all requested permissions — if it keeps failing, contact support.');
@@ -1338,7 +1445,9 @@
         const isIG = platform === 'instagram';
         const ok = results.filter((r) => r.ok).length;
         const failed = results.filter((r) => !r.ok);
-        if (!failed.length) {
+        // Connected and working, but the login left out Insights or publishing.
+        const limited = results.filter((r) => r.ok && r.missing && r.missing.length);
+        if (!failed.length && !limited.length) {
             if (results.length === 1) {
                 toast(isIG
                     ? tr('instagram_connect.connect_success', 'Instagram connected! DMs will now appear in your Digitivia inbox.')
@@ -1370,12 +1479,17 @@
               <button type="button" class="lp-btn lp-btn-outline mc-summary-done"></button>
             </div>
           </div>`;
-        const line = fill(tr('meta_connect.partial_summary', '{X} connected. {Y} need another look.'),
-            { X: ok, Y: failed.length });
+        const line = failed.length
+            ? fill(tr('meta_connect.partial_summary', '{X} connected. {Y} need another look.'), { X: ok, Y: failed.length })
+            : tr('meta_connect.limited_summary', 'Connected, but Facebook did not allow everything yet.');
         body.querySelector('.mc-summary-line').textContent = line;
         toast(line, ok ? 'warning' : 'error');
         const list = body.querySelector('.mc-account-list');
-        failed.forEach((result) => {
+        const connectAgain = (result) => {
+            const ig = result.page && result.page.instagram_business_account;
+            return handleConnect(card, platform, { preselect: String((isIG ? (ig && ig.id) : (result.page && result.page.id)) || '') });
+        };
+        const addRow = (result, detailText, actionLabel, onAction) => {
             try {
                 const item = document.createElement('div');
                 item.className = 'mc-account mc-account-attention';
@@ -1387,26 +1501,37 @@
                 nm.textContent = result.name;
                 const detail = document.createElement('div');
                 detail.className = 'mc-account-detail';
-                detail.textContent = failureText(result);
+                detail.textContent = detailText;
                 main.appendChild(nm);
                 main.appendChild(detail);
                 item.appendChild(main);
-                const retry = document.createElement('button');
-                retry.type = 'button';
-                retry.className = 'lp-btn lp-btn-primary mc-retry';
-                retry.textContent = tr('meta_connect.retry', 'Retry');
-                retry.addEventListener('click', async () => {
-                    retry.disabled = true;
-                    const again = await exchangeOne(platform, result.page, token);
-                    forgetMetaCount();
-                    const next = results.map((r) => (r === result ? again : r));
-                    renderConnectSummary(card, platform, next, token);
-                });
-                item.appendChild(retry);
+                const act = document.createElement('button');
+                act.type = 'button';
+                act.className = 'lp-btn lp-btn-primary mc-retry';
+                act.textContent = actionLabel;
+                act.addEventListener('click', () => onAction(act));
+                item.appendChild(act);
                 list.appendChild(item);
             } catch (e) {
                 console.warn('[meta-connect] summary row failed to render', e);
             }
+        };
+        failed.forEach((result) => {
+            if (result.refused) {
+                // The same token would be refused again; the fix is a new login.
+                addRow(result, failureText(result), tr('meta_connect.connect_again', 'Connect again'), () => connectAgain(result));
+                return;
+            }
+            addRow(result, failureText(result), tr('meta_connect.retry', 'Retry'), async (btn) => {
+                btn.disabled = true;
+                const again = await exchangeOne(platform, result.page, token);
+                forgetMetaCount();
+                const next = results.map((r) => (r === result ? again : r));
+                renderConnectSummary(card, platform, next, token);
+            });
+        });
+        limited.forEach((result) => {
+            addRow(result, permissionLines(result.name, result.missing), tr('meta_connect.connect_again', 'Connect again'), () => connectAgain(result));
         });
         const done = body.querySelector('.mc-summary-done');
         done.textContent = tr('meta_connect.done', 'Done');

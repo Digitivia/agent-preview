@@ -34616,8 +34616,8 @@
             .inbox-read-filter .irf-btn .irf-count { min-width: 16px; height: 16px; line-height: 16px; font-size: 10px; }
             .inbox-read-filter .irf-btn .feat-badge { margin-inline-start: 2px; padding: 0 5px; font-size: 8.5px; line-height: 14px; }
             .inbox-read-filter .irf-btn .fu-help { width: 14px; height: 14px; font-size: 9px; margin-inline-start: 2px; }
-            .inbox-list-toolbar { padding: 0 12px 2px; }
-            .inbox-list-toolbar .irf-mark-all { min-block-size: 34px; }
+            .inbox-list-toolbar { padding: 0 10px 2px; min-block-size: 0; }
+            .inbox-list-toolbar .irf-mark-all { min-block-size: 32px; }
         }
         /* ════════ Inbox list on a phone: one calm header, then the conversations ════════
            Owner, 2026-10-08: "you cannot see the conversations". On a 360px phone the
@@ -34695,6 +34695,25 @@
             }
             #inbox .inbox-composer-channel-note { margin-block-end: 6px; padding: 8px 10px; font-size: 12.5px; line-height: 1.4; }
             #inbox .inbox-human-composer-hint { font-size: 11.5px; line-height: 1.35; margin-block-end: 6px; }
+            /* The thread is the point of this screen. "Disconnected, Reconnect" is one slim
+               line (two at most; the whole sentence is the text's title and is read out), and
+               "sending your reply pauses the AI" appears when you start a reply, which is
+               the moment it is true. The header already says the AI is on. */
+            body:not(.omnio) #inbox .inbox-composer-channel-note[data-reason="disconnected"] {
+                flex-wrap: nowrap; gap: 8px; padding: 6px 6px 6px 10px; border-radius: 12px; font-size: 12px; line-height: 1.35;
+            }
+            [dir="rtl"] body:not(.omnio) #inbox .inbox-composer-channel-note[data-reason="disconnected"] { padding: 6px 10px 6px 6px; }
+            body:not(.omnio) #inbox .inbox-composer-channel-note[data-reason="disconnected"] .act-note__text {
+                flex: 1 1 auto; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+            }
+            body:not(.omnio) #inbox .inbox-composer-channel-note[data-reason="disconnected"] .act-note__actions { flex: none; }
+            body:not(.omnio) #inbox .inbox-composer-channel-note[data-reason="disconnected"] .act-note__btn { min-block-size: 32px; padding: 2px 12px; white-space: nowrap; }
+            body:not(.omnio) #inbox .inbox-human-composer:not(:focus-within) .inbox-human-composer-hint { display: none !important; }
+            /* Once there is text, the reply box takes the width of the tools that no longer
+               apply: a voice note replaces typing, and quick replies start a reply. The image
+               button stays (a photo with a caption). Back as soon as the box is empty. */
+            body:not(.omnio) #inbox .inbox-human-composer-row:has(> .inbox-human-reply-input:not(:placeholder-shown))
+                > :is(#inbox-record-voice-btn, .inbox-header-action) { display: none; }
         }
 
         .inbox-header-avatar { display: none; }
@@ -34823,13 +34842,31 @@
         }
         /* ── Channel switcher (standard inbox, every width) ── */
         .inbox-channel-bar { display: none; }
-        body:not(.omnio) #inbox .inbox-channel-bar {
-            display: flex; align-items: center; gap: 8px; padding: 10px 10px 6px; min-inline-size: 0;
+        /* ONE header row above the filters: [channel tile v] [Search WhatsApp...] [export].
+           The channel bar and the search box are display:contents so their controls are items
+           of this row; Chats / Messages takes a full-width row of its own only while searching. */
+        .inbox-list-head { display: contents; }
+        body:not(.omnio) #inbox .inbox-list-head {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 10px 6px; min-inline-size: 0;
         }
+        body:not(.omnio) #inbox .inbox-list-head > .inbox-channel-bar,
+        body:not(.omnio) #inbox .inbox-list-head .inbox-search-container { display: contents; }
+        body:not(.omnio) #inbox .inbox-list-head .ics-trigger { order: 1; }
+        body:not(.omnio) #inbox .inbox-list-head .inbox-search-container > .help-inline-host { order: 2; flex: 1 1 0; min-inline-size: 0; }
+        body:not(.omnio) #inbox .inbox-list-head .inbox-export-icon { order: 3; }
+        body:not(.omnio) #inbox .inbox-list-head .inbox-search-modes { order: 4; display: none; }
+        body:not(.omnio) #inbox .inbox-list-head.is-searching .inbox-search-modes { display: flex; flex: 1 0 100%; }
+        body:not(.omnio) #inbox .inbox-list-head.is-searching .inbox-search-modes .mode-btn { flex: 1 1 0; }
+        body:not(.omnio) #inbox .inbox-list-head .inbox-search-container > .global-search-results { order: 5; flex: 1 0 100%; }
+        body:not(.omnio) #inbox .inbox-list-head #inbox-search-input { block-size: 42px; border-radius: 21px; font-size: 13.5px; padding-inline-start: 14px; text-overflow: ellipsis; }
+        /* A roomier conversation column where the screen has it: the search box holds
+           "Search WhatsApp..." whole and names stop truncating; the reading pane keeps 800px+. */
+        @media (min-width: 1024px) { body:not(.omnio) #inbox .inbox-sidebar { width: 320px; flex: none; } }
+        @media (min-width: 1200px) { body:not(.omnio) #inbox .inbox-sidebar { width: 344px; } }
         body:not(.omnio) #inbox .inbox-sidebar { position: relative; }
         body:not(.omnio) #inbox .ics-trigger {
-            flex: 1 1 auto; min-inline-size: 0; display: inline-flex; align-items: center; gap: 9px;
-            block-size: 42px; padding-inline: 5px 12px; border-radius: 21px; cursor: pointer;
+            flex: none; min-inline-size: 0; display: inline-flex; align-items: center; gap: 3px; position: relative;
+            block-size: 42px; padding-inline: 5px 7px; border-radius: 21px; cursor: pointer;
             border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12)); background: rgba(127, 127, 127, 0.06);
             color: var(--text-main, #f1f5f9); font: inherit; font-size: 15px; font-weight: 700; text-align: start;
         }
@@ -34855,23 +34892,21 @@
         body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon svg { inline-size: 19px; block-size: 19px; }
         body:not(.omnio) #inbox .ics-icon .pb-icon { inline-size: 30px; block-size: 30px; }
         body:not(.omnio) #inbox .ics-icon .pb-icon svg { inline-size: 17px; block-size: 17px; }
-        body:not(.omnio) #inbox .ics-name { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        /* Unread waiting in the OTHER channels: their tiles, overlapped, and how many. A bare red
-           number beside "WhatsApp" read as WhatsApp's own count. */
-        body:not(.omnio) #inbox .ics-others {
-            flex: none; display: inline-flex; align-items: center; gap: 5px; margin-inline-start: auto;
-            padding: 2px 8px 2px 3px; border-radius: 999px; background: rgba(239, 83, 80, 0.12);
-            color: #ff8a80; font-size: 11px; font-weight: 800; line-height: 1;
+        /* The name is read out (and is in the search box's placeholder), not drawn: the tile is the channel. */
+        body:not(.omnio) #inbox .ics-name {
+            position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
         }
-        body:not(.omnio) #inbox .ics-others .ics-tiles { display: inline-flex; }
-        body:not(.omnio) #inbox .ics-others .pb-icon { inline-size: 18px; block-size: 18px; border-radius: 30%; box-shadow: 0 0 0 2px var(--bg-card, #16161d); }
-        body:not(.omnio) #inbox .ics-others .pb-icon + .pb-icon { margin-inline-start: -6px; }
-        body:not(.omnio) #inbox .ics-others .pb-icon svg { inline-size: 11px; block-size: 11px; filter: none; }
-        body:not(.omnio) #inbox .ics-others:not([hidden]) ~ .ics-chev { margin-inline-start: 0; }
-        :root[data-theme="light"] body:not(.omnio) #inbox .ics-others { color: #c62828; background: #fdecea; }
-        :root[data-theme="light"] body:not(.omnio) #inbox .ics-others .pb-icon { box-shadow: 0 0 0 2px #fdecea; }
+        /* Unread waiting in the OTHER channels: a count on the tile's corner, ringed in the
+           row's colour so it reads as a badge, not part of the logo. */
+        body:not(.omnio) #inbox .ics-others {
+            position: absolute; inset-block-start: 1px; inset-inline-start: 23px;
+            min-inline-size: 18px; block-size: 18px; padding: 0 5px; border-radius: 9px;
+            background: #ef4444; color: #fff; font-size: 10.5px; font-weight: 800; line-height: 18px; text-align: center;
+            box-shadow: 0 0 0 2px var(--bg-card, #16161d); pointer-events: none;
+        }
+        :root[data-theme="light"] body:not(.omnio) #inbox .ics-others { box-shadow: 0 0 0 2px #fff; }
         body:not(.omnio) #inbox .ics-others[hidden] { display: none; }
-        body:not(.omnio) #inbox .ics-chev { flex: none; margin-inline-start: auto; opacity: .65; transition: transform .15s; }
+        body:not(.omnio) #inbox .ics-chev { flex: none; opacity: .65; transition: transform .15s; }
         body:not(.omnio) #inbox .ics-trigger[aria-expanded="true"] .ics-chev { transform: rotate(180deg); }
         body:not(.omnio) #inbox .inbox-export-icon {
             display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative;
@@ -34954,7 +34989,7 @@
         body:not(.omnio) #inbox .inbox-search-modes .mode-btn.active { background: var(--brand-fade); color: #fff; }
         body:not(.omnio) #inbox .inbox-search-container > .global-search-results { flex: 1 0 100%; }
         @media (max-width: 768px) {
-            body:not(.omnio) #inbox .inbox-channel-bar { padding: 8px 8px 4px; }
+            body:not(.omnio) #inbox .inbox-list-head { padding: 8px 8px 4px; gap: 6px; }
             body:not(.omnio) #inbox .inbox-search-container { padding-inline: 8px; }
             body:not(.omnio) #inbox .platform-selector { inset-inline: 8px; inset-block-start: 52px; }
         }
@@ -46587,7 +46622,31 @@
                                  (flag OFF renders byte-identical); under body.omnio on desktop
                                  they become the prototype's channels|list panes. -->
                             <div class="ixp-left">
-                                <!-- The channel switcher (2026-10-08). Five 45px channel circles took a row of
+                                <div class="platform-selector" id="inbox-channel-menu">
+                                    <div class="pbm-title" aria-hidden="true">${currentLang === 'ar' ? 'القنوات' : 'Channels'}</div>
+                                    <button class="platform-btn" onclick="loadInbox('website', false)" aria-label="Website"><span class="pb-icon" data-ch="website">${inboxGlyphs.website}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp"><span class="pb-icon" data-ch="whatsapp">${inboxGlyphs.whatsapp}</span><span class="pb-label">WhatsApp</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger"><span class="pb-icon" data-ch="page">${inboxGlyphs.page}</span><span class="pb-label">Messenger</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram"><span class="pb-icon" data-ch="instagram">${inboxGlyphs.instagram}</span><span class="pb-label">Instagram</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram"><span class="pb-icon" data-ch="telegram">${inboxGlyphs.telegram}</span><span class="pb-label">Telegram</span><span class="pb-sub"></span></button>
+                                </div>
+                                <div class="ixp-platform-label" style="display:none;" data-i18n="inbox.label_platform">Select Platform</div>
+                                <!-- Delta Phase 2: lead-stage groups rail (hidden unless body.omnio) -->
+                                <div id="inbox-stage-rail" class="inbox-stage-rail"></div>
+                                <button class="export-btn-sidebar" onclick="openExportModal()">
+                                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                                    <span data-i18n="inbox.btn_export">Export Data</span>
+                                </button>
+                            </div>
+                            <div class="ixp-mid">
+                                <div class="inbox-list-head" id="inbox-list-head">
+                                <!-- One list header row (2026-10-08, owner: "use the area like an experienced
+                                     decor engineer"): the channel tile, the search box ("Search WhatsApp..."),
+                                     export. The channel switcher, the search and Chats / Messages used to take
+                                     three rows above the conversations; Chats / Messages now appears only while
+                                     searching (inboxSearchHeadSync). Under body.omnio this wrapper is
+                                     display:contents and the channel bar is hidden, so that layout is unchanged.
+                                     The channel switcher (2026-10-08). Five 45px channel circles took a row of
                                      their own and named nothing; flagship inboxes pick the channel from one
                                      control that says which channel you are in (Chatwoot's inbox list, WATI's
                                      channel sidebar, Front's view drawer). This trigger names the current
@@ -46607,40 +46666,24 @@
                                         <span class="inbox-sr-only" data-i18n="inbox.btn_export">Export Data</span>
                                     </button>
                                 </div>
-                                <div class="platform-selector" id="inbox-channel-menu">
-                                    <div class="pbm-title" aria-hidden="true">${currentLang === 'ar' ? 'القنوات' : 'Channels'}</div>
-                                    <button class="platform-btn" onclick="loadInbox('website', false)" aria-label="Website"><span class="pb-icon" data-ch="website">${inboxGlyphs.website}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp"><span class="pb-icon" data-ch="whatsapp">${inboxGlyphs.whatsapp}</span><span class="pb-label">WhatsApp</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger"><span class="pb-icon" data-ch="page">${inboxGlyphs.page}</span><span class="pb-label">Messenger</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram"><span class="pb-icon" data-ch="instagram">${inboxGlyphs.instagram}</span><span class="pb-label">Instagram</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram"><span class="pb-icon" data-ch="telegram">${inboxGlyphs.telegram}</span><span class="pb-label">Telegram</span><span class="pb-sub"></span></button>
-                                </div>
-                                <div class="ixp-platform-label" style="display:none;" data-i18n="inbox.label_platform">Select Platform</div>
-                                <!-- Delta Phase 2: lead-stage groups rail (hidden unless body.omnio) -->
-                                <div id="inbox-stage-rail" class="inbox-stage-rail"></div>
-                                <button class="export-btn-sidebar" onclick="openExportModal()">
-                                    <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                                    <span data-i18n="inbox.btn_export">Export Data</span>
-                                </button>
-                            </div>
-                            <div class="ixp-mid">
                                 <!-- Search Bar -->
                                 <div class="inbox-search-container">
                                     <div class="help-inline-host" id="inbox-search-host">
                                         <div class="inbox-search-input-wrapper">
-                                        <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value)">
+                                        <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value); inboxSearchHeadSync()" onfocus="inboxSearchHeadSync(true)" onblur="inboxSearchHeadSync(false)">
                                         <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; display:flex; color:var(--text-muted, #a0a0a0);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
                                         <button id="inbox-search-clear" onclick="clearInboxSearch()" class="hidden" aria-label="Clear search" style="position:absolute; right:30px; top:50%; transform:translateY(-50%); padding:3px; line-height:0; background:none; border:none; border-radius:4px; color:var(--text-muted, #a0a0a0); cursor:pointer;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block;"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
                                     </div>
                                     </div>
 
-                                    <div class="inbox-search-modes">
+                                    <div class="inbox-search-modes" onpointerdown="inboxSearchHeadHold()">
                                         <button type="button" class="mode-btn active" id="mode-btn-chats" onclick="setInboxSearchMode('chats')" data-i18n="inbox.mode_chats">Chats</button>
                                         <button type="button" class="mode-btn" id="mode-btn-messages" onclick="setInboxSearchMode('messages')" data-i18n="inbox.mode_messages">Messages</button>
                                     </div>
 
                                     <!-- Results Panel (Replaces Contact List in Messages Mode) -->
                                     <div id="global-search-results" class="global-search-results"></div>
+                                </div>
                                 </div>
 
                                 <!-- Omnio Phase 2: status filter tabs (hidden unless body.omnio) -->
@@ -52535,29 +52578,56 @@ Thank you for shopping with {store_name}!</textarea>
                 const lb = active.querySelector('.pb-label');
                 nameEl.textContent = lb ? lb.textContent : (active.getAttribute('aria-label') || '');
                 nameEl.removeAttribute('data-i18n');
+                // The channel's name now lives in the search box, which sits beside the tile.
+                const search = document.getElementById('inbox-search-input');
+                if (search && nameEl.textContent) {
+                    search.placeholder = currentLang === 'ar' ? `بحث في ${nameEl.textContent}...` : `Search ${nameEl.textContent}...`;
+                    search.removeAttribute('data-i18n-placeholder');
+                }
+                const trig = document.getElementById('inbox-channel-trigger');
+                if (trig) trig.setAttribute('aria-label', (currentLang === 'ar' ? 'القناة: ' : 'Channel: ') + nameEl.textContent);
             }
             if (othersEl) {
-                // The other channels that have unread, as their own tiles, then the total: says
-                // "Messenger and Instagram are waiting" without opening the menu.
+                // Unread waiting in the OTHER channels, as a count on the channel tile (the menu
+                // says which channels). A bare red number beside "WhatsApp" read as WhatsApp's own.
                 const counts = window._inboxUnreadByPlatform || {};
                 let other = 0;
-                const tiles = [];
                 document.querySelectorAll('.platform-selector .platform-btn').forEach((btn) => {
                     const p = INBOX_PLATFORM_BY_LABEL[(btn.getAttribute('aria-label') || '').toLowerCase()];
-                    const n = (p && p !== currentInboxPlatform && counts[p]) || 0;
-                    if (n <= 0) return;
-                    other += n;
-                    const ic = btn.querySelector('.pb-icon');
-                    if (ic && tiles.length < 3) tiles.push(ic.outerHTML);
+                    if (p && p !== currentInboxPlatform) other += counts[p] || 0;
                 });
                 othersEl.hidden = !(other > 0);
-                othersEl.innerHTML = other > 0
-                    ? `<span class="ics-tiles">${tiles.join('')}</span><span class="ics-others-n">${other > 99 ? '99+' : other}</span>` : '';
+                othersEl.textContent = other > 0 ? (other > 99 ? '99+' : String(other)) : '';
                 const tip = currentLang === 'ar' ? `${other} غير مقروءة في قنوات أخرى` : `${other} unread in other channels`;
                 othersEl.title = tip;
                 othersEl.setAttribute('aria-label', tip);
             }
         }
+        // Chats / Messages is only shown while searching: focus in the box, text in it, or
+        // Messages chosen (so the view you are in is never hidden). A tap on the switch blurs
+        // the box first on phones; the hold keeps the row open long enough for that tap to land.
+        let inboxSearchHeadHoldUntil = 0;
+        function inboxSearchHeadHold() { inboxSearchHeadHoldUntil = Date.now() + 600; }
+        window.inboxSearchHeadHold = inboxSearchHeadHold;
+        function inboxSearchHeadSync(focused) {
+            const head = document.getElementById('inbox-list-head');
+            const input = document.getElementById('inbox-search-input');
+            if (!head || !input) return;
+            const msgs = document.getElementById('mode-btn-messages');
+            const keep = () => document.activeElement === input || (input.value || '').trim() !== ''
+                || !!(msgs && msgs.classList.contains('active'));
+            if (focused === true) { head.classList.add('is-searching'); return; }
+            if (focused === false) {
+                setTimeout(() => {
+                    if (Date.now() < inboxSearchHeadHoldUntil) { setTimeout(() => inboxSearchHeadSync(), 650); return; }
+                    head.classList.toggle('is-searching', keep());
+                }, 180);
+                return;
+            }
+            head.classList.toggle('is-searching', keep());
+        }
+        window.inboxSearchHeadSync = inboxSearchHeadSync;
+
         function setInboxChannelMenu(open) {
             const menu = document.getElementById('inbox-channel-menu');
             const trig = document.getElementById('inbox-channel-trigger');
@@ -55711,7 +55781,8 @@ Thank you for shopping with {store_name}!</textarea>
                 }
                 el.dataset.reason = 'disconnected';
                 const tab = inboxReconnectTab(s.platform);
-                el.innerHTML = `<span class="act-note__text">${inboxEscText(t('send_state.composer_disconnected', { platform: inboxAccountLabel(s.platform) }))}</span>`
+                const discText = inboxEscText(t('send_state.composer_disconnected', { platform: inboxAccountLabel(s.platform) }));
+                el.innerHTML = `<span class="act-note__text" title="${discText}">${discText}</span>`
                     + (tab ? `<span class="act-note__actions"><a class="act-note__btn" href="#go=${tab}">${inboxEscText(t('send_state.reconnect'))}</a></span>` : '');
                 el.classList.remove('hidden');
             } catch (e) {
@@ -79947,6 +80018,8 @@ body.hub-lock { overflow: hidden; }
                 globalResults.innerHTML = '<div style="padding:20px; text-align:center; color:#888;">Type to search messages...</div>';
             }
         }
+        // Keeps the Chats / Messages row open while Messages is the view.
+        try { if (typeof inboxSearchHeadSync === 'function') inboxSearchHeadSync(); } catch (e) { /* layout only */ }
     }
 
     // 1. Sidebar Search Input Handler

@@ -34656,10 +34656,12 @@
             :root[data-theme="light"] #inbox .inbox-header-more { background: #ffffff; border-color: rgba(15, 23, 42, 0.12); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18); }
         }
 
-        /* Day separators in the thread ("Today", "Yesterday", a date). Sticky, so the day of
-           what is on screen stays visible while scrolling back, as in WhatsApp. */
+        /* Day separators in the thread ("Today", "Yesterday", a date). They stay in place; while
+           scrolling, a floating copy at the top says which day is on screen and fades out once
+           the scrolling stops (inboxThreadScrollUi), as WhatsApp does. A sticky separator sat on
+           top of the message being read. */
         #inbox-messages > .inbox-day-sep {
-            position: sticky; inset-block-start: 6px; z-index: 2;
+            position: relative; z-index: 1;
             align-self: center; inline-size: fit-content; margin: 10px auto 6px;
             padding: 3px 12px; border-radius: 999px;
             font-size: 11.5px; font-weight: 600; line-height: 1.5; letter-spacing: .01em;
@@ -34671,6 +34673,71 @@
         :root[data-theme="light"] #inbox-messages > .inbox-day-sep {
             color: #475569; background: rgba(255, 255, 255, 0.92); border-color: rgba(15, 23, 42, 0.08);
             box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+        }
+
+        /* ════════ The thread: built around what a person does in a chat ════════
+           (owner, 2026-10-09: "define the purposes anyone does in a chat"). Read: bubbles
+           sized to the text, 15px type, a reading width (84% on a phone), and who sent it
+           plus when on ONE quiet line at the bubble's end ("AI 10:32 Sent"), not a label row
+           above every AI reply. Follow the flow: consecutive messages from one side group
+           (2px apart, the tail corner only on the last), so a turn reads as a turn and a
+           new speaker as a pause. Scope: the standard inbox thread only. */
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) {
+            grid-template-columns: minmax(0, 1fr) auto auto auto; column-gap: 6px; row-gap: 3px;
+            border-radius: 18px; padding: 8px 12px 6px; line-height: 1.45;
+        }
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) > * { grid-column: 1 / -1; }
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) > .msg-sender-row { grid-column: 2; order: 2; margin: 0; align-self: center; }
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) > .msg-time {
+            grid-column: 3; order: 2; align-self: center; white-space: nowrap; font-size: 11px; line-height: 1.2; text-align: end;
+        }
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) > .msg-delivery { grid-column: 4; order: 2; align-self: center; margin: 0; }
+        body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) > .msg-send-note { order: 3; }
+        body:not(.omnio) #inbox #inbox-messages > .message .msg-sender-row .msg-sender-badge {
+            padding: 1px 6px; font-size: 9.5px; line-height: 1.35; letter-spacing: .03em;
+        }
+        /* Tail corner on the speaker's side; a run of messages from one side shares one tail. */
+        body:not(.omnio) #inbox #inbox-messages > .message.msg-user { border-end-end-radius: 6px; }
+        body:not(.omnio) #inbox #inbox-messages > .message.msg-ai { border-end-start-radius: 6px; }
+        body:not(.omnio) #inbox #inbox-messages > .msg-user:has(+ .msg-user) { border-end-end-radius: 18px; }
+        body:not(.omnio) #inbox #inbox-messages > .msg-ai:has(+ .msg-ai) { border-end-start-radius: 18px; }
+        body:not(.omnio) #inbox #inbox-messages > .msg-user + .msg-user { margin-block-start: -4px; border-start-end-radius: 6px; }
+        body:not(.omnio) #inbox #inbox-messages > .msg-ai + .msg-ai { margin-block-start: -4px; border-start-start-radius: 6px; }
+        .inbox-jump-latest, .inbox-float-day { display: none; }
+        body:not(.omnio) #inbox .inbox-jump-latest {
+            display: inline-flex; position: absolute; z-index: 6; inset-inline-start: 50%; transform: translateX(-50%) scale(.85);
+            align-items: center; justify-content: center; inline-size: 40px; block-size: 40px; border-radius: 50%; cursor: pointer;
+            color: var(--text-main, #e5e7eb); background: var(--bg-card, #1c1d27); border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); opacity: 0; pointer-events: none; transition: opacity .15s, transform .15s;
+        }
+        [dir="rtl"] body:not(.omnio) #inbox .inbox-jump-latest { transform: translateX(50%) scale(.85); }
+        body:not(.omnio) #inbox .inbox-jump-latest.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
+        [dir="rtl"] body:not(.omnio) #inbox .inbox-jump-latest.show { transform: translateX(50%) scale(1); }
+        body:not(.omnio) #inbox .inbox-jump-latest:focus-visible { outline: 2px solid #8b89ea; outline-offset: 2px; }
+        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-jump-latest { color: #0f172a; background: #fff; border-color: rgba(15, 23, 42, 0.12); box-shadow: 0 6px 18px rgba(15, 23, 42, 0.16); }
+        body:not(.omnio) #inbox .inbox-float-day {
+            display: block; position: absolute; z-index: 6; inset-inline-start: 50%; transform: translateX(-50%);
+            padding: 3px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 600; line-height: 1.5;
+            color: var(--text-secondary, #a3abbd); background: rgba(30, 32, 44, 0.92); border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+            backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .25s;
+        }
+        [dir="rtl"] body:not(.omnio) #inbox .inbox-float-day { transform: translateX(50%); }
+        body:not(.omnio) #inbox .inbox-float-day.show { opacity: 1; }
+        :root[data-theme="light"] body:not(.omnio) #inbox .inbox-float-day { color: #475569; background: rgba(255, 255, 255, 0.95); border-color: rgba(15, 23, 42, 0.08); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1); }
+        @media (prefers-reduced-motion: reduce) { body:not(.omnio) #inbox :is(.inbox-jump-latest, .inbox-float-day) { transition: none; } }
+        /* The existing "New messages" pill: centred above the reply box, like the jump button
+           (it was 84px from the bottom at the end corner, on top of the composer on a phone). */
+        body:not(.omnio) #inbox .inbox-new-pill { inset-inline-end: auto; inset-inline-start: 50%; transform: translateX(-50%); }
+        [dir="rtl"] body:not(.omnio) #inbox .inbox-new-pill { transform: translateX(50%); }
+        /* Desktop: a reading measure (about 70 characters), not 86% of a 900px pane. */
+        @media (min-width: 769px) {
+            body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) { max-inline-size: min(72%, 560px); }
+        }
+        @media (max-width: 768px) {
+            body:not(.omnio) #inbox #inbox-messages { padding-inline: 10px; }
+            body:not(.omnio) #inbox #inbox-messages > .message:not(.msg-meta-notice) {
+                max-inline-size: 84%; padding: 7px 11px 5px; font-size: 15px;
+            }
         }
 
         /* ════════ Chat screen on a phone: the conversation gets the room ════════
@@ -34858,7 +34925,15 @@
         body:not(.omnio) #inbox .inbox-list-head.is-searching .inbox-search-modes { display: flex; flex: 1 0 100%; }
         body:not(.omnio) #inbox .inbox-list-head.is-searching .inbox-search-modes .mode-btn { flex: 1 1 0; }
         body:not(.omnio) #inbox .inbox-list-head .inbox-search-container > .global-search-results { order: 5; flex: 1 0 100%; }
-        body:not(.omnio) #inbox .inbox-list-head #inbox-search-input { block-size: 42px; border-radius: 21px; font-size: 13.5px; padding-inline-start: 14px; text-overflow: ellipsis; }
+        /* Logical sides throughout: the text starts on the reading side and the magnifier (and
+           the clear button) sit on the other. With a fixed right: offset the Arabic placeholder
+           ran under the magnifier ("بحث" was hidden). */
+        body:not(.omnio) #inbox .inbox-list-head #inbox-search-input {
+            block-size: 42px; border-radius: 15px; font-size: 13.5px; text-overflow: ellipsis;
+            padding-block: 0; padding-inline: 14px 38px;
+        }
+        body:not(.omnio) #inbox .inbox-list-head .inbox-search-input-wrapper:has(#inbox-search-clear:not(.hidden)) #inbox-search-input { padding-inline-end: 60px; }
+        body:not(.omnio) #inbox .inbox-list-head #inbox-search-input::placeholder { text-align: start; }
         /* A roomier conversation column where the screen has it: the search box holds
            "Search WhatsApp..." whole and names stop truncating; the reading pane keeps 800px+. */
         @media (min-width: 1024px) { body:not(.omnio) #inbox .inbox-sidebar { width: 320px; flex: none; } }
@@ -34866,7 +34941,7 @@
         body:not(.omnio) #inbox .inbox-sidebar { position: relative; }
         body:not(.omnio) #inbox .ics-trigger {
             flex: none; min-inline-size: 0; display: inline-flex; align-items: center; gap: 3px; position: relative;
-            block-size: 42px; padding-inline: 5px 7px; border-radius: 21px; cursor: pointer;
+            block-size: 42px; padding-inline: 5px 7px; border-radius: 15px; cursor: pointer;
             border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12)); background: rgba(127, 127, 127, 0.06);
             color: var(--text-main, #f1f5f9); font: inherit; font-size: 15px; font-weight: 700; text-align: start;
         }
@@ -34900,9 +34975,13 @@
         }
         body:not(.omnio) #contact-list .contact-avatar > .ci-ch svg { inline-size: 11px; block-size: 11px; filter: none; }
         :root[data-theme="light"] body:not(.omnio) #contact-list .contact-avatar > .ci-ch { box-shadow: 0 0 0 2px #fff; }
-        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon { inline-size: 32px; block-size: 32px; }
+        body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon { inline-size: 32px; block-size: 32px; border-radius: 9px; }
         body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon svg { inline-size: 19px; block-size: 19px; }
-        body:not(.omnio) #inbox .ics-icon .pb-icon { inline-size: 30px; block-size: 30px; }
+        /* Concentric corners (owner, 2026-10-09: "the icon corners are not consistent with the
+           background under them"): the tile's 9px radius plus the 6px around it (5px padding,
+           1px border) is the button's 15px, so the two curves run parallel instead of a squircle
+           sitting in a round pill. The search box and export button share the 15px. */
+        body:not(.omnio) #inbox .ics-icon .pb-icon { inline-size: 30px; block-size: 30px; border-radius: 9px; }
         body:not(.omnio) #inbox .ics-icon .pb-icon svg { inline-size: 17px; block-size: 17px; }
         /* The name is read out (and is in the search box's placeholder), not drawn: the tile is the channel. */
         body:not(.omnio) #inbox .ics-name {
@@ -34922,7 +35001,7 @@
         body:not(.omnio) #inbox .ics-trigger[aria-expanded="true"] .ics-chev { transform: rotate(180deg); }
         body:not(.omnio) #inbox .inbox-export-icon {
             display: inline-flex; align-items: center; justify-content: center; flex: none; position: relative;
-            inline-size: 42px; block-size: 42px; border-radius: 50%; cursor: pointer;
+            inline-size: 42px; block-size: 42px; border-radius: 15px; cursor: pointer;
             color: var(--text-secondary, #94a3b8); background: transparent;
             border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.12));
         }
@@ -34959,7 +35038,8 @@
                 background: rgba(127, 127, 127, 0.45);
             }
             body:not(.omnio) #inbox .platform-selector.open .platform-btn { min-block-size: 58px; font-size: 15.5px; }
-            body:not(.omnio) #inbox .platform-selector.open .pb-icon { inline-size: 38px; block-size: 38px; }
+            body:not(.omnio) #inbox .platform-selector.open .pb-icon { inline-size: 38px; block-size: 38px; border-radius: 11px; }
+            body:not(.omnio) #inbox .platform-selector.open .platform-btn { border-radius: 19px; }
             body:not(.omnio) #inbox .platform-selector.open .pb-icon svg { inline-size: 22px; block-size: 22px; }
             body:not(.omnio) #inbox .platform-selector.open .pbm-title { padding: 2px 12px 6px; }
             body.ics-sheet-open #inbox .ics-backdrop {
@@ -34982,7 +35062,7 @@
         /* Each channel row: tile, name over its status ("4 unread" / "All caught up"), and the
            count or the check mark of the channel you are in. */
         body:not(.omnio) #inbox .platform-selector .platform-btn {
-            inline-size: 100%; block-size: auto; min-block-size: 52px; border-radius: 12px; padding: 7px 12px 7px 8px;
+            inline-size: 100%; block-size: auto; min-block-size: 52px; border-radius: 17px; padding: 7px 12px 7px 8px;
             display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto;
             column-gap: 12px; row-gap: 1px; align-items: center; justify-items: start; text-align: start;
             background: transparent; color: inherit; font: inherit; font-size: 14.5px; font-weight: 700; transform: none; filter: none;
@@ -46721,8 +46801,8 @@
                                     <div class="help-inline-host" id="inbox-search-host">
                                         <div class="inbox-search-input-wrapper">
                                         <input type="text" id="inbox-search-input" placeholder="Search..." data-i18n-placeholder="inbox.search_placeholder" oninput="handleInboxSearch(this.value); inboxSearchHeadSync()" onfocus="inboxSearchHeadSync(true)" onblur="inboxSearchHeadSync(false)">
-                                        <span style="position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; display:flex; color:var(--text-muted, #a0a0a0);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
-                                        <button id="inbox-search-clear" onclick="clearInboxSearch()" class="hidden" aria-label="Clear search" style="position:absolute; right:30px; top:50%; transform:translateY(-50%); padding:3px; line-height:0; background:none; border:none; border-radius:4px; color:var(--text-muted, #a0a0a0); cursor:pointer;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block;"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
+                                        <span class="iss-glass" style="position:absolute; inset-inline-end:12px; top:50%; transform:translateY(-50%); pointer-events:none; display:flex; color:var(--text-muted, #a0a0a0);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></span>
+                                        <button id="inbox-search-clear" onclick="clearInboxSearch()" class="hidden" aria-label="Clear search" style="position:absolute; inset-inline-end:32px; top:50%; transform:translateY(-50%); padding:3px; line-height:0; background:none; border:none; border-radius:4px; color:var(--text-muted, #a0a0a0); cursor:pointer;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:block;"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
                                     </div>
                                     </div>
 
@@ -46901,7 +46981,7 @@
                                 <div id="inbox-composer-channel-note" class="inbox-composer-channel-note act-note act-note--warn hidden" role="status"></div>
                                 <div id="inbox-human-composer-hint" class="inbox-human-composer-hint"></div>
                                 <!-- Canned Responses Quick Bar -->
-                                <div id="inbox-canned-bar" style="display:none;padding:6px 10px;overflow-x:auto;display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06);">
+                                <div id="inbox-canned-bar" style="display:none;padding:6px 10px;overflow-x:auto;gap:6px;border-bottom:1px solid rgba(255,255,255,0.06);">
                                 </div>
                                 <!-- Delta Phase 2: @mention autocomplete for internal notes -->
                                 <div id="inbox-mention-pop" class="inbox-mention-pop hidden"></div>
@@ -46924,10 +47004,10 @@
                                 </div>
                                 <input type="file" id="inbox-image-input" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" onchange="handleInboxImagePicked(event)">
                                 <div class="inbox-human-composer-row" id="inbox-human-composer-row">
-                                    <button type="button" class="inbox-header-action" onclick="toggleCannedResponses()" title="Quick Replies" aria-label="Quick Replies"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></button>
+                                    <button type="button" class="inbox-header-action" onclick="toggleCannedResponses()" title="${currentLang === 'ar' ? 'ردود سريعة (اكتب /)' : 'Quick replies (type /)'}" aria-label="${currentLang === 'ar' ? 'ردود سريعة' : 'Quick replies'}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></button>
                                     <button type="button" id="inbox-attach-image-btn" class="inbox-composer-icon-btn" onclick="openInboxImagePicker()" title="Send an image" aria-label="Send an image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></button>
                                     <button type="button" id="inbox-record-voice-btn" class="inbox-composer-icon-btn" onclick="startVoiceRecording()" title="Record a voice message" aria-label="Record a voice message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></button>
-                                    <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="1" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." oninput="autoResizeInboxComposerInput(this); if (typeof omnioMentionAutocomplete === 'function') omnioMentionAutocomplete();" onkeydown="handleInboxComposerKeydown(event)"></textarea>
+                                    <textarea id="inbox-human-reply-input" class="inbox-human-reply-input" rows="1" data-i18n-placeholder="agent_config.chat_placeholder" placeholder="Type a message..." oninput="if (this.value === '/' &amp;&amp; typeof toggleCannedResponses === 'function') { this.value = ''; const cb = document.getElementById('inbox-canned-bar'); if (!cb || cb.style.display !== 'flex') toggleCannedResponses(); } autoResizeInboxComposerInput(this); if (typeof omnioMentionAutocomplete === 'function') omnioMentionAutocomplete();" onkeydown="handleInboxComposerKeydown(event)"></textarea>
                                     <button id="inbox-human-send-btn" class="inbox-human-send-btn" onclick="omnioComposerSend()">Send</button>
                                 </div>
                             </div>
@@ -57090,6 +57170,7 @@ Thank you for shopping with {store_name}!</textarea>
             if (container && !container._pillBound) {
                 container.addEventListener('scroll', () => {
                     if (inboxIsNearBottom(container)) inboxHidePill();
+                    try { if (typeof inboxThreadScrollUi === 'function') inboxThreadScrollUi(container); } catch (e) { /* decorative */ }
                     // Prefetch history well before the hard top (150px) so the user
                     // never slams into scrollTop=0 and feels the load "stick".
                     if (container.scrollTop <= 150 && currentConversationId) inboxLoadEarlier(container, currentConversationId);
@@ -58208,8 +58289,68 @@ Thank you for shopping with {store_name}!</textarea>
                 host.appendChild(pill);
             }
             pill.style.display = '';
+            // Just above the reply box, whatever its height (it grows with the notice and the text).
+            try {
+                if (!document.body.classList.contains('omnio')) {
+                    pill.style.bottom = Math.max(8, Math.round(host.getBoundingClientRect().bottom - container.getBoundingClientRect().bottom + 12)) + 'px';
+                    const jump = document.getElementById('inbox-jump-latest');
+                    if (jump) jump.classList.remove('show');
+                }
+            } catch (e) { /* placement is cosmetic */ }
         }
         function inboxHidePill() { const p = document.getElementById('inbox-new-pill'); if (p) p.style.display = 'none'; }
+
+        // While reading back through a thread: a floating "Today / Yesterday / date" chip says
+        // which day is on screen (it fades 1.2s after scrolling stops), and once you are more
+        // than a screen from the end a round button takes you back to the latest message. Both
+        // are centred: the bottom-end corner belongs to the floating rail.
+        let inboxFloatDayTimer = null;
+        function inboxThreadScrollUi(container) {
+            const host = container && container.parentElement;
+            if (!host || document.body.classList.contains('omnio')) return;
+            if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+            const cr = container.getBoundingClientRect();
+            const hr = host.getBoundingClientRect();
+            const ar = currentLang === 'ar';
+
+            let jump = document.getElementById('inbox-jump-latest');
+            if (!jump) {
+                jump = document.createElement('button');
+                jump.type = 'button';
+                jump.id = 'inbox-jump-latest';
+                jump.className = 'inbox-jump-latest';
+                jump.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>';
+                jump.onclick = () => { container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' }); inboxHidePill(); };
+                host.appendChild(jump);
+            }
+            jump.setAttribute('aria-label', ar ? 'آخر الرسائل' : 'Latest messages');
+            jump.title = jump.getAttribute('aria-label');
+            const fromEnd = container.scrollHeight - container.scrollTop - container.clientHeight;
+            const pill = document.getElementById('inbox-new-pill');
+            const pillShown = !!pill && pill.style.display !== 'none';
+            jump.style.bottom = Math.max(8, Math.round(hr.bottom - cr.bottom + 12)) + 'px';
+            jump.classList.toggle('show', fromEnd > container.clientHeight * 0.8 && !pillShown);
+
+            let day = document.getElementById('inbox-float-day');
+            if (!day) {
+                day = document.createElement('div');
+                day.id = 'inbox-float-day';
+                day.className = 'inbox-float-day';
+                day.setAttribute('aria-hidden', 'true');
+                host.appendChild(day);
+            }
+            let label = '';
+            container.querySelectorAll(':scope > .inbox-day-sep').forEach((sep) => {
+                if (sep.getBoundingClientRect().top < cr.top + 4) label = sep.textContent;
+            });
+            day.style.top = Math.round(cr.top - hr.top + 8) + 'px';
+            if (!label) { day.classList.remove('show'); return; }
+            day.textContent = label;
+            day.classList.add('show');
+            clearTimeout(inboxFloatDayTimer);
+            inboxFloatDayTimer = setTimeout(() => day.classList.remove('show'), 1200);
+        }
+        window.inboxThreadScrollUi = inboxThreadScrollUi;
 
         async function inboxResyncThread(container, convId) {
             if (!container || !window._inboxNewestLoadedAt) return;
@@ -97271,6 +97412,9 @@ body.hub-lock { overflow: hidden; }
         if (!canned) return;
         const input = document.getElementById('inbox-human-reply-input');
         if (input) { input.value = canned.text; input.focus(); if (typeof autoResizeInboxComposerInput === 'function') autoResizeInboxComposerInput(input); }
+        // Chosen: the bar has done its job and gives the thread its room back.
+        const bar = document.getElementById('inbox-canned-bar');
+        if (bar) bar.style.display = 'none';
     };
 
     window.manageCannedResponses = function() {

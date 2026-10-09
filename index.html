@@ -944,16 +944,6 @@
                 "row_handoff": "Needs you",
                 "filter_origin_tip": "Only conversations that started from your ads, posts or comments",
                 "no_origin_convs": "No conversations came from an ad or a post yet",
-                "preview_you": "You",
-                "preview_ai": "AI",
-                "preview_image": "Photo",
-                "preview_audio": "Voice message",
-                "preview_video": "Video",
-                "preview_document": "Document",
-                "preview_sticker": "Sticker",
-                "preview_location": "Location",
-                "preview_contacts": "Contact card",
-                "preview_other": "Message",
                 "origin_from_ad": "From your ad",
                 "origin_from_post": "From your post",
                 "origin_from_comment": "Replied to your comment",
@@ -3127,16 +3117,6 @@
                 "row_handoff": "تحتاجك",
                 "filter_origin_tip": "المحادثات اللي بدأت من إعلاناتك أو منشوراتك أو تعليقاتك فقط",
                 "no_origin_convs": "مفيش محادثات جت من إعلان أو منشور لسه",
-                "preview_you": "أنت",
-                "preview_ai": "الذكاء الاصطناعي",
-                "preview_image": "صورة",
-                "preview_audio": "رسالة صوتية",
-                "preview_video": "فيديو",
-                "preview_document": "مستند",
-                "preview_sticker": "ملصق",
-                "preview_location": "موقع",
-                "preview_contacts": "جهة اتصال",
-                "preview_other": "رسالة",
                 "origin_from_ad": "من إعلانك",
                 "origin_from_post": "من منشورك",
                 "origin_from_comment": "رد على تعليقك",
@@ -34895,14 +34875,9 @@
            list on a phone: give the list enough room to scroll its last rows clear of them. */
         @media (max-width: 768px) { body:not(.omnio) #contact-list { padding-bottom: 150px; } }
 
-        /* The last-message line of a conversation row. Unread rows read darker, the way a
-           person scans for "who is waiting on me"; who spoke last is a quiet prefix. */
-        #contact-list .ci-preview { color: var(--text-muted, #8a93a6); font-size: 0.82rem; }
-        #contact-list .contact-item.is-unread .ci-preview { color: var(--text-main, #e5e7eb); font-weight: 600; }
-        :root[data-theme="light"] #contact-list .ci-preview { color: #64748b; }
-        :root[data-theme="light"] #contact-list .contact-item.is-unread .ci-preview { color: #0f172a; }
-        #contact-list .ci-preview-who { opacity: .8; font-weight: 600; }
-        #contact-list .ci-preview-media { font-style: italic; }
+        /* The number (or username) under the name: quiet, tabular digits, never the focus. */
+        #contact-list .ci-handle { color: var(--text-muted, #8a93a6); font-size: 0.82rem; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+        :root[data-theme="light"] #contact-list .ci-handle { color: #64748b; }
         .inbox-sr-only {
             position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden;
             clip-path: inset(50%); white-space: nowrap;
@@ -53115,7 +53090,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const unreadPromise = fetchInboxUnreadCounts();
                 const convQuery = supabaseClient
                     .from('inbox_conversations')
-                    .select('id, platform, last_message_at, created_at, status, snoozed_until, assigned_to, last_sentiment, lead_id, ai_paused, last_message_preview, last_message_type, last_message_sender, lead:leads!lead_id(id, status, full_name, custom_status_id, category, custom_category_id), contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id, meta)')
+                    .select('id, platform, last_message_at, created_at, status, snoozed_until, assigned_to, last_sentiment, lead_id, ai_paused, lead:leads!lead_id(id, status, full_name, custom_status_id, category, custom_category_id), contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id, meta)')
                     .eq('org_id', currentUserOrgId);
                 // 'all' is the unified view (every channel, newest first); each row keeps its
                 // own platform, which is what opening, replying and the badges use.
@@ -53148,8 +53123,6 @@ Thank you for shopping with {store_name}!</textarea>
                 }
 
                 renderInboxContactList();
-                // Rows whose newest message predates the preview columns read it once.
-                try { inboxFillMissingPreviews(platform); } catch (e) { /* decorative */ }
                 // Origin chips come from one separate, cached lookup (never a join on this query).
                 // Repaint only when it actually fetched something new.
                 try {
@@ -53186,11 +53159,6 @@ Thank you for shopping with {store_name}!</textarea>
             c.last_sentiment = row.last_sentiment || c.last_sentiment;
             c.assigned_to = row.assigned_to || c.assigned_to;
             c.lead_id = row.lead_id || c.lead_id;
-            if (row.last_message_type !== undefined) {
-                c.last_message_preview = row.last_message_preview;
-                c.last_message_type = row.last_message_type;
-                c.last_message_sender = row.last_message_sender;
-            }
             convs.sort((a, b) => new Date(b.last_message_at || 0) - new Date(a.last_message_at || 0));
             window.inboxLoadedConvs = convs;
             renderInboxContactList();
@@ -53578,57 +53546,14 @@ Thank you for shopping with {store_name}!</textarea>
             return contact.external_contact_id || '';
         }
 
-        // The second line of a conversation row: what was said last, the way every
-        // messaging app shows it ("You: on its way", "AI: yes, until Friday", "Photo").
-        // The phone number it used to show is still in the chat header. Returns '' when
-        // nothing is known yet, and the caller falls back to the number. Escaped here:
-        // the text is the customer's own words.
-        const INBOX_PREVIEW_MEDIA = { image: 'preview_image', audio: 'preview_audio', voice: 'preview_audio', video: 'preview_video',
-            document: 'preview_document', sticker: 'preview_sticker', location: 'preview_location', contacts: 'preview_contacts' };
-        function inboxRowPreviewHTML(conv) {
-            if (!conv || !conv.last_message_type) return '';
-            const tr = (k, fb) => { const v = t('inbox.' + k); return v && v !== 'inbox.' + k ? v : fb; };
-            const sender = conv.last_message_sender || '';
-            const who = sender === 'human' ? tr('preview_you', 'You')
-                      // Only 'ai' is certainly the AI: 'automation' also carries what the business
-                      // sent from its own WhatsApp phone (coexistence echoes), so it gets no label.
-                      : sender === 'ai' ? tr('preview_ai', 'AI') : '';
-            const mediaKey = INBOX_PREVIEW_MEDIA[conv.last_message_type];
-            // "Photo", "Voice message"... for media; "Message" for any other non-text type.
-            const label = mediaKey ? tr(mediaKey, '') : (conv.last_message_type === 'text' ? '' : tr('preview_other', 'Message'));
-            const text = conv.last_message_preview || '';
-            if (!text && !label) return '';
-            const parts = [];
-            if (who) parts.push(`<span class="ci-preview-who">${esc(who)}:</span>`);
-            if (label) parts.push(`<span class="ci-preview-media">${esc(label)}</span>`);
-            // <bdi>: an Arabic message after an English "You:" keeps its own direction.
-            if (text) parts.push(`<bdi>${esc(text)}</bdi>`);
-            return parts.join(' ');
-        }
-
-        // Rows whose newest message predates the preview columns (2026-10-08) read it once,
-        // through get_conversation_previews, for at most 300 rows on screen. Fills only
-        // what is missing and repaints only if something changed; a failure leaves the
-        // phone number in place.
-        async function inboxFillMissingPreviews(platform) {
-            const convs = window.inboxLoadedConvs || [];
-            const missing = convs.filter((c) => !c.last_message_type && !c._previewTried).slice(0, 300);
-            if (!missing.length || !supabaseClient) return;
-            missing.forEach((c) => { c._previewTried = true; });
-            const { data, error } = await supabaseClient.rpc('get_conversation_previews', { p_conversation_ids: missing.map((c) => c.id) });
-            if (error || !Array.isArray(data) || !data.length) return;
-            const byId = new Map(data.map((r) => [r.conversation_id, r]));
-            let changed = false;
-            convs.forEach((c) => {
-                const r = byId.get(c.id);
-                if (r && !c.last_message_type) {
-                    c.last_message_preview = r.last_message_preview;
-                    c.last_message_type = r.last_message_type;
-                    c.last_message_sender = r.last_message_sender;
-                    changed = true;
-                }
-            });
-            if (changed && platform === currentInboxPlatform) renderInboxContactList();
+        // The second line of a conversation row is who the person is, not what they said
+        // (owner, 2026-10-09: "I want to see the phone number ... not the latest message"):
+        // the WhatsApp number with its +, else the WhatsApp username, else the platform's id.
+        // Kept left-to-right so the + stays in front of the number in Arabic.
+        function inboxContactHandleHTML(contact) {
+            let handle = inboxContactSubline(contact);
+            if (/^\d{8,15}$/.test(handle)) handle = '+' + handle;
+            return handle ? `<bdi dir="ltr">${esc(handle)}</bdi>` : '';
         }
 
         // A channel's white glyph, read from the channel menu (built once in buildInterface).
@@ -53740,7 +53665,6 @@ Thank you for shopping with {store_name}!</textarea>
                 if (contact.id === currentChatUser) div.classList.add('active');
 
                 const displayName = contact.display_name || contact.phone || "Unknown";
-                const displayId = inboxContactSubline(contact);
 
                 // Format last message time for WhatsApp-like display
                 let timeLabel = '';
@@ -53811,8 +53735,6 @@ Thank you for shopping with {store_name}!</textarea>
                 // "Ad" / "Post" / ... chip: decorative, so a failure here must not drop the row.
                 let originChip = '';
                 try { originChip = convOriginRowChipHTML(convOriginFirstOf(conv), 'ci-origin'); } catch (e) { originChip = ''; }
-                let rowPreview = '';
-                try { rowPreview = inboxRowPreviewHTML(conv); } catch (e) { rowPreview = ''; }
                 // The AI handed this conversation to a person: say so on the row.
                 const handoffPill = conv.ai_paused === true
                     ? `<span class="ci-handoff" title="${esc(t('inbox.filter_handoff_tip'))}">${esc(t('inbox.row_handoff'))}</span>` : '';
@@ -53825,9 +53747,7 @@ Thank you for shopping with {store_name}!</textarea>
                             ${timeLabel ? `<div class="ci-time" style="white-space:nowrap; flex-shrink:0;">${timeLabel}</div>` : ''}
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                            ${rowPreview
-                                ? `<div class="contact-id ci-preview" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${rowPreview}</div>`
-                                : `<div class="contact-id" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${esc(displayId)}</div>`}
+                            <div class="contact-id ci-handle" style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${inboxContactHandleHTML(contact)}</div>
                             <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">${handoffPill}${originChip}${stageChip}${unreadBadge}</div>
                         </div>
                     </div>

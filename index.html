@@ -34888,6 +34888,18 @@
         .pb-icon[data-ch="instagram"] { background: radial-gradient(circle at 28% 108%, #FFDD55 0%, #FFDD55 10%, #FF543E 48%, #C837AB 72%, #5B51D8 100%); --ch-shadow: rgba(200, 55, 171, 0.5); }
         .pb-icon[data-ch="telegram"]  { background: linear-gradient(180deg, #37BBFE 0%, #229ED9 60%, #007DBB 100%); --ch-shadow: rgba(34, 158, 217, 0.55); }
         .pb-icon[data-ch="website"]   { background: var(--brand-fade); --ch-shadow: rgba(91, 89, 201, 0.55); }
+        .pb-icon[data-ch="all"]       { background: var(--brand-fade); --ch-shadow: rgba(91, 89, 201, 0.55); }
+        /* The unified view is a standard-inbox feature; the redesign's icon rail keeps its five channels. */
+        body.omnio .platform-btn-all { display: none !important; }
+        /* Unified view: the conversation's channel as a small tile on its avatar's corner, ringed
+           in the list's colour so it reads as a badge (respond.io, Chatwoot and Trengo mark rows
+           the same way). */
+        body:not(.omnio) #contact-list .contact-avatar > .ci-ch {
+            position: absolute; inset-block-end: -2px; inset-inline-end: -2px; inline-size: 19px; block-size: 19px;
+            border-radius: 30%; box-shadow: 0 0 0 2px var(--bg-card, #16161d);
+        }
+        body:not(.omnio) #contact-list .contact-avatar > .ci-ch svg { inline-size: 11px; block-size: 11px; filter: none; }
+        :root[data-theme="light"] body:not(.omnio) #contact-list .contact-avatar > .ci-ch { box-shadow: 0 0 0 2px #fff; }
         body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon { inline-size: 32px; block-size: 32px; }
         body:not(.omnio) #inbox :is(.ics-icon, .platform-selector) .pb-icon svg { inline-size: 19px; block-size: 19px; }
         body:not(.omnio) #inbox .ics-icon .pb-icon { inline-size: 30px; block-size: 30px; }
@@ -34927,6 +34939,41 @@
         @keyframes ics-pop { from { opacity: 0; transform: translateY(-4px) scale(.985); } }
         @media (prefers-reduced-motion: reduce) { body:not(.omnio) #inbox .platform-selector.open { animation: none; } }
         .pbm-title { display: none; }
+        .ics-backdrop { display: none; }
+        @media (max-width: 768px) {
+            /* The channel picker as a bottom sheet. Fixed to the viewport (nothing above it
+               creates a containing block on phones), above the floating buttons, which are hidden
+               while it is open rather than fought over by z-index. */
+            body:not(.omnio) #inbox .platform-selector.open {
+                position: fixed; inset-inline: 0; inset-block-start: auto; inset-block-end: 0; z-index: 100004;
+                max-block-size: min(78vh, 560px); overflow-y: auto; overscroll-behavior: contain;
+                padding: 22px 10px calc(14px + env(safe-area-inset-bottom, 0px)); gap: 4px;
+                border-radius: 22px 22px 0 0; border-inline: 0; border-block-end: 0;
+                box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.45);
+                animation: ics-sheet-up .2s cubic-bezier(.2, .8, .2, 1);
+                transition: transform .12s ease-out;
+            }
+            body:not(.omnio) #inbox .platform-selector.open::before {
+                content: ''; position: absolute; inset-block-start: 8px; inset-inline-start: 50%;
+                inline-size: 40px; block-size: 5px; margin-inline-start: -20px; border-radius: 3px;
+                background: rgba(127, 127, 127, 0.45);
+            }
+            body:not(.omnio) #inbox .platform-selector.open .platform-btn { min-block-size: 58px; font-size: 15.5px; }
+            body:not(.omnio) #inbox .platform-selector.open .pb-icon { inline-size: 38px; block-size: 38px; }
+            body:not(.omnio) #inbox .platform-selector.open .pb-icon svg { inline-size: 22px; block-size: 22px; }
+            body:not(.omnio) #inbox .platform-selector.open .pbm-title { padding: 2px 12px 6px; }
+            body.ics-sheet-open #inbox .ics-backdrop {
+                display: block; position: fixed; inset: 0; z-index: 100003; background: rgba(5, 6, 12, 0.5);
+                animation: ics-fade .2s ease-out;
+            }
+            body.ics-sheet-open { overflow: hidden; }
+            body.ics-sheet-open :is(.theme-float-btn, .aiw-root, #sentry-feedback) { display: none !important; }
+            @keyframes ics-sheet-up { from { transform: translateY(100%); } }
+            @keyframes ics-fade { from { opacity: 0; } }
+        }
+        @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+            body:not(.omnio) #inbox .platform-selector.open, body.ics-sheet-open #inbox .ics-backdrop { animation: none; transition: none; }
+        }
         body:not(.omnio) #inbox .platform-selector .pbm-title {
             display: block; padding: 6px 10px 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
             color: var(--text-muted, #8a93a6);
@@ -46602,6 +46649,7 @@
             // colour (painted by .pb-icon[data-ch] in CSS), so every channel reads the same way and
             // nothing depends on an image host. Telegram's was a PNG on a third-party host.
             const inboxGlyphs = {
+                all: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="2.4"/><rect x="13" y="3" width="8" height="8" rx="2.4" opacity=".75"/><rect x="3" y="13" width="8" height="8" rx="2.4" opacity=".75"/><rect x="13" y="13" width="8" height="8" rx="2.4" opacity=".5"/></svg>`,
                 website: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`,
                 whatsapp: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35zM12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88zm8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></svg>`,
                 page: `<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0C5.24 0 0 4.95 0 11.64c0 3.5 1.43 6.52 3.77 8.61.2.18.31.42.32.68l.07 2.14a.96.96 0 0 0 1.35.85l2.39-1.05a.96.96 0 0 1 .64-.05c1.09.3 2.26.46 3.46.46 6.76 0 12-4.95 12-11.64S18.76 0 12 0zm7.2 8.95-3.52 5.6a1.8 1.8 0 0 1-2.6.48l-2.8-2.1a.72.72 0 0 0-.87 0l-3.79 2.87c-.5.39-1.17-.22-.82-.75l3.52-5.6a1.8 1.8 0 0 1 2.6-.48l2.8 2.1c.26.2.61.2.87 0l3.79-2.87c.5-.39 1.17.22.82.75z"/></svg>`,
@@ -46622,13 +46670,15 @@
                                  (flag OFF renders byte-identical); under body.omnio on desktop
                                  they become the prototype's channels|list panes. -->
                             <div class="ixp-left">
-                                <div class="platform-selector" id="inbox-channel-menu">
+                                <div class="ics-backdrop" id="ics-backdrop" aria-hidden="true"></div>
+                                <div class="platform-selector" id="inbox-channel-menu" role="menu" aria-label="${currentLang === 'ar' ? 'القنوات' : 'Channels'}" onkeydown="inboxChannelMenuKey(event)">
                                     <div class="pbm-title" aria-hidden="true">${currentLang === 'ar' ? 'القنوات' : 'Channels'}</div>
-                                    <button class="platform-btn" onclick="loadInbox('website', false)" aria-label="Website"><span class="pb-icon" data-ch="website">${inboxGlyphs.website}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" aria-label="WhatsApp"><span class="pb-icon" data-ch="whatsapp">${inboxGlyphs.whatsapp}</span><span class="pb-label">WhatsApp</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('page', false)" aria-label="Messenger"><span class="pb-icon" data-ch="page">${inboxGlyphs.page}</span><span class="pb-label">Messenger</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" aria-label="Instagram"><span class="pb-icon" data-ch="instagram">${inboxGlyphs.instagram}</span><span class="pb-label">Instagram</span><span class="pb-sub"></span></button>
-                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" aria-label="Telegram"><span class="pb-icon" data-ch="telegram">${inboxGlyphs.telegram}</span><span class="pb-label">Telegram</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn platform-btn-all" onclick="loadInbox('all', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="All channels"><span class="pb-icon" data-ch="all">${inboxGlyphs.all}</span><span class="pb-label">${currentLang === 'ar' ? 'كل القنوات' : 'All channels'}</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('website', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="Website"><span class="pb-icon" data-ch="website">${inboxGlyphs.website}</span><span class="pb-label">${currentLang === 'ar' ? 'الموقع' : 'Website'}</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('whatsapp', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="WhatsApp"><span class="pb-icon" data-ch="whatsapp">${inboxGlyphs.whatsapp}</span><span class="pb-label">WhatsApp</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('page', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="Messenger"><span class="pb-icon" data-ch="page">${inboxGlyphs.page}</span><span class="pb-label">Messenger</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('instagram', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="Instagram"><span class="pb-icon" data-ch="instagram">${inboxGlyphs.instagram}</span><span class="pb-label">Instagram</span><span class="pb-sub"></span></button>
+                                    <button class="platform-btn" onclick="loadInbox('telegram', false)" role="menuitemradio" aria-checked="false" tabindex="-1" aria-label="Telegram"><span class="pb-icon" data-ch="telegram">${inboxGlyphs.telegram}</span><span class="pb-label">Telegram</span><span class="pb-sub"></span></button>
                                 </div>
                                 <div class="ixp-platform-label" style="display:none;" data-i18n="inbox.label_platform">Select Platform</div>
                                 <!-- Delta Phase 2: lead-stage groups rail (hidden unless body.omnio) -->
@@ -48637,7 +48687,7 @@ Thank you for shopping with {store_name}!</textarea>
                     try { return localStorage.getItem('inbox:lastPlatform') || ''; } catch (e) { return ''; }
                 })();
                 const known = ['website', 'whatsapp', 'page', 'instagram', 'telegram'];
-                let pick = known.includes(remembered) ? remembered : '';
+                let pick = (known.includes(remembered) || remembered === 'all') ? remembered : '';
                 if (!pick && currentUserOrgId) {
                     // One cheap query: which channels does this org actually have
                     // conversations on? Picking an empty channel would look identical
@@ -52550,7 +52600,7 @@ Thank you for shopping with {store_name}!</textarea>
 
         // aria-label -> platform column value. "Messenger" stores as 'page'
         // throughout this codebase (Graph API "Page" messaging), not 'messenger'.
-        const INBOX_PLATFORM_BY_LABEL = { website: 'website', whatsapp: 'whatsapp', messenger: 'page', instagram: 'instagram', telegram: 'telegram' };
+        const INBOX_PLATFORM_BY_LABEL = { 'all channels': 'all', website: 'website', whatsapp: 'whatsapp', messenger: 'page', instagram: 'instagram', telegram: 'telegram' };
 
         // Highlight the channel the operator is actually looking at. The CSS for
         // .platform-btn.active already existed but nothing ever applied it, so there
@@ -52558,7 +52608,9 @@ Thank you for shopping with {store_name}!</textarea>
         function markActiveInboxPlatform(platform) {
             document.querySelectorAll('.platform-selector .platform-btn').forEach(btn => {
                 const label = (btn.getAttribute('aria-label') || '').toLowerCase();
-                btn.classList.toggle('active', INBOX_PLATFORM_BY_LABEL[label] === platform);
+                const on = INBOX_PLATFORM_BY_LABEL[label] === platform;
+                btn.classList.toggle('active', on);
+                btn.setAttribute('aria-checked', on ? 'true' : 'false');
             });
             try { renderInboxChannelTrigger(); } catch (e) { /* decorative */ }
             setInboxChannelMenu(false);
@@ -52581,7 +52633,9 @@ Thank you for shopping with {store_name}!</textarea>
                 // The channel's name now lives in the search box, which sits beside the tile.
                 const search = document.getElementById('inbox-search-input');
                 if (search && nameEl.textContent) {
-                    search.placeholder = currentLang === 'ar' ? `بحث في ${nameEl.textContent}...` : `Search ${nameEl.textContent}...`;
+                    search.placeholder = currentInboxPlatform === 'all'
+                        ? (currentLang === 'ar' ? 'بحث في كل القنوات...' : 'Search all channels...')
+                        : (currentLang === 'ar' ? `بحث في ${nameEl.textContent}...` : `Search ${nameEl.textContent}...`);
                     search.removeAttribute('data-i18n-placeholder');
                 }
                 const trig = document.getElementById('inbox-channel-trigger');
@@ -52594,7 +52648,7 @@ Thank you for shopping with {store_name}!</textarea>
                 let other = 0;
                 document.querySelectorAll('.platform-selector .platform-btn').forEach((btn) => {
                     const p = INBOX_PLATFORM_BY_LABEL[(btn.getAttribute('aria-label') || '').toLowerCase()];
-                    if (p && p !== currentInboxPlatform) other += counts[p] || 0;
+                    if (p && p !== 'all' && currentInboxPlatform !== 'all' && p !== currentInboxPlatform) other += counts[p] || 0;
                 });
                 othersEl.hidden = !(other > 0);
                 othersEl.textContent = other > 0 ? (other > 99 ? '99+' : String(other)) : '';
@@ -52628,13 +52682,66 @@ Thank you for shopping with {store_name}!</textarea>
         }
         window.inboxSearchHeadSync = inboxSearchHeadSync;
 
+        // Phones (768px and below): the channel list is a bottom sheet, the picker pattern of the
+        // mobile inboxes (Zendesk's view list, Chatwoot's filter sheet): rows in thumb reach, a
+        // dimmed page, swipe down or tap outside to close. Wider screens keep the popover.
+        // Either way focus moves into the list on open and back to the tile on close, and
+        // the arrow keys, Home and End move through it.
         function setInboxChannelMenu(open) {
             const menu = document.getElementById('inbox-channel-menu');
             const trig = document.getElementById('inbox-channel-trigger');
             if (!menu || !trig) return;
+            const was = menu.classList.contains('open');
             menu.classList.toggle('open', !!open);
             trig.setAttribute('aria-expanded', open ? 'true' : 'false');
+            const sheet = !!open && window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+            document.body.classList.toggle('ics-sheet-open', sheet);
+            menu.style.transform = '';
+            if (open && !was) {
+                const items = [...menu.querySelectorAll('.platform-btn')].filter((b) => b.getClientRects().length);
+                const target = items.find((b) => b.classList.contains('active')) || items[0];
+                items.forEach((b) => b.setAttribute('tabindex', b === target ? '0' : '-1'));
+                if (target) { try { target.focus({ preventScroll: true }); } catch (e) { /* focus is a nicety */ } }
+            } else if (!open && was && menu.contains(document.activeElement)) {
+                try { trig.focus({ preventScroll: true }); } catch (e) { /* focus is a nicety */ }
+            }
         }
+        function inboxChannelMenuKey(e) {
+            const menu = document.getElementById('inbox-channel-menu');
+            if (!menu || !menu.classList.contains('open')) return;
+            const items = [...menu.querySelectorAll('.platform-btn')].filter((b) => b.getClientRects().length);
+            if (!items.length) return;
+            const i = Math.max(0, items.indexOf(document.activeElement));
+            const go = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: items.length - 1 }[e.key];
+            if (go === undefined) return;
+            e.preventDefault();
+            const next = items[(go + items.length) % items.length];
+            items.forEach((b) => b.setAttribute('tabindex', b === next ? '0' : '-1'));
+            next.focus();
+        }
+        window.inboxChannelMenuKey = inboxChannelMenuKey;
+        // Swipe the sheet down to close it (more than 70px, or a quick flick).
+        (function bindInboxChannelSheetSwipe() {
+            let y0 = null, t0 = 0, dy = 0;
+            document.addEventListener('touchstart', (e) => {
+                const menu = e.target.closest && e.target.closest('#inbox-channel-menu');
+                if (!menu || !document.body.classList.contains('ics-sheet-open') || menu.scrollTop > 0) { y0 = null; return; }
+                y0 = e.touches[0].clientY; t0 = Date.now(); dy = 0;
+            }, { passive: true });
+            document.addEventListener('touchmove', (e) => {
+                if (y0 === null) return;
+                dy = Math.max(0, e.touches[0].clientY - y0);
+                const menu = document.getElementById('inbox-channel-menu');
+                if (menu) menu.style.transform = dy ? `translateY(${dy}px)` : '';
+            }, { passive: true });
+            document.addEventListener('touchend', () => {
+                if (y0 === null) return;
+                const fast = dy > 30 && (Date.now() - t0) < 250;
+                y0 = null;
+                if (dy > 70 || fast) setInboxChannelMenu(false);
+                else { const menu = document.getElementById('inbox-channel-menu'); if (menu) menu.style.transform = ''; }
+            }, { passive: true });
+        })();
         function toggleInboxChannelMenu(event) {
             if (event) event.stopPropagation();
             const menu = document.getElementById('inbox-channel-menu');
@@ -52656,7 +52763,9 @@ Thank you for shopping with {store_name}!</textarea>
             document.querySelectorAll('.platform-selector .platform-btn').forEach(btn => {
                 const label = (btn.getAttribute('aria-label') || '').toLowerCase();
                 const platform = INBOX_PLATFORM_BY_LABEL[label];
-                const count = (countsByPlatform && countsByPlatform[platform]) || 0;
+                const count = platform === 'all'
+                    ? Object.keys(countsByPlatform || {}).reduce((n, k) => n + (countsByPlatform[k] || 0), 0)
+                    : (countsByPlatform && countsByPlatform[platform]) || 0;
                 let badge = btn.querySelector('.platform-unread-badge');
                 if (count > 0) {
                     if (!badge) {
@@ -52757,7 +52866,9 @@ Thank you for shopping with {store_name}!</textarea>
             // The channel is named in the tooltip because the button clears the
             // channel you are looking at, not the whole inbox.
             const chan = (currentInboxPlatform || '').replace(/_/g, ' ');
-            btn.title = currentLang === 'ar'
+            btn.title = currentInboxPlatform === 'all'
+                ? (currentLang === 'ar' ? 'تحديد كل المحادثات في كل القنوات كمقروءة' : 'Mark every conversation in every channel as read')
+                : currentLang === 'ar'
                 ? `تحديد كل محادثات ${chan} كمقروءة`
                 : `Mark every ${chan} conversation as read`;
             btn.setAttribute('aria-label', btn.title);
@@ -52766,7 +52877,8 @@ Thank you for shopping with {store_name}!</textarea>
 
         async function markAllConversationsRead() {
             if (markAllConvsBusy || !currentUserOrgId) return;
-            const platform = currentInboxPlatform || null;
+            // 'all' (the unified view) clears every channel: the RPC reads NULL as all.
+            const platform = (currentInboxPlatform && currentInboxPlatform !== 'all') ? currentInboxPlatform : null;
             markAllConvsBusy = true;
             renderMarkAllConversationsBtn(0);
             try {
@@ -52921,11 +53033,13 @@ Thank you for shopping with {store_name}!</textarea>
                 // counts, and the fresh counts repaint the badges when they land.
                 // (This was the "conversations show but badges take forever" bug.)
                 const unreadPromise = fetchInboxUnreadCounts();
-                const { data: conversations, error } = await supabaseClient
+                const convQuery = supabaseClient
                     .from('inbox_conversations')
                     .select('id, platform, last_message_at, created_at, status, snoozed_until, assigned_to, last_sentiment, lead_id, ai_paused, last_message_preview, last_message_type, last_message_sender, lead:leads!lead_id(id, status, full_name, custom_status_id, category, custom_category_id), contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id, meta)')
-                    .eq('org_id', currentUserOrgId)
-                    .eq('platform', platform)
+                    .eq('org_id', currentUserOrgId);
+                // 'all' is the unified view (every channel, newest first); each row keeps its
+                // own platform, which is what opening, replying and the badges use.
+                const { data: conversations, error } = await (platform === 'all' ? convQuery : convQuery.eq('platform', platform))
                     .order('last_message_at', { ascending: false, nullsFirst: false });
 
                 if (error) throw error;
@@ -52981,7 +53095,7 @@ Thank you for shopping with {store_name}!</textarea>
         // postgres_changes payload, then re-render via the existing renderer.
         function inboxPatchListFromRealtime(p) {
             const row = p && p.new; if (!row) return;
-            if (row.platform && currentInboxPlatform && row.platform !== currentInboxPlatform) return;
+            if (row.platform && currentInboxPlatform && currentInboxPlatform !== 'all' && row.platform !== currentInboxPlatform) return;
             const convs = window.inboxLoadedConvs || [];
             let c = convs.find(x => x.id === row.id);
             if (!c) { loadInbox(currentInboxPlatform, true); return; }  // new conv: refetch once to hydrate joins
@@ -53437,6 +53551,12 @@ Thank you for shopping with {store_name}!</textarea>
             if (changed && platform === currentInboxPlatform) renderInboxContactList();
         }
 
+        // A channel's white glyph, read from the channel menu (built once in buildInterface).
+        function inboxChannelGlyphHTML(platform) {
+            const ic = document.querySelector(`.platform-selector .pb-icon[data-ch="${String(platform).replace(/[^a-z_]/g, '')}"]`);
+            return ic ? ic.innerHTML : '';
+        }
+
         // The empty reading pane's shortcuts: "3 unread", "2 need you", each opening that view of
         // the list; or "All caught up" when nothing waits. Same numbers as the chips.
         function renderInboxPickStats(unread, handoff) {
@@ -53573,7 +53693,9 @@ Thank you for shopping with {store_name}!</textarea>
                 // replaced, the browser fired no click at all, and the operator had to
                 // click two or three times to open a chat. Delegation survives rebuilds.
                 div.dataset.contactId = contact.id;
-                div.dataset.platform = platform;
+                // In the unified view each row opens on its own channel.
+                const rowPlatform = platform === 'all' ? (conv.platform || platform) : platform;
+                div.dataset.platform = rowPlatform;
                 div.dataset.displayName = displayName;
 
                 // Delta Phase 2 (flag-on only): platform glyph on the avatar +
@@ -53586,6 +53708,12 @@ Thank you for shopping with {store_name}!</textarea>
 
                 let avatarBadge = '';
                 let stageChip = '';
+                // Unified view: which channel, as that channel's tile on the avatar's corner
+                // (the glyph is copied from the channel menu, so there is one copy of each).
+                if (platform === 'all' && !omnio) {
+                    const glyph = inboxChannelGlyphHTML(rowPlatform);
+                    if (glyph) avatarBadge = `<span class="pb-icon ci-ch" data-ch="${esc(rowPlatform)}" aria-hidden="true">${glyph}</span>`;
+                }
                 if (omnio) {
                     const pMeta = (typeof crmxPlatformMeta === 'function') ? crmxPlatformMeta(conv.platform || platform) : null;
                     const pIcon = (typeof crmxPlatformIconSvg === 'function') ? crmxPlatformIconSvg(conv.platform || platform) : '';
@@ -54406,7 +54534,7 @@ Thank you for shopping with {store_name}!</textarea>
 
                 // Track human override for conversation learning (Sprint 16)
                 if (!enabled && typeof trackConversationOverride === 'function') {
-                    trackConversationOverride(conversationId, currentInboxPlatform);
+                    trackConversationOverride(conversationId, currentConversationState.platform || currentInboxPlatform);
                 }
                 renderConversationAiControls();
                 renderInboxComposerState();
@@ -56097,7 +56225,7 @@ Thank you for shopping with {store_name}!</textarea>
         // has been made and refused.
         function canRecordVoiceHere() {
             if (!inboxMediaSupported()) return false;
-            return !!pickVoiceMimeType(currentInboxPlatform);
+            return !!pickVoiceMimeType(currentConversationState.platform || currentInboxPlatform);
         }
 
         function setInboxRecordingUi(active) {
@@ -56122,7 +56250,7 @@ Thank you for shopping with {store_name}!</textarea>
                 return;
             }
 
-            const picked = pickVoiceMimeType(currentInboxPlatform);
+            const picked = pickVoiceMimeType(currentConversationState.platform || currentInboxPlatform);
             if (!picked) {
                 stream.getTracks().forEach(tr => tr.stop());
                 showToast(t('inbox.voice_unsupported_channel')
@@ -56985,7 +57113,10 @@ Thank you for shopping with {store_name}!</textarea>
                     let handle = conv && conv.contact ? inboxContactSubline(conv.contact) : '';
                     if (/^\d{8,15}$/.test(handle)) handle = '+' + handle;
                     if (handle && handle === contactName) handle = '';
-                    const activeLabel = document.querySelector('.platform-selector .platform-btn.active .pb-label');
+                    const convPlatform = (conv && conv.platform) || platform;
+                    const chBtn = [...document.querySelectorAll('.platform-selector .platform-btn')]
+                        .find((b) => INBOX_PLATFORM_BY_LABEL[(b.getAttribute('aria-label') || '').toLowerCase()] === convPlatform);
+                    const activeLabel = chBtn && chBtn.querySelector('.pb-label');
                     const sub = [activeLabel ? activeLabel.textContent.trim() : '', handle].filter(Boolean).join(' · ');
                     if (sub) headerTitle.setAttribute('data-sub', sub); else headerTitle.removeAttribute('data-sub');
                 } catch (e) { headerTitle.removeAttribute('data-sub'); }

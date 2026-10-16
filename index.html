@@ -127,7 +127,7 @@
                 // release marker cannot drift from the bytes it names: the
                 // deploy that changes the page changes both, or neither.
                 // tests/sentry-config.test.js fails if they disagree.
-                release: 'digitivia-v44',
+                release: 'digitivia-v48',
                 // Was 1.0 -- every transaction sampled. Measured over the 30 days
                 // to 2026-09-07 (org digitivia, project javascript): 155,474
                 // spans ACCEPTED, i.e. billed and stored, for a product whose
@@ -4920,7 +4920,7 @@
             "renew_title": "Renew {name}",
             "note_label": "Note for the audit log",
             "pv_starts_after": "It starts when the current paid period ends, so no paid days are lost.",
-            "pv_coins": "Coin balance resets to {n} (now {left} left).",
+            "pv_coins": "Conversations reset to {n} (now {left} left) and the AI budget restarts.",
             "pv_email_renewed": "The customer will be emailed that their plan renewed.",
             "pv_email_activated": "The customer will be emailed that their plan is active.",
             "pv_agent_resumes": "The AI agent starts answering customers again.",
@@ -4937,7 +4937,7 @@
             "change_estimate": "Estimated charge for the rest of this period: {amount}. Stripe calculates the exact amount.",
             "change_next_total": "Next invoice total: {amount}.",
             "change_cape_kept": "It is still set to end at period end. Changing the plan does not undo that.",
-            "change_manual": "Coins reset to {n}. The paid period does not change (paid until {date}).",
+            "change_manual": "Conversations reset to {n} and the AI budget restarts. The paid period does not change (paid until {date}).",
             "change_waiting": "Stripe accepted the change. Waiting for confirmation.",
             "change_done": "Plan changed to {plan}.",
             "change_timeout": "Stripe accepted the change but it has not reached us yet. Check the timeline in a minute, then press Refresh.",
@@ -5134,9 +5134,118 @@
             state_low_replies: "Close to your reply limit",
             state_paused: "Replies paused",
             state_ai_heavy: "Heavy AI use this month",
-            ai_capacity_line: "{n}% of this month\u2019s AI capacity used, mostly by reading photos and voice notes. Replies pause at 100% even if conversations are left.",
+            ai_capacity_line: "{n}% of this month\u2019s AI capacity used. New conversations pause at 100%, even if conversations are left.",
+            ai_pending_line: "About {n}% of that is from the last few minutes. It is corrected to the actual AI cost within minutes.",
+            lim_title: "Plan limits this month",
+            lim_conversations: "Conversations",
+            lim_ai: "AI capacity",
+            lim_val: "{u} of {t}",
+            lim_ai_val: "{n}% used",
+            lim_closest: "Closest to its limit",
+            lim_ai_help: "AI capacity is the part of your plan that pays for the AI\u2019s work. Every reply, photo and voice note uses some of it.",
+            pu_left_exact: "{n} conversations left",
+            pu_left_est: "About {n} new conversations left at this month\u2019s pace",
+            pu_left_est_none: "Almost no new conversations left this month",
+            pu_resets_on: "Resets on {date}, in {n} days",
+            pu_saver: "Saver mode is on: photos are read in a lighter mode so your AI capacity lasts until the month renews.",
+            pu_stop_ai: "This month\u2019s AI capacity is used up. Your agent starts no new conversations until {date}, or until you upgrade.",
+            pu_stop_conv: "All of this month\u2019s conversations are used. Your agent starts no new conversations until {date}, or until you upgrade.",
+            state_ai_used_up: "AI capacity used up",
+            sub_title: "Subscription and billing",
+            sub_chip_active: "Active",
+            sub_chip_trial: "Trial",
+            sub_chip_ending: "Renewal stopped",
+            sub_chip_unpaid: "Payment failed",
+            sub_chip_incomplete: "Payment not completed",
+            sub_chip_ended: "Ended",
+            sub_chip_none: "No plan",
+            sub_line_renews: "Renews automatically on {date}.",
+            sub_line_ending: "Your {plan} plan stays active until {date}. It will not renew and you will not be charged again.",
+            sub_line_unpaid: "The renewal on {date} was not paid.",
+            sub_line_retry: " Stripe will try the card again on {date}.",
+            sub_line_incomplete: "The first payment for this plan was not completed.",
+            sub_line_ended: "This plan ended on {date}.",
+            sub_line_ended_nodate: "This plan has ended.",
+            sub_line_manual: "This plan is billed by the Digitivia team, not by card.",
+            sub_line_manual_end: " The current period ends on {date}.",
+            sub_line_none: "This workspace has no paid plan.",
+            sub_price: "{amount} per {interval}",
+            sub_interval_month: "month",
+            sub_interval_year: "year",
+            sub_period_val: "{from} to {to}",
+            sub_card_val: "{brand} ending in {last4}",
+            sub_invoice_val: "{amount}, {state}",
+            sub_invoice_paid: "paid",
+            sub_invoice_open: "not paid yet",
+            sub_row_plan: "Plan",
+            sub_row_period: "Current period",
+            sub_row_card: "Payment method",
+            sub_row_invoice: "Latest invoice",
+            sub_btn_resume: "Keep my subscription",
+            sub_btn_portal: "Payment method and invoices",
+            sub_btn_plans: "Change plan",
+            sub_btn_cancel: "Cancel subscription",
+            sub_btn_update_card: "Update my card",
+            sub_note_owner: "Only the workspace owner, or someone they allow to manage billing, can change this plan.",
+            sub_cx_title_end: "Stop your subscription from renewing?",
+            sub_cx_title_now: "Cancel your subscription now?",
+            sub_cx_end_1: "Your {plan} plan stops renewing. You will not be charged again.",
+            sub_cx_end_2: "Nothing changes today. Your agent keeps answering and your remaining conversations and AI budget stay available until {date}.",
+            sub_cx_end_3: "On {date} the plan ends and your agent stops replying automatically. Your channels, contacts and messages are kept.",
+            sub_cx_end_4: "You can change your mind and keep the plan any time before {date}.",
+            sub_cx_now_1: "Your renewal on {date} was not paid, so this period has not started for you.",
+            sub_cx_now_2: "Cancelling now ends the plan today and stops Stripe from charging that unpaid renewal. Nothing else is charged and nothing is refunded.",
+            sub_cx_now_3: "Your agent stops replying automatically. Your channels, contacts and messages are kept, and you can choose a plan again at any time.",
+            sub_cx_now_4: "If you would rather keep the plan, update your card instead and Stripe will take the payment.",
+            sub_reason_label: "Why are you cancelling? (optional)",
+            sub_reason_none: "Prefer not to say",
+            sub_reason_price: "It costs too much",
+            sub_reason_unused: "I do not use it enough",
+            sub_reason_features: "It is missing something I need",
+            sub_reason_switched: "I moved to another service",
+            sub_reason_other: "Another reason",
+            sub_cx_keep: "Keep my plan",
+            sub_cx_confirm_end: "Stop renewal",
+            sub_cx_confirm_now: "Cancel now",
+            sub_working: "Working on it. Please keep this page open.",
+            sub_done_end_title: "Automatic renewal stopped",
+            sub_done_end: "Your plan stays active until {date}. You will not be charged again.",
+            sub_done_now_title: "Your subscription is cancelled",
+            sub_done_now: "The plan has ended and Stripe will not charge the unpaid renewal. You can choose a plan again at any time.",
+            sub_done_resume_title: "Your subscription will renew",
+            sub_done_resume: "Nothing changes. It renews as usual on {date}.",
+            sub_err_title: "That did not work",
+            sub_err: "Something went wrong. Nothing was changed. Please try again.",
+            sub_err_changed: "Your subscription changed since this page was opened. Close this and check it again.",
+            sub_err_portal: "The Stripe billing page could not be opened. Please try again in a minute.",
+            wab_checked: "Checked with Meta",
+            wab_reports: "From Meta delivery reports",
+            wab_unverified: "Not verified with Meta yet",
+            wab_charged_hero: "messages charged by Meta this month",
+            wab_unverified_hero: "Not verified",
+            wab_unverified_sub: "We could not confirm this month\u2019s WhatsApp figures with Meta yet.",
+            wab_incoming: "Received from customers",
+            wab_free_word: "free",
+            wab_sent: "Sent",
+            wab_delivered: "{n} delivered",
+            wab_not_delivered: "Not delivered, never charged",
+            wab_tier: "Free service replies",
+            wab_tier_val: "{u} of {a}",
+            wab_tier_left: "{n} left",
+            wab_fep: "Free, the customer came from a Click-to-WhatsApp ad",
+            wab_other_free: "Other free messages",
+            wab_charged: "Charged by Meta",
+            wab_cat_service: "Service",
+            wab_cat_utility: "Utility",
+            wab_cat_marketing: "Marketing",
+            wab_cat_authentication: "Authentication",
+            wab_note: "Meta bills WhatsApp to your own WhatsApp Business account. It does not come out of your plan, and Digitivia adds nothing on top. Meta never charges for messages your customers send, or for messages that are not delivered.",
+            wab_help: "The first 1,000 service replies each month are free for every number. Replies to a customer who came from a Click-to-WhatsApp ad are free while Meta keeps that window open, up to 7 days, and do not count toward the 1,000. Templates sent outside that window are charged, including utility templates.",
+            wab_checked_at: "Last checked with Meta on {d}.",
+            wab_unpriced: "Meta has not reported pricing for {n} of these messages, so they could not be checked.",
+            wab_reports_note: "Meta\u2019s monthly figures could not be read for this number, so these come from Meta\u2019s report on each message.",
             banner_ai_title: "This month\u2019s AI capacity is used up",
-            banner_ai_text: "Reading your customers\u2019 photos and voice notes used this month\u2019s AI capacity before your conversations ran out. Replies are paused until the month renews or you upgrade.",
+            banner_ai_text: "This month\u2019s AI capacity ran out before your conversations did. Your agent starts no new conversations until the month renews or you upgrade.",
             used_on: "What it was used on",
             coin_help: "One coin is one conversation your AI agent replied in, whatever it contained. Conversations your team answers themselves cost nothing.",
             plan_note: "Every reply your AI agent sends uses part of this month\u2019s allowance. It refills when the month resets.",
@@ -5145,6 +5254,8 @@
             wa_charging: "Charged by WhatsApp",
             wa_cost_label: "charged by WhatsApp this month",
             wa_free: "free",
+            wa_free_used: "free replies used",
+            wa_free_ads: "free, customer came from an ad",
             wa_charged: "charged",
             wa_note_before: "WhatsApp starts charging for replies on 1 October. The first 1,000 each month stay free.",
             wa_note_after: "WhatsApp bills this to your own WhatsApp Business account. It does not come out of your plan.",
@@ -6153,7 +6264,7 @@
             "renew_title": "تجديد {name}",
             "note_label": "ملاحظة لسجل المراجعة",
             "pv_starts_after": "تبدأ عند نهاية الفترة المدفوعة الحالية، فلا يضيع أي يوم مدفوع.",
-            "pv_coins": "الرصيد يرجع إلى {n} (المتبقي الآن {left}).",
+            "pv_coins": "المحادثات ترجع إلى {n} (المتبقي الآن {left}) وميزانية الذكاء الاصطناعي تبدأ من جديد.",
             "pv_email_renewed": "سيصل للعميل بريد بأن خطته تجددت.",
             "pv_email_activated": "سيصل للعميل بريد بأن خطته أصبحت نشطة.",
             "pv_agent_resumes": "الايجنت يرجع يرد على العملاء.",
@@ -6170,7 +6281,7 @@
             "change_estimate": "المبلغ التقديري عن باقي الفترة: {amount}. Stripe يحسب المبلغ الدقيق.",
             "change_next_total": "إجمالي الفاتورة القادمة: {amount}.",
             "change_cape_kept": "الاشتراك ما زال مضبوطا على الانتهاء بنهاية الفترة. تغيير الخطة لا يلغي ذلك.",
-            "change_manual": "الرصيد يرجع إلى {n}. الفترة المدفوعة لا تتغير (مدفوع حتى {date}).",
+            "change_manual": "المحادثات ترجع إلى {n} وميزانية الذكاء الاصطناعي تبدأ من جديد. الفترة المدفوعة لا تتغير (مدفوع حتى {date}).",
             "change_waiting": "Stripe قبل التغيير. في انتظار التأكيد.",
             "change_done": "تم تغيير الخطة إلى {plan}.",
             "change_timeout": "Stripe قبل التغيير لكن التأكيد لم يصل بعد. راجع السجل بعد دقيقة ثم اضغط تحديث.",
@@ -6367,7 +6478,116 @@
             state_low_replies: "اقتربت من حد الردود",
             state_paused: "الردود متوقفة",
             state_ai_heavy: "استخدام مرتفع للذكاء الاصطناعي هذا الشهر",
-            ai_capacity_line: "تم استخدام {n}% من سعة الذكاء الاصطناعي لهذا الشهر، أغلبها في قراءة الصور والرسائل الصوتية. تتوقف الردود عند 100% حتى لو تبقت محادثات.",
+            ai_capacity_line: "تم استخدام {n}% من سعة الذكاء الاصطناعي لهذا الشهر. تتوقف المحادثات الجديدة عند 100% حتى لو تبقت محادثات.",
+            ai_pending_line: "حوالي {n}% من ذلك من آخر دقائق، ويُصحَّح إلى التكلفة الفعلية للذكاء الاصطناعي خلال دقائق.",
+            lim_title: "حدود خطتك هذا الشهر",
+            lim_conversations: "المحادثات",
+            lim_ai: "سعة الذكاء الاصطناعي",
+            lim_val: "{u} من {t}",
+            lim_ai_val: "تم استخدام {n}%",
+            lim_closest: "الأقرب لحده",
+            lim_ai_help: "سعة الذكاء الاصطناعي هي الجزء من خطتك الذي يغطي عمل الذكاء الاصطناعي. كل رد وصورة ورسالة صوتية تستخدم جزءًا منها.",
+            pu_left_exact: "متبقٍ {n} محادثة",
+            pu_left_est: "متبقٍ حوالي {n} محادثة جديدة بمعدل استخدامك هذا الشهر",
+            pu_left_est_none: "لم يتبقَّ تقريبًا محادثات جديدة هذا الشهر",
+            pu_resets_on: "يتجدد في {date}، خلال {n} يوم",
+            pu_saver: "وضع التوفير مفعّل: تُقرأ الصور بوضع أخف حتى تكفي سعة الذكاء الاصطناعي حتى يتجدد الشهر.",
+            pu_stop_ai: "انتهت سعة الذكاء الاصطناعي لهذا الشهر. لن يبدأ المساعد محادثات جديدة حتى {date} أو حتى تقوم بالترقية.",
+            pu_stop_conv: "انتهت كل محادثات هذا الشهر. لن يبدأ المساعد محادثات جديدة حتى {date} أو حتى تقوم بالترقية.",
+            state_ai_used_up: "انتهت سعة الذكاء الاصطناعي",
+            sub_title: "الاشتراك والفوترة",
+            sub_chip_active: "نشط",
+            sub_chip_trial: "تجربة",
+            sub_chip_ending: "التجديد متوقف",
+            sub_chip_unpaid: "فشل الدفع",
+            sub_chip_incomplete: "الدفع لم يكتمل",
+            sub_chip_ended: "منتهي",
+            sub_chip_none: "لا توجد خطة",
+            sub_line_renews: "يتجدد تلقائيا في {date}.",
+            sub_line_ending: "خطة {plan} تبقى نشطة حتى {date}. لن تتجدد ولن يتم خصم أي مبلغ آخر.",
+            sub_line_unpaid: "لم يتم دفع التجديد بتاريخ {date}.",
+            sub_line_retry: " ستحاول Stripe خصم المبلغ من البطاقة مرة أخرى في {date}.",
+            sub_line_incomplete: "لم تكتمل الدفعة الأولى لهذه الخطة.",
+            sub_line_ended: "انتهت هذه الخطة في {date}.",
+            sub_line_ended_nodate: "انتهت هذه الخطة.",
+            sub_line_manual: "هذه الخطة يتم تحصيلها من فريق Digitivia وليس عن طريق البطاقة.",
+            sub_line_manual_end: " الفترة الحالية تنتهي في {date}.",
+            sub_line_none: "لا توجد خطة مدفوعة لمساحة العمل هذه.",
+            sub_price: "{amount} لكل {interval}",
+            sub_interval_month: "شهر",
+            sub_interval_year: "سنة",
+            sub_period_val: "من {from} إلى {to}",
+            sub_card_val: "{brand} تنتهي بـ {last4}",
+            sub_invoice_val: "{amount}، {state}",
+            sub_invoice_paid: "مدفوعة",
+            sub_invoice_open: "لم تُدفع بعد",
+            sub_row_plan: "الخطة",
+            sub_row_period: "الفترة الحالية",
+            sub_row_card: "طريقة الدفع",
+            sub_row_invoice: "آخر فاتورة",
+            sub_btn_resume: "الإبقاء على اشتراكي",
+            sub_btn_portal: "طريقة الدفع والفواتير",
+            sub_btn_plans: "تغيير الخطة",
+            sub_btn_cancel: "إلغاء الاشتراك",
+            sub_btn_update_card: "تحديث بطاقتي",
+            sub_note_owner: "فقط مالك مساحة العمل، أو من يسمح له بإدارة الفوترة، يمكنه تغيير هذه الخطة.",
+            sub_cx_title_end: "إيقاف التجديد التلقائي لاشتراكك؟",
+            sub_cx_title_now: "إلغاء اشتراكك الآن؟",
+            sub_cx_end_1: "خطة {plan} لن تتجدد. لن يتم خصم أي مبلغ آخر.",
+            sub_cx_end_2: "لا شيء يتغير اليوم. يستمر الوكيل في الرد وتبقى المحادثات وميزانية الذكاء الاصطناعي المتبقية متاحة حتى {date}.",
+            sub_cx_end_3: "في {date} تنتهي الخطة ويتوقف الوكيل عن الرد التلقائي. تبقى قنواتك وجهات الاتصال والرسائل محفوظة.",
+            sub_cx_end_4: "يمكنك تغيير رأيك والإبقاء على الخطة في أي وقت قبل {date}.",
+            sub_cx_now_1: "لم يتم دفع التجديد بتاريخ {date}، لذلك لم تبدأ هذه الفترة بالنسبة لك.",
+            sub_cx_now_2: "الإلغاء الآن ينهي الخطة اليوم ويمنع Stripe من خصم هذا التجديد غير المدفوع. لا يتم خصم أي مبلغ آخر ولا يوجد استرداد.",
+            sub_cx_now_3: "يتوقف الوكيل عن الرد التلقائي. تبقى قنواتك وجهات الاتصال والرسائل محفوظة، ويمكنك اختيار خطة مرة أخرى في أي وقت.",
+            sub_cx_now_4: "إذا كنت تفضل الإبقاء على الخطة، حدّث بطاقتك وستقوم Stripe بتحصيل المبلغ.",
+            sub_reason_label: "لماذا تلغي الاشتراك؟ (اختياري)",
+            sub_reason_none: "أفضل عدم الإجابة",
+            sub_reason_price: "التكلفة مرتفعة",
+            sub_reason_unused: "لا أستخدمه بما يكفي",
+            sub_reason_features: "تنقصه ميزة أحتاجها",
+            sub_reason_switched: "انتقلت إلى خدمة أخرى",
+            sub_reason_other: "سبب آخر",
+            sub_cx_keep: "الإبقاء على خطتي",
+            sub_cx_confirm_end: "إيقاف التجديد",
+            sub_cx_confirm_now: "إلغاء الآن",
+            sub_working: "جاري التنفيذ. يرجى إبقاء هذه الصفحة مفتوحة.",
+            sub_done_end_title: "تم إيقاف التجديد التلقائي",
+            sub_done_end: "تبقى خطتك نشطة حتى {date}. لن يتم خصم أي مبلغ آخر.",
+            sub_done_now_title: "تم إلغاء اشتراكك",
+            sub_done_now: "انتهت الخطة ولن تقوم Stripe بخصم التجديد غير المدفوع. يمكنك اختيار خطة مرة أخرى في أي وقت.",
+            sub_done_resume_title: "سيتجدد اشتراكك",
+            sub_done_resume: "لا شيء يتغير. يتجدد كالمعتاد في {date}.",
+            sub_err_title: "لم تتم العملية",
+            sub_err: "حدث خطأ. لم يتم تغيير أي شيء. يرجى المحاولة مرة أخرى.",
+            sub_err_changed: "تغيّر اشتراكك منذ فتح هذه الصفحة. أغلق هذه النافذة وراجعه مرة أخرى.",
+            sub_err_portal: "تعذر فتح صفحة الفوترة في Stripe. يرجى المحاولة مرة أخرى بعد دقيقة.",
+            wab_checked: "تم التحقق مع ميتا",
+            wab_reports: "من تقارير التسليم من ميتا",
+            wab_unverified: "لم يتم التحقق مع ميتا بعد",
+            wab_charged_hero: "رسائل احتسبتها ميتا هذا الشهر",
+            wab_unverified_hero: "لم يتم التحقق",
+            wab_unverified_sub: "لم نتمكن بعد من تأكيد أرقام واتساب لهذا الشهر مع ميتا.",
+            wab_incoming: "رسائل واردة من العملاء",
+            wab_free_word: "مجانية",
+            wab_sent: "رسائل مرسلة",
+            wab_delivered: "تم تسليم {n}",
+            wab_not_delivered: "لم يتم تسليمها، ولا تُحتسب أبدا",
+            wab_tier: "ردود الخدمة المجانية",
+            wab_tier_val: "{u} من {a}",
+            wab_tier_left: "المتبقي {n}",
+            wab_fep: "مجانية، جاء العميل من إعلان النقر إلى واتساب",
+            wab_other_free: "رسائل مجانية أخرى",
+            wab_charged: "تحتسبها ميتا",
+            wab_cat_service: "خدمة العملاء",
+            wab_cat_utility: "إشعارات",
+            wab_cat_marketing: "تسويق",
+            wab_cat_authentication: "رموز التحقق",
+            wab_note: "تحتسب ميتا رسائل واتساب على حساب واتساب بيزنس الخاص بك، ولا تُخصم من باقتك، ولا تضيف ديجيتيفيا أي مبلغ عليها. لا تحتسب ميتا أبدا الرسائل التي يرسلها عملاؤك، ولا الرسائل التي لم يتم تسليمها.",
+            wab_help: "أول 1,000 رد خدمة كل شهر مجانية لكل رقم. والردود على عميل جاء من إعلان النقر إلى واتساب مجانية طالما أبقت ميتا هذه الفترة مفتوحة، حتى 7 أيام، ولا تُحسب ضمن الـ 1,000. القوالب المرسلة خارج هذه الفترة مدفوعة، ومنها قوالب الخدمات.",
+            wab_checked_at: "آخر تحقق مع ميتا في {d}.",
+            wab_unpriced: "لم تبلغ ميتا بعد عن تسعير {n} من هذه الرسائل، لذلك لم يمكن التحقق منها.",
+            wab_reports_note: "تعذرت قراءة أرقام ميتا الشهرية لهذا الرقم، لذلك هذه الأرقام من تقرير ميتا عن كل رسالة.",
             banner_ai_title: "انتهت سعة الذكاء الاصطناعي لهذا الشهر",
             banner_ai_text: "قراءة صور عملائك ورسائلهم الصوتية استهلكت سعة الذكاء الاصطناعي لهذا الشهر قبل انتهاء محادثاتك. الردود متوقفة حتى تجديد الشهر أو الترقية.",
             used_on: "استُهلكت في",
@@ -6378,6 +6598,8 @@
             wa_charging: "يحتسبها واتساب",
             wa_cost_label: "احتسبها واتساب هذا الشهر",
             wa_free: "مجاني",
+            wa_free_used: "ردود مجانية مستخدمة",
+            wa_free_ads: "مجانية، العميل جاي من إعلان",
             wa_charged: "محتسب",
             wa_note_before: "يبدأ واتساب احتساب رسوم الردود في 1 أكتوبر، وأول 1,000 رد شهريًا تظل مجانية.",
             wa_note_after: "يحتسبها واتساب على حساب واتساب بيزنس الخاص بك، ولا تُخصم من باقتك.",
@@ -7507,6 +7729,21 @@
             metrics_perm: "Meta did not return post insights for this account. Reconnect it and approve every permission Meta asks for.",
             ig_no_clicks: "(not reported by Instagram)",
             comments: "Comments",
+            eng_reactions: "{n} reactions",
+            eng_comments: "{n} comments",
+            eng_shares: "{n} shares",
+            latest_comment: "Latest comment",
+            recent_comments_title: "Latest comments",
+            no_comments_yet: "No comments on this post yet.",
+            comment_by_follower: "A follower",
+            comments_more_on: "See all {n} comments on {platform}",
+            comments_show_more: "Show more comments",
+            comment_photo: "Sent a photo",
+            comment_sticker: "Sent a sticker",
+            comment_video: "Sent a video",
+            comment_by_page: "Your Page",
+            comment_page_badge: "Your reply",
+            comments_title_n: "Comments ({n})",
             open_on: "Open on {platform}",
             open_video: "Open video",
             actions_title: "Actions",
@@ -7813,6 +8050,21 @@
             metrics_perm: "لم ترجع ميتا إحصائيات المنشورات لهذا الحساب. أعد ربطه ووافق على كل الصلاحيات التي تطلبها ميتا.",
             ig_no_clicks: "(لا يعرضها إنستغرام)",
             comments: "التعليقات",
+            eng_reactions: "{n} تفاعل",
+            eng_comments: "{n} تعليق",
+            eng_shares: "{n} مشاركة",
+            latest_comment: "آخر تعليق",
+            recent_comments_title: "آخر التعليقات",
+            no_comments_yet: "لا توجد تعليقات على هذا المنشور بعد.",
+            comment_by_follower: "أحد المتابعين",
+            comments_more_on: "شاهد كل التعليقات ({n}) على {platform}",
+            comments_show_more: "عرض المزيد من التعليقات",
+            comment_photo: "أرسل صورة",
+            comment_sticker: "أرسل ملصقًا",
+            comment_video: "أرسل فيديو",
+            comment_by_page: "صفحتك",
+            comment_page_badge: "ردّك",
+            comments_title_n: "التعليقات ({n})",
             open_on: "افتح على {platform}",
             open_video: "افتح الفيديو",
             actions_title: "الإجراءات",
@@ -34516,19 +34768,22 @@
         }
         body:not(.omnio) #inbox .inbox-read-filter .irf-btn.active .irf-count { background: rgba(255, 255, 255, 0.24); color: #fff; }
         body:not(.omnio) #inbox .inbox-read-filter .irf-btn:not(.active):hover { border-color: rgba(139, 137, 234, 0.5); }
-        /* The list toolbar: "N conversations" and Mark all read, IN WORDS, on one quiet line
-           between the filters and the list, at every width. Mark all read used to be a full
+        /* The list toolbar: Mark all read, IN WORDS, on one quiet line between the filters and
+           the list, at every width. (It also said "N conversations" until 2026-10-09; the owner
+           asked for it to go: it counted the rows loaded, not the conversations that exist.) Mark all read used to be a full
            -width bar, then a bare check mark and a number at the end of the chip row; the
            owner could not tell what either did (2026-10-08). A labelled text action in a
            toolbar is where flagship inboxes keep bulk actions: visible, never mistaken for a
            filter, never a fourth pill. It still exists only while there is something to clear. */
         .inbox-list-toolbar {
-            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            display: flex; align-items: center; justify-content: flex-end; gap: 8px;
             min-block-size: 30px; padding: 0 12px 4px; min-inline-size: 0;
         }
-        .inbox-list-toolbar .ilt-count {
-            min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            font-size: 12px; color: var(--text-muted, #8a93a6); font-variant-numeric: tabular-nums;
+        /* Nothing to clear: no empty row between the filters and the list. */
+        .inbox-list-toolbar:not(:has(> .irf-mark-all:not([hidden]))) { display: none; }
+        /* The end of a list that loads in pages. */
+        #contact-list > .inbox-list-more {
+            padding: 14px 12px 18px; text-align: center; font-size: 12.5px; color: var(--text-muted, #8a93a6);
         }
         .inbox-list-toolbar .irf-mark-all {
             flex: none; display: inline-flex; align-items: center; gap: 6px;
@@ -34561,7 +34816,7 @@
         .inbox-list-toolbar .irf-mark-all:disabled { opacity: .6; cursor: default; }
         :root[data-theme="light"] .inbox-list-toolbar .irf-mark-all { color: #3b3992; background: #ecebf5; border-color: #d6d5ee; }
         :root[data-theme="light"] .inbox-list-toolbar .irf-mark-all:hover:not(:disabled) { background: #e0dff2; }
-        :root[data-theme="light"] .inbox-list-toolbar .ilt-count { color: #64748b; }
+        
 
         /* The filter chips share one track. With a mouse it wraps, because the
            desktop column is ~250px and a sideways scroll there has no wheel to
@@ -36394,8 +36649,31 @@
         .aiu-row-track i { display: block; height: 100%; border-radius: 999px; }
         .aiu-note { margin: 1.25rem 0 0; font-size: 0.81rem; line-height: 1.55; color: var(--text-muted); }
 
+        /* PLAN_USAGE_V1: every limit that can stop the replies, side by side. Same rhythm as
+           the breakdown rows: a limit's bar sits closer to its own label than to the next. */
+        .aiu-limits {
+            margin-top: 1.1rem; padding: 0.9rem 1rem; border-radius: 12px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; gap: 0.95rem;
+        }
+        .aiu-limits-title { font-size: 0.78rem; font-weight: 650; color: var(--text-muted); letter-spacing: 0.01em; }
+        .aiu-lim { display: grid; grid-template-columns: 1fr auto; gap: 0.35rem 1rem; align-items: baseline; }
+        .aiu-lim-label { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.86rem; font-weight: 600; color: var(--text-main); min-width: 0; }
+        .aiu-lim-val { font-size: 0.82rem; color: var(--text-main); font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .aiu-lim-track { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden; }
+        .aiu-lim-track i { display: block; height: 100%; border-radius: 999px; }
+        .aiu-lim-chip {
+            font-size: 0.7rem; font-weight: 650; padding: 0.12rem 0.5rem; border-radius: 999px;
+            color: #f59e0b; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+        }
+        .aiu-lim-note { margin: 0; font-size: 0.79rem; line-height: 1.5; color: var(--text-muted); }
+        .aiu-lim-note--stop { color: var(--error); }
+
 
         .aiu-wa-title { display: inline-flex; align-items: center; gap: 9px; font-size: 0.94rem; font-weight: 700; color: var(--text-main); }
+        .aiu-wab-num { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
+        .aiu-wab .aiu-rows + .aiu-rows { margin-top: 1rem; }
+        .aiu-wab .aiu-row-val { white-space: normal; text-align: end; }
         .aiu-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 0.85rem; }
         .aiu-chip {
             display: inline-flex; align-items: baseline; gap: 6px; padding: 0.45rem 0.75rem;
@@ -36589,6 +36867,35 @@
         .aiu-readonly-label { color: var(--text-muted); }
 
         .aiu-readonly-value { color: var(--text-main); text-align: right; max-width: 60%; }
+
+        /* ── Subscription and billing card (billing-subscription) ───────── */
+        #billing-sub-root:empty { display: none; }
+        #billing-sub-root:not(:empty) + #ai-usage-root { margin-top: clamp(14px, 1.8vw, 20px); }
+        .bsub-flash { margin-bottom: clamp(14px, 1.8vw, 20px); }
+        .aiu-banner.bsub-flash.aiu-banner--ok { background: rgba(34, 197, 94, 0.10); border-color: rgba(34, 197, 94, 0.35); color: var(--text-main); }
+        .bsub-title { font-size: 1rem; font-weight: 700; color: var(--text-main); margin: 0; }
+        .bsub-chip { display: inline-flex; align-items: center; padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.74rem; font-weight: 700; border: 1px solid; }
+        .bsub-chip--ok { background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.35); color: #4ade80; }
+        .bsub-chip--warn { background: var(--warning-bg); border-color: var(--warning-border); color: var(--warning-text); }
+        .bsub-chip--danger { background: rgba(239, 83, 80, 0.12); border-color: rgba(239, 83, 80, 0.35); color: #fca5a5; }
+        .bsub-chip--muted { background: rgba(255,255,255,0.04); border-color: var(--glass-border); color: var(--text-muted); }
+        .bsub-line { margin: 0 0 0.75rem; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); }
+        .bsub-rows { margin-top: 0.25rem; }
+        .bsub-muted { color: var(--text-muted); font-weight: 400; }
+        .bsub-note { margin: 0.75rem 0 0; font-size: 0.82rem; color: var(--text-muted); }
+        .bsub-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+        .bsub-btn { padding: 0.55rem 1.1rem; border-radius: 10px; border: 1px solid var(--glass-border); background: transparent; color: var(--text-main); font-weight: 600; font-size: 0.85rem; cursor: pointer; min-height: 40px; }
+        .bsub-btn:hover { background: rgba(255,255,255,0.05); }
+        .bsub-btn:disabled { opacity: 0.6; cursor: default; }
+        .bsub-btn--danger { color: #fca5a5; border-color: rgba(239, 83, 80, 0.45); }
+        .bsub-btn--danger:hover { background: rgba(239, 83, 80, 0.10); }
+        .bsub-overlay { position: fixed; inset: 0; z-index: 10050; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .bsub-dialog { width: min(520px, 100%); max-height: calc(100vh - 32px); overflow: auto; border-radius: 18px; padding: clamp(1.1rem, 0.6rem + 1.6vw, 1.6rem); background: var(--bg-card, #151a24); border: 1px solid var(--glass-border); }
+        .bsub-dialog h3 { margin: 0 0 0.75rem; font-size: 1.05rem; color: var(--text-main); }
+        .bsub-dialog p { margin: 0 0 0.6rem; font-size: 0.9rem; line-height: 1.5; color: var(--text-main); }
+        .bsub-dialog .aiu-label { margin-top: 0.75rem; }
+        .bsub-dialog-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; justify-content: flex-end; }
+        .bsub-dialog-status { min-height: 1.2em; margin-top: 0.6rem !important; font-size: 0.84rem !important; color: var(--text-muted) !important; }
 
 
         /* ── Skeleton loader ─────────────────────────────────────────── */
@@ -40157,6 +40464,16 @@
                 not_granted_why_ig: "Facebook did not give Digitivia AI Agent access to {name}. Connect again, and in Facebook's window tick this account and its Facebook Page.",
                 token_invalid_why: "Facebook did not accept the key it gave for {name}. Connect again, tick it and approve every permission.",
                 lost_pages_note: "This Facebook login no longer includes: {names}. They were connected before and have stopped working. Connect again and tick them too.",
+                list_and: " and ",
+                lost_elsewhere_note: "Heads up: this login also disconnected {names} in {workspace}. The AI stopped replying to messages and comments there, and Live Insights and Content Studio stopped too. To bring it back, click Connect again and tick all your Pages in the Facebook window. You will still choose only this workspace's Pages next.",
+                workspace_named: "your {name} workspace",
+                workspace_other: "another workspace",
+                held_elsewhere: "In another workspace",
+                one_list_note: "Using one Facebook account for more than one workspace? In the Facebook window, tick all your Pages, including the ones in your other workspaces. Next, you choose only the Pages for this workspace. This keeps all your workspaces working.",
+                attention_token_invalid: "{name} is disconnected, so the AI is not replying to its messages or comments, and Live Insights and Content Studio are paused for it. This usually happens after the same Facebook account is connected in another workspace. Click Reconnect and tick it in the Facebook window.",
+                banner_broken_one: "{names} is disconnected, so the AI is not replying to its messages or comments, and Live Insights and Content Studio are paused for it. Click Reconnect to fix it. It takes about a minute.",
+                banner_broken_many: "{names} are disconnected, so the AI is not replying to their messages or comments, and Live Insights and Content Studio are paused for them. Click Reconnect to fix it. It takes about a minute.",
+                banner_dismiss: "Dismiss",
                 list_sep: ", ",
                 perm_messages: "messages",
                 perm_insights: "insights",
@@ -40617,6 +40934,16 @@
                 not_granted_why_ig: "لم يمنح فيسبوك تطبيق Digitivia AI Agent صلاحية الوصول إلى {name}. اربط مرة أخرى، وفي نافذة فيسبوك علّم على هذا الحساب وعلى صفحته في فيسبوك.",
                 token_invalid_why: "لم يقبل فيسبوك المفتاح الذي أعطاه لـ {name}. اربط مرة أخرى، وعلّم عليه ووافق على كل الصلاحيات.",
                 lost_pages_note: "هذا الدخول إلى فيسبوك لم يعد يشمل: {names}. كانت مربوطة من قبل وتوقفت عن العمل. اربط مرة أخرى وعلّم عليها أيضًا.",
+                list_and: " و",
+                lost_elsewhere_note: "تنبيه: هذا الدخول فصل أيضًا {names} في {workspace}. توقف الذكاء الاصطناعي عن الرد على الرسائل والتعليقات هناك، وتوقفت رؤى مباشرة واستوديو المحتوى أيضًا. لإرجاعها اضغط اتصال مرة أخرى وعلّم على كل صفحاتك في نافذة فيسبوك. وبعدها ستختار صفحات مساحة العمل هذه فقط.",
+                workspace_named: "مساحة العمل {name}",
+                workspace_other: "مساحة عمل أخرى",
+                held_elsewhere: "في مساحة عمل أخرى",
+                one_list_note: "تستخدم حساب فيسبوك واحد لأكثر من مساحة عمل؟ في نافذة فيسبوك علّم على كل صفحاتك، ومنها صفحات مساحات العمل الأخرى. بعدها تختار صفحات مساحة العمل هذه فقط. بهذا تظل كل مساحات العمل تعمل.",
+                attention_token_invalid: "{name} غير متصل، لذلك لا يرد الذكاء الاصطناعي على رسائله أو تعليقاته، وتوقفت له رؤى مباشرة واستوديو المحتوى. يحدث هذا عادة بعد ربط حساب فيسبوك نفسه في مساحة عمل أخرى. اضغط إعادة الاتصال وعلّم عليه في نافذة فيسبوك.",
+                banner_broken_one: "{names} غير متصل، لذلك لا يرد الذكاء الاصطناعي على رسائله أو تعليقاته، وتوقفت له رؤى مباشرة واستوديو المحتوى. اضغط إعادة الاتصال لإصلاحه، يستغرق ذلك دقيقة تقريبًا.",
+                banner_broken_many: "{names} غير متصلة، لذلك لا يرد الذكاء الاصطناعي على رسائلها أو تعليقاتها، وتوقفت لها رؤى مباشرة واستوديو المحتوى. اضغط إعادة الاتصال لإصلاحها، يستغرق ذلك دقيقة تقريبًا.",
+                banner_dismiss: "إغلاق",
                 list_sep: "، ",
                 perm_messages: "الرسائل",
                 perm_insights: "الإحصائيات",
@@ -41803,6 +42130,7 @@
             // The inbox redesign (channel switcher, labelled Mark all read, avatars, day
             // separators) ships as one release; its marker is the one new action in it.
             'inbox-needs-you': { since: '2026-10-08' },
+            'insights-post-comments': { since: '2026-10-10' },
             // Inbox: "Follow-ups stopped: customer booked" with Resume. Hosted on Resume.
             'followup-smart-stop' : { since: '2026-10-07' },
         });
@@ -46821,7 +47149,6 @@
                                      all read" (owner, 2026-10-08). It appears only when there is
                                      something to clear, so it is never a button that does nothing. -->
                                 <div id="inbox-list-toolbar" class="inbox-list-toolbar">
-                                    <span id="inbox-list-count" class="ilt-count" aria-live="polite"></span>
                                     <button type="button" class="irf-mark-all" id="irf-mark-all"
                                             hidden onclick="markAllConversationsRead()"></button>
                                 </div>
@@ -47041,6 +47368,7 @@
                   <h2 class="aiu-page-title" data-i18n="aiUsage.page_title">AI Usage &amp; Coins</h2>
                   <p class="aiu-page-sub" data-i18n="aiUsage.page_subtitle">Track AI coin consumption and manage your low-balance alerts.</p>
                 </header>
+                <div id="billing-sub-root"></div>
                 <div id="ai-usage-root"></div>
               </div>
             </div>
@@ -48662,7 +48990,7 @@ Thank you for shopping with {store_name}!</textarea>
         // Selectors, not ids: the mobile app bar is `<div class="mobile-top-bar">`
         // with NO id, so an id lookup silently skipped it and left the phone header
         // buried under the plan banner — the same defect this function exists to fix.
-        const TOP_BAR_STACK = ['#top-bar', '.mobile-top-bar', '#global-usage-banner', '#onb-banner'];
+        const TOP_BAR_STACK = ['#top-bar', '.mobile-top-bar', '#global-usage-banner', '#meta-connection-banner', '#onb-banner'];
 
         function eachStackedTopBar(fn) {
             for (const sel of TOP_BAR_STACK) {
@@ -49310,6 +49638,78 @@ Thank you for shopping with {store_name}!</textarea>
   /* i18n-safe: window.t returns the KEY on a miss, so guard with a fallback */
   function _t(key, fb){ var v=(typeof window.t==='function')?window.t(key):null; return (v && v!==key)?v:fb; }
 
+  /* PLAN_USAGE_V1 (2026-10-13). One answer to "how much of my plan is left" for every
+     screen: this page, the sidebar meter, the dashboard widget and the global banner. It
+     comes from get_plan_usage, which reads bundle_gate_check, the check every reply path
+     asks before spending, so a screen can no longer say "4,769 conversations left" while
+     the AI capacity (the plan's AI budget, never shown as money) is about to pause the
+     replies. Each caller keeps its own older reading as the fallback when this fails. */
+  window.PlanUsage = (function () {
+    let cache = { org: null, at: 0, data: null, pending: null };
+    function _org () { try { return (typeof currentUserOrgId !== 'undefined') ? currentUserOrgId : null; } catch (e) { return null; } }
+    async function load (force) {
+      const org = _org();
+      if (!org || typeof supabaseClient === 'undefined' || !supabaseClient) return null;
+      if (!force && cache.org === org && cache.data && (Date.now() - cache.at) < 30000) return cache.data;
+      if (cache.pending && cache.org === org) return cache.pending;
+      cache.org = org;
+      cache.pending = (async function () {
+        try {
+          const { data, error } = await supabaseClient.rpc('get_plan_usage', { p_org_id: org });
+          if (error || !data || typeof data !== 'object' || data.error || !data.state) return null;
+          if (cache.org === org) { cache.data = data; cache.at = Date.now(); }
+          return data;
+        } catch (e) { return null; }
+        finally { cache.pending = null; }
+      })();
+      return cache.pending;
+    }
+    function peek () { return (cache.org === _org()) ? cache.data : null; }
+    function _n (v) { return Number(v || 0).toLocaleString('en-US'); }
+    function _date (iso) {
+      const d = new Date(iso);
+      if (!iso || !Number.isFinite(d.getTime())) return '';
+      const ar = (typeof currentLang !== 'undefined' && currentLang === 'ar');
+      try { return new Intl.DateTimeFormat(ar ? 'ar-EG-u-nu-latn' : 'en-GB', { day: 'numeric', month: 'long', timeZone: 'Africa/Cairo' }).format(d); }
+      catch (e) { return d.toISOString().slice(0, 10); }
+    }
+    /* Words for a summary, shared so the four screens say the same thing. tone is the
+       colour (ok, warn, stop); binding names the limit closest to running out. */
+    function describe (u) {
+      if (!u || !u.state) return null;
+      const tpl = (s, v) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));
+      const conv = u.conversations || {};
+      const left = u.conversations_left || {};
+      const aiPct = (u.ai && u.ai.pct != null) ? Math.min(100, Math.round(+u.ai.pct)) : null;
+      const convPct = conv.pct != null ? Math.min(100, Math.round(+conv.pct)) : null;
+      const date = _date(u.period && u.period.end);
+      const aiBinds = u.binding === 'ai';
+      const tone = (u.state === 'stop' || u.state === 'none') ? 'stop' : (u.state === 'warn' || u.state === 'grace') ? 'warn' : 'ok';
+      let leftText = '';
+      if (left.value != null) {
+        if (left.estimated) {
+          leftText = (+left.value >= 1)
+            ? tpl(_t('aiUsage.pu_left_est', 'About {n} new conversations left at this month’s pace'), { n: _n(left.value) })
+            : _t('aiUsage.pu_left_est_none', 'Almost no new conversations left this month');
+        } else {
+          leftText = tpl(_t('aiUsage.pu_left_exact', '{n} conversations left'), { n: _n(left.value) });
+        }
+      }
+      let stateText;
+      if (u.state === 'stop') stateText = (u.reason === 'ai_budget_exhausted') ? _t('aiUsage.state_ai_used_up', 'AI capacity used up') : _t('aiUsage.state_paused', 'Replies paused');
+      else if (u.state === 'warn') stateText = aiBinds ? _t('aiUsage.state_ai_heavy', 'Heavy AI use this month') : _t('aiUsage.state_low_replies', 'Close to your reply limit');
+      else stateText = _t('aiUsage.state_ok', 'On track');
+      let stopText = '';
+      if (u.state === 'stop' && (u.reason === 'ai_budget_exhausted')) stopText = tpl(_t('aiUsage.pu_stop_ai', 'This month’s AI capacity is used up. Your agent starts no new conversations until {date}, or until you upgrade.'), { date: date });
+      else if (u.state === 'stop' && (u.reason === 'conversations_exhausted' || u.reason === 'coins_exhausted')) stopText = tpl(_t('aiUsage.pu_stop_conv', 'All of this month’s conversations are used. Your agent starts no new conversations until {date}, or until you upgrade.'), { date: date });
+      return { tone: tone, state: u.state, reason: u.reason, binding: u.binding, aiPct: aiPct, convPct: convPct,
+               effPct: u.effective_pct != null ? Math.min(100, Math.round(+u.effective_pct)) : null,
+               leftText: leftText, stateText: stateText, stopText: stopText, date: date,
+               days: u.period ? u.period.renews_in_days : null, saver: !!u.saver };
+    }
+    return { load: load, peek: peek, describe: describe };
+  })();
+
   /* ── constants ─────────────────────────────────────────── */
   const TAB_ID   = 'ai-usage';
   const DRAWER_ID = 'aiu-breakdown-drawer';
@@ -49325,6 +49725,9 @@ Thank you for shopping with {store_name}!</textarea>
   window.loadAiUsageTab = async function () {
     console.log('[ai-usage] loadAiUsageTab called, orgId:', currentUserOrgId);
     _canEdit = window.hasPermission ? window.hasPermission('org.billing') : false;
+    // The subscription card loads beside the usage figures, never in front of
+    // them: it is not awaited, and its own failures stay inside it.
+    try { if (window.BillingSub) window.BillingSub.load(); } catch (e) { /* billing card is optional */ }
     await _fetchAndRender();
     _bindEvents();
   };
@@ -49379,6 +49782,16 @@ Thank you for shopping with {store_name}!</textarea>
     } catch (e) {
       console.warn('[ai-usage] whatsapp usage unavailable', e);
     }
+    /* What Meta counts toward the monthly free tier (replies inside the 24 hour
+       window), apart from replies that are free because the customer came from
+       an ad, which Meta does not count. Optional: the card falls back to the
+       totals above if this read fails. */
+    if (wa) {
+      try {
+        const { data: tier, error: tierErr } = await supabaseClient.rpc('get_whatsapp_free_tier', { p_org_id: currentUserOrgId });
+        if (!tierErr && tier && typeof tier === 'object') wa.tier = tier;
+      } catch (e) { /* the totals are enough */ }
+    }
 
     /* The gate is what actually stops replies, and one of its limits (the
        plan's AI capacity) is not in get_coin_status. Without this read a
@@ -49390,6 +49803,34 @@ Thank you for shopping with {store_name}!</textarea>
     } catch (e) {
       _status._gate = null;
     }
+
+    /* PLAN_USAGE_V1: the summary every screen shares (get_plan_usage). When it does not
+       answer, the card below is built from the gate as it was. */
+    try {
+      _status._pu = window.PlanUsage ? await window.PlanUsage.load(true) : null;
+    } catch (e) {
+      _status._pu = null;
+    }
+
+    /* The part of the AI share still being confirmed. Read-only; a failure
+       only drops the one line that mentions it. */
+    try {
+      const { data: pData, error: pErr } = await supabaseClient.rpc('get_ai_cost_pending', { p_org_id: currentUserOrgId });
+      _status._pending = (!pErr && pData && typeof pData === 'object') ? pData : null;
+    } catch (e) {
+      _status._pending = null;
+    }
+
+    /* What Meta reported for each WhatsApp number (get_whatsapp_billing). Optional: a failure
+       drops back to the totals above, never the plan card. The AI side of this page is shown
+       ONLY as conversations and coins, never as money (owner, 2026-10-13). */
+    try {
+      const billRes = await supabaseClient.rpc('get_whatsapp_billing', { p_org_id: currentUserOrgId });
+      if (billRes && !billRes.error && billRes.data && typeof billRes.data === 'object' && billRes.data.connected) {
+        wa = wa || {};
+        wa.billing = billRes.data;
+      }
+    } catch (e) { /* the totals are enough */ }
 
     root.innerHTML = _buildHTML(_status, _canEdit, wa);
     _attachDrawerListeners();
@@ -49465,12 +49906,28 @@ Thank you for shopping with {store_name}!</textarea>
     const usedAudio = +(s.coins_used_audio ?? 0);
 
     /* The plan's AI capacity (usd_cap) is the third limit. It is shown as a
-       share, never as money, and only once it matters: at the merchant's own
-       warning threshold, or when it is what stopped the replies. */
+       share, never as money (owner, 2026-10-13), and always: a limit the card
+       hides until it is nearly gone is the limit that surprises the merchant. */
     const gate      = s._gate || null;
-    const aiPct     = gate && gate.ai_usage_pct != null ? Math.min(100, Math.round(+gate.ai_usage_pct)) : null;
-    const aiStopped = !!(gate && gate.allowed === false && gate.reason === 'ai_budget_exhausted');
-    const aiTight   = aiStopped || (aiPct !== null && aiPct >= warnPct);
+    /* PLAN_USAGE_V1: when the shared summary (get_plan_usage) answered, it decides the
+       state, the words and the "left" line, so this card says what the sidebar, the
+       dashboard and the banner say, and what the gate will do. Otherwise the gate. */
+    const puRaw     = s._pu || null;
+    const pu        = (puRaw && window.PlanUsage) ? window.PlanUsage.describe(puRaw) : null;
+    const aiPct     = pu ? pu.aiPct
+                    : (gate && gate.ai_usage_pct != null ? Math.min(100, Math.round(+gate.ai_usage_pct)) : null);
+    const aiStopped = pu ? (pu.state === 'stop' && pu.reason === 'ai_budget_exhausted')
+                    : !!(gate && gate.allowed === false && gate.reason === 'ai_budget_exhausted');
+    const aiTight   = pu ? (aiStopped || (pu.state === 'warn' && pu.binding === 'ai'))
+                    : (aiStopped || (aiPct !== null && aiPct >= warnPct));
+    /* The newest replies are booked at an estimate and corrected to the actual AI cost within
+       minutes (get_ai_cost_pending). Said only when it is a visible part of the share above, and
+       always as a share: this card never shows the capacity as money. */
+    const pend      = s._pending || null;
+    const pendPct   = pend && pend.pending_pct != null ? Math.round(+pend.pending_pct) : 0;
+    const pendingLine = (aiPct !== null && pendPct >= 1)
+      ? `<span class="aiu-pending-line">${_tpl(_esc(_t('aiUsage.ai_pending_line', 'About {n}% of that is from the last few minutes. It is corrected to the actual AI cost within minutes.')), { n: _iso(Math.min(pendPct, aiPct)) })}</span>`
+      : '';
 
     /* Replies lead, coins follow. A merchant recognises a reply; a coin is our
        own unit, and the trial card already counts messages, so an upgrade used
@@ -49481,24 +49938,23 @@ Thank you for shopping with {store_name}!</textarea>
     /* The bar turns amber at the SAME number that fires the merchant's own
        low-balance alert (aiu-warning-pct). A bar that warns on a different
        threshold than the email teaches people to stop trusting the colour. */
-    /* Two limits can bind: the plan's replies and the AI coin balance. They
-       disagree often (a workspace can be at 25% of its replies and 93% of its
-       coins), so the bar shows the replies the hero counts, and the state names
-       WHICH limit is close. An amber bar at a quarter full with no explanation
-       is the version of this card that teaches people to distrust it. */
-    const coinsTight   = isLow || (total > 0 && pct >= warnPct);
-    const repliesTight = convLimit > 0 && convPct >= warnPct;
-    const state = (isFinished || aiStopped) ? 'stop' : (coinsTight || repliesTight || aiTight) ? 'warn' : 'ok';
-    /* The bar is coloured by the thing it MEASURES. When the coin balance is
-       the tight one, the bar stays calm at its real quarter-full and the coin
-       line turns amber instead: an amber bar at 25% is a lie the eye notices. */
-    const barColor = (isFinished || aiStopped) ? 'var(--bg-danger)'
-                   : repliesTight ? 'var(--bg-warning)'
+    const coinsTight   = pu ? false : (isLow || (total > 0 && pct >= warnPct));
+    const repliesTight = pu ? (pu.state === 'warn' && pu.binding !== 'ai') : (convLimit > 0 && convPct >= warnPct);
+    const convDone     = pu ? (pu.state === 'stop' && !aiStopped) : isFinished;
+    const state = pu ? pu.tone
+                : (isFinished || aiStopped) ? 'stop' : (coinsTight || repliesTight || aiTight) ? 'warn' : 'ok';
+    /* The bar measures the replies the hero counts, and it is coloured by the
+       state of the WHOLE plan (owner, 2026-10-13): when the AI capacity is about
+       to pause the replies, a calm bar at 14% is the healthy-looking balance the
+       merchant must never see. The limits list below names which limit it is. */
+    const barColor = state === 'stop' ? 'var(--bg-danger)'
+                   : state === 'warn' ? 'var(--bg-warning)'
                    : 'var(--theme-color)';
     /* Colour is never the only signal: every state carries an icon and a word,
        for colour-blind readers and for a phone screen in daylight. */
     const stateIcon = svgIcon(state === 'ok' ? 'check' : 'warning', 14);
-    const stateText = state === 'stop' ? _t('aiUsage.state_paused', 'Replies paused')
+    const stateText = pu ? pu.stateText
+                    : state === 'stop' ? _t('aiUsage.state_paused', 'Replies paused')
                     : state !== 'warn' ? _t('aiUsage.state_ok', 'On track')
                     : coinsTight ? _t('aiUsage.state_low_coins', 'AI balance running low')
                     : aiTight ? _t('aiUsage.state_ai_heavy', 'Heavy AI use this month')
@@ -49515,7 +49971,12 @@ Thank you for shopping with {store_name}!</textarea>
        the card itself already says what the state is, so a banner that merely
        repeats it would be noise on every screen. */
     let bannerHTML = '';
-    if (aiStopped && !isFinished) {
+    /* With the shared summary the banners follow the gate: "finished" is the
+       conversations running out, "low" is a conversations warning; the AI
+       capacity has its own two banners above them. */
+    const bannerFinished = pu ? convDone : isFinished;
+    const bannerLow      = pu ? repliesTight : isLow;
+    if (aiStopped && !bannerFinished) {
       bannerHTML = `
         <div class="aiu-banner aiu-banner--danger" role="alert">
           ${svgIcon('warning', 20, 'aiu-banner-icon')}
@@ -49527,16 +49988,17 @@ Thank you for shopping with {store_name}!</textarea>
             <button class="aiu-save-btn" onclick="openPricingModal()" data-i18n="aiUsage.btn_upgrade">Upgrade Plan</button>
           </div>
         </div>`;
-    } else if (aiTight && !isFinished && aiPct !== null) {
+    } else if (aiTight && !bannerFinished && aiPct !== null) {
       bannerHTML = `
         <div class="aiu-banner aiu-banner--warning" role="status">
           ${svgIcon('warning', 20, 'aiu-banner-icon')}
           <div class="aiu-banner-body">
             <strong>${_esc(_t('aiUsage.state_ai_heavy', 'Heavy AI use this month'))}</strong>
             <span>${_tpl(_esc(_t('aiUsage.ai_capacity_line', '{n}% of this month\u2019s AI capacity used.')), { n: _iso(aiPct) })}</span>
+            ${pendingLine}
           </div>
         </div>`;
-    } else if (isFinished) {
+    } else if (bannerFinished) {
       bannerHTML = `
         <div class="aiu-banner aiu-banner--danger" role="alert">
           ${svgIcon('warning', 20, 'aiu-banner-icon')}
@@ -49548,7 +50010,7 @@ Thank you for shopping with {store_name}!</textarea>
             <button class="aiu-save-btn" onclick="openPricingModal()" data-i18n="aiUsage.btn_upgrade">Upgrade Plan</button>
           </div>
         </div>`;
-    } else if (isLow) {
+    } else if (bannerLow) {
       bannerHTML = `
         <div class="aiu-banner aiu-banner--warning" role="status">
           ${svgIcon('warning', 20, 'aiu-banner-icon')}
@@ -49562,14 +50024,55 @@ Thank you for shopping with {store_name}!</textarea>
         </div>`;
     }
 
-    const days = _daysUntil(s.period_end);
-    const resetText = days === null ? '' : _tpl(_t('aiUsage.resets_in', 'Resets in {n} days'), { n: _iso(days) });
+    /* The reset is the usage window's end (the day every limit refills together), not the
+       subscription's; with the summary it is named as a date as well as a count. */
+    const puPeriodEnd = puRaw && puRaw.period ? puRaw.period.end : null;
+    const days = _daysUntil(puPeriodEnd || s.period_end);
+    const resetText = days === null ? ''
+      : (pu && pu.date)
+        ? _tpl(_esc(_t('aiUsage.pu_resets_on', 'Resets on {date}, in {n} days')), { date: _isoDay(_esc(pu.date)), n: _iso(days) })
+        : _tpl(_t('aiUsage.resets_in', 'Resets in {n} days'), { n: _iso(days) });
     const ofText = convLimit > 0
       ? _tpl(_t('aiUsage.of_replies', 'of {n} replies this month'), { n: '<b>' + _iso(_fmt(convLimit)) + '</b>' })
       : _t('aiUsage.replies_this_month', 'replies this month');
-    const leftText = convLimit > 0
-      ? _tpl(_t('aiUsage.replies_left', '{n} left'), { n: _iso(_fmt(Math.max(0, convLimit - convUsed))) })
-      : '';
+    /* "Left" is what the TIGHTEST limit allows. When the AI capacity is the tightest it is an
+       estimate at this month's pace, and it says "about": never "4,769 left" while the AI
+       capacity would stop the replies after a few hundred. */
+    const leftText = (pu && pu.leftText)
+      ? _esc(pu.leftText).replace(/(\d[\d,]*)/, (m) => _iso(m))
+      : convLimit > 0
+        ? _tpl(_t('aiUsage.replies_left', '{n} left'), { n: _iso(_fmt(Math.max(0, convLimit - convUsed))) })
+        : '';
+
+    /* PLAN_USAGE_V1: every limit that can stop the replies, side by side, so none of them is
+       hidden. Coins are the conversations' own unit (1 coin = 1 conversation the AI replied
+       in), so they are one row; the AI capacity is a share, never money. */
+    const limRow = (key, label, valueHtml, pctVal, tone, help) => {
+      const w = Math.max(0, Math.min(100, Number(pctVal) || 0));
+      const col = tone === 'stop' ? 'var(--bg-danger)' : tone === 'warn' ? 'var(--bg-warning)' : 'var(--theme-color)';
+      const closest = (puRaw && puRaw.binding === key && state !== 'ok')
+        ? `<span class="aiu-lim-chip">${_esc(_t('aiUsage.lim_closest', 'Closest to its limit'))}</span>` : '';
+      const tip = help ? `<span class="sp-tip" tabindex="0" role="note" aria-label="${_esc(help)}" data-tip="${_esc(help)}">?</span>` : '';
+      return `
+        <div class="aiu-lim" data-limit="${key}">
+          <span class="aiu-lim-label">${_esc(label)}${tip}${closest}</span>
+          <span class="aiu-lim-val">${valueHtml}</span>
+          <span class="aiu-lim-track" role="progressbar" aria-valuenow="${w}" aria-valuemin="0" aria-valuemax="100" aria-label="${_esc(label)}"><i style="width:${w}%;background:${col}"></i></span>
+        </div>`;
+    };
+    const convTone = convDone ? 'stop' : repliesTight ? 'warn' : 'ok';
+    const aiTone   = aiStopped ? 'stop' : aiTight ? 'warn' : 'ok';
+    const limitsHTML = (convLimit > 0 || aiPct !== null) ? `
+        <div class="aiu-limits">
+          <div class="aiu-limits-title">${_esc(_t('aiUsage.lim_title', 'Plan limits this month'))}</div>
+          ${convLimit > 0 ? limRow('conversations', _t('aiUsage.lim_conversations', 'Conversations'),
+              _tpl(_esc(_t('aiUsage.lim_val', '{u} of {t}')), { u: _iso(_fmt(convUsed)), t: _iso(_fmt(convLimit)) }), convPct, convTone, '') : ''}
+          ${aiPct !== null ? limRow('ai', _t('aiUsage.lim_ai', 'AI capacity'),
+              _tpl(_esc(_t('aiUsage.lim_ai_val', '{n}% used')), { n: _iso(aiPct) }), aiPct, aiTone,
+              _t('aiUsage.lim_ai_help', 'AI capacity is the part of your plan that pays for the AI\u2019s work. Every reply, photo and voice note uses some of it.')) : ''}
+          ${(pu && pu.saver) ? `<p class="aiu-lim-note">${_esc(_t('aiUsage.pu_saver', 'Saver mode is on: photos are read in a lighter mode so your AI capacity lasts until the month renews.'))}</p>` : ''}
+          ${(pu && pu.stopText) ? `<p class="aiu-lim-note aiu-lim-note--stop">${_esc(pu.stopText)}</p>` : ''}
+        </div>` : '';
 
     /* The breakdown is on screen, not behind a toggle: it is the answer to
        "used on what", and a phone has no hover to reveal it.
@@ -49683,6 +50186,8 @@ Thank you for shopping with {store_name}!</textarea>
           ${leftText ? `<span class="aiu-left">${leftText}</span>` : ''}
         </div>
 
+        ${limitsHTML}
+
         <div class="aiu-rows">
           <div class="aiu-row aiu-row--head">
             <span class="aiu-row-label">
@@ -49737,10 +50242,11 @@ Thank you for shopping with {store_name}!</textarea>
      merchant reading a plan card should never wonder whether we are charging
      them twice. Rendered only when a number is connected. */
   function _buildWaCard (wa) {
+    if (wa && wa.billing && wa.billing.connected) return _buildWaBillingCard(wa.billing);
     if (!wa || !wa.connected) return '';
     const charging = !!wa.charging;
-    const cost = Number(wa.estimated_cost || 0);
-    const currency = wa.currency || 'USD';
+    const tier = (wa.tier && typeof wa.tier === 'object') ? wa.tier : {};
+    const chargedCount = Number(tier.charged != null ? tier.charged : (wa.messages_charged || 0));
     const help = _esc(_t('aiUsage.wa_help',
       'Meta charges for replies sent outside a template. Digitivia adds no fee on top.'));
     const head = charging
@@ -49752,12 +50258,13 @@ Thank you for shopping with {store_name}!</textarea>
        worse than showing none, so the card carries the state and the sentence. */
     const body = charging ? `
         <div class="aiu-hero">
-          <span class="aiu-hero-num aiu-hero-num--sm">${_iso(_money(cost, currency))}</span>
-          <span class="aiu-hero-of" data-i18n="aiUsage.wa_cost_label">charged by WhatsApp this month</span>
+          <span class="aiu-hero-num aiu-hero-num--sm">${_iso(_fmt(chargedCount))}</span>
+          <span class="aiu-hero-of">${_esc(_t('aiUsage.wab_charged_hero', 'messages charged by Meta this month'))}</span>
         </div>
         <div class="aiu-chips">
-          <span class="aiu-chip"><b>${_iso(_fmt(wa.messages_free || 0))}</b><span data-i18n="aiUsage.wa_free">free</span></span>
-          <span class="aiu-chip"><b>${_iso(_fmt(wa.messages_charged || 0))}</b><span data-i18n="aiUsage.wa_charged">charged</span></span>
+          <span class="aiu-chip"><b>${_iso(_fmt(tier.free_tier_used != null ? tier.free_tier_used : (wa.messages_free || 0)))} / ${_iso(_fmt(tier.free_allowance || wa.free_allowance || 1000))}</b><span data-i18n="aiUsage.wa_free_used">free replies used</span></span>
+          ${tier.free_entry_point ? `<span class="aiu-chip"><b>${_iso(_fmt(tier.free_entry_point))}</b><span data-i18n="aiUsage.wa_free_ads">free, customer came from an ad</span></span>` : ''}
+          <span class="aiu-chip"><b>${_iso(_fmt(tier.charged != null ? tier.charged : (wa.messages_charged || 0)))}</b><span data-i18n="aiUsage.wa_charged">charged</span></span>
         </div>` : '';
 
     return `
@@ -49775,6 +50282,127 @@ Thank you for shopping with {store_name}!</textarea>
         </p>
       </section>`;
   }
+
+  /* WHATSAPP, FROM META'S OWN FIGURES (2026-10-13). Per number: what customers sent (never
+     charged), what was sent and delivered (Meta charges delivered messages only), free service
+     replies used of the 1,000, replies free because the customer came from an ad or a Facebook
+     Page button, other free messages, and what Meta charged, by category. A cost Meta reported is
+     labelled as Meta's and approximate; a cost we worked out is labelled an estimate; figures that
+     could not be checked with Meta say so instead of showing zero. Read from get_whatsapp_billing. */
+  const _WA_CATS = { service: 'wab_cat_service', utility: 'wab_cat_utility', marketing: 'wab_cat_marketing',
+    marketing_lite: 'wab_cat_marketing', authentication: 'wab_cat_authentication', authentication_international: 'wab_cat_authentication' };
+  const _WA_CAT_FB = { wab_cat_service: 'Service', wab_cat_utility: 'Utility', wab_cat_marketing: 'Marketing', wab_cat_authentication: 'Authentication' };
+
+  function _waRow (label, value, extraClass) {
+    return `<div class="aiu-row${extraClass ? ' ' + extraClass : ''}"><span class="aiu-row-label">${label}</span><span class="aiu-row-val">${value}</span></div>`;
+  }
+
+  function _waCats (byCat) {
+    const parts = {};
+    Object.keys(byCat || {}).forEach((k) => {
+      const key = _WA_CATS[k] || 'wab_cat_service';
+      parts[key] = (parts[key] || 0) + (+byCat[k] || 0);
+    });
+    return Object.keys(parts).filter((k) => parts[k] > 0)
+      .map((k) => _esc(_t('aiUsage.' + k, _WA_CAT_FB[k])) + ' ' + _iso(_fmt(parts[k]))).join(', ');
+  }
+
+  function _waNumberRows (n, allow, showHead) {
+    const used = +(n.free_tier_used || 0);
+    const share = allow > 0 ? Math.min(100, Math.round((used / allow) * 100)) : 0;
+    const free = _esc(_t('aiUsage.wab_free_word', 'free'));
+    const cats = _waCats(n.charged_by_category);
+    const rows = [];
+    if (showHead) rows.push(_waRow(`<b>${_iso(_esc(n.display_number || n.phone_number_id || ''))}</b>`, '', 'aiu-row--head'));
+    rows.push(_waRow(_esc(_t('aiUsage.wab_incoming', 'Received from customers')), `${_iso(_fmt(n.incoming || 0))} · ${free}`));
+    rows.push(_waRow(_esc(_t('aiUsage.wab_sent', 'Sent')),
+      `${_iso(_fmt(n.sent || 0))} · ${_tpl(_esc(_t('aiUsage.wab_delivered', '{n} delivered')), { n: _iso(_fmt(n.delivered || 0)) })}`));
+    if (+n.not_delivered > 0) rows.push(_waRow(_esc(_t('aiUsage.wab_not_delivered', 'Not delivered, never charged')), _iso(_fmt(n.not_delivered))));
+    rows.push(`<div class="aiu-row"><span class="aiu-row-label">${_esc(_t('aiUsage.wab_tier', 'Free service replies'))}</span>`
+      + `<span class="aiu-row-val">${_tpl(_esc(_t('aiUsage.wab_tier_val', '{u} of {a}')), { u: _iso(_fmt(used)), a: _iso(_fmt(allow)) })} · ${_tpl(_esc(_t('aiUsage.wab_tier_left', '{n} left')), { n: _iso(_fmt(Math.max(0, allow - used))) })}</span>`
+      + `<span class="aiu-row-track"><i style="width:${share}%; background:${share >= 100 ? 'var(--bg-warning)' : 'var(--theme-color)'}"></i></span></div>`);
+    rows.push(_waRow(_esc(_t('aiUsage.wab_fep', 'Free, the customer came from a Click-to-WhatsApp ad')), _iso(_fmt(n.free_entry_point || 0))));
+    if (+n.other_free > 0) rows.push(_waRow(_esc(_t('aiUsage.wab_other_free', 'Other free messages')), _iso(_fmt(n.other_free))));
+    rows.push(_waRow(_esc(_t('aiUsage.wab_charged', 'Charged by Meta')), _iso(_fmt(n.charged || 0)) + (cats ? ` · ${cats}` : '')));
+    return `<div class="aiu-rows">${rows.join('')}</div>`;
+  }
+
+  function _buildWaBillingCard (b) {
+    const nums = Array.isArray(b.numbers) ? b.numbers : [];
+    const tot = b.totals || {};
+    const allow = +(b.free_allowance || 1000);
+    const ver = b.verification === 'meta' || b.verification === 'delivery_reports' ? b.verification : 'not_verified';
+    const chip = ver === 'meta'
+      ? `<span class="aiu-state aiu-state--ok">${svgIcon('check', 14)}${_esc(_t('aiUsage.wab_checked', 'Checked with Meta'))}</span>`
+      : ver === 'delivery_reports'
+        ? `<span class="aiu-state aiu-state--info">${svgIcon('info', 14)}${_esc(_t('aiUsage.wab_reports', 'From Meta delivery reports'))}</span>`
+        : `<span class="aiu-state aiu-state--warn">${svgIcon('warning', 14)}${_esc(_t('aiUsage.wab_unverified', 'Not verified with Meta yet'))}</span>`;
+    /* Counts only, never an amount (owner, 2026-10-13): the hero is how many messages Meta
+       charged this month; figures that could not be checked with Meta say so instead. */
+    const charged = +(tot.charged || 0);
+    let heroNum, heroOf;
+    if (ver === 'not_verified' && charged === 0) {
+      heroNum = _esc(_t('aiUsage.wab_unverified_hero', 'Not verified'));
+      heroOf = _esc(_t('aiUsage.wab_unverified_sub', 'We could not confirm this month\u2019s WhatsApp figures with Meta yet.'));
+    } else {
+      heroNum = _iso(_fmt(charged));
+      heroOf = _esc(_t('aiUsage.wab_charged_hero', 'messages charged by Meta this month'));
+    }
+    const checkedAt = nums.map((n) => n.meta_checked_at).filter(Boolean).sort().pop();
+    const notes = [];
+    if (ver === 'meta' && checkedAt) notes.push(_tpl(_esc(_t('aiUsage.wab_checked_at', 'Last checked with Meta on {d}.')), { d: _isoDay(_esc(_day(checkedAt, true))) }));
+    if (ver === 'delivery_reports') notes.push(_esc(_t('aiUsage.wab_reports_note', 'Meta’s monthly figures could not be read for this number, so these come from Meta’s report on each message.')));
+    if (ver === 'not_verified' && +tot.unpriced > 0) notes.push(_tpl(_esc(_t('aiUsage.wab_unpriced', 'Meta has not reported pricing for {n} of these messages, so they could not be checked.')), { n: _iso(_fmt(tot.unpriced)) }));
+    const help = _esc(_t('aiUsage.wab_help', 'The first 1,000 service replies each month are free for every number.'));
+    const single = nums.length === 1 ? nums[0] : null;
+    return `
+      <section class="aiu-card glass aiu-wa aiu-wab">
+        <div class="aiu-top">
+          <span class="aiu-wa-title">${svgIcon('whatsapp', 17)}<span data-i18n="aiUsage.wa_title">${_esc(_t('aiUsage.wa_title', 'WhatsApp messages'))}</span>${single && single.display_number ? `<span class="aiu-wab-num">${_iso(_esc(single.display_number))}</span>` : ''}</span>
+          ${chip}
+        </div>
+        <div class="aiu-hero">
+          <span class="aiu-hero-num aiu-hero-num--sm">${heroNum}</span>
+          <span class="aiu-hero-of">${heroOf}</span>
+        </div>
+        ${nums.map((n) => _waNumberRows(n, allow, nums.length > 1)).join('')}
+        <p class="aiu-note">
+          <span>${_esc(_t('aiUsage.wab_note', 'Meta bills WhatsApp to your own WhatsApp Business account. It does not come out of your plan, and Digitivia adds nothing on top.'))}</span>
+          ${notes.length ? ' <span>' + notes.join(' ') + '</span>' : ''}
+          <span class="sp-tip" tabindex="0" role="note" aria-label="${help}" data-tip="${help}">?</span>
+        </p>
+      </section>`;
+  }
+
+  /* A date is words and digits together: forcing it left to right (as _iso does for bare numbers)
+     scrambles an Arabic month name, so it is isolated with its own direction instead. */
+  function _isoDay (v) { return `<span dir="auto" style="unicode-bidi:isolate">${v}</span>`; }
+
+  /* A day the customer reads, in their language; digits stay Latin, as everywhere on this page. */
+  function _day (iso, withTime) {
+    const d = new Date(iso);
+    if (!Number.isFinite(d.getTime())) return '';
+    const ar = (typeof currentLang !== 'undefined' && currentLang === 'ar');
+    const opts = withTime
+      ? { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }
+      : { day: 'numeric', month: 'long', year: 'numeric' };
+    try { return new Intl.DateTimeFormat(ar ? 'ar-EG-u-nu-latn' : 'en-GB', opts).format(d); } catch (e) { return d.toISOString().slice(0, 10); }
+  }
+
+  /* Exposed for the dashboard's usage widget, which shows the same WhatsApp figure in one line. */
+  window.AiuWa = {
+    summary: function (b) {
+      if (!b || !b.connected) return null;
+      const tot = b.totals || {};
+      const ver = b.verification === 'meta' || b.verification === 'delivery_reports' ? b.verification : 'not_verified';
+      const charged = +(tot.charged || 0);
+      if (ver === 'not_verified' && charged === 0) return _esc(_t('aiUsage.wab_unverified', 'Not verified with Meta yet')) + '. ' + _esc(_t('aiUsage.wab_unverified_sub', ''));
+      const allow = +(b.free_allowance || 1000);
+      const tier = _esc(_t('aiUsage.wab_tier', 'Free service replies')) + ': '
+        + _tpl(_esc(_t('aiUsage.wab_tier_val', '{u} of {a}')), { u: _iso(_fmt(tot.free_tier_used || 0)), a: _iso(_fmt(allow * Math.max(1, (b.numbers || []).length))) }) + '.';
+      return '<b>' + _iso(_fmt(charged)) + '</b> ' + _esc(_t('aiUsage.wab_charged_hero', 'messages charged by Meta this month')) + '. ' + tier;
+    },
+  };
 
   function _skeletonHTML () {
     return `<div class="aiu-skeleton">
@@ -49835,16 +50463,6 @@ Thank you for shopping with {store_name}!</textarea>
     return Math.max(0, Math.ceil((end - Date.now()) / 86400000));
   }
 
-  /* Intl, not string concatenation: an Arabic page would otherwise print the
-     currency on the wrong side of the number. */
-  function _money (n, currency) {
-    try {
-      return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD' }).format(n);
-    } catch (e) {
-      return (currency || 'USD') + ' ' + (Math.round(n * 100) / 100);
-    }
-  }
-
   function _fmt (n) {
     return Number(n).toLocaleString(undefined, { maximumFractionDigits: 1 });
   }
@@ -49875,6 +50493,339 @@ Thank you for shopping with {store_name}!</textarea>
   // loadAiUsageTab is called directly from switchTab in index.html
   // (same pattern as initTeamTab, fuInit, etc.)
 
+})();
+
+/* ══════════════════════════════════════════════════════════════════════
+   SUBSCRIPTION AND BILLING CARD  (top of the AI Usage tab, 2026-10-13)
+
+   WHY. A customer billed by Stripe had no way to stop their plan from the
+   dashboard; only our staff could. This card shows the plan exactly as
+   Stripe has it (status, renewal or end date, price, card, last invoice) and
+   lets the owner, or anyone the owner gave the billing permission, stop or
+   restart the renewal and open Stripe's own page for the card and invoices.
+
+   Everything comes from the billing-subscription edge function, which reads
+   Stripe first and checks membership and the billing permission on the
+   server with the caller's own token. This card never decides who may do
+   what: it shows the actions the server returned, and the confirmation
+   carries the mode it showed (expected_mode) so a plan that changed in the
+   meantime is never cancelled the wrong way.
+
+   What each cancellation means is decided on the server and explained here
+   before the customer confirms:
+     * a paid plan stops renewing and stays active until the end of the paid
+       period, with nothing taken away and no further charge; it can be
+       undone until then;
+     * a renewal that was not paid is cancelled now, which also stops Stripe
+       from charging it.
+   Plain words only, no dashes, arrows, bullets or ellipses (customer copy).
+══════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  function _t(key, fb) { var v = (typeof window.t === 'function') ? window.t(key) : null; return (v && v !== key) ? v : fb; }
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function tpl(str, vars) { return String(str).replace(/\{(\w+)\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(vars, k) ? vars[k] : m; }); }
+  function iso(v) { return '<span dir="ltr" style="unicode-bidi:isolate">' + v + '</span>'; }
+  function lang() {
+    try { var l = localStorage.getItem('app_language'); if (l) return l; } catch (e) { /* storage blocked */ }
+    return (document.documentElement.getAttribute('lang') || 'en').slice(0, 2);
+  }
+  function fmtDate(isoStr) {
+    if (!isoStr) return '';
+    var d = new Date(isoStr);
+    if (isNaN(d.getTime())) return '';
+    try {
+      return d.toLocaleDateString(lang() === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch (e) { return d.toISOString().slice(0, 10); }
+  }
+  function fmtMoney(minor, currency) {
+    if (minor == null || !currency) return '';
+    try {
+      return new Intl.NumberFormat(lang() === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB', { style: 'currency', currency: String(currency).toUpperCase() }).format(minor / 100);
+    } catch (e) { return (minor / 100).toFixed(2) + ' ' + String(currency).toUpperCase(); }
+  }
+  function newKey() {
+    try { if (window.crypto && crypto.randomUUID) return 'bsub-' + crypto.randomUUID(); } catch (e) { /* fall through */ }
+    return 'bsub-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10);
+  }
+  function icon(name, size) { try { return (typeof svgIcon === 'function') ? svgIcon(name, size || 16) : ''; } catch (e) { return ''; } }
+
+  var state = { data: null, loading: false, busy: false, flash: null };
+
+  async function call(action, extra) {
+    // The page's own bindings first (the rest of this tab uses them), window copies as a fallback.
+    var client = (typeof supabaseClient !== 'undefined' && supabaseClient) || window.supabaseClient || null;
+    var orgId = (typeof currentUserOrgId !== 'undefined' && currentUserOrgId) || window.currentUserOrgId || null;
+    if (!client || !orgId) throw new Error('not_ready');
+    var res = await client.functions.invoke('billing-subscription', { body: Object.assign({ action: action, org_id: orgId }, extra || {}) });
+    if (res.error) {
+      var payload = null;
+      try { payload = res.error.context && typeof res.error.context.json === 'function' ? await res.error.context.json() : null; } catch (e) { payload = null; }
+      var err = new Error((payload && payload.message) || res.error.message || 'request_failed');
+      err.code = payload && payload.error;
+      throw err;
+    }
+    return res.data;
+  }
+
+  function statusLine(d) {
+    var s = d.stripe || {};
+    var db = d.database || {};
+    var planName = (d.plan && d.plan.name) || '';
+    if (d.billing === 'stripe') {
+      if (s.status === 'canceled' || s.status === 'incomplete_expired') {
+        return { tone: 'muted', chip: _t('aiUsage.sub_chip_ended', 'Ended'),
+          text: s.canceled_at ? tpl(_t('aiUsage.sub_line_ended', 'This plan ended on {date}.'), { date: iso(fmtDate(s.canceled_at)) }) : _t('aiUsage.sub_line_ended_nodate', 'This plan has ended.') };
+      }
+      if (s.status === 'past_due' || s.status === 'unpaid') {
+        var inv = s.latest_invoice || {};
+        var retry = inv.next_payment_attempt ? tpl(_t('aiUsage.sub_line_retry', ' Stripe will try the card again on {date}.'), { date: iso(fmtDate(inv.next_payment_attempt)) }) : '';
+        return { tone: 'danger', chip: _t('aiUsage.sub_chip_unpaid', 'Payment failed'),
+          text: tpl(_t('aiUsage.sub_line_unpaid', 'The renewal on {date} was not paid.'), { date: iso(fmtDate(inv.created || s.current_period_start)) }) + retry };
+      }
+      if (s.status === 'incomplete') {
+        return { tone: 'warn', chip: _t('aiUsage.sub_chip_incomplete', 'Payment not completed'), text: _t('aiUsage.sub_line_incomplete', 'The first payment for this plan was not completed.') };
+      }
+      if (s.scheduled_cancel) {
+        return { tone: 'warn', chip: _t('aiUsage.sub_chip_ending', 'Renewal stopped'),
+          text: tpl(_t('aiUsage.sub_line_ending', 'Your {plan} plan stays active until {date}. It will not renew and you will not be charged again.'), { plan: esc(planName), date: iso(fmtDate(s.ends_at)) }) };
+      }
+      return { tone: 'ok', chip: s.status === 'trialing' ? _t('aiUsage.sub_chip_trial', 'Trial') : _t('aiUsage.sub_chip_active', 'Active'),
+        text: tpl(_t('aiUsage.sub_line_renews', 'Renews automatically on {date}.'), { date: iso(fmtDate(s.current_period_end)) }) };
+    }
+    if (d.billing === 'manual') {
+      var end = db.current_period_end ? tpl(_t('aiUsage.sub_line_manual_end', ' The current period ends on {date}.'), { date: iso(fmtDate(db.current_period_end)) }) : '';
+      return { tone: 'ok', chip: db.status === 'active' ? _t('aiUsage.sub_chip_active', 'Active') : esc(db.status || ''),
+        text: _t('aiUsage.sub_line_manual', 'This plan is billed by the Digitivia team, not by card.') + end };
+    }
+    return { tone: 'muted', chip: _t('aiUsage.sub_chip_none', 'No plan'), text: _t('aiUsage.sub_line_none', 'This workspace has no paid plan.') };
+  }
+
+  function row(label, value) {
+    if (!value) return '';
+    return '<div class="aiu-readonly-row"><span class="aiu-readonly-label">' + esc(label) + '</span><span class="aiu-readonly-value">' + value + '</span></div>';
+  }
+
+  function render() {
+    var root = document.getElementById('billing-sub-root');
+    if (!root) return;
+    var d = state.data;
+    if (!d) { root.innerHTML = ''; return; }
+    var s = d.stripe || {};
+    var db = d.database || {};
+    var st = statusLine(d);
+    var actions = Array.isArray(d.actions) ? d.actions : [];
+    var price = s.price && s.price.unit_amount != null
+      ? tpl(_t('aiUsage.sub_price', '{amount} per {interval}'), {
+          amount: iso(esc(fmtMoney(s.price.unit_amount, s.price.currency))),
+          interval: s.price.interval === 'year' ? _t('aiUsage.sub_interval_year', 'year') : _t('aiUsage.sub_interval_month', 'month') })
+      : '';
+    var periodStart = s.current_period_start || db.current_period_start;
+    var periodEnd = s.current_period_end || db.current_period_end;
+    var period = periodStart && periodEnd && !(s.status === 'canceled')
+      ? tpl(_t('aiUsage.sub_period_val', '{from} to {to}'), { from: iso(fmtDate(periodStart)), to: iso(fmtDate(periodEnd)) }) : '';
+    var card = s.card && s.card.last4
+      ? tpl(_t('aiUsage.sub_card_val', '{brand} ending in {last4}'), { brand: esc((s.card.brand || '').replace(/^\w/, function (c) { return c.toUpperCase(); })), last4: iso(esc(s.card.last4)) })
+      : '';
+    var inv = s.latest_invoice;
+    var invLine = inv && inv.status
+      ? tpl(_t('aiUsage.sub_invoice_val', '{amount}, {state}'), {
+          amount: iso(esc(fmtMoney(inv.amount_due, inv.currency))),
+          state: inv.status === 'paid' ? _t('aiUsage.sub_invoice_paid', 'paid') : inv.status === 'open' ? _t('aiUsage.sub_invoice_open', 'not paid yet') : esc(inv.status) })
+      : '';
+
+    var flash = state.flash
+      ? '<div class="aiu-banner aiu-banner--' + (state.flash.tone === 'error' ? 'danger' : 'ok') + ' bsub-flash" role="status">' + icon(state.flash.tone === 'error' ? 'warning' : 'check', 18) +
+        '<div class="aiu-banner-body"><strong>' + esc(state.flash.title) + '</strong><span>' + state.flash.text + '</span></div></div>'
+      : '';
+
+    var btns = [];
+    if (actions.indexOf('resume') >= 0) btns.push('<button type="button" class="aiu-save-btn" data-bsub="resume">' + esc(_t('aiUsage.sub_btn_resume', 'Keep my subscription')) + '</button>');
+    if (actions.indexOf('update_payment') >= 0) btns.push('<button type="button" class="bsub-btn" data-bsub="portal">' + esc(_t('aiUsage.sub_btn_portal', 'Payment method and invoices')) + '</button>');
+    if (d.billing !== 'manual') btns.push('<button type="button" class="bsub-btn" data-bsub="plans">' + esc(_t('aiUsage.sub_btn_plans', 'Change plan')) + '</button>');
+    if (actions.indexOf('cancel_at_period_end') >= 0 || actions.indexOf('cancel_now') >= 0) {
+      btns.push('<button type="button" class="bsub-btn bsub-btn--danger" data-bsub="cancel">' + esc(_t('aiUsage.sub_btn_cancel', 'Cancel subscription')) + '</button>');
+    }
+    var note = '';
+    if (d.billing === 'stripe' && !d.can_manage) {
+      note = '<p class="bsub-note">' + esc(_t('aiUsage.sub_note_owner', 'Only the workspace owner, or someone they allow to manage billing, can change this plan.')) + '</p>';
+    }
+
+    root.innerHTML = flash +
+      '<section class="aiu-card glass bsub" aria-labelledby="bsub-title">' +
+        '<div class="aiu-card-header"><div class="aiu-plan-info">' +
+          '<h3 id="bsub-title" class="bsub-title">' + esc(_t('aiUsage.sub_title', 'Subscription and billing')) + '</h3>' +
+          '<span class="bsub-chip bsub-chip--' + st.tone + '">' + st.chip + '</span>' +
+        '</div></div>' +
+        '<p class="bsub-line">' + st.text + '</p>' +
+        '<div class="bsub-rows">' +
+          row(_t('aiUsage.sub_row_plan', 'Plan'), esc((d.plan && d.plan.name) || '') + (price ? ' <span class="bsub-muted">' + price + '</span>' : '')) +
+          row(_t('aiUsage.sub_row_period', 'Current period'), period) +
+          row(_t('aiUsage.sub_row_card', 'Payment method'), card) +
+          row(_t('aiUsage.sub_row_invoice', 'Latest invoice'), invLine) +
+        '</div>' + note +
+        (btns.length ? '<div class="bsub-actions">' + btns.join('') + '</div>' : '') +
+      '</section>';
+  }
+
+  function closeDialog() {
+    var el = document.getElementById('bsub-dialog');
+    if (el) el.remove();
+    document.removeEventListener('keydown', onKey);
+  }
+  function onKey(e) { if (e.key === 'Escape') closeDialog(); }
+
+  function openCancelDialog() {
+    var d = state.data || {};
+    var s = d.stripe || {};
+    var actions = d.actions || [];
+    var mode = actions.indexOf('cancel_at_period_end') >= 0 ? 'at_period_end' : (actions.indexOf('cancel_now') >= 0 ? 'now' : null);
+    if (!mode) return;
+    var planName = esc((d.plan && d.plan.name) || '');
+    var lines = mode === 'at_period_end'
+      ? [
+          tpl(_t('aiUsage.sub_cx_end_1', 'Your {plan} plan stops renewing. You will not be charged again.'), { plan: planName }),
+          tpl(_t('aiUsage.sub_cx_end_2', 'Nothing changes today. Your agent keeps answering and your remaining conversations and AI budget stay available until {date}.'), { date: iso(fmtDate(s.current_period_end)) }),
+          tpl(_t('aiUsage.sub_cx_end_3', 'On {date} the plan ends and your agent stops replying automatically. Your channels, contacts and messages are kept.'), { date: iso(fmtDate(s.current_period_end)) }),
+          tpl(_t('aiUsage.sub_cx_end_4', 'You can change your mind and keep the plan any time before {date}.'), { date: iso(fmtDate(s.current_period_end)) })
+        ]
+      : [
+          tpl(_t('aiUsage.sub_cx_now_1', 'Your renewal on {date} was not paid, so this period has not started for you.'), { date: iso(fmtDate((s.latest_invoice && s.latest_invoice.created) || s.current_period_start)) }),
+          _t('aiUsage.sub_cx_now_2', 'Cancelling now ends the plan today and stops Stripe from charging that unpaid renewal. Nothing else is charged and nothing is refunded.'),
+          _t('aiUsage.sub_cx_now_3', 'Your agent stops replying automatically. Your channels, contacts and messages are kept, and you can choose a plan again at any time.'),
+          _t('aiUsage.sub_cx_now_4', 'If you would rather keep the plan, update your card instead and Stripe will take the payment.')
+        ];
+    var reasons = [
+      ['', _t('aiUsage.sub_reason_none', 'Prefer not to say')],
+      ['too_expensive', _t('aiUsage.sub_reason_price', 'It costs too much')],
+      ['unused', _t('aiUsage.sub_reason_unused', 'I do not use it enough')],
+      ['missing_features', _t('aiUsage.sub_reason_features', 'It is missing something I need')],
+      ['switched_service', _t('aiUsage.sub_reason_switched', 'I moved to another service')],
+      ['other', _t('aiUsage.sub_reason_other', 'Another reason')]
+    ];
+    var html =
+      '<div class="bsub-overlay" id="bsub-dialog">' +
+        '<div class="bsub-dialog glass" role="dialog" aria-modal="true" aria-labelledby="bsub-dialog-title">' +
+          '<h3 id="bsub-dialog-title">' + esc(mode === 'now' ? _t('aiUsage.sub_cx_title_now', 'Cancel your subscription now?') : _t('aiUsage.sub_cx_title_end', 'Stop your subscription from renewing?')) + '</h3>' +
+          lines.map(function (l) { return '<p>' + l + '</p>'; }).join('') +
+          '<label class="aiu-label" for="bsub-reason">' + esc(_t('aiUsage.sub_reason_label', 'Why are you cancelling? (optional)')) + '</label>' +
+          '<select id="bsub-reason" class="aiu-input">' + reasons.map(function (r) { return '<option value="' + r[0] + '">' + esc(r[1]) + '</option>'; }).join('') + '</select>' +
+          '<div class="bsub-dialog-actions">' +
+            '<button type="button" class="aiu-save-btn" data-bsub-dialog="keep">' + esc(_t('aiUsage.sub_cx_keep', 'Keep my plan')) + '</button>' +
+            (mode === 'now' && (actions.indexOf('update_payment') >= 0) ? '<button type="button" class="bsub-btn" data-bsub-dialog="portal">' + esc(_t('aiUsage.sub_btn_update_card', 'Update my card')) + '</button>' : '') +
+            '<button type="button" class="bsub-btn bsub-btn--danger" data-bsub-dialog="confirm" data-mode="' + mode + '">' +
+              esc(mode === 'now' ? _t('aiUsage.sub_cx_confirm_now', 'Cancel now') : _t('aiUsage.sub_cx_confirm_end', 'Stop renewal')) + '</button>' +
+          '</div>' +
+          '<p class="bsub-dialog-status" role="status" aria-live="polite"></p>' +
+        '</div>' +
+      '</div>';
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.addEventListener('keydown', onKey);
+    var dlg = document.getElementById('bsub-dialog');
+    var keepBtn = dlg.querySelector('[data-bsub-dialog="keep"]');
+    if (keepBtn) keepBtn.focus();
+    dlg.addEventListener('click', async function (e) {
+      if (e.target === dlg) { closeDialog(); return; }
+      var b = e.target.closest('[data-bsub-dialog]');
+      if (!b) return;
+      var what = b.getAttribute('data-bsub-dialog');
+      if (what === 'keep') { closeDialog(); return; }
+      if (what === 'portal') { closeDialog(); openPortal(); return; }
+      if (what === 'confirm') {
+        if (state.busy) return;
+        state.busy = true;
+        dlg.querySelectorAll('button').forEach(function (x) { x.disabled = true; });
+        var statusEl = dlg.querySelector('.bsub-dialog-status');
+        statusEl.textContent = _t('aiUsage.sub_working', 'Working on it. Please keep this page open.');
+        var reasonEl = document.getElementById('bsub-reason');
+        try {
+          var res = await call('cancel', { expected_mode: b.getAttribute('data-mode'), idempotency_key: newKey(), reason: reasonEl ? reasonEl.value : '' });
+          state.data = res;
+          var rs = res.stripe || {};
+          state.flash = (rs.status === 'canceled')
+            ? { tone: 'ok', title: _t('aiUsage.sub_done_now_title', 'Your subscription is cancelled'), text: _t('aiUsage.sub_done_now', 'The plan has ended and Stripe will not charge the unpaid renewal. You can choose a plan again at any time.') }
+            : { tone: 'ok', title: _t('aiUsage.sub_done_end_title', 'Automatic renewal stopped'), text: tpl(_t('aiUsage.sub_done_end', 'Your plan stays active until {date}. You will not be charged again.'), { date: iso(fmtDate(rs.ends_at || rs.current_period_end)) }) };
+          closeDialog();
+          render();
+          refreshEntitlements();
+        } catch (err) {
+          state.busy = false;
+          dlg.querySelectorAll('button').forEach(function (x) { x.disabled = false; });
+          statusEl.textContent = err && err.code === 'state_changed'
+            ? _t('aiUsage.sub_err_changed', 'Your subscription changed since this page was opened. Close this and check it again.')
+            : ((err && err.message) || _t('aiUsage.sub_err', 'Something went wrong. Nothing was changed. Please try again.'));
+          if (err && err.code === 'state_changed') load();
+          return;
+        }
+        state.busy = false;
+      }
+    });
+  }
+
+  async function doResume(btn) {
+    if (state.busy) return;
+    state.busy = true;
+    if (btn) btn.disabled = true;
+    try {
+      var res = await call('resume', { idempotency_key: newKey() });
+      state.data = res;
+      var rs = res.stripe || {};
+      state.flash = { tone: 'ok', title: _t('aiUsage.sub_done_resume_title', 'Your subscription will renew'), text: tpl(_t('aiUsage.sub_done_resume', 'Nothing changes. It renews as usual on {date}.'), { date: iso(fmtDate(rs.current_period_end)) }) };
+      render();
+      refreshEntitlements();
+    } catch (err) {
+      state.flash = { tone: 'error', title: _t('aiUsage.sub_err_title', 'That did not work'), text: esc((err && err.message) || _t('aiUsage.sub_err', 'Something went wrong. Nothing was changed. Please try again.')) };
+      render();
+    } finally {
+      state.busy = false;
+    }
+  }
+
+  async function openPortal() {
+    try {
+      var res = await call('portal');
+      if (res && res.url) { window.location.href = res.url; return; }
+      throw new Error('no_url');
+    } catch (err) {
+      state.flash = { tone: 'error', title: _t('aiUsage.sub_err_title', 'That did not work'), text: esc(_t('aiUsage.sub_err_portal', 'The Stripe billing page could not be opened. Please try again in a minute.')) };
+      render();
+    }
+  }
+
+  function refreshEntitlements() {
+    try {
+      var orgId = (typeof currentUserOrgId !== 'undefined' && currentUserOrgId) || window.currentUserOrgId || null;
+      if (window.Entitlements && orgId) window.Entitlements.hydrate(orgId);
+    } catch (e) { /* the card already shows the new state */ }
+  }
+
+  async function load() {
+    var root = document.getElementById('billing-sub-root');
+    if (!root || state.loading) return;
+    state.loading = true;
+    try {
+      state.data = await call('status');
+    } catch (e) {
+      // Billing details are extra on this page: a failed read hides the card,
+      // it never blocks the usage figures below it.
+      state.data = null;
+    } finally {
+      state.loading = false;
+    }
+    render();
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target && e.target.closest ? e.target.closest('[data-bsub]') : null;
+    if (!b) return;
+    var what = b.getAttribute('data-bsub');
+    if (what === 'cancel') openCancelDialog();
+    else if (what === 'resume') doResume(b);
+    else if (what === 'portal') openPortal();
+    else if (what === 'plans') { try { if (typeof openPricingModal === 'function') openPricingModal(); } catch (err) { /* plans modal unavailable */ } }
+  });
+
+  window.BillingSub = { load: function () { state.flash = null; return load(); }, _state: state, _render: render };
 })();
 
 
@@ -50814,6 +51765,28 @@ Thank you for shopping with {store_name}!</textarea>
         window.openAddLeadStatusCard = openAddLeadStatusCard;
         function customLeadStatusFilterOptionsHtml() { return LEAD_STATUS_LIST.filterOptionsHtml(); }
         window.customLeadStatusFilterOptionsHtml = customLeadStatusFilterOptionsHtml;
+        // The columns of every status board (the CRM pipeline and the Leads
+        // pipeline): exactly the list a status select offers, in its order.
+        // Every built-in status, then any older or AI-set value a lead still
+        // carries (optionsHtml keeps those too), then the workspace's own
+        // statuses. A lead sits in the column its status select shows
+        // (leadStatusSelectValue), so a lead is never in the table and missing
+        // from a board, and the two never name it differently.
+        function leadStatusColumns(rows) {
+            const L = LEAD_STATUS_LIST;
+            const col = (value, label, colour, customId) => ({ value, label, colour, customId: customId || null });
+            const out = L.builtins().map(s => col(s, L.builtinLabel(s), STAGE_COLORS[s] || '#94a3b8'));
+            const seen = new Set(out.map(c => c.value));
+            (rows || []).forEach(r => {
+                const v = leadStatusSelectValue(r);
+                if (v.startsWith(L.prefix) || seen.has(v)) return;
+                seen.add(v);
+                out.push(col(v, L.builtinLabel(v), '#94a3b8'));
+            });
+            L.customs().forEach(c => out.push(col(L.prefix + c.id, L.customLabel(c), L.customColour(c), c.id)));
+            return out;
+        }
+        window.leadStatusColumns = leadStatusColumns;
         function selectNewLeadStatusOption(sel, entry) { return LEAD_STATUS_LIST.selectNew(sel, entry); }
         function bindLeadStatusSelect(sel, onPick) { return LEAD_STATUS_LIST.bindSelect(sel, onPick); }
         window.bindLeadStatusSelect = bindLeadStatusSelect;
@@ -51245,9 +52218,9 @@ Thank you for shopping with {store_name}!</textarea>
             }
 
             if (activeLeadsView === 'pipeline') {
-                const cols = LEAD_STATUSES.map(status => {
-                    const label = t(`leads.status.${status}`) || status;
-                    const colRows = rows.filter(r => String(r.status || '').toLowerCase() === status);
+                const cols = leadStatusColumns(rows).map(column => {
+                    const label = esc(column.label);
+                    const colRows = rows.filter(r => leadStatusSelectValue(r) === column.value);
                     const cards = colRows.length > 0
                         ? colRows.map(r => buildLeadViewCard(r, true)).join('')
                         : `<div class="kanban-empty">${t('leads.pipeline_empty') || 'No leads in this stage'}</div>`;
@@ -52634,6 +53607,9 @@ Thank you for shopping with {store_name}!</textarea>
             const list = document.getElementById('contact-list');
             if (!list || list._delegationBound) return;
             list._delegationBound = true;
+            list.addEventListener('scroll', () => {
+                if (inboxListNearEnd(list)) inboxLoadMoreConversations();
+            }, { passive: true });
             list.addEventListener('click', (ev) => {
                 const row = ev.target.closest && ev.target.closest('.contact-item');
                 if (!row || !list.contains(row)) return;
@@ -53009,6 +53985,97 @@ Thank you for shopping with {store_name}!</textarea>
         // the live list subscription once the fresh list is painted, exactly as
         // a channel click does. Used when the operator comes back to the Inbox
         // tab (see resumeInboxLiveList); every other caller omits it.
+        // ---- The conversation list, in pages ----
+        // The list used to be one request with no paging, and the database caps a request at
+        // 1000 rows, so a workspace with more (AL-Alamia: 12,783 WhatsApp conversations) could
+        // never scroll past its 1000th (owner, 2026-10-09: "load the next batch as you reach
+        // the bottom"). Older pages are read by time, at or before the oldest one loaded (ties
+        // de-duplicated by id: at most 11 conversations share a timestamp), so a conversation
+        // moving to the top while scrolling does not shift a page. Conversations with no message
+        // time yet (198 in all) come last, newest created first. Served by
+        // idx_inbox_conversations_org_platform_last_msg.
+        const INBOX_LIST_PAGE = 1000;
+        const INBOX_LIST_MORE = 500;
+        const INBOX_CONV_SELECT = 'id, platform, last_message_at, created_at, status, snoozed_until, assigned_to, last_sentiment, lead_id, ai_paused, lead:leads!lead_id(id, status, full_name, custom_status_id, category, custom_category_id), contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id, meta)';
+        // 'all' is the unified view (every channel, newest first); each row keeps its own
+        // platform, which is what opening, replying and the badges use.
+        function inboxConvListQuery(platform) {
+            const q = supabaseClient.from('inbox_conversations').select(INBOX_CONV_SELECT).eq('org_id', currentUserOrgId);
+            return platform === 'all' ? q : q.eq('platform', platform);
+        }
+        function inboxConvNewestFirst(a, b) {
+            return new Date(b.last_message_at || 0) - new Date(a.last_message_at || 0);
+        }
+        async function inboxLoadMoreConversations() {
+            const platform = currentInboxPlatform;
+            if (!platform || !currentUserOrgId || !supabaseClient) return;
+            const paging = window.inboxListPaging && window.inboxListPaging[platform];
+            if (!paging || !paging.hasMore || paging.loading) return;
+            paging.loading = true;
+            try { renderInboxListMore(); } catch (e) { /* decorative */ }
+            try {
+                const list = (window.inboxConvsByPlatform && window.inboxConvsByPlatform[platform]) || [];
+                let rows;
+                if (!paging.nullPhase) {
+                    let oldest = null;
+                    for (let i = list.length - 1; i >= 0; i--) { if (list[i].last_message_at) { oldest = list[i].last_message_at; break; } }
+                    let q = inboxConvListQuery(platform).not('last_message_at', 'is', null);
+                    if (oldest) q = q.lte('last_message_at', oldest);
+                    const { data, error } = await q.order('last_message_at', { ascending: false }).limit(INBOX_LIST_MORE);
+                    if (error) throw error;
+                    rows = data || [];
+                    if (rows.length < INBOX_LIST_MORE) paging.nullPhase = true;
+                } else {
+                    const { data, error } = await inboxConvListQuery(platform).is('last_message_at', null)
+                        .order('created_at', { ascending: false })
+                        .range(paging.nullOffset, paging.nullOffset + INBOX_LIST_MORE - 1);
+                    if (error) throw error;
+                    rows = data || [];
+                    paging.nullOffset += rows.length;
+                    if (rows.length < INBOX_LIST_MORE) paging.hasMore = false;
+                }
+                const seen = new Set(list.map((c) => c.id));
+                const fresh = rows.filter((r) => !seen.has(r.id));
+                // A full page of nothing new can only mean the timed pages are exhausted.
+                if (!fresh.length && !paging.nullPhase) paging.nullPhase = true;
+                const known = window._inboxUnreadByConv || {};
+                fresh.forEach((c) => { c.unread_count = known[c.id] || 0; });
+                const merged = list.concat(fresh);
+                window.inboxConvsByPlatform[platform] = merged;
+                paging.extended = true;
+                if (platform === currentInboxPlatform) {
+                    window.inboxLoadedConvs = merged;
+                    paging.loading = false;
+                    renderInboxContactList();
+                }
+            } catch (e) {
+                console.warn('[inbox] loading older conversations failed:', e);
+            } finally {
+                paging.loading = false;
+                try { renderInboxListMore(); } catch (e) { /* decorative */ }
+            }
+        }
+        window.inboxLoadMoreConversations = inboxLoadMoreConversations;
+        // The end of the list: "Loading more conversations..." while the next page is on its way.
+        function renderInboxListMore() {
+            const list = document.getElementById('contact-list');
+            if (!list) return;
+            const paging = window.inboxListPaging && window.inboxListPaging[currentInboxPlatform];
+            let el = list.querySelector(':scope > .inbox-list-more');
+            if (!(paging && paging.loading)) { if (el) el.remove(); return; }
+            if (!el) {
+                el = document.createElement('div');
+                el.className = 'inbox-list-more';
+                el.setAttribute('role', 'status');
+                list.appendChild(el);
+            }
+            el.textContent = currentLang === 'ar' ? 'جارٍ تحميل المزيد من المحادثات...' : 'Loading more conversations...';
+        }
+        // Near the end of the list (600px before it), fetch the next page.
+        function inboxListNearEnd(list) {
+            return list.scrollTop + list.clientHeight >= list.scrollHeight - 600;
+        }
+
         async function loadInbox(platform, isAutoRefresh = false, opts) {
             // The Inbox visit this load belongs to: if the operator leaves the tab
             // before it lands, it must not start the live list (see startList).
@@ -53058,6 +54125,10 @@ Thank you for shopping with {store_name}!</textarea>
             const list = document.getElementById('contact-list');
             bindInboxListDelegation();
             if (!isAutoRefresh) markActiveInboxPlatform(platform);
+            // A channel chosen opens at its newest conversations. The list keeps its scroll
+            // position across re-renders, and a list left scrolled to its end would otherwise
+            // read as "load the next page" the moment the new channel is drawn.
+            if (!isAutoRefresh && list) list.scrollTop = 0;
             // Cache-first (stale-while-revalidate): if this channel was loaded before,
             // paint it from cache INSTANTLY and refresh in the background. Only a
             // channel that has never been opened shows a loading state. Previously
@@ -53088,16 +54159,26 @@ Thank you for shopping with {store_name}!</textarea>
                 // counts, and the fresh counts repaint the badges when they land.
                 // (This was the "conversations show but badges take forever" bug.)
                 const unreadPromise = fetchInboxUnreadCounts();
-                const convQuery = supabaseClient
-                    .from('inbox_conversations')
-                    .select('id, platform, last_message_at, created_at, status, snoozed_until, assigned_to, last_sentiment, lead_id, ai_paused, lead:leads!lead_id(id, status, full_name, custom_status_id, category, custom_category_id), contact:inbox_contacts!contact_id(id, display_name, phone, external_contact_id, meta)')
-                    .eq('org_id', currentUserOrgId);
-                // 'all' is the unified view (every channel, newest first); each row keeps its
-                // own platform, which is what opening, replying and the badges use.
-                const { data: conversations, error } = await (platform === 'all' ? convQuery : convQuery.eq('platform', platform))
-                    .order('last_message_at', { ascending: false, nullsFirst: false });
+                // The newest page only (the database returns at most 1000 rows a request, which
+                // is all the list ever showed): older ones load as the list is scrolled to its
+                // end (inboxLoadMoreConversations).
+                const { data: firstPage, error } = await inboxConvListQuery(platform)
+                    .order('last_message_at', { ascending: false, nullsFirst: false })
+                    .range(0, INBOX_LIST_PAGE - 1);
 
                 if (error) throw error;
+                // A refresh (the 10s backstop, a resume, a new conversation) re-reads the newest
+                // page; the older pages already scrolled to stay in the list.
+                const paging = (window.inboxListPaging = window.inboxListPaging || {});
+                const prevList = (window.inboxConvsByPlatform && window.inboxConvsByPlatform[platform]) || [];
+                let conversations = firstPage || [];
+                if (isAutoRefresh && paging[platform] && paging[platform].extended && prevList.length > conversations.length) {
+                    const seen = new Set(conversations.map((c) => c.id));
+                    conversations = conversations.concat(prevList.filter((c) => !seen.has(c.id)));
+                    conversations.sort(inboxConvNewestFirst);
+                } else {
+                    paging[platform] = { hasMore: conversations.length >= INBOX_LIST_PAGE, extended: false, nullPhase: false, nullOffset: 0, loading: false };
+                }
                 const knownCounts = window._inboxUnreadByConv || {};
                 (conversations || []).forEach(c => { c.unread_count = knownCounts[c.id] || 0; });
                 unreadPromise.then((unread) => {
@@ -53578,10 +54659,6 @@ Thank you for shopping with {store_name}!</textarea>
         function renderInboxContactList() {
             const list = document.getElementById('contact-list');
             if (!list) return;
-            // The toolbar's "N conversations": cleared here so an empty view never shows a stale
-            // number (the empty-state text says it instead), set below once the rows are drawn.
-            const listCountEl = document.getElementById('inbox-list-count');
-            if (listCountEl) listCountEl.textContent = '';
             const platform = currentInboxPlatform;
             let conversations = window.inboxLoadedConvs || [];
             // Keep the Unread chip's count in sync with the full loaded list,
@@ -53768,14 +54845,8 @@ Thank you for shopping with {store_name}!</textarea>
             // again, which used to make search results reappear every ~10 seconds.
             if (typeof applyInboxChatsFilter === 'function' && window._inboxChatsQuery) applyInboxChatsFilter();
 
-            if (listCountEl) {
-                const n = list.querySelectorAll('.contact-item').length;
-                // Arabic counts: one is "محادثة واحدة" (a bare "1 محادثة" reads as a machine), 2 the
-                // dual, 3 to 10 the plural, 11+ the singular.
-                listCountEl.textContent = currentLang === 'ar'
-                    ? (n === 1 ? 'محادثة واحدة' : n === 2 ? 'محادثتان' : `${n} ${(n >= 3 && n <= 10) ? 'محادثات' : 'محادثة'}`)
-                    : `${n} ${n === 1 ? 'conversation' : 'conversations'}`;
-            }
+            // The list loads in pages: say so at its end while the next one is on its way.
+            try { renderInboxListMore(); } catch (e) { /* decorative */ }
             // Visual port V1: "N conversations" meta line above the list.
             const countEl = document.getElementById('inbox-conv-count');
             if (countEl) {
@@ -56832,6 +57903,14 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
+        // Pauses taken by the AI conversation guard (migration
+        // 20261012100000_ai_conversation_guard.sql): another bot answering ours,
+        // the AI repeating itself, an impossible reply rate, or repeated/empty
+        // messages. They are rule_* pauses with nobody's name on them, so
+        // isAutoHandoffPause() already shows them; they never lift on their own,
+        // and the AI toggle in the conversation resumes them.
+        const AI_GUARD_PAUSE_REASONS = new Set(['rule_ai_loop', 'rule_ai_repeat', 'rule_ai_reply_rate', 'rule_inbound_spam']);
+
         function isAutoHandoffPause(data) {
             return !!(data && data.ai_paused
                 && (data.ai_paused_by === null || data.ai_paused_by === undefined || data.ai_paused_by === '')
@@ -57011,7 +58090,9 @@ Thank you for shopping with {store_name}!</textarea>
             // "Auto-handoff".
             const handoffBanner = isAutoHandoffPause(data) ? `
                 <div class="ic360-section" style="background: rgba(239,68,68,0.10); border:1px solid rgba(239,68,68,0.32);">
-                    <h4 style="color:#ef4444;">${currentLang === 'ar' ? 'تم تحويل المحادثة لشخص بشري' : 'Auto-handoff to human'}</h4>
+                    <h4 style="color:#ef4444;">${AI_GUARD_PAUSE_REASONS.has(data.ai_paused_reason)
+                        ? (currentLang === 'ar' ? 'الذكاء الاصطناعي وقف عشان يحمي المحادثة دي' : 'AI paused to protect this conversation')
+                        : (currentLang === 'ar' ? 'تم تحويل المحادثة لشخص بشري' : 'Auto-handoff to human')}</h4>
                     <div style="font-size:0.82rem; color:var(--text-secondary);">
                         ${(() => {
                             const reasons = {
@@ -57021,9 +58102,17 @@ Thank you for shopping with {store_name}!</textarea>
                                 // Added 2026-09-03: the customer is chasing a reply or asking
                                 // for a person, and the message fits none of the three named
                                 // categories. Before this it fell through and nobody was told.
-                                rule_needs_human: currentLang === 'ar' ? 'العميل يطلب التحدث مع شخص' : 'The customer needs a person'
+                                rule_needs_human: currentLang === 'ar' ? 'العميل يطلب التحدث مع شخص' : 'The customer needs a person',
+                                // Added 2026-10-12: the AI conversation guard.
+                                rule_ai_loop: currentLang === 'ar' ? 'رد آلي تاني كان بيرد على كل رد في ثواني، فالاتنين فضلوا يردوا على بعض' : 'Another automatic system was answering every reply within seconds, so the two kept replying to each other',
+                                rule_ai_repeat: currentLang === 'ar' ? 'الذكاء الاصطناعي فضل يبعت نفس الرد كذا مرة في وقت قصير' : 'The AI kept sending the same reply again and again',
+                                rule_ai_reply_rate: currentLang === 'ar' ? 'ردود كتير جدا في ساعة واحدة، أكتر من أي محادثة عادية' : 'Far more AI replies in one hour than a normal conversation needs',
+                                rule_inbound_spam: currentLang === 'ar' ? 'نفس الرسالة أو رسايل مفيهاش كلام فضلت توصل كذا مرة' : 'The same message, or messages with no words, kept arriving again and again'
                             };
-                            return esc(reasons[data.ai_paused_reason] || data.ai_paused_reason);
+                            const resumeHint = AI_GUARD_PAUSE_REASONS.has(data.ai_paused_reason)
+                                ? (currentLang === 'ar' ? ' شغّل الذكاء الاصطناعي تاني من المحادثة لما تتأكد إن كل حاجة تمام.' : ' Turn the AI back on in this conversation once you have checked it.')
+                                : '';
+                            return esc((reasons[data.ai_paused_reason] || data.ai_paused_reason) + (resumeHint ? '.' + resumeHint : ''));
                         })()}
                     </div>
                 </div>` : '';
@@ -64490,8 +65579,14 @@ Thank you for shopping with {store_name}!</textarea>
                 /* One rule for the bar AND the pill below it. The bar used to
                    turn at 75% and 90% while the pill turned at 80%, so for a
                    stretch the two disagreed on the same card. */
-                const repliesDone  = msgLimit > 0 && msgUsed >= msgLimit;
-                const repliesTight = !repliesDone && percent >= 80;
+                /* PLAN_USAGE_V1 (2026-10-13): the summary every screen shares. It knows the plan's
+                   AI capacity, so this widget can no longer look healthy while that limit is about
+                   to pause the replies. Without it, the replies decide, as before. */
+                let pu = null;
+                try { pu = window.PlanUsage ? await window.PlanUsage.load() : null; } catch (puErr) { pu = null; }
+                const pd = (pu && window.PlanUsage) ? window.PlanUsage.describe(pu) : null;
+                const repliesDone  = pd ? pd.tone === 'stop' : (msgLimit > 0 && msgUsed >= msgLimit);
+                const repliesTight = pd ? (!repliesDone && pd.tone === 'warn') : (!repliesDone && percent >= 80);
                 if (barEl) {
                     barEl.style.width = `${percent}%`;
                     barEl.style.background = repliesDone ? 'var(--bg-danger)' : repliesTight ? 'var(--bg-warning)' : 'var(--theme-color)';
@@ -64518,13 +65613,16 @@ Thank you for shopping with {store_name}!</textarea>
                     const tight = repliesTight;
                     const done = repliesDone;
                     stateEl.className = 'aiu-state aiu-state--' + (done ? 'stop' : tight ? 'warn' : 'ok');
+                    const word = pd ? pd.stateText
+                        : (done ? t('aiUsage.state_paused') : tight ? t('aiUsage.state_low_replies') : t('aiUsage.state_ok'));
                     stateEl.innerHTML = (typeof svgIcon === 'function' ? svgIcon(done || tight ? 'warning' : 'check', 13) : '')
-                        + '<span>' + (done ? t('aiUsage.state_paused') : tight ? t('aiUsage.state_low_replies') : t('aiUsage.state_ok')) + '</span>';
+                        + '<span>' + String(word).replace(/[<>&]/g, '') + '</span>';
                 }
                 if (leftEl) {
-                    leftEl.innerText = msgLimit > 0
-                        ? String(t('aiUsage.replies_left')).replace('{n}', Math.max(0, msgLimit - msgUsed).toLocaleString())
-                        : '';
+                    leftEl.innerText = (pd && pd.leftText) ? pd.leftText
+                        : msgLimit > 0
+                            ? String(t('aiUsage.replies_left')).replace('{n}', Math.max(0, msgLimit - msgUsed).toLocaleString('en-US'))
+                            : '';
                 }
 
                 /* WhatsApp cost, from what Meta reported per message. Its own line,
@@ -64546,12 +65644,23 @@ Thank you for shopping with {store_name}!</textarea>
                                     + '<span>' + (charging ? t('aiUsage.wa_charging') : t('aiUsage.wa_free_until')) + '</span>';
                             }
                             if (noteEl) {
-                                const cost = Number(wa.estimated_cost || 0);
-                                const money = new Intl.NumberFormat(currentLang === 'ar' ? 'ar-EG' : 'en-US',
-                                    { style: 'currency', currency: wa.currency || 'USD' }).format(cost);
-                                noteEl.innerHTML = charging
-                                    ? '<b dir="ltr">' + money + '</b> ' + t('aiUsage.wa_cost_label') + '. ' + t('aiUsage.wa_note_after')
-                                    : t('aiUsage.wa_note_before');
+                                /* The same figures as the AI Usage page, from the same read:
+                                   message counts and whether Meta confirmed them, never an
+                                   amount (owner, 2026-10-13). */
+                                let line = null;
+                                try {
+                                    const { data: bill, error: billErr } = await supabaseClient.rpc('get_whatsapp_billing', { p_org_id: currentUserOrgId });
+                                    if (!billErr && window.AiuWa) line = window.AiuWa.summary(bill);
+                                } catch (e) { line = null; }
+                                if (line) {
+                                    noteEl.innerHTML = line + ' ' + t('aiUsage.wa_note_after');
+                                } else {
+                                    // Counts only, never an amount (owner, 2026-10-13).
+                                    const chargedCount = Number(wa.messages_charged || 0).toLocaleString('en-US');
+                                    noteEl.innerHTML = charging
+                                        ? '<b dir="ltr">' + chargedCount + '</b> ' + t('aiUsage.wab_charged_hero') + '. ' + t('aiUsage.wa_note_after')
+                                        : t('aiUsage.wa_note_before');
+                                }
                             }
                             waWrap.hidden = false;
                         } else {
@@ -69924,10 +71033,60 @@ Thank you for shopping with {store_name}!</textarea>
             // Only http(s) can reach an src or href, and the result is escaped for
             // the attribute. (A Meta URL, or a stored one, is data, not markup.)
             function safeUrl(u) { const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : ''; }
+            // A post picture comes from Meta's CDN. On a phone a request drops now and
+            // then, and a picture that failed once used to be deleted for good: 12 of 50
+            // cards lost their image when 1 request in 4 dropped (measured 2026-10-11).
+            // A failed picture is hidden (the type icon stays visible under it) and
+            // tried again after 1.5 s, 4 s and 10 s, and once more whenever the device
+            // comes back online. Only after all of that does the icon stay.
+            const IMG_RETRY_MS = [1500, 4000, 10000];
+            window.hubImgRetry = function (img) {
+                try {
+                    const src = img.getAttribute('data-src') || img.getAttribute('src') || '';
+                    if (!src) return;
+                    img.setAttribute('data-src', src);
+                    img.classList.add('is-waiting');
+                    const n = Number(img.getAttribute('data-tries') || 0);
+                    if (n >= IMG_RETRY_MS.length) {
+                        // Our own copy of a post picture carries Meta's link as a
+                        // fallback (meta-social withOwnImages): use it once, from the top.
+                        const fb = img.getAttribute('data-fallback');
+                        if (fb && fb !== src) {
+                            img.removeAttribute('data-fallback');
+                            img.setAttribute('data-src', fb); img.setAttribute('data-tries', '0');
+                            img.loading = 'eager'; img.removeAttribute('src'); img.setAttribute('src', fb);
+                            return;
+                        }
+                        img.setAttribute('data-failed', '1'); return;
+                    }
+                    img.setAttribute('data-tries', String(n + 1));
+                    // eager: a retried picture that has scrolled out of view loads now,
+                    // not only when the person scrolls back to it.
+                    setTimeout(() => { if (img.isConnected) { img.loading = 'eager'; img.removeAttribute('src'); img.setAttribute('src', src); } }, IMG_RETRY_MS[n]);
+                } catch (_e) { /* a picture is never worth an error */ }
+            };
+            window.hubImgLoaded = function (img) { try { img.classList.remove('is-waiting'); img.removeAttribute('data-failed'); } catch (_e) { /* noop */ } };
+            window.addEventListener('online', () => {
+                try {
+                    document.querySelectorAll('img[data-failed="1"]').forEach((img) => {
+                        img.removeAttribute('data-failed'); img.setAttribute('data-tries', '0');
+                        const src = img.getAttribute('data-src'); if (src) { img.removeAttribute('src'); img.setAttribute('src', src); }
+                    });
+                } catch (_e) { /* noop */ }
+            });
+            const IMG_EVENTS = 'onerror="hubImgRetry(this)" onload="hubImgLoaded(this)"';
+            // Meta's own link for a picture served from our storage, the last resort of hubImgRetry.
+            const imgFallback = (it) => {
+                const fb = it && safeUrl(it.image_fallback_url);
+                return fb && fb !== safeUrl(it.image_url) ? ` data-fallback="${esc(fb)}"` : '';
+            };
             const ea = (u) => esc(safeUrl(u));
             const num = (v) => { if (v === null || v === undefined || v === '') return null; const n = Number(v); return Number.isFinite(n) ? n : null; };
 
             const EXTRA_ICONS = {
+                heart: '<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+                bubble: '<path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/>',
+                share: '<path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>',
                 trash: '<path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>',
                 copy: '<path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/>',
                 external: '<path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zM5 5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5h-2v5H5V7h5V5H5z"/>',
@@ -70540,6 +71699,18 @@ Thank you for shopping with {store_name}!</textarea>
                 }).join('') + '</div>';
             }
 
+            // Reactions, comments and shares on a published post, and its newest
+            // comment. Shown even when the post insights are not.
+            function cardEngagement(it) {
+                if (it.status !== 'published' || !it.engagement) return '';
+                const e = it.engagement;
+                const chip = (icon, v, key) => (v === null || v === undefined ? '' : `<span class="pc-eng-item" data-eng="${key}" title="${esc(H('eng_' + key, { n: fmtN(v) }))}">${ic(icon, 14)}<b>${esc(fmtN(v))}</b><span class="hub-visually-hidden"> ${esc(H('eng_' + key, { n: fmtN(v) }))}</span></span>`);
+                const chips = chip('heart', e.reactions, 'reactions') + chip('bubble', e.comments, 'comments') + (it.platform === 'facebook' ? chip('share', e.shares, 'shares') : '');
+                const c = (it.recent_comments || [])[0];
+                const latest = c && c.text ? `<div class="pc-latest" data-latest-comment="1"><span class="pc-latest-k">${esc(H('latest_comment'))}:</span> <span dir="auto">${esc(c.text)}</span></div>` : '';
+                return chips || latest ? `<div class="pc-eng" data-eng-row="1">${chips}</div>${latest}` : '';
+            }
+
             // One card, two layouts (list row, grid tile). The whole card opens the
             // detail through the caption button's stretched hit area; Retry sits
             // above it, so both are real buttons and nothing is nested in one.
@@ -70550,7 +71721,7 @@ Thank you for shopping with {store_name}!</textarea>
                 const grid = o.layout === 'grid';
                 const img = safeUrl(it.image_url);
                 const thumbIcon = it.media_type === 'video' ? 'video' : it.media_type === 'text' ? 'text' : 'image';
-                const thumb = `<div class="pc-thumb">${img ? `<img src="${esc(img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ic(thumbIcon, 28)}${it.media_type === 'video' || it.media_type === 'carousel' ? `<span class="pc-type">${esc(typeLabel(it.media_type))}</span>` : ''}</div>`;
+                const thumb = `<div class="pc-thumb">${ic(thumbIcon, 28)}${img ? `<img src="${esc(img)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"${imgFallback(it)} ${IMG_EVENTS}>` : ''}${it.media_type === 'video' || it.media_type === 'carousel' ? `<span class="pc-type">${esc(typeLabel(it.media_type))}</span>` : ''}</div>`;
                 const cap = String(it.caption || '').trim();
                 const retry = it.status === 'failed' && o.ctx !== 'insights'
                     ? `<div class="pc-actions"><button type="button" class="hub-btn is-sm" data-hub-act="card-retry" data-key="${esc(it.key)}" ${it.actions && it.actions.retry === false ? 'aria-disabled="true"' : ''}>${ic('refresh', 14)}<span>${esc(H('act_retry'))}</span></button></div>`
@@ -70572,6 +71743,7 @@ Thank you for shopping with {store_name}!</textarea>
                         </button>
                         ${date ? `<div class="pc-date">${it.status === 'published' ? '' : ic('clock', 12)}<span>${esc(date)}</span></div>` : ''}
                         ${cardMetrics(it, o)}
+                        ${cardEngagement(it)}
                         ${err}
                         ${retry}
                     </div>
@@ -71001,9 +72173,9 @@ Thank you for shopping with {store_name}!</textarea>
                 const det = D.detail || {};
                 const st = statusInfo(it);
                 const atts = (Array.isArray(det.attachments) ? det.attachments : []).filter((a) => a && safeUrl(a.url));
-                const imgs = atts.filter((a) => a.type !== 'video').map((a) => `<img src="${ea(a.url)}" alt="" loading="lazy" referrerpolicy="no-referrer">`);
+                const imgs = atts.filter((a) => a.type !== 'video').map((a) => `<img src="${ea(a.url)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${IMG_EVENTS}>`);
                 const vids = atts.filter((a) => a.type === 'video').map((a) => extLink(a.url, H('open_video'), 'hub-btn is-sm'));
-                const single = !imgs.length && safeUrl(it.image_url) ? `<img src="${ea(it.image_url)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : '';
+                const single = !imgs.length && safeUrl(it.image_url) ? `<img src="${ea(it.image_url)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer"${imgFallback(it)} ${IMG_EVENTS}>` : '';
                 const media = imgs.length || single ? `<div class="hub-drawer-media" data-d-media="1">${imgs.join('') || single}</div>` : '';
                 const cap = String(det.full_caption || it.caption || '').trim();
                 const sibs = siblings(D);
@@ -71031,7 +72203,76 @@ Thank you for shopping with {store_name}!</textarea>
                     <div class="hub-where" data-d-where="1"><div class="hub-section-title" style="font-size:var(--sp-t-md);margin:0;">${esc(H('where_title'))}</div>${lines}</div>
                     ${when.length ? `<dl class="hub-kv">${when.join('')}</dl>` : ''}
                     ${it.status === 'published' ? `<div><div class="hub-section-title" style="font-size:var(--sp-t-md);">${esc(H('metrics_title'))}</div>${metricBoxes(it, det, { unavailable: noInsights })}</div>` : ''}
+                    ${it.status === 'published' ? drawerComments(it, det) : ''}
                     <div class="hub-actions-row" data-d-links="1">${links.join('')}</div>`;
+            }
+
+            // The newest comments on a published post. Facebook does not tell
+            // the app who wrote one, so an unnamed comment reads "A follower".
+            // Every comment on a published post, newest first, 50 at a time, with the
+            // commenter's name wherever Meta's comment webhook recorded it (Facebook
+            // does not give this app the name directly). Until the list arrives, or if
+            // it cannot be read, the comments the post already carries are shown.
+            // Replies sit under the comment they answer (newest thread first); a reply
+            // whose comment is not loaded yet stands on its own.
+            function commentThreads(list) {
+                const items = (list || []).filter((c) => c && (c.text || c.attachment));
+                const byId = new Map(items.filter((c) => c.id).map((c) => [String(c.id), c]));
+                const kids = new Map();
+                const tops = [];
+                items.forEach((c) => {
+                    const pid = c.parent_id ? String(c.parent_id) : '';
+                    if (pid && byId.has(pid)) { if (!kids.has(pid)) kids.set(pid, []); kids.get(pid).push(c); } else tops.push(c);
+                });
+                return tops.map((c) => Object.assign({}, c, { _replies: (kids.get(String(c.id)) || []).slice().sort((a, b) => String(a.at || '').localeCompare(String(b.at || ''))) }));
+            }
+            function commentHtml(c, it, isReply) {
+                const who = c.by_page
+                    ? `${esc(c.author || H('comment_by_page'))}<span class="hub-badge hub-comment-page">${esc(H('comment_page_badge'))}</span>`
+                    : esc(c.author || H('comment_by_follower'));
+                const a = c.attachment;
+                const media = a && safeUrl(a.image)
+                    ? `<img class="hub-comment-media" src="${ea(a.image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ${IMG_EVENTS}>`
+                    : '';
+                const label = a && !c.text ? `<div class="hub-comment-text is-muted">${esc(H(a.kind === 'sticker' ? 'comment_sticker' : a.kind === 'video' ? 'comment_video' : 'comment_photo'))}</div>` : '';
+                const replies = (c._replies || []).map((r) => commentHtml(r, it, true)).join('');
+                return `<li class="hub-comment${isReply ? ' is-reply' : ''}${c.by_page ? ' is-page' : ''}"><div class="hub-comment-head"><strong dir="auto">${who}</strong>${c.at ? `<span>${esc(fmtDateTime(c.at))}</span>` : ''}</div>${c.text ? `<div class="hub-comment-text" dir="auto">${esc(c.text)}</div>` : ''}${label}${media}${replies ? `<ul class="hub-comments hub-replies">${replies}</ul>` : ''}</li>`;
+            }
+            function loadDrawerComments(D, more) {
+                const it = D.item;
+                if (!it || it.status !== 'published' || !it.meta_post_id) return;
+                const C = D.comments || (D.comments = { items: [], cursor: null, total: null, loading: false, loaded: false, error: null });
+                if (C.loading || (more && !C.cursor)) return;
+                C.loading = true;
+                const body = { platform: it.platform === 'instagram' ? 'instagram' : 'facebook', post_id: String(it.meta_post_id) };
+                if (more && C.cursor) body.cursor = C.cursor;
+                metaSocialCall('post_comments', body).then((res) => {
+                    if (S.drawer !== D) return;
+                    const got = Array.isArray(res.comments) ? res.comments : [];
+                    C.items = more ? C.items.concat(got) : got;
+                    C.cursor = res.next_cursor || null;
+                    if (num(res.total) !== null) C.total = num(res.total);
+                    C.loaded = true; C.error = null;
+                }).catch((e) => { if (S.drawer === D) C.error = e; })
+                    .finally(() => { if (S.drawer === D) { C.loading = false; renderDrawerMain(); } });
+            }
+            function drawerComments(it, det) {
+                if (D_loading()) return '';
+                const D = S.drawer;
+                if (D && !D.comments) loadDrawerComments(D, false);
+                const C = (D && D.comments) || {};
+                const list = C.loaded ? C.items : (Array.isArray(det.recent_comments) ? det.recent_comments : (it.recent_comments || []));
+                const known = num(C.total) !== null ? num(C.total) : (num(det.comments_count) !== null ? num(det.comments_count) : (it.engagement ? num(it.engagement.comments) : null));
+                const rows = commentThreads(list).map((c) => commentHtml(c, it)).join('');
+                const loadMore = C.loaded && C.cursor
+                    ? `<div class="hub-actions-row"><button type="button" class="hub-btn is-sm" data-hub-act="d-comments-more" ${C.loading ? 'disabled aria-busy="true"' : ''}>${C.loading ? '<span class="hub-spin" aria-hidden="true"></span>' : ''}<span>${esc(C.loading ? H('loading') : H('comments_show_more'))}</span></button></div>`
+                    : '';
+                const onMeta = !C.loaded && known !== null && known > list.length && safeUrl(it.permalink) ? `<div class="hub-actions-row">${extLink(it.permalink, H('comments_more_on', { n: fmtN(known), platform: platLabel(it.platform) }), 'hub-btn is-sm')}</div>` : '';
+                const head = known !== null && known > 0 ? H('comments_title_n', { n: fmtN(known) }) : H('recent_comments_title');
+                const waiting = !C.loaded && C.loading && !rows ? `<div class="hub-skel" style="block-size:48px;" aria-hidden="true"></div>` : '';
+                return `<div data-d-comments="1"><div class="hub-section-title" style="font-size:var(--sp-t-md);">${esc(head)}</div>${rows ? `<ul class="hub-comments">${rows}</ul>` : (waiting || `<p class="hub-hint" style="margin:0;">${esc(H('no_comments_yet'))}</p>`)}${loadMore}${onMeta}</div>`;
+            }
+            function D_loading() { return !!(S.drawer && S.drawer.loading);
             }
 
             // ---- actions ----
@@ -71301,7 +72542,7 @@ Thank you for shopping with {store_name}!</textarea>
                 </div>
                 <div class="hub-tabs" role="tablist" aria-label="${esc(H('ins_sections'))}" style="margin-block-start:0;">
                     <button type="button" class="hub-tab" role="tab" id="ins-tab-overview" data-hub-act="ins-tab" data-v="overview" aria-selected="true">${esc(H('tab_overview'))}</button>
-                    <button type="button" class="hub-tab" role="tab" id="ins-tab-posts" data-hub-act="ins-tab" data-v="posts" aria-selected="false" tabindex="-1">${esc(H('tab_posts'))}</button>
+                    <button type="button" class="hub-tab" role="tab" id="ins-tab-posts" data-feature="insights-post-comments" data-hub-act="ins-tab" data-v="posts" aria-selected="false" tabindex="-1">${esc(H('tab_posts'))}</button>
                 </div>
                 <div id="ins-overview" role="tabpanel" aria-labelledby="ins-tab-overview"></div>
                 <div id="ins-posts" role="tabpanel" aria-labelledby="ins-tab-posts" hidden><div id="ins-posts-bar"></div><div id="ins-posts-list"></div></div>`;
@@ -71586,10 +72827,49 @@ Thank you for shopping with {store_name}!</textarea>
                 const id = String(post.id || post.post_id || '');
                 return {
                     key: 'ins:' + platform + ':' + id, platform, source: 'insights', status: 'published', held_by: null, row_id: null, meta_post_id: id,
-                    caption: post.message || post.caption || '', image_url: post.full_picture || post.media_url || post.thumbnail_url || null,
+                    caption: post.message || post.caption || '', image_url: postImage(post),
+                    image_fallback_url: post.image_origin_url || null,
                     media_type: mediaTypeOf(post), scheduled_at: null, published_at: post.created_time || post.timestamp || post.created_at || post.posted_at || null,
                     permalink: post.permalink_url || post.permalink || null, metrics: m, error: null, actions: null, action_notes: {},
-                    _comments: num(post.comments_count)
+                    _comments: postEngagementOf(post).comments,
+                    engagement: postEngagementOf(post),
+                    recent_comments: Array.isArray(post.recent_comments) ? post.recent_comments : rawComments(post)
+                };
+            }
+            // The picture of a post. An Instagram Reel's media_url is the video
+            // file itself, which an <img> cannot draw: a video takes its
+            // thumbnail (the server sends image_url already chosen this way).
+            function postImage(post) {
+                if (post.image_url) return post.image_url;
+                const isVideo = /VIDEO|REEL/i.test(String(post.media_type || '')) || /\.mp4(\?|$)/i.test(String(post.media_url || ''));
+                return post.full_picture || (isVideo ? post.thumbnail_url : (post.media_url || post.thumbnail_url)) || null;
+            }
+            // The newest comments from the raw Graph shape, for an answer that
+            // predates recent_comments. Text and a name Meta gave, nothing else.
+            function rawComments(post) {
+                const list = post.comments && Array.isArray(post.comments.data) ? post.comments.data : [];
+                return list.map((c) => ({
+                    text: String((c && (c.message || c.text)) || '').trim(),
+                    author: (c && ((c.from && c.from.name) || c.username)) || null,
+                    at: (c && (c.created_time || c.timestamp)) || null
+                })).filter((c) => c.text).slice(0, 5);
+            }
+            // Reactions, comments, shares: plain post fields, so they show even
+            // when the post insights are not available.
+            function postEngagementOf(post) {
+                const e = post.engagement && typeof post.engagement === 'object' ? post.engagement : {};
+                const pick = (a, b) => (num(a) !== null ? num(a) : num(b));
+                // The raw Graph shape (a server answer that predates `engagement`):
+                // Facebook gives likes / reactions / comments as summaries, a
+                // shares count only when someone shared, Instagram plain counts.
+                const sum = (o) => (o && o.summary ? num(o.summary.total_count) : null);
+                const m = post.metrics || {};
+                const fbReactions = sum(post.reactions) !== null ? sum(post.reactions) : (num(m.reactions) !== null ? num(m.reactions) : sum(post.likes));
+                const isFb = !!(post.message !== undefined || post.permalink_url || post.full_picture || post.likes || post.reactions);
+                return {
+                    reactions: pick(e.reactions, pick(post.like_count, fbReactions)),
+                    comments: pick(e.comments, pick(post.comments_count, sum(post.comments))),
+                    shares: num(e.shares) !== null ? num(e.shares) : (post.shares ? num(post.shares.count) : (isFb ? 0 : null))
                 };
             }
             const engagementOf = (it) => { const m = it.metrics || {}; return m.interactions !== null && m.interactions !== undefined ? m.interactions : (m.reactions !== null && m.reactions !== undefined ? m.reactions : null); };
@@ -72008,6 +73288,7 @@ Thank you for shopping with {store_name}!</textarea>
                     case 'ins-top': I.top.by = v === 'engagement' ? 'engagement' : 'reach'; renderTop(); break;
                     case 'ins-view': I.posts.view = v === 'list' ? 'list' : 'grid'; renderPosts(); break;
                     case 'ins-more': fetchPosts(insightPlatform, true); break;
+                    case 'd-comments-more': if (S.drawer) loadDrawerComments(S.drawer, true); renderDrawerMain(); break;
                     case 'ins-posts-retry': fetchPosts(insightPlatform); break;
                     case 'ins-export': exportCsv(); break;
                     default: break;
@@ -74268,7 +75549,10 @@ Thank you for shopping with {store_name}!</textarea>
                 });
 
                 if (error) throw error;
-                if (data && data.error) throw new Error(data.error);
+                if (data && data.error) {
+                    console.error('billing-create-checkout-session rejected', data);
+                    throw new Error(checkoutFailureText(data.error));
+                }
                 if (data && data.url) {
                     window.location.href = data.url;
                 } else {
@@ -74787,7 +76071,9 @@ Thank you for shopping with {store_name}!</textarea>
                     // an engineer, alerted at a customer in the act of paying.
                     // The raw payload stays in the console.
                     console.error('billing-create-checkout-session rejected', data);
-                    throw new Error(checkoutFailureText(data.error));
+                    // A short code (not_allowed, subscription_exists) reaches the catch below,
+                    // which turns it into the customer's sentence; anything else is generic.
+                    throw new Error(/^[a-z0-9_]+$/.test(String(data.error)) ? String(data.error) : 'checkout_failed');
                 }
 
                 if (data && data.updated === true) {
@@ -74840,9 +76126,20 @@ Thank you for shopping with {store_name}!</textarea>
                     ? 'لديك اشتراك فعّال بالفعل. حدّث الصفحة ثم اختر الخطة مرة أخرى لتبديلها.'
                     : 'You already have an active subscription. Refresh the page, then pick the plan again to switch to it.';
             }
+            // The server checks who may pay for this workspace (2026-10-13).
+            if (slug === 'not_allowed') {
+                return ar
+                    ? 'تغيير الخطة متاح لمالك مساحة العمل، أو لمن يسمح له المالك بإدارة الفوترة.'
+                    : 'Only the workspace owner, or someone they allow to manage billing, can change the plan.';
+            }
+            if (slug === 'not_a_member' || slug === 'workspace_required') {
+                return ar
+                    ? 'لم نتمكن من مطابقة حسابك مع مساحة العمل هذه. حدّث الصفحة ثم حاول مرة أخرى.'
+                    : 'We could not match your account to this workspace. Refresh the page, then try again.';
+            }
             return ar
-                ? 'تعذّر فتح صفحة الدفع. تم إبلاغنا ونحن نتابع الأمر — جرّب مرة أخرى بعد دقائق، وتواصل مع الدعم إذا تكرر.'
-                : 'We could not open the payment page. We have been notified and are looking at it — try again in a few minutes, and contact support if it keeps happening.';
+                ? 'تعذّر فتح صفحة الدفع. تم إبلاغنا ونحن نتابع الأمر، جرّب مرة أخرى بعد دقائق، وتواصل مع الدعم إذا تكرر.'
+                : 'We could not open the payment page. We have been notified and are looking at it. Try again in a few minutes, and contact support if it keeps happening.';
         }
 
         function toggleBillingPeriod(forcePeriod) {
@@ -77956,6 +79253,24 @@ Thank you for shopping with {store_name}!</textarea>
 .pc-caption.is-empty { color: var(--sp-ink-3); font-style: italic; }
 .pc-date { font-size: var(--sp-t-xs); color: var(--sp-ink-2); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .pc-metrics { display: flex; gap: var(--sp-1) var(--sp-4); flex-wrap: wrap; }
+.pc-thumb img { position: absolute; inset: 0; }
+.pc-eng { display: flex; gap: var(--sp-1) var(--sp-3); flex-wrap: wrap; font-size: var(--sp-t-sm); color: var(--sp-ink-2); }
+.pc-eng-item { display: inline-flex; align-items: center; gap: 4px; }
+.pc-eng-item .ui-icon { inline-size: 14px; block-size: 14px; color: var(--sp-ink-3); }
+.pc-eng-item b { font-weight: 650; color: var(--sp-ink); }
+.pc-latest { font-size: var(--sp-t-sm); color: var(--sp-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.pc-latest-k { font-weight: 650; color: var(--sp-ink); }
+.hub-comments { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+.hub-comment { padding: var(--sp-2) var(--sp-3); border-radius: var(--sp-r-md); background: var(--sp-surface-3); }
+.hub-comment-head { display: flex; gap: var(--sp-2); align-items: baseline; flex-wrap: wrap; font-size: var(--sp-t-sm); }
+.hub-comment-head span { color: var(--sp-ink-3); }
+.hub-comment-text { font-size: var(--sp-t-md); line-height: 1.5; overflow-wrap: anywhere; }
+.hub-comment-text.is-muted { color: var(--sp-ink-3); font-style: italic; }
+.hub-comment-media { display: block; max-inline-size: 140px; max-block-size: 140px; border-radius: var(--sp-r-md); margin-block-start: var(--sp-1); object-fit: cover; }
+.hub-comment-media.is-waiting { display: none; }
+.hub-replies { margin-block-start: var(--sp-2); padding-inline-start: var(--sp-3); border-inline-start: 2px solid var(--sp-line, rgba(127,127,127,.25)); }
+.hub-comment.is-reply { background: transparent; padding: var(--sp-1) 0; }
+.hub-comment-page { margin-inline-start: var(--sp-1); font-size: .68rem; }
 .pc-metric { display: grid; gap: 0; }
 .pc-metric b { font-size: var(--sp-t-md); color: var(--sp-ink); font-variant-numeric: tabular-nums; }
 .pc-metric b.is-na { color: var(--sp-ink-3); font-weight: 600; }
@@ -78015,6 +79330,8 @@ Thank you for shopping with {store_name}!</textarea>
 .hub-drawer-body { padding: var(--sp-4); overflow-y: auto; display: grid; gap: var(--sp-4); align-content: start; flex: 1 1 auto; min-block-size: 0; overscroll-behavior: contain; }
 .hub-drawer-media { background: var(--sp-surface-3); border-radius: var(--sp-r-lg); overflow: hidden; display: grid; gap: 2px; }
 .hub-drawer-media img { inline-size: 100%; max-block-size: 380px; object-fit: contain; display: block; background: var(--sp-surface-3); }
+.hub-drawer-media img.is-waiting { display: none; }
+.pc-thumb img.is-waiting { visibility: hidden; }
 .hub-drawer-caption { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--sp-t-md); line-height: 1.6; color: var(--sp-ink); }
 .hub-kv { display: grid; gap: var(--sp-2); margin: 0; }
 .hub-kv > div { display: grid; grid-template-columns: minmax(96px, 30%) minmax(0, 1fr); gap: var(--sp-3); font-size: var(--sp-t-sm); }
@@ -86605,9 +87922,6 @@ body.hub-lock { overflow: hidden; }
             if (s === 'lost') return 'lost';
             return s;
         }
-        function crmxStageMeta(stageId) {
-            return CRMX_STAGES.find(s => s.id === stageId) || CRMX_STAGES[0];
-        }
         function crmxStageLabel(stageId) {
             return t('leads.status.' + stageId) || stageId.charAt(0).toUpperCase() + stageId.slice(1);
         }
@@ -86622,7 +87936,9 @@ body.hub-lock { overflow: hidden; }
             const stage = crmxMapStage(val);
             const css = CRMX_STAGE_CSS[val] || CRMX_STAGE_CSS[stage] || 'crmx-s-new';
             const bg = withBg ? ' ' + (CRMX_STAGE_BG[val] || CRMX_STAGE_BG[stage] || 'crmx-s-bg-new') : '';
-            return `<span class="crmx-status-chip ${css}${bg}"><span class="crmx-dot"></span>${esc(crmxStageLabel(stage))}</span>`;
+            // The chip names the lead's own status, the same words as the
+            // status select and the board column (Follow-up is never called Contacted).
+            return `<span class="crmx-status-chip ${css}${bg}"><span class="crmx-dot"></span>${esc(crmxStageLabel(val))}</span>`;
         }
         function crmxPlatformMeta(src) {
             const key = String(src || '').toLowerCase();
@@ -87979,19 +89295,22 @@ body.hub-lock { overflow: hidden; }
 
         function renderCrmxPipeline(slot, rows) {
             const totalValue = rows.reduce((s, r) => s + (Number(r.score) || 0), 0) || 1;
-            const colHtml = CRMX_STAGES.map(stage => {
-                const items = rows.filter(r => crmxMapStage(r.status) === stage.id);
+            // The columns are the status list the table offers (built-ins,
+            // then the workspace's own), so every lead in the table has a
+            // column here and is named the same way.
+            const colHtml = leadStatusColumns(rows).map(column => {
+                const items = rows.filter(r => leadStatusSelectValue(r) === column.value);
                 const stageScore = items.reduce((s, r) => s + (Number(r.score) || 0), 0);
                 const pct = Math.round((stageScore / totalValue) * 100);
                 const cards = items.length
                     ? items.map(crmxLeadCardHtml).join('')
                     : `<div class="crmx-col-empty">${esc(t('crm.col_drop_here') || 'Drop leads here')}</div>`;
                 return `
-                    <div class="crmx-col" data-stage="${stage.id}"
-                        style="--crmx-col-color:${stage.color};--crmx-col-color2:${stage.color2};--crmx-col-pct:${pct}%;">
+                    <div class="crmx-col" data-stage="${esc(column.value)}"
+                        style="--crmx-col-color:${column.colour};--crmx-col-color2:color-mix(in srgb, ${column.colour} 62%, #fff);--crmx-col-pct:${pct}%;">
                         <div class="crmx-col-head">
                             <div class="crmx-col-name-row">
-                                <div class="crmx-col-name"><span class="crmx-col-swatch"></span> ${esc(crmxStageLabel(stage.id))}</div>
+                                <div class="crmx-col-name" title="${esc(column.label)}"><span class="crmx-col-swatch"></span> ${esc(column.label)}</div>
                                 <div class="crmx-col-count">${items.length}</div>
                             </div>
                             <div class="crmx-col-totals">
@@ -88000,7 +89319,7 @@ body.hub-lock { overflow: hidden; }
                             </div>
                             <div class="crmx-col-prog"></div>
                         </div>
-                        <div class="crmx-col-cards" data-dropzone="${stage.id}">${cards}</div>
+                        <div class="crmx-col-cards" data-dropzone="${esc(column.value)}">${cards}</div>
                     </div>
                 `;
             }).join('');
@@ -88012,7 +89331,7 @@ body.hub-lock { overflow: hidden; }
 
         function crmxLeadCardHtml(r) {
             const av = crmxAvatar(r.id);
-            const stage = crmxStageMeta(crmxMapStage(r.status));
+            const accent = LEAD_STATUS_LIST.colour(r);
             const plat = crmxPlatformMeta(r.source);
             const score = Number(r.score) || 0;
             const R = 12, C = 2 * Math.PI * R;
@@ -88036,7 +89355,7 @@ body.hub-lock { overflow: hidden; }
 
             return `
                 <div class="crmx-lead-card" data-lead-id="${esc(r.id)}" draggable="true"
-                    style="--crmx-card-accent:${stage.color};--crmx-av-bg:${av.bg};--crmx-av-fg:${av.fg};">
+                    style="--crmx-card-accent:${accent};--crmx-av-bg:${av.bg};--crmx-av-fg:${av.fg};">
                     <div class="crmx-lc-top">
                         <div class="crmx-lc-avatar">${esc(crmInitials(cardTitle))}</div>
                         <div class="crmx-lc-info">
@@ -88108,31 +89427,36 @@ body.hub-lock { overflow: hidden; }
                     e.preventDefault();
                     col.classList.remove('crmx-dragover');
                     const id = draggedId || e.dataTransfer.getData('text/plain');
-                    const newStage = col.dataset.stage;
-                    if (!id || !newStage) return;
+                    const target = col.dataset.stage;
+                    if (!id || !target) return;
                     const lead = (cachedLeads || []).find(l => l.id === id);
                     if (!lead) return;
                     const previousStatus = lead.status;
                     const previousCustom = lead.custom_status_id || null;
-                    if (crmxMapStage(previousStatus) === newStage) return;
-                    // Optimistic update + persist. Moving a card is a person's
-                    // choice, so it replaces a custom status (the database
-                    // clears it too: trg_leads_clear_custom_status).
-                    lead.status = newStage;
-                    lead.custom_status_id = null;
+                    if (leadStatusSelectValue(lead) === target) return;
+                    const column = leadStatusColumns([lead]).find(c => c.value === target);
+                    // Optimistic update, then the same save the status select
+                    // uses (saveLeadStatusChoice). A built-in column replaces a
+                    // custom status (the database clears it too:
+                    // trg_leads_clear_custom_status); a custom column keeps
+                    // the built-in status underneath, as the select does.
+                    if (column && column.customId) {
+                        lead.custom_status_id = column.customId;
+                    } else {
+                        lead.status = target;
+                        lead.custom_status_id = null;
+                    }
                     if (cachedLeads) renderCrmGrid(filterCrmRows(cachedLeads));
                     try {
-                        const { error } = await supabaseClient.from('leads')
-                            .update({ status: newStage, updated_at: new Date().toISOString() })
-                            .eq('id', id).eq('org_id', currentUserOrgId);
-                        if (error) throw error;
-                        if (typeof showToast === 'function') showToast(`${lead.full_name || 'Lead'} → ${crmxStageLabel(newStage)}`, 'success');
+                        await saveLeadStatusChoice([id], target, currentUserOrgId);
+                        if (typeof showToast === 'function') showToast(`${lead.full_name || 'Lead'}: ${column ? column.label : target}`, 'success');
                     } catch (err) {
                         console.error('Stage update failed:', err);
                         lead.status = previousStatus;
                         lead.custom_status_id = previousCustom;
                         if (cachedLeads) renderCrmGrid(filterCrmRows(cachedLeads));
-                        if (typeof showToast === 'function') showToast(t('crm.stage_update_failed') || "Couldn't update stage", 'error');
+                        const msg = (err && err.code) ? leadStatusErrorText(err) : (t('crm.stage_update_failed') || "Couldn't update stage");
+                        if (typeof showToast === 'function') showToast(msg, 'error');
                     }
                 });
             });
@@ -94883,12 +96207,16 @@ body.hub-lock { overflow: hidden; }
             if (!trial && T && s && String(s.plan_slug || '') === 'free_trial') trial = T.peek();
             const trialShown = !!(trial && T && T.shows(trial));
             const trialState = trialShown ? T.bannerState(trial) : null;
-            const coinsUsed = Number((s && s.coins_used) || 0);
-            const coinsTotal = Number((s && s.coins_total) || 0);
+            // PLAN_USAGE_V1: when the shared summary is known, the banner follows it, so it
+            // warns about the AI capacity too and names the limit that is actually close.
+            const pd = (!trialShown && window.PlanUsage) ? window.PlanUsage.describe(window.PlanUsage.peek()) : null;
+            const puConv = pd ? ((window.PlanUsage.peek() || {}).conversations || {}) : null;
+            const coinsUsed = puConv ? Number(puConv.used || 0) : Number((s && s.coins_used) || 0);
+            const coinsTotal = puConv ? Number(puConv.limit || 0) : Number((s && s.coins_total) || 0);
             const pct = coinsTotal > 0 ? Math.min(100, Math.round(coinsUsed / coinsTotal * 100)) : 0;
             const warnPct = Number((s && s.low_balance_warning_pct) || 80);
-            const finished = coinsTotal <= 0 || coinsUsed >= coinsTotal || !!(s && s.is_balance_finished);
-            const low = !finished && (!!(s && s.is_low_balance) || (coinsTotal > 0 && pct >= warnPct));
+            const finished = pd ? (pd.tone === 'stop') : (coinsTotal <= 0 || coinsUsed >= coinsTotal || !!(s && s.is_balance_finished));
+            const low = pd ? (!finished && pd.state === 'warn') : (!finished && (!!(s && s.is_low_balance) || (coinsTotal > 0 && pct >= warnPct)));
             const graceEnds = trialShown ? null : _graceEndsAt();
             // Severity: 'finished' is more serious than 'grace', which is more
             // serious than 'low'. Dismissing one never hides a more serious one.
@@ -94938,16 +96266,28 @@ body.hub-lock { overflow: hidden; }
                     : `Your plan has ended. Your agent keeps answering your customers until ${day}. Renew before then so it never stops.`;
             } else if (finished) {
                 bg = '#dc2626';
-                msg = coinsTotal <= 0
-                    ? (isAr ? 'لا توجد خطة نشطة — لن يرد الذكاء الاصطناعي على عملائك. فعّل خطة للمتابعة.'
-                            : 'No active plan — the AI will not reply to your customers. Activate a plan to continue.')
-                    : (isAr ? 'لقد استهلكت كل محادثات خطتك — الردود الآلية متوقفة الآن حتى لا تفقد عميلاً دون علمك، قم بالترقية.'
-                            : "You've used all your plan's conversations — AI replies are paused. Upgrade so you never miss a customer.");
+                const until = pd && pd.date ? pd.date : '';
+                msg = (pd ? pd.state === 'none' : coinsTotal <= 0)
+                    ? (isAr ? 'لا توجد خطة نشطة، لذلك لن يرد الذكاء الاصطناعي على عملائك. فعّل خطة للمتابعة.'
+                            : 'No active plan, so the AI will not reply to your customers. Activate a plan to continue.')
+                    : (pd && pd.reason === 'ai_budget_exhausted')
+                        ? (isAr ? `انتهت سعة الذكاء الاصطناعي لهذا الشهر. لن يبدأ المساعد محادثات جديدة${until ? ' حتى ' + until : ''}. قم بالترقية للاستمرار الآن.`
+                                : `This month's AI capacity is used up. Your agent starts no new conversations${until ? ' until ' + until : ''}. Upgrade to continue now.`)
+                        : (pd && pd.reason !== 'conversations_exhausted' && pd.reason !== 'coins_exhausted')
+                            ? (isAr ? 'خطتك غير نشطة، لذلك لن يرد الذكاء الاصطناعي على عملائك. جدد خطتك للاستمرار.'
+                                    : 'Your plan is not active, so the AI will not reply to your customers. Renew your plan to continue.')
+                            : (isAr ? `لقد استهلكت كل محادثات خطتك. لن يبدأ المساعد محادثات جديدة${until ? ' حتى ' + until : ''}. قم بالترقية للاستمرار الآن.`
+                                    : `You've used all your plan's conversations. Your agent starts no new conversations${until ? ' until ' + until : ''}. Upgrade to continue now.`);
+            } else if (pd && pd.binding === 'ai' && pd.aiPct != null) {
+                bg = '#f59e0b'; fg = '#1a1200';
+                msg = isAr
+                    ? `تنبيه: استخدمت ${pd.aiPct}% من سعة الذكاء الاصطناعي لهذا الشهر. تتوقف المحادثات الجديدة عند 100%. قم بالترقية ليستمر المساعد في الرد.`
+                    : `Heads up: you've used ${pd.aiPct}% of this month's AI capacity. New conversations pause at 100%. Upgrade to keep your agent answering.`;
             } else {
                 bg = '#f59e0b'; fg = '#1a1200';
                 msg = isAr
-                    ? `تنبيه: استخدمت ${pct}% من محادثات خطتك (متبقٍ ${remaining.toLocaleString()}). قم بالترقية قبل توقف الردود الآلية.`
-                    : `Heads up: you've used ${pct}% of your plan's conversations (${remaining.toLocaleString()} left). Upgrade before AI replies pause.`;
+                    ? `تنبيه: استخدمت ${pct}% من محادثات خطتك (متبقٍ ${remaining.toLocaleString('en-US')}). قم بالترقية قبل توقف الردود الآلية.`
+                    : `Heads up: you've used ${pct}% of your plan's conversations (${remaining.toLocaleString('en-US')} left). Upgrade before AI replies pause.`;
             }
             el.style.background = bg; el.style.color = fg;
             el.innerHTML = '';
@@ -95168,8 +96508,8 @@ body.hub-lock { overflow: hidden; }
             if (opts && opts.silent) return false;
             const ar = (typeof currentLang !== 'undefined') && currentLang === 'ar';
             const msg = ar
-                ? `لتفعيل ردود الذكاء الاصطناعي على ${channelLabel}، اختر خطة أولاً — بدون خطة نشطة لن يرد المساعد على عملائك.`
-                : `To activate AI replies on ${channelLabel}, choose a plan first — without an active plan the assistant can't reply to your customers.`;
+                ? `لتفعيل ردود الذكاء الاصطناعي على ${channelLabel}، اختر خطة أولاً. بدون خطة نشطة لن يرد المساعد على عملائك.`
+                : `To activate AI replies on ${channelLabel}, choose a plan first. Without an active plan the assistant can't reply to your customers.`;
             if (typeof showToast === 'function') showToast(msg, 'warning', 6000);
             if (typeof openPricingModal === 'function') openPricingModal();
             return false;
@@ -95322,34 +96662,58 @@ body.hub-lock { overflow: hidden; }
             }
 
             const ar = currentLang === 'ar';
-            const coinsUsed = Number(s.coins_used || 0);
-            const coinsTotal = Number(s.coins_total || 0);
+            // PLAN_USAGE_V1 (2026-10-13): the summary every screen shares. It knows the plan's
+            // AI capacity, which get_coin_status does not, so this meter can no longer read
+            // "4,769 conversations left" in green while the AI capacity is about to pause the
+            // replies. Without it, the meter is drawn from get_coin_status as before.
+            let pu = null;
+            try { pu = window.PlanUsage ? await window.PlanUsage.load() : null; } catch (e) { pu = null; }
+            const pd = (pu && window.PlanUsage) ? window.PlanUsage.describe(pu) : null;
+            const puConv = pu && pu.conversations ? pu.conversations : null;
+            const coinsUsed = puConv ? Number(puConv.used || 0) : Number(s.coins_used || 0);
+            const coinsTotal = puConv ? Number(puConv.limit || 0) : Number(s.coins_total || 0);
             const pct = coinsTotal > 0
                 ? Math.min(100, Math.round((coinsUsed / coinsTotal) * 100))
                 : Number(s.coins_pct || 0);
+            const num = (v) => Number(v || 0).toLocaleString('en-US');
 
             // Coins and conversations are ONE meter now (1 conversation = 1 coin),
             // so we show a single number and label it "Conversations".
             document.getElementById('usage-plan-label').textContent =
-                `${s.plan_name || 'Starter'} · ${ar ? 'محادثات' : 'Conversations'}`;
+                `${(pu && pu.plan && pu.plan.name) || s.plan_name || 'Starter'} · ${ar ? 'محادثات' : 'Conversations'}`;
             document.getElementById('usage-count-label').textContent =
                 coinsTotal > 0
-                    ? `${coinsUsed.toLocaleString()} / ${coinsTotal.toLocaleString()}`
-                    : coinsUsed.toLocaleString();
+                    ? `${num(coinsUsed)} / ${num(coinsTotal)}`
+                    : num(coinsUsed);
 
             const bar = document.getElementById('usage-bar-fill');
             bar.style.width = pct + '%';
-            bar.style.background = pct > 95 ? '#ef4444' : (pct > 80 ? '#f59e0b' : 'var(--theme-color)');
+            // The bar counts conversations; its colour is the state of the whole plan.
+            bar.style.background = pd
+                ? (pd.tone === 'stop' ? '#ef4444' : pd.tone === 'warn' ? '#f59e0b' : 'var(--theme-color)')
+                : (pct > 95 ? '#ef4444' : (pct > 80 ? '#f59e0b' : 'var(--theme-color)'));
 
             const conv = document.getElementById('usage-conv-label');
-            if (conv) {
+            if (conv && pd) {
+                conv.textContent = pd.state === 'none'
+                    ? (ar ? 'لا توجد خطة نشطة، الردود متوقفة' : 'No active plan, AI replies paused')
+                    : pd.tone === 'stop'
+                        ? (pd.reason === 'ai_budget_exhausted'
+                            ? (ar ? 'انتهت سعة الذكاء الاصطناعي، المحادثات الجديدة متوقفة' : 'AI capacity used up, new conversations paused')
+                            : (pd.reason === 'conversations_exhausted' || pd.reason === 'coins_exhausted')
+                                ? (ar ? 'انتهت محادثات خطتك، المحادثات الجديدة متوقفة' : 'Limit reached, new conversations paused')
+                                : (ar ? 'خطتك غير نشطة، الردود متوقفة' : 'Plan not active, AI replies paused'))
+                        : (pd.state === 'warn' && pd.binding === 'ai' && pd.aiPct != null)
+                            ? (ar ? `تم استخدام ${pd.aiPct}% من سعة الذكاء الاصطناعي` : `AI capacity ${pd.aiPct}% used`)
+                            : (pd.leftText || '');
+            } else if (conv) {
                 const finished = !!s.is_balance_finished || coinsTotal === 0 || (coinsTotal > 0 && coinsUsed >= coinsTotal);
                 const remaining = Math.max(0, coinsTotal - coinsUsed);
                 conv.textContent = coinsTotal <= 0
-                    ? (ar ? 'لا توجد خطة نشطة — الردود متوقفة' : 'No active plan — AI replies paused')
+                    ? (ar ? 'لا توجد خطة نشطة، الردود متوقفة' : 'No active plan, AI replies paused')
                     : (finished
-                        ? (ar ? 'انتهت محادثات خطتك — الردود متوقفة' : 'Limit reached — AI replies paused')
-                        : (ar ? `متبقٍ ${remaining.toLocaleString()} محادثة` : `${remaining.toLocaleString()} conversations left`));
+                        ? (ar ? 'انتهت محادثات خطتك، الردود متوقفة' : 'Limit reached, AI replies paused')
+                        : (ar ? `متبقٍ ${num(remaining)} محادثة` : `${num(remaining)} conversations left`));
             }
 
             meter.style.display = 'block';
@@ -97601,7 +98965,7 @@ body.hub-lock { overflow: hidden; }
      10-minute max-age and no revalidation, so without the query string a
      returning customer keeps running the previous build against a new
      index.html. Regenerate the hash whenever the module changes. -->
-<script src="modules/meta-connect.js?v=bcba981a47"></script>
+<script src="modules/meta-connect.js?v=f8b03212de"></script>
 <script src="modules/prompt-builder.js?v=c2b44378af"></script>
 <script src="modules/trial-status.js?v=223c7a9265"></script>
 <script src="modules/entitlements.js?v=b74def0132"></script>

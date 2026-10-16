@@ -20,6 +20,7 @@
       --chat-user-bubble: linear-gradient(135deg, #2c718a 0%, #255f75 100%);
       --chat-bot-bubble: #f7fbfc;
       --chat-link: #0f766e;
+      --chat-dot: color-mix(in srgb, var(--chat-accent) 12%, var(--chat-link));
       --chat-danger: #cf4d60;
       --chat-success: #1f9d6d;
       --chat-shadow: 0 24px 70px rgba(15, 35, 52, 0.18);
@@ -145,12 +146,17 @@
       --chat-text: #edf6fb;
       --chat-muted: #9cb0bf;
       --chat-border: rgba(154, 182, 201, 0.14);
-      --chat-accent: #79c6d6;
-      --chat-accent-strong: #9cdce8;
-      --chat-accent-soft: rgba(121, 198, 214, 0.14);
-      --chat-user-bubble: linear-gradient(135deg, #1e5f76 0%, #234d60 100%);
+      /* Each dark token reads a merchant-brand twin when applyThemeOverrides()
+         has set one on :root, and falls back to the built-in dark teal. A
+         plain override on :root cannot work here: this rule is declared on the
+         widget element and would always win over it. */
+      --chat-accent: var(--chat-accent-dark, #79c6d6);
+      --chat-accent-strong: var(--chat-accent-strong-dark, #9cdce8);
+      --chat-accent-soft: var(--chat-accent-soft-dark, rgba(121, 198, 214, 0.14));
+      --chat-user-bubble: var(--chat-user-bubble-dark, linear-gradient(135deg, #1e5f76 0%, #234d60 100%));
       --chat-bot-bubble: #132433;
-      --chat-link: #8ce2d7;
+      --chat-link: var(--chat-link-dark, #8ce2d7);
+      --chat-dot: color-mix(in srgb, var(--chat-accent) 72%, #fff);
       --chat-shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
       --chat-shadow-strong: 0 30px 90px rgba(0, 0, 0, 0.55);
     }
@@ -542,85 +548,63 @@
       outline: none;
     }
 
-    .hs-chat-typing {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 10px;
-      align-items: center;
-      min-inline-size: min(100%, 240px);
-      max-inline-size: 100%;
+    /* Typing state: a compact assistant bubble holding three dots, sized to
+       its content (the normal assistant bubble is 338px wide). The late line
+       sits under it and only appears after a long wait. Vertical motion only,
+       so nothing slides horizontally in RTL. */
+    .hs-chat-row[data-typing="true"] {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
     }
 
-    .hs-chat-typing-visual {
+    .hs-chat-row.assistant .hs-chat-bubble.hs-chat-bubble-typing {
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      padding: 12px 16px;
+      /* the base bubble is pre-wrap; markup whitespace would add blank lines */
+      white-space: normal;
+    }
+
+    .hs-chat-typing {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 8px 11px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--chat-link) 11%, transparent);
-      min-block-size: 28px;
-      align-self: start;
+      block-size: 22px;
+      animation: hs-chat-typing-in 160ms ease-out both;
     }
 
     .hs-chat-dot {
       inline-size: 7px;
       block-size: 7px;
       border-radius: 999px;
-      background: color-mix(in srgb, var(--chat-link) 72%, transparent);
-      animation: hs-chat-bounce 1.25s infinite ease-in-out;
+      background: color-mix(in srgb, var(--chat-dot) 88%, transparent);
+      animation: hs-chat-wave 1.2s cubic-bezier(.4, 0, .2, 1) infinite;
     }
 
-    .hs-chat-dot:nth-child(2) { animation-delay: 130ms; }
-    .hs-chat-dot:nth-child(3) { animation-delay: 260ms; }
+    .hs-chat-dot:nth-child(2) { animation-delay: 160ms; }
+    .hs-chat-dot:nth-child(3) { animation-delay: 320ms; }
 
-    @keyframes hs-chat-bounce {
-      0%, 80%, 100% { transform: translateY(0); opacity: 0.45; }
-      40% { transform: translateY(-2px); opacity: 1; }
-    }
-
-    .hs-chat-typing-meta {
-      min-inline-size: 0;
-      display: grid;
-      gap: 6px;
-    }
-
-    .hs-chat-typing-text {
+    .hs-chat-typing-late {
+      margin: 0;
+      padding-inline: 4px;
+      max-inline-size: 100%;
       color: var(--chat-muted);
       font-size: 12.5px;
       line-height: 1.4;
       text-align: start;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: opacity .3s ease, transform .3s ease;
+      overflow-wrap: anywhere;
+      animation: hs-chat-typing-in 160ms ease-out both;
     }
 
-    .hs-chat-typing-text.is-swapping {
-      opacity: 0;
-      transform: translateY(3px);
+    @keyframes hs-chat-typing-in {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: none; }
     }
 
-    .hs-chat-typing-bar {
-      inline-size: 100%;
-      block-size: 4px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--chat-muted) 20%, transparent);
-      overflow: hidden;
-    }
-
-    .hs-chat-typing-bar::before {
-      content: "";
-      display: block;
-      inline-size: 34%;
-      block-size: 100%;
-      background: linear-gradient(90deg, color-mix(in srgb, var(--chat-link) 45%, transparent) 0%, color-mix(in srgb, var(--chat-link) 85%, transparent) 55%, color-mix(in srgb, var(--chat-link) 45%, transparent) 100%);
-      animation: hs-chat-loading-slide 1.2s infinite ease-in-out;
-      transform: translateX(-120%);
-    }
-
-    @keyframes hs-chat-loading-slide {
-      0% { transform: translateX(-120%); }
-      100% { transform: translateX(320%); }
+    @keyframes hs-chat-wave {
+      0%, 60%, 100% { transform: scale(0.8); opacity: 0.4; }
+      30% { transform: scale(1); opacity: 1; }
     }
 
     .hs-chat-blocked-card {
@@ -937,9 +921,6 @@
       .hs-chat-launcher,
       .hs-chat-panel,
       .hs-chat-backdrop,
-      .hs-chat-dot,
-      .hs-chat-typing-bar::before,
-      .hs-chat-typing-text,
       .hs-chat-send,
       .hs-chat-action,
       .hs-chat-input,
@@ -947,6 +928,20 @@
       .hs-chat-menu {
         transition: none !important;
         animation: none !important;
+      }
+
+      /* static dots: still reads as "working", nothing moves */
+      .hs-chat-typing,
+      .hs-chat-typing-late {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .hs-chat-dot {
+        animation: none !important;
+        transition: none !important;
+        transform: none;
+        opacity: 0.75;
       }
     }
   </style>
@@ -978,6 +973,7 @@
         inputAriaLabel: "مربع كتابة الرسالة",
         helperNote: "اضغط Enter للإرسال، وShift+Enter لسطر جديد.",
         typing: "جاري الكتابة",
+        typingSlow: "لحظات وبكون معاك…",
         outsideClose: "إغلاق النافذة",
         waitingStates: [
           "ثانية واحدة وأنا معاك ✨",
@@ -991,6 +987,9 @@
         timeoutError: "الرد استغرق وقت طويل. من فضلك حاول مرة أخرى.",
         unexpectedResponse: "مقدرتش أقرأ الرد ده بوضوح. من فضلك حاول تاني.",
         blockedComposerNote: "الدردشة غير متاحة حاليًا لهذا الموقع.",
+        blockedTitle: "الدردشة غير متاحة الآن",
+        blockedMessage: "الدردشة على هذا الموقع غير متاحة في الوقت الحالي. حاول مرة أخرى لاحقًا.",
+        blockedBadge: "غير متاحة مؤقتًا",
         menuClose: "إغلاق القائمة"
       };
 
@@ -1024,6 +1023,11 @@
           blockedTitle: "Chat is unavailable right now",
           blockedMessage: "This website chat is not available for this site or subscription at the moment.",
           blockedBadge: "Temporarily unavailable",
+          // A blocked chat offers a link only when the merchant gives one (for
+          // example their own contact page). It never sends a visitor to
+          // Digitivia: they came to the merchant's site, not to ours.
+          blockedCtaUrl: "",
+          blockedCtaLabel: "",
           labels: {
             poweredBy: "Powered by",
             launcher: "Open chat",
@@ -1035,6 +1039,7 @@
             inputPlaceholder: "Type your message...",
             helperNote: "Press Enter to send. Shift+Enter adds a new line.",
             typing: "Assistant is typing",
+            typingSlow: "Still working on it…",
             outsideClose: "Close panel",
             waitingStates: [
               "On it — one sec, just for you ✨",
@@ -1048,6 +1053,9 @@
             timeoutError: "The reply took too long. Please try again.",
             unexpectedResponse: "I could not read that response clearly. Please try again.",
             blockedComposerNote: "Chat is currently unavailable for this website.",
+            blockedTitle: "Chat is unavailable right now",
+            blockedMessage: "This website chat is not available at the moment. Please try again later.",
+            blockedBadge: "Temporarily unavailable",
             menuClose: "Close menu"
           },
           theme: {
@@ -1080,8 +1088,7 @@
           hasOpenedOnce: false,
           menuOpen: false,
           messages: [],
-          typingTicker: null,
-          typingIndex: 0,
+          typingSlowTimer: null,
           // Pickup bookkeeping. pollCursor is the newest created_at already
           // collected; seenServerIds stops a message being rendered twice if a
           // poll overlaps; pendingEcho holds assistant text this widget has
@@ -1095,6 +1102,14 @@
         },
         refs: {}
       };
+
+      // labels.waitingStates is always filled (six built-in lines per language),
+      // so "the merchant customised it" can only be told by comparing against
+      // the built-ins. Captured before the host config is merged in.
+      const BUILT_IN_WAITING_FIRST = [
+        DigitiviaChatWidget.config.labels.waitingStates[0],
+        AR_LABELS.waitingStates[0]
+      ];
 
       const externalConfig = window.DigitiviaChatWidgetConfig || window.HurghadaChatWidgetConfig || {};
       deepMerge(DigitiviaChatWidget.config, externalConfig);
@@ -1150,10 +1165,6 @@
         applyTheme(resolveThemeMode(), false);
         syncOpenState();
         setBlockedState(!!DigitiviaChatWidget.config.previewBlocked, {
-          title: DigitiviaChatWidget.config.blockedTitle,
-          message: DigitiviaChatWidget.config.blockedMessage,
-          ctaLabel: DigitiviaChatWidget.config.ctaLabel,
-          ctaUrl: DigitiviaChatWidget.config.ctaUrl,
           persist: false,
           appendMessage: false
         });
@@ -1211,6 +1222,68 @@
           "--chat-user-bubble",
           "linear-gradient(135deg, " + accent + " 0%, color-mix(in srgb, " + accent + " 78%, #000) 100%)"
         );
+
+        // Links stayed the default teal whatever the brand was. Derive them,
+        // pushed toward black (light) or white (dark) until they read at 4.5:1
+        // on the assistant bubble. Unparseable colours get a fixed blend.
+        if (!theme["--chat-link"]) {
+          root.setProperty("--chat-link", readableBrand(accent, "#f7fbfc", false));
+        }
+        // Dark mode: .hs-chat-widget[data-theme="dark"] declares its own
+        // accent tokens on the widget element, which beat anything set on
+        // :root, so a brand colour never reached dark. That rule now reads
+        // these -dark twins (falling back to the built-in dark teal).
+        root.setProperty("--chat-accent-dark", accent);
+        root.setProperty("--chat-accent-strong-dark", "color-mix(in srgb, " + accent + " 78%, #fff)");
+        root.setProperty("--chat-accent-soft-dark", "color-mix(in srgb, " + accent + " 16%, transparent)");
+        root.setProperty(
+          "--chat-user-bubble-dark",
+          "linear-gradient(135deg, color-mix(in srgb, " + accent + " 78%, #000) 0%, color-mix(in srgb, " + accent + " 58%, #000) 100%)"
+        );
+        if (!theme["--chat-link"]) {
+          root.setProperty("--chat-link-dark", readableBrand(accent, "#132433", true));
+        }
+      }
+
+      function parseHexColor(value) {
+        const m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(value || "").trim());
+        if (!m) return null;
+        let h = m[1];
+        if (h.length === 3) h = h.split("").map((c) => c + c).join("");
+        return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+      }
+
+      function relativeLuminance(rgb) {
+        const lin = rgb.map((v) => {
+          const c = v / 255;
+          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+      }
+
+      function contrastRatio(a, b) {
+        const la = relativeLuminance(a);
+        const lb = relativeLuminance(b);
+        return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+      }
+
+      // The brand colour, moved toward black (light bubble) or white (dark
+      // bubble) just far enough to reach 4.5:1 against the bubble.
+      function readableBrand(accent, background, towardWhite) {
+        const base = parseHexColor(accent);
+        const bg = parseHexColor(background);
+        if (!base || !bg) {
+          return "color-mix(in srgb, " + accent + (towardWhite ? " 55%, #fff)" : " 55%, #000)");
+        }
+        const target = towardWhite ? 255 : 0;
+        for (let step = 0; step <= 20; step += 1) {
+          const t = step / 20;
+          const rgb = base.map((v) => Math.round(v + (target - v) * t));
+          if (contrastRatio(rgb, bg) >= 4.5 || step === 20) {
+            return "#" + rgb.map((v) => v.toString(16).padStart(2, "0")).join("");
+          }
+        }
+        return accent;
       }
 
       function hydrateState() {
@@ -1470,6 +1543,27 @@
           const responseData = await postUserMessage(text);
           clearTypingIndicator();
 
+          // The gate held this message for a person (the conversation is with a
+          // teammate, or the AI is paused). It answers every such message with
+          // the same "a team member will reply here shortly" line, which said
+          // once is reassuring and said after every message reads as a bot that
+          // is not listening. Show it once per conversation. The echo is still
+          // registered each time, so a copy the server stored is absorbed by the
+          // poll rather than shown.
+          if (responseData && typeof responseData === "object" && responseData.held_for_operator === true) {
+            const heldText = typeof responseData.reply_text === "string" ? responseData.reply_text.trim() : "";
+            const heldKey = DigitiviaChatWidget.config.storagePrefix + ":heldNoticeFor";
+            const thread = DigitiviaChatWidget.state.conversationId || DigitiviaChatWidget.state.sessionId;
+            if (heldText) {
+              registerLocalEcho(heldText);
+              if (safeGetLocalStorage(heldKey) !== thread) {
+                safeSetLocalStorage(heldKey, thread);
+                addMessage("assistant", heldText);
+              }
+            }
+            return;
+          }
+
           if (responseData && typeof responseData === "object" && responseData.reply_allowed === false) {
             // Temporary block (e.g. org out of AI credits): the gate sends the
             // customer-facing text in reply_text — show it as a normal message
@@ -1480,11 +1574,14 @@
               addMessage("assistant", softBlockText);
               return;
             }
+            // The gate's own wording is used only when it is a sentence in the
+            // visitor's language; a reason code or an English default in front
+            // of an Arabic visitor falls back to the widget's localised copy.
             setBlockedState(true, {
-              title: responseData.ui_state?.title || responseData.blocked_title || DigitiviaChatWidget.config.blockedTitle,
-              message: responseData.ui_state?.message || responseData.ui_state?.body || responseData.reason || DigitiviaChatWidget.config.blockedMessage,
-              ctaLabel: responseData.blocked_cta?.label || responseData.ui_state?.cta_label || DigitiviaChatWidget.config.ctaLabel,
-              ctaUrl: responseData.blocked_cta?.url || responseData.ui_state?.cta_url || DigitiviaChatWidget.config.ctaUrl,
+              title: visitorText(responseData.ui_state?.title || responseData.blocked_title),
+              message: visitorText(responseData.ui_state?.message || responseData.ui_state?.body || responseData.reason),
+              ctaLabel: responseData.blocked_cta?.label || responseData.ui_state?.cta_label || "",
+              ctaUrl: responseData.blocked_cta?.url || responseData.ui_state?.cta_url || "",
               appendMessage: true,
               persist: true
             });
@@ -1698,10 +1795,10 @@
 
       function appendBlockedMessage(options) {
         const settings = Object.assign({
-          title: DigitiviaChatWidget.config.blockedTitle,
-          message: DigitiviaChatWidget.config.blockedMessage,
-          ctaLabel: DigitiviaChatWidget.config.ctaLabel,
-          ctaUrl: DigitiviaChatWidget.config.ctaUrl,
+          title: "",
+          message: "",
+          ctaLabel: "",
+          ctaUrl: "",
           persist: true,
           appendMessage: true
         }, options || {});
@@ -1797,47 +1894,50 @@
         return results;
       }
 
+      // How long the wait has to run before the bubble admits it is slow.
+      const TYPING_SLOW_MS = 6000;
+
       function showTypingIndicator(waitingStates) {
+        // never stack two, and never leave a timer from a previous wait running
+        clearTypingIndicator();
+        const labels = DigitiviaChatWidget.config.labels;
         const row = document.createElement("div");
         row.className = "hs-chat-row assistant";
         row.dataset.typing = "true";
-        const statuses = Array.isArray(waitingStates) && waitingStates.length ? waitingStates : ["Thinking..."];
-        DigitiviaChatWidget.state.typingIndex = 0;
         row.innerHTML = `
-          <div class="hs-chat-bubble" role="status" aria-atomic="true" aria-label="${escapeHtml(DigitiviaChatWidget.config.labels.typing)}">
-            <span class="hs-chat-typing">
-              <span class="hs-chat-typing-visual" aria-hidden="true">
-                <span class="hs-chat-dot"></span>
-                <span class="hs-chat-dot"></span>
-                <span class="hs-chat-dot"></span>
-              </span>
-              <span class="hs-chat-typing-meta">
-                <span class="hs-chat-typing-text" dir="auto">${escapeHtml(statuses[0])}</span>
-                <span class="hs-chat-typing-bar" aria-hidden="true"></span>
-              </span>
+          <div class="hs-chat-bubble hs-chat-bubble-typing" role="status" aria-atomic="true" aria-label="${escapeHtml(labels.typing)}">
+            <span class="hs-chat-typing" aria-hidden="true">
+              <span class="hs-chat-dot"></span>
+              <span class="hs-chat-dot"></span>
+              <span class="hs-chat-dot"></span>
             </span>
           </div>
         `;
         DigitiviaChatWidget.refs.messages.appendChild(row);
-        const textEl = row.querySelector(".hs-chat-typing-text");
-        DigitiviaChatWidget.state.typingTicker = window.setInterval(() => {
-          if (!textEl) return;
-          // Gently fade the current line out, swap the copy, fade it back in —
-          // so the reassurance reads as alive, not a hard flicker.
-          textEl.classList.add("is-swapping");
-          window.setTimeout(() => {
-            DigitiviaChatWidget.state.typingIndex = (DigitiviaChatWidget.state.typingIndex + 1) % statuses.length;
-            textEl.textContent = statuses[DigitiviaChatWidget.state.typingIndex];
-            textEl.classList.remove("is-swapping");
-          }, 300);
-        }, 2300);
+
+        // One line, once, after a long wait. The merchant's own first waiting
+        // line is used only when they really changed it from the built-in.
+        const first = Array.isArray(waitingStates) && waitingStates.length ? String(waitingStates[0] || "").trim() : "";
+        const customised = first && BUILT_IN_WAITING_FIRST.indexOf(waitingStates[0]) === -1;
+        const lateText = customised ? first : labels.typingSlow;
+        DigitiviaChatWidget.state.typingSlowTimer = window.setTimeout(() => {
+          DigitiviaChatWidget.state.typingSlowTimer = null;
+          if (!row.isConnected || !lateText) return;
+          const late = document.createElement("p");
+          late.className = "hs-chat-typing-late";
+          late.setAttribute("role", "status");
+          late.setAttribute("dir", "auto");
+          late.textContent = lateText;
+          row.appendChild(late);
+          scrollToBottom(true);
+        }, TYPING_SLOW_MS);
         scrollToBottom(true);
       }
 
       function clearTypingIndicator() {
-        if (DigitiviaChatWidget.state.typingTicker) {
-          clearInterval(DigitiviaChatWidget.state.typingTicker);
-          DigitiviaChatWidget.state.typingTicker = null;
+        if (DigitiviaChatWidget.state.typingSlowTimer) {
+          clearTimeout(DigitiviaChatWidget.state.typingSlowTimer);
+          DigitiviaChatWidget.state.typingSlowTimer = null;
         }
         const existing = DigitiviaChatWidget.refs.messages.querySelector('[data-typing="true"]');
         if (existing) existing.remove();
@@ -1917,18 +2017,58 @@
         DigitiviaChatWidget.refs.messages.appendChild(row);
       }
 
+      // Blocked copy in the visitor's language. A title or message the merchant
+      // set in their own config wins; the built-in English defaults give way
+      // to the localised labels.
+      function blockedCopy(field) {
+        const cfg = DigitiviaChatWidget.config;
+        const builtIn = {
+          blockedTitle: "Chat is unavailable right now",
+          blockedMessage: "This website chat is not available for this site or subscription at the moment.",
+          blockedBadge: "Temporarily unavailable"
+        };
+        const own = String(cfg[field] || "").trim();
+        if (own && own !== builtIn[field]) return own;
+        return (cfg.labels && cfg.labels[field]) || own || builtIn[field];
+      }
+
+      // Server wording, kept only when it is a sentence in the visitor's
+      // language. A bare code ("widget_disabled") is never shown.
+      function visitorText(value) {
+        const text = String(value || "").trim();
+        if (!text || /^[a-z0-9_.:-]+$/i.test(text)) return "";
+        const hasArabic = /[\u0600-\u06FF]/.test(text);
+        return (detectLang() === "ar") === hasArabic ? text : "";
+      }
+
+      // The merchant's own link, or none. A Digitivia address is never a next
+      // step for someone visiting a merchant's site.
+      function blockedCta(message) {
+        const url = String(message.ctaUrl || DigitiviaChatWidget.config.blockedCtaUrl || "").trim();
+        if (!/^https?:\/\//i.test(url)) return null;
+        try {
+          const host = new URL(url).hostname.toLowerCase();
+          if (host === "digitivia.com" || host.endsWith(".digitivia.com")) return null;
+        } catch (_err) {
+          return null;
+        }
+        const label = String(message.ctaLabel || DigitiviaChatWidget.config.blockedCtaLabel || "").trim();
+        return label ? { url, label } : null;
+      }
+
       function buildBlockedCard(message) {
         const card = document.createElement("article");
         card.className = "hs-chat-blocked-card";
+        const cta = blockedCta(message);
         card.innerHTML = `
-          <div class="hs-chat-blocked-badge">${escapeHtml(DigitiviaChatWidget.config.blockedBadge)}</div>
+          <div class="hs-chat-blocked-badge">${escapeHtml(blockedCopy("blockedBadge"))}</div>
           <div>
-            <h3 class="hs-chat-blocked-title" dir="auto">${escapeHtml(message.title || DigitiviaChatWidget.config.blockedTitle)}</h3>
-            <p class="hs-chat-blocked-text" dir="auto">${escapeHtml(message.content || DigitiviaChatWidget.config.blockedMessage)}</p>
+            <h3 class="hs-chat-blocked-title" dir="auto">${escapeHtml(message.title || blockedCopy("blockedTitle"))}</h3>
+            <p class="hs-chat-blocked-text" dir="auto">${escapeHtml(message.content || blockedCopy("blockedMessage"))}</p>
           </div>
-          <div class="hs-chat-blocked-actions">
-            <a class="hs-chat-cta" href="${escapeHtml(message.ctaUrl || DigitiviaChatWidget.config.ctaUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(message.ctaLabel || DigitiviaChatWidget.config.ctaLabel)}</a>
-          </div>
+          ${cta ? `<div class="hs-chat-blocked-actions">
+            <a class="hs-chat-cta" href="${escapeHtml(cta.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(cta.label)}</a>
+          </div>` : ""}
         `;
         return card;
       }

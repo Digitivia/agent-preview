@@ -350,6 +350,13 @@
 
     const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (ch) => (
         { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    // "A", "A and B", "A, B and C": a list read the way a person says it.
+    const joinNames = (names) => {
+        const list = (names || []).filter(Boolean);
+        if (list.length < 2) return list.join('');
+        return list.slice(0, -1).join(tr('meta_connect.list_sep', ', '))
+            + tr('meta_connect.list_and', ' and ') + list[list.length - 1];
+    };
     const fill = (s, vars) => String(s).replace(/\{(\w+)\}/g, (m, k) => (
         vars && vars[k] != null ? String(vars[k]) : m));
 
@@ -467,6 +474,9 @@
     function forgetMetaCount() {
         metaCountCache = { orgId: null, at: 0, promise: null };
         forgetActiveRows();
+        // Every connect and disconnect: say at once whether a connection is
+        // still broken (or that it no longer is).
+        setTimeout(() => { try { checkConnections(true); } catch (_) { /* cosmetic */ } }, 0);
     }
 
     function isHighTrafficOrg(connectedCount) {
@@ -552,6 +562,12 @@
 @keyframes mc-shimmer{to{background-position:-200% 0}}
 .mc-card-desc,.mc-card-helper{margin:0 0 8px;max-width:72ch;font-size:var(--sp-t-sm,.8125rem);line-height:1.55;color:var(--sp-ink-2,var(--text-secondary))}
 .mc-card-desc:empty,.mc-card-helper:empty{display:none}
+.mc-onelist{margin:12px 0 0;max-width:72ch;font-size:var(--sp-t-sm,.8125rem);line-height:1.55;color:var(--sp-ink-2,var(--text-secondary))}
+.mc-lost-again{display:block;margin-top:8px}
+#meta-connection-banner{background:#dc2626;color:#fff;flex-wrap:nowrap}
+#meta-connection-banner > span{flex:0 1 auto;min-width:0}
+#meta-connection-banner .mcb-go{background:#fff;color:#111;border:none;border-radius:6px;padding:5px 12px;font-weight:700;cursor:pointer;white-space:nowrap}
+#meta-connection-banner .mcb-close{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;width:26px;height:26px;font-size:1.1rem;line-height:1;font-weight:700;cursor:pointer;flex:0 0 auto}
 .mc-card-body{margin-top:12px}
 .mc-card-body > .lp-btn{min-height:44px;padding:10px 20px}
 .mc-callout{padding:10px 12px;border-radius:var(--sp-r-md,10px);font-size:var(--sp-t-sm,.8125rem);line-height:1.55;background:var(--sp-warn-soft,rgba(245,158,11,.1));color:var(--sp-warn-ink,var(--text-primary))}
@@ -825,6 +841,15 @@
                 handleConnect(card, platform);
             });
         }
+        if (!isWA) {
+            // Said before Facebook's window opens: the one rule that keeps a
+            // connect here from switching off a Page in another workspace.
+            const one = document.createElement('p');
+            one.className = 'mc-onelist';
+            one.textContent = tr('meta_connect.one_list_note',
+                "Using one Facebook account for more than one workspace? In the Facebook window, tick all your Pages, including the ones in your other workspaces. Next, you choose only the Pages for this workspace. This keeps all your workspaces working.");
+            body.appendChild(one);
+        }
         paintBadges();
     }
 
@@ -927,8 +952,12 @@
         if (attention) {
             const detail = document.createElement('div');
             detail.className = 'mc-account-detail';
-            detail.textContent = fill(tr('meta_connect.attention_detail',
-                '{name} stopped answering. Reconnect to fix it.'), { name: label });
+            const h = row.meta && row.meta.webhook_health;
+            detail.textContent = (h && h.status === 'token_invalid')
+                ? fill(tr('meta_connect.attention_token_invalid',
+                    "{name} is disconnected, so the AI is not replying to its messages or comments, and Live Insights and Content Studio are paused for it. This usually happens after the same Facebook account is connected in another workspace. Click Reconnect and tick it in the Facebook window."), { name: label })
+                : fill(tr('meta_connect.attention_detail',
+                    '{name} stopped answering. Reconnect to fix it.'), { name: label });
             main.appendChild(detail);
         }
         item.appendChild(main);
@@ -1132,6 +1161,7 @@
             preselect: options.preselect || '',
             fromKnownPages: !!(discovery && discovery.from_known_pages),
             lostPages: (discovery && Array.isArray(discovery.lost_pages)) ? discovery.lost_pages : [],
+            lostElsewhere: (discovery && Array.isArray(discovery.lost_elsewhere)) ? discovery.lost_elsewhere : [],
             reconnect: () => handleConnect(card, platform, options),
         });
     }
@@ -1176,6 +1206,9 @@
             // and everything else cannot be fixed by picking it.
             const blocked = blockedState(page);
             if (blocked && state !== 'connected') state = blocked;
+            // Held by another workspace: ticking it in Facebook keeps it
+            // working there, and it is never connected here as well.
+            else if (page.held_elsewhere === true && (state === 'new' || state === 'needs_plan')) state = 'elsewhere';
             return { page, id, state };
         });
         const selectable = items.filter((it) => it.state === 'new' || it.state === 'reconnect');
@@ -1185,6 +1218,7 @@
             <div class="mc-picker-title"></div>
             <div class="mc-picker-note" hidden></div>
             <div class="mc-picker-note mc-picker-lost" role="status" hidden></div>
+            <div class="mc-picker-note mc-picker-lost-elsewhere" role="status" hidden></div>
             <div class="mc-picker-list" role="list"></div>
             <div class="mc-picker-actions">
               <button type="button" class="lp-btn lp-btn-primary mc-picker-go" disabled></button>
@@ -1213,7 +1247,34 @@
             lostNote.hidden = false;
             lostNote.textContent = fill(tr('meta_connect.lost_pages_note',
                 'This Facebook login no longer includes: {names}. They were connected before and have stopped working. Connect again and tick them too.'),
-            { names: lost.join(tr('meta_connect.list_sep', ', ')) });
+            { names: joinNames(lost) });
+        }
+        // The same login switched off connections in OTHER workspaces of this
+        // person (Facebook's list is per Facebook account, not per workspace).
+        const elsewhere = (opts.lostElsewhere || []).map((w) => {
+            const names = ((w && w.pages) || []).map((pg) => String((pg && pg.name) || '')).filter(Boolean);
+            if (!names.length) return '';
+            const where = (w && w.workspace)
+                ? fill(tr('meta_connect.workspace_named', "your {name} workspace"), { name: String(w.workspace) })
+                : tr('meta_connect.workspace_other', "another workspace");
+            return fill(tr('meta_connect.lost_elsewhere_note',
+                "Heads up: this login also disconnected {names} in {workspace}. The AI stopped replying to messages and comments there, and Live Insights and Content Studio stopped too. To bring it back, click Connect again and tick all your Pages in the Facebook window. You will still choose only this workspace's Pages next."),
+            { names: joinNames(names), workspace: where });
+        }).filter(Boolean);
+        if (elsewhere.length) {
+            const note = body.querySelector('.mc-picker-lost-elsewhere');
+            note.hidden = false;
+            for (const line of elsewhere) {
+                const p = document.createElement('div');
+                p.textContent = line;
+                note.appendChild(p);
+            }
+            const again = document.createElement('button');
+            again.type = 'button';
+            again.className = 'lp-btn lp-btn-outline mc-lost-again';
+            again.textContent = tr('meta_connect.connect_again', 'Connect again');
+            again.addEventListener('click', () => { if (opts.reconnect) opts.reconnect(); });
+            note.appendChild(again);
         }
         const list = body.querySelector('.mc-picker-list');
         const go = body.querySelector('.mc-picker-go');
@@ -1240,7 +1301,7 @@
         items.forEach((it, idx) => {
             try {
                 const blocked = it.state === 'not_granted' || it.state === 'token_invalid';
-                const disabled = it.state === 'connected' || it.state === 'needs_plan' || blocked;
+                const disabled = it.state === 'connected' || it.state === 'needs_plan' || it.state === 'elsewhere' || blocked;
                 const ig = it.page.instagram_business_account;
                 const pic = isIG
                     ? ((ig && ig.profile_picture_url) || '')
@@ -1273,6 +1334,7 @@
                 note.textContent = it.state === 'connected' ? tr('meta_connect.already_connected', 'Already connected')
                     : it.state === 'reconnect' ? tr('meta_connect.reconnect', 'Reconnect')
                     : it.state === 'needs_plan' ? tr('meta_connect.needs_plan', 'Needs a plan')
+                    : it.state === 'elsewhere' ? tr('meta_connect.held_elsewhere', "In another workspace")
                     : '';
                 const box = pick.querySelector('input');
                 if (box) {
@@ -1881,6 +1943,142 @@
     }
 
     // ============================================================
+    //   APP-WIDE NOTICE: A FACEBOOK CONNECTION STOPPED
+    // ============================================================
+    // A Page or Instagram connection Facebook no longer accepts stops far more
+    // than one screen: the AI cannot reply to its messages or comments, and
+    // Live Insights and Content Studio cannot load it. The usual cause is the
+    // same Facebook account connecting Pages in another workspace and leaving
+    // this one unticked (Facebook keeps one Page list per Facebook account and
+    // every login replaces it). So it is said on every screen, in the top bar
+    // stack (#meta-connection-banner in TOP_BAR_STACK), not only on Insights.
+    //
+    // meta-token-manager `connection_check` asks Meta about each stored token
+    // and marks a dead one token_invalid, so its card offers Reconnect too.
+    // Asked once per workspace every 10 minutes at most, and again after every
+    // connect or disconnect here. Purely decorative for the boot path: every
+    // step is guarded, and a failed check shows nothing.
+    const CONN_CHECK_EVERY_MS = 10 * 60 * 1000;
+    let connCheck = { orgId: null, at: 0, inFlight: false, broken: [] };
+    // Kept in memory as well: with storage blocked a dismissal still holds.
+    let connBannerDismissed = '';
+
+    function connBannerKey(broken) {
+        return broken.map((b) => `${b.platform}:${b.id}`).sort().join(',');
+    }
+
+    function removeConnectionBanner() {
+        const el = document.getElementById('meta-connection-banner');
+        if (!el) return;
+        el.remove();
+        try { if (typeof window.layoutTopBars === 'function') window.layoutTopBars(); } catch (_) { /* cosmetic */ }
+    }
+
+    function renderConnectionBanner(broken) {
+        if (!broken || !broken.length) { removeConnectionBanner(); return; }
+        const key = connBannerKey(broken);
+        let dismissed = connBannerDismissed;
+        try { dismissed = sessionStorage.getItem('meta_conn_banner_dismissed') || dismissed; } catch (_) { /* storage blocked */ }
+        if (dismissed === key) { removeConnectionBanner(); return; }
+        ensureStyles();
+        let el = document.getElementById('meta-connection-banner');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'meta-connection-banner';
+            el.className = 'app-notice-bar';
+            el.setAttribute('role', 'alert');
+            el.style.cssText = 'position:fixed;left:0;right:0;z-index:99998;';
+            document.body.appendChild(el);
+        }
+        const names = joinNames(broken.map((b) => accountLabel(b.platform, { account_name: b.name })));
+        el.innerHTML = '';
+        el.dataset.key = key;
+        const span = document.createElement('span');
+        span.textContent = fill(broken.length === 1
+            ? tr('meta_connect.banner_broken_one', "{names} is disconnected, so the AI is not replying to its messages or comments, and Live Insights and Content Studio are paused for it. Click Reconnect to fix it. It takes about a minute.")
+            : tr('meta_connect.banner_broken_many', "{names} are disconnected, so the AI is not replying to their messages or comments, and Live Insights and Content Studio are paused for them. Click Reconnect to fix it. It takes about a minute."),
+        { names });
+        el.appendChild(span);
+        const go = document.createElement('button');
+        go.type = 'button';
+        go.className = 'mcb-go';
+        go.textContent = tr('meta_connect.reconnect', 'Reconnect');
+        go.addEventListener('click', () => {
+            const platform = broken[0].platform === 'instagram' ? 'instagram' : 'page';
+            forgetActiveRows();
+            goToTab(platform);
+            setTimeout(() => {
+                try {
+                    const card = document.getElementById(`${platform}-connect-card`);
+                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (_) { /* cosmetic */ }
+            }, 300);
+        });
+        el.appendChild(go);
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'mcb-close';
+        close.setAttribute('aria-label', tr('meta_connect.banner_dismiss', 'Dismiss'));
+        close.textContent = '×';
+        close.addEventListener('click', () => {
+            connBannerDismissed = key;
+            try { sessionStorage.setItem('meta_conn_banner_dismissed', key); } catch (_) { /* storage blocked */ }
+            removeConnectionBanner();
+        });
+        el.appendChild(close);
+        try { if (typeof window.layoutTopBars === 'function') window.layoutTopBars(); } catch (_) { /* cosmetic */ }
+    }
+
+    async function checkConnections(force) {
+        try {
+            if (!orgReady()) return;
+            const orgId = window.currentUserOrgId;
+            if (connCheck.orgId !== orgId) {
+                // Another workspace is open: what was said about the last one
+                // must not stay on screen.
+                connCheck = { orgId, at: 0, inFlight: false, broken: [] };
+                removeConnectionBanner();
+            }
+            if (connCheck.inFlight) return;
+            if (!force && connCheck.at && Date.now() - connCheck.at < CONN_CHECK_EVERY_MS) return;
+            connCheck.inFlight = true;
+            let out = null;
+            try {
+                const res = await fetch(META_TOKEN_URL(), {
+                    method: 'POST',
+                    headers: await getSessionAuthHeaders(),
+                    body: JSON.stringify({ action: 'connection_check', org_id: orgId }),
+                });
+                out = res && res.ok ? await res.json() : null;
+            } finally {
+                connCheck.inFlight = false;
+                // A failed check waits the same 10 minutes: never a retry storm.
+                if (connCheck.orgId === orgId) connCheck.at = Date.now();
+            }
+            if (window.currentUserOrgId !== orgId || !out || out.success !== true) return;
+            const broken = Array.isArray(out.broken)
+                ? out.broken.filter((b) => b && (b.platform === 'page' || b.platform === 'instagram'))
+                : [];
+            const changed = connBannerKey(broken) !== connBannerKey(connCheck.broken);
+            connCheck.broken = broken;
+            // A row just marked token_invalid must read Reconnect on its card.
+            if (changed) forgetActiveRows();
+            renderConnectionBanner(broken);
+        } catch (e) {
+            console.warn('[meta-connect] connection check', e);
+        }
+    }
+    window.checkMetaConnections = checkConnections;
+
+    function watchConnections() {
+        // The workspace resolves after boot, and may be switched later; a
+        // cheap local look every few seconds, a network call only when due.
+        setInterval(() => { if (!document.hidden) checkConnections(false); }, 5000);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) checkConnections(false); });
+        checkConnections(false);
+    }
+
+    // ============================================================
     //   BOOT
     // ============================================================
     function boot() {
@@ -1892,6 +2090,7 @@
             setTimeout(tryWrap, 200);
         })();
         try { watchTabs(); } catch (e) { console.warn('[meta-connect] tab watcher', e); }
+        try { watchConnections(); } catch (e) { console.warn('[meta-connect] connection watcher', e); }
     }
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', boot);

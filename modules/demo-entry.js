@@ -15,7 +15,7 @@
             a.textContent = ar ? 'عرض الواجهة التجريبي' : 'UI Demo';
             a.title = ar ? 'نسخة تفاعلية بدون أي اتصال بالنظام الحقيقي' : 'Interactive demo, no connection to the real system';
             a.setAttribute('data-preview-only', 'true');
-            a.style.cssText = 'position:fixed;inset-block-start:6px;inset-inline:0;margin-inline:auto;width:max-content;z-index:60;padding:4px 12px;border-radius:999px;background:#18174e;color:#fff;font:600 12px/1.5 system-ui,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.35);opacity:.9';
+            a.style.cssText = 'position:fixed;inset-block-start:6px;inset-inline:0;margin-inline:auto;width:max-content;z-index:3001;padding:4px 12px;border-radius:999px;background:#18174e;color:#fff;font:600 12px/1.5 system-ui,sans-serif;text-decoration:none;border:1px solid rgba(255,255,255,.35);opacity:.9';
             document.body.appendChild(a);
         } catch (_) { /* decorative: never block the app */ }
     }

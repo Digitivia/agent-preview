@@ -296,6 +296,14 @@
     async function mount(slot) {
         const agent = slot.getAttribute('data-agent');
         if (!AGENT_IDS.includes(agent) || slot.hasAttribute('data-ar-mounted') || !sb() || !orgId()) return;
+        // The integrated studio (modules/agent-studio.js) asks the server whether
+        // this account may use the new UI. Until that answer arrives we must not
+        // paint, otherwise the two cards would fight for the same slot.
+        if (window.AgentStudioPending) { setTimeout(() => mountAll(), 400); return; }
+        // When the studio is allowed it owns this slot: it renders the same role
+        // choice as part of the capabilities multi-select, so this card must
+        // not also appear.
+        if (window.AgentStudio && window.AgentStudio.ownsRoleSlot) return;
         slot.setAttribute('data-ar-mounted', '1');
         const data = await loadState();
         const row = data.agents[agent] || null;
@@ -339,6 +347,9 @@
         const repaint = () => document.querySelectorAll('.agent-role-slot[data-ar-mounted]').forEach((slot) => render(slot));
         window.addEventListener('storage', (e) => { if (e.key === 'app_language') repaint(); });
         new MutationObserver(repaint).observe(document.documentElement, { attributes: true, attributeFilter: ['lang', 'dir'] });
+        // The studio answers the server's access question asynchronously; when it
+        // has an answer we may finally paint (or stay out of the way).
+        window.addEventListener('agent-studio:decided', schedule);
     }
 
     window.AgentRole = { mountAll, ROLES, REPLY_LANGS, _states: states };

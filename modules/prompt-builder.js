@@ -158,6 +158,10 @@
         };
     }
     window.pbComputeDiff = computeDiff;
+    // The rebuilt Test Chat replaces the input, so the enhancer has to run
+    // again for the new one. The chat module calls this after it mounts, which
+    // keeps the comparison available without a race.
+    window.pbEnhanceTestChat = enhanceTestChat;
 
     // Diff -> HTML, collapsing long unchanged runs to CONTEXT lines around each
     // change so a 200-line prompt reads as its edits, not as a wall.
@@ -1872,43 +1876,34 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
         unclipSection(input);
 
         // The chat container is overflow:hidden with a fixed height — the
-        // toggle must live BELOW it, never inside, or it gets clipped.
+        // results must live BELOW it, never inside, or they get clipped.
+        //
+        // The "Compare models" switch is deliberately NOT rendered in the Test
+        // Chat any more. It used to appear twice (the rebuilt chat replaces the
+        // old input, so the enhancer ran again and added a second copy), and it
+        // crowded the one screen the owner uses to talk to their agent. The
+        // comparison itself is unchanged and still available — see
+        // window.DigitiviaCompareModels.run(agentId, message).
         const container = input.closest('.chat-container') || input.parentNode;
-        const row = document.createElement('div');
-        row.className = 'pb-compare-toggle';
-        row.innerHTML = `
-<label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;min-width:0;">
-  <input type="checkbox" id="pb-compare-${agentId}" style="accent-color:var(--theme-color);margin-block-start:2px;flex:none;">
-  <span style="min-width:0;">
-    <span style="display:block;font-size:0.82rem;color:var(--text-primary);">${L('Compare models', 'مقارنة النماذج')}</span>
-    <span style="display:block;font-size:0.72rem;color:var(--text-secondary);">${L('One message, a real reply from each model with your data', 'رسالة واحدة ورد حقيقي من كل نموذج ببياناتك')}</span>
-  </span>
-</label>`;
-        container.parentNode.insertBefore(row, container.nextSibling);
-        const benchHost = document.createElement('div');
-        benchHost.id = `pb-bench-host-${agentId}`;
-        row.parentNode.insertBefore(benchHost, row.nextSibling);
+        // The rebuilt chat replaces the input, so the enhancer runs again for
+        // the same agent. Reuse the host instead of adding a second one.
+        let benchHost = document.getElementById(`pb-bench-host-${agentId}`);
+        if (!benchHost) {
+            benchHost = document.createElement('div');
+            benchHost.id = `pb-bench-host-${agentId}`;
+            benchHost.hidden = true;
+            container.parentNode.insertBefore(benchHost, container.nextSibling);
+        }
 
-        // Intercept Enter + the send path only when compare mode is ON.
-        input.addEventListener('keypress', (ev) => {
-            const cb = document.getElementById(`pb-compare-${agentId}`);
-            if (!cb || !cb.checked) return;
-            if (ev.key !== 'Enter') return;
-            ev.preventDefault();
-            ev.stopImmediatePropagation();
-            const text = input.value.trim();
-            if (!text) return;
-            input.value = '';
-            const userDiv = document.createElement('div');
-            userDiv.className = 'message msg-user';
-            userDiv.setAttribute('dir', 'auto');
-            userDiv.textContent = text;
-            history.appendChild(userDiv);
-            history.scrollTop = history.scrollHeight;
-            // Results render BELOW the chat box in normal page flow — the
-            // chat history is a small fixed-height scroll area on mobile.
-            runBench(agentId, text, benchHost);
-        }, true);
+        // One place to run the comparison from, for whoever wants it.
+        window.DigitiviaCompareModels = window.DigitiviaCompareModels || {};
+        window.DigitiviaCompareModels.run = async function (id, text) {
+            const host = document.getElementById(`pb-bench-host-${id}`);
+            const message = String(text == null ? '' : text).trim();
+            if (!host || !message) return null;
+            const ta = document.getElementById(`prompt-${id}`);
+            return runBench(id, message, host);
+        };
     }
 
     // ============================================================

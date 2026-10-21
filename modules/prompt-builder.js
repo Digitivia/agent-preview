@@ -37,6 +37,14 @@
     const DEFAULT_MAX_MESSAGE_CHARS = 120000;
     let MAX_MESSAGE_CHARS = DEFAULT_MAX_MESSAGE_CHARS;
 
+    // Messages one editor session may hold (customer and assistant together). It mirrors
+    // MAX_TURNS in the prompt-builder-chat edge function, which refuses the next request
+    // once a session is full. Al-Alamia Group met that refusal as an unexplained error on
+    // their 13th message (2026-10-17, docs/ops/INCIDENTS-2026-10-19.md), so the editor now
+    // says so two exchanges before it happens and offers to carry the work into a new session.
+    const ED_MAX_TURNS = 24;
+    const ED_WARN_AT_TURNS = 20;
+
     const lang = () => (localStorage.getItem('app_language') || 'en');
     const isAr = () => lang() === 'ar';
     const L = (en, ar) => (isAr() ? ar : en);
@@ -664,6 +672,8 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
 .pbe-stats { margin-inline-start:auto; font-weight:600; font-size:0.7rem; display:inline-flex; gap:8px;
   font-variant-numeric:tabular-nums; }
 .pbe-stat-add { color:var(--pbc-ok); }
+.pbe-stats.pbe-saved-at { color:var(--pbc-ok); }
+.pbe-session-note .pbe-btn { margin-top:8px; }
 .pbe-stat-del { color:var(--pbc-err); }
 .pbe-tabs { display:flex; gap:6px; padding:8px 14px 0; }
 .pbe-tab { padding:5px 12px; border-radius:999px; font-size:0.74rem; cursor:pointer;
@@ -1236,7 +1246,17 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
         // reply's full revised prompt is diffed against the base locally and
         // saved through the same prompt-assistant apply path as the builder.
         const ed = { base: '', msgs: [], sending: false, quota: null, revised: null,
-                     truncated: false, view: 'diff', saved: false };
+                     truncated: false, view: 'diff', saved: false,
+                     // The unsaved draft a "continue in a new session" carries forward: the AI edits
+                     // this text, while the diff card still compares it with the live prompt (base).
+                     seed: null,
+                     // When the last save happened and how long the saved text was (the saved card).
+                     savedAt: null, savedChars: 0 };
+
+        // Messages the server will count for this session: the real turns, not local notes or errors.
+        function edTurns() {
+            return ed.msgs.filter((m) => !m.local && !m.err && !m.note).length;
+        }
 
         function edSeededContent(text) {
             return [
@@ -1244,7 +1264,7 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                 'Apply exactly the changes I ask for and keep every other line intact.',
                 '',
                 '----- CURRENT PROMPT START -----',
-                ed.base,
+                ed.seed || ed.base,
                 '----- CURRENT PROMPT END -----',
                 '',
                 `My request: ${text}`,
@@ -1293,6 +1313,53 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
             const inputEl = editBody.querySelector('.pbc-input-row textarea');
             const sendBtn = editBody.querySelector('.pbc-send');
 
+            // What the card says once the text is live. The change counts are useless here: the saved
+            // text is also the base, so they always read +0 -0, which looked like "nothing was saved"
+            // (Al-Alamia Group, 2026-10-17). A time and a length say what happened.
+            function edSavedLabel() {
+                const at = ed.savedAt instanceof Date ? ed.savedAt : new Date();
+                const hhmm = at.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                const n = Number(ed.savedChars || 0).toLocaleString('en-US');
+                return L(`Saved at ${hhmm}, ${n} characters`, `تم الحفظ الساعة ${hhmm}، ${n} حرف`);
+            }
+
+            // Two exchanges before the session is full: say so, and offer to carry on in a new one.
+            function edSessionNote() {
+                const turns = edTurns();
+                if (ed.sending || turns < ED_WARN_AT_TURNS) return '';
+                const left = Math.max(0, Math.floor((ED_MAX_TURNS - turns) / 2));
+                const q = ed.quota;
+                const sessionsLeft = q ? Math.max(0, (q.limit || 0) - (q.used || 0)) : null;
+                const canStart = sessionsLeft === null || sessionsLeft > 0;
+                const head = left > 0
+                    ? L(`This session has used ${turns} of ${ED_MAX_TURNS} messages, so about ${left} more request${left === 1 ? '' : 's'} will fit.`,
+                        `استخدمت هذه الجلسة ${turns} من ${ED_MAX_TURNS} رسالة، فيتّسع لحوالي ${left} طلب إضافي.`)
+                    : L(`This session is full (${ED_MAX_TURNS} of ${ED_MAX_TURNS} messages).`, `امتلأت هذه الجلسة (${ED_MAX_TURNS} من ${ED_MAX_TURNS} رسالة).`);
+                const tail = canStart
+                    ? L(`Continue in a new session to keep editing. ${ed.revised && !ed.saved ? 'Your unsaved changes come with you. ' : ''}A new session counts as one of your monthly sessions${sessionsLeft === null ? '' : ` (${sessionsLeft} left)`}.`,
+                        `أكمل في جلسة جديدة لتواصل التعديل. ${ed.revised && !ed.saved ? 'تعديلاتك غير المحفوظة تنتقل معك. ' : ''}الجلسة الجديدة تُحسب من جلساتك الشهرية${sessionsLeft === null ? '' : ` (المتبقي ${sessionsLeft})`}.`)
+                    : L('You have used all your sessions for this month, so a new one cannot start until the month resets.',
+                        'استهلكت كل جلساتك لهذا الشهر، فلا يمكن بدء جلسة جديدة حتى يتجدد الحد.');
+                return `<div class="pbc-row"><div class="pbc-msg note pbe-session-note" dir="auto">${esc(head)} ${esc(tail)}${canStart
+                    ? `<div><button type="button" class="pbe-btn pbe-continue">${L('Continue in a new session', 'أكمل في جلسة جديدة')}</button></div>` : ''}</div></div>`;
+            }
+
+            function edContinueInNewSession() {
+                const draft = (ed.revised && !ed.saved) ? ed.revised : null;
+                ed.truncated = false;
+                inputEl.value = ''; paintInputCount();
+                greet();                                   // new messages; base = the prompt now in the editor
+                ed.seed = draft;
+                if (!draft) { ed.revised = null; ed.saved = false; }   // a saved card belongs to the session that saved it
+                if (draft) {
+                    ed.revised = draft; ed.saved = false;
+                    ed.msgs.push({ role: 'assistant', local: true, note: true, content: L(
+                        'Your unsaved changes were carried into this new session. Nothing is live until you press Save & activate.',
+                        'انتقلت تعديلاتك غير المحفوظة إلى هذه الجلسة الجديدة. لا شيء يصبح فعّالًا حتى تضغط «حفظ وتفعيل».') });
+                }
+                paintMsgs();
+            }
+
             function paintDiffCard() {
                 const card = document.createElement('div');
                 card.className = 'pbe-card' + (ed.saved ? ' pbe-saved' : '');
@@ -1301,7 +1368,9 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
 <div class="pbe-head"><span class="pbe-ic">±</span>${ed.saved
         ? L('Saved — this is now your live prompt', 'تم الحفظ — هذا هو توجيهك الفعّال الآن')
         : L('Proposed changes', 'التعديلات المقترحة')}
-  <span class="pbe-stats"><span class="pbe-stat-add">+${diff.added}</span><span class="pbe-stat-del">−${diff.removed}</span></span>
+  ${ed.saved
+        ? `<span class="pbe-stats pbe-saved-at">${esc(edSavedLabel())}</span>`
+        : `<span class="pbe-stats"><span class="pbe-stat-add">+${diff.added}</span><span class="pbe-stat-del">−${diff.removed}</span></span>`}
 </div>
 <div class="pbe-tabs">
   <span class="pbe-tab ${ed.view === 'diff' ? 'active' : ''}" data-view="diff">${L('Changes', 'التغييرات')}</span>
@@ -1337,7 +1406,7 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                     copyText(ed.revised, L('Edited prompt copied', 'تم نسخ التوجيه المعدَّل'));
                 });
                 card.querySelector('.pbe-discard').addEventListener('click', () => {
-                    ed.revised = null; ed.saved = false;
+                    ed.revised = null; ed.saved = false; ed.seed = null;   // a discarded draft is not what the AI edits next
                     ed.msgs.push({ role: 'assistant', local: true, note: true, content: L(
                         'Changes discarded — your live prompt is untouched. Tell me what to try instead.',
                         'تم تجاهل التعديلات — توجيهك الفعّال لم يتغيّر. قل لي ماذا نجرّب بدلًا منها.') });
@@ -1359,7 +1428,10 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                     try {
                         await persistPromptLive(agentId, promptText);
                         ed.base = promptText;   // future edits diff against what is now live
+                        ed.seed = null;
                         ed.saved = true;
+                        ed.savedAt = new Date();
+                        ed.savedChars = promptText.length;
                         toast(L('Prompt saved — your AI agent is now using the edited version. ✓', 'تم الحفظ — وكيلك الذكي يستخدم النسخة المعدَّلة الآن. ✓'), 'success');
                         paintMsgs();
                     } catch (e) {
@@ -1386,6 +1458,7 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                     </div>`;
                 }).join('')
                 + (ed.sending ? `<div class="pbc-typing" aria-label="${L('Writing…', 'يكتب…')}"><i></i><i></i><i></i></div>` : '')
+                + edSessionNote()
                 + ((!ed.sending && !ed.msgs.some((m) => m.role === 'user')) ? `<div class="pbc-starters">${[
                         L('✂️ Make it shorter and tighter', '✂️ اجعله أقصر وأكثر تركيزًا'),
                         L('🛒 Push more toward closing the sale', '🛒 ركّز أكثر على إتمام البيع'),
@@ -1397,6 +1470,7 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                         if (m) copyText(m.content);
                     });
                 });
+                msgsEl.querySelectorAll('.pbe-continue').forEach((b) => b.addEventListener('click', edContinueInNewSession));
                 msgsEl.querySelectorAll('.pbc-starter').forEach((b) => {
                     b.addEventListener('click', () => {
                         inputEl.value = b.textContent.replace(/^[^ ]+ /, '');
@@ -1562,7 +1636,7 @@ body.pbc-open [class*="cookie"], body.pbc-open [id*="cookie"] { display:none !im
                 paintInputCount();
             });
             editBody.querySelector('.pbc-reset').addEventListener('click', () => {
-                ed.revised = null; ed.truncated = false; ed.saved = false;
+                ed.revised = null; ed.truncated = false; ed.saved = false; ed.seed = null;
                 inputEl.value = ''; paintInputCount();
                 greet();
             });

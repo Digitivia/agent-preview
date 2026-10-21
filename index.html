@@ -2355,6 +2355,12 @@
                 "label_industry": "Industry",
                 "placeholder_industry": "Search or select industry...",
                 "label_offer_type": "What do you offer?",
+                "label_agent_role": "What should your agent do?",
+                "role_sales": "Sales Agent",
+                "role_sales_desc": "Answers product questions, recommends what fits and takes the order.",
+                "role_support": "Customer Service",
+                "role_support_desc": "Solves problems, answers from your policies and passes hard cases to your team.",
+                "role_hint": "You can change this any time. Instructions you write yourself always come first.",
                 "offer_product": "Product",
                 "offer_service": "Service",
                 "label_description": "Describe your products/services",
@@ -4524,6 +4530,12 @@
                 "label_industry": "القطاع",
                 "placeholder_industry": "ابحث أو اختر القطاع...",
                 "label_offer_type": "ماذا تقدّم؟",
+                "label_agent_role": "الإيجنت بتاعك هيعمل إيه؟",
+                "role_sales": "مندوب مبيعات",
+                "role_sales_desc": "بيرد على أسئلة المنتجات، ويرشّحلك المناسب، ويكمّل الطلب.",
+                "role_support": "خدمة عملاء",
+                "role_support_desc": "بيحل المشاكل، ويجاوب من سياساتك، ويحوّل الحالات الصعبة لفريقك.",
+                "role_hint": "تقدر تغيّر ده في أي وقت. التعليمات اللي تكتبها بنفسك دايمًا ليها الأولوية.",
                 "offer_product": "منتجات",
                 "offer_service": "خدمات",
                 "label_description": "وصف منتجاتك/خدماتك",
@@ -29566,6 +29578,15 @@
             font-size: 1.95rem;
         }
 
+        /* Agent role cards reuse the offer buttons, with a title and a one-line description. */
+        .onb-role-btn {
+            align-items: flex-start;
+            text-align: start;
+            gap: 6px;
+        }
+        .onb-role-title { font-weight: 700; }
+        .onb-role-desc { font-weight: 400; font-size: 0.82rem; line-height: 1.45; opacity: 0.8; }
+
         .onb-industry-wrap {
             position: relative;
         }
@@ -41148,7 +41169,7 @@
                 : `toggleSection('${sectionId}')`;
             return `
                 <div class="agent-section-heading">
-                    <button type="button" class="section-header-toggle${isActive ? ' active' : ''}" onclick="${toggleAction}">
+                    <button type="button" class="section-header-toggle${isActive ? ' active' : ''}" onclick="${toggleAction}"${isChat ? ' data-feature="test-chat-v2"' : ''}>
                         <span data-i18n="${escapeHelpHtml(labelKey)}">${escapeHelpHtml(fallbackText)}</span>
                     </button>
                     <div class="agent-section-help">
@@ -42133,6 +42154,15 @@
             'insights-post-comments': { since: '2026-10-10' },
             // Inbox: "Follow-ups stopped: customer booked" with Resume. Hosted on Resume.
             'followup-smart-stop' : { since: '2026-10-07' },
+            // "What should this agent do?" (Sales / Customer Service) on each agent tab and in the
+            // setup wizard's Business step. One release, one marker: the card's title hosts it.
+            'agent-role'          : { since: '2026-10-16', beta: true },
+            // The rebuilt Test Chat (full-width on phones, full-screen mode, reset, real-agent replies).
+            // Hosted on the chat section's header button.
+            'test-chat-v2'        : { since: '2026-10-20' },
+            // "AI-written" follow-up steps on the Follow-ups page (modules/followup-ai.js). Only offered to workspaces
+            // the backend enables it for; the marker sits on the first step's "AI-written" button.
+            'followup-ai'         : { since: '2026-10-21', beta: true },
         });
 
         /**
@@ -46657,9 +46687,13 @@
 
                                 <textarea id="prompt-${agent.id}" class="textarea-locked" readonly data-i18n-placeholder="agent_config.placeholder_prompt" placeholder="Define how your agent should behave..." oninput="checkDirty('${agent.id}')"></textarea>
                                 
+                                <!-- modules/agent-role.js replaces the content of this slot with the role card
+                                     (Sales / Customer Service). The two pills stay as the fallback if it cannot load. -->
+                                <div class="agent-role-slot" data-agent="${agent.id}">
                                 <div class="suggestions">
                                     <button class="pill-btn" onclick="applySuggestion('${agent.id}', 'customer_service')">${t('roles.service')}</button>
                                     <button class="pill-btn" onclick="applySuggestion('${agent.id}', 'sales')">${t('roles.sales')}</button>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -61244,7 +61278,7 @@ Thank you for shopping with {store_name}!</textarea>
             const loadingId = `loading-${Date.now()}`;
             // three-dot bubble; removed by loadingId below exactly as before
             const typingLabel = /^ar/i.test(document.documentElement.lang || '') ? 'جاري الكتابة' : 'Assistant is typing';
-            appendMessage(agentId, 'ai', `<span class="tc-typing" role="status" aria-label="${typingLabel}"><i class="tc-dot"></i><i class="tc-dot"></i><i class="tc-dot"></i></span>`, loadingId);
+            appendMessage(agentId, 'ai', `<span class="tc-typing" role="status" aria-label="${typingLabel}"><i class="tc-dot"></i><i class="tc-dot"></i><i class="tc-dot"></i></span>`, loadingId, true);
 
             try {
                 // 1. Get the fixed session ID for this org + agent chat
@@ -61322,11 +61356,16 @@ Thank you for shopping with {store_name}!</textarea>
             }
         }
 
-        function appendMessage(agentId, sender, text, id = null) {
+        // Messages are TEXT. A reply, or a row read back from test_chat_messages, is never parsed as HTML
+        // (it used to be innerHTML, so a stored message could run script in the owner's session). Only the
+        // fixed typing-dots markup below passes isHtml.
+        function appendMessage(agentId, sender, text, id = null, isHtml = false) {
             const container = document.getElementById(`chat-history-${agentId}`);
+            if (!container) return;
             const div = document.createElement('div');
             div.className = `message ${sender === 'user' ? 'msg-user' : 'msg-ai'} `;
-            div.innerHTML = text;
+            if (isHtml === true) div.innerHTML = text; else div.textContent = String(text == null ? '' : text);
+            div.setAttribute('dir', 'auto');
             if (id) div.id = id;
             container.appendChild(div);
         }
@@ -66751,6 +66790,23 @@ Thank you for shopping with {store_name}!</textarea>
                 .join('');
             modal.classList.add('show');
             if (focusReschedule) setTimeout(() => focusMeetingRescheduleInput(), 50);
+            acknowledgeMeetingRequestOnOpen(meeting);
+        }
+
+        // Opening an AI meeting request that nobody has answered is how a person tells us they have seen it:
+        // the reminders (public.meeting_request_watchdog, the email worker) stop at once. Fire and forget;
+        // the modal never depends on it (2026-10-20, docs/ops/INCIDENTS-2026-10-19.md section 13).
+        function acknowledgeMeetingRequestOnOpen(meeting) {
+            try {
+                const meta = (meeting && meeting.meta) || {};
+                if (meta.ai_request !== true || String(meeting.status || '').toLowerCase() !== 'pending' || meta.acknowledged_at) return;
+                Promise.resolve(supabaseClient.rpc('acknowledge_meeting_request', { p_meeting_id: meeting.id }))
+                    .then((res) => {
+                        if (res && res.error) return;
+                        meeting.meta = { ...meta, acknowledged_at: new Date().toISOString() };
+                    })
+                    .catch(() => {});
+            } catch (_) { /* never let a reminder bookkeeping call disturb the modal */ }
         }
 
         function closeMeetingDetailsModal(event) {
@@ -83451,7 +83507,9 @@ body.hub-lock { overflow: hidden; }
                 template_variables: (s.template_variables && typeof s.template_variables === 'object' && !Array.isArray(s.template_variables))
                     ? Object.fromEntries(Object.entries(s.template_variables)
                         .filter(([k, v]) => /^[0-9]+$/.test(String(k)) && typeof v === 'string'))
-                    : {}
+                    : {},
+                // AI-written step (modules/followup-ai.js). Absent on every ladder saved before it existed.
+                ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: typeof s.ai_goal === 'string' ? s.ai_goal.slice(0, 200) : '' } : {})
             }));
         }
         // legacy single-step: synthesize from the old delay + message fields
@@ -83505,13 +83563,20 @@ body.hub-lock { overflow: hidden; }
         fuCaptureStepMessages();
         const activeChannels = FU_CHANNELS.filter(ch => document.getElementById(`fu-ch-${ch}`)?.checked);
         if (!activeChannels.length) return showToast(fuSafeT('followups.err_pick_channel', 'Select at least one channel'), 'error');
+        // An AI-written step keeps a fixed message as its fallback (AI unavailable, or its text fails the safety checks).
+        if ((fuSteps || []).some(s => s && s.mode === 'ai' && !String(s.message || '').trim() && !String(s.message_ar || '').trim())) {
+            return showToast(currentLang === 'ar'
+                ? 'اكتب رسالة ثابتة لكل متابعة بيكتبها الذكاء الاصطناعي. بتتبعت لو الذكاء الاصطناعي مش متاح.'
+                : 'Write a fixed message for each AI-written follow-up. It is sent if the AI is unavailable.', 'error');
+        }
         const steps = (fuSteps || []).map(s => ({
             wait_minutes: Math.min(Math.max(parseInt(s.wait_minutes, 10) || 60, 1), 43200),
             message: (s.message || '').trim(),
             message_ar: (s.message_ar || '').trim(),
             template_name: (s.template_name || '').trim(),
             template_language: (s.template_language || '').trim(),
-            template_variables: { ...fuStepVars(s) }
+            template_variables: { ...fuStepVars(s) },
+            ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: String(s.ai_goal || '').trim().slice(0, 200) } : {})
         })).filter(s => s.message || s.message_ar);
         // A step past the 24h window sends as a template or not at all, so the
         // template has to be COMPLETE before it is saved. An unfilled {{n}} is
@@ -85362,6 +85427,16 @@ body.hub-lock { overflow: hidden; }
                         </div>
                         <div class="onb-error">${tOnb('onboarding.validation_offer_required')}</div>
                     </div>
+                    <div class="onb-field onb-field-full" id="onb-f-role">
+                        <label id="onb-role-label" data-feature="agent-role">${tOnb('onboarding.label_agent_role')}</label>
+                        <div class="onb-offer-group onb-role-group" role="radiogroup" aria-labelledby="onb-role-label">
+                            ${['sales', 'support'].map((r) => `<button type="button" role="radio" aria-checked="${onbEffectiveAgentRole() === r}" class="onb-offer-btn onb-role-btn ${onbEffectiveAgentRole() === r ? 'selected' : ''}" data-onb-role="${r}" onclick="selectAgentRole('${r}', event)">
+                                <span class="onb-role-title">${tOnb('onboarding.role_' + r)}</span>
+                                <span class="onb-role-desc">${tOnb('onboarding.role_' + r + '_desc')}</span>
+                            </button>`).join('')}
+                        </div>
+                        <div class="onb-hint">${tOnb('onboarding.role_hint')}</div>
+                    </div>
                     <div class="onb-field onb-field-full">
                         <label id="onb-desc-label">${descLabel}</label>
                         <textarea id="onb-description" placeholder="${tOnb('onboarding.placeholder_description')}" oninput="onbData.business.description=this.value;debounceSaveOnb()">${esc(onbData.business.description)}</textarea>
@@ -86230,6 +86305,7 @@ body.hub-lock { overflow: hidden; }
             } else if (onbStep === 1) {
                 if (!onbData.business.industry.trim()) { showFieldError('onb-f-industry'); valid = false; }
                 if (!onbData.business.offer_type) { showFieldError('onb-f-offer'); valid = false; }
+                else ensureAutoAgentRole();
             }
             return valid;
         }
@@ -86283,10 +86359,48 @@ body.hub-lock { overflow: hidden; }
         });
 
         // --- OFFER TYPE ---
+        // --- AGENT ROLE (Sales Agent / Customer Service) ---
+        // One tap, or none: until the owner chooses, the role follows the offer type (products ->
+        // sales, services -> customer service) and is saved as 'auto'. A real choice is saved as
+        // 'user' and is never overwritten by a later change of offer type. The database turns the
+        // role into the agent's persona only for agents with no prompt of their own
+        // (public.resolve_agent_prompt), so this never replaces anything the owner typed.
+        function onbInferAgentRole() {
+            const o = onbData && onbData.business && onbData.business.offer_type;
+            return o === 'product' ? 'sales' : o === 'service' ? 'support' : '';
+        }
+        function onbEffectiveAgentRole() {
+            const b = (onbData && onbData.business) || {};
+            return (b.agent_role === 'sales' || b.agent_role === 'support') ? b.agent_role : onbInferAgentRole();
+        }
+        function ensureAutoAgentRole() {
+            const b = onbData.business;
+            if (b.agent_role_source === 'user' && (b.agent_role === 'sales' || b.agent_role === 'support')) return;
+            const inferred = onbInferAgentRole();
+            if (inferred) { b.agent_role = inferred; b.agent_role_source = 'auto'; }
+        }
+        function paintOnbRoleButtons() {
+            const cur = onbEffectiveAgentRole();
+            document.querySelectorAll('.onb-role-btn').forEach((btn) => {
+                const on = btn.getAttribute('data-onb-role') === cur;
+                btn.classList.toggle('selected', on);
+                btn.setAttribute('aria-checked', on ? 'true' : 'false');
+            });
+        }
+        window.selectAgentRole = function (role) {
+            if (role !== 'sales' && role !== 'support') return;
+            onbData.business.agent_role = role;
+            onbData.business.agent_role_source = 'user';
+            paintOnbRoleButtons();
+            debounceSaveOnb();
+        };
+
         window.selectOfferType = function (type, evt) {
             onbData.business.offer_type = type;
-            document.querySelectorAll('.onb-offer-btn').forEach(b => b.classList.remove('selected'));
+            ensureAutoAgentRole();
+            document.querySelectorAll('.onb-offer-btn:not(.onb-role-btn)').forEach(b => b.classList.remove('selected'));
             if (evt?.currentTarget) evt.currentTarget.classList.add('selected');
+            paintOnbRoleButtons();
             // Update description label
             const lbl = document.getElementById('onb-desc-label');
             if (lbl) lbl.textContent = type === 'product' ? tOnb('onboarding.label_description_product') : type === 'service' ? tOnb('onboarding.label_description_service') : tOnb('onboarding.label_description');
@@ -98966,10 +99080,13 @@ body.hub-lock { overflow: hidden; }
      returning customer keeps running the previous build against a new
      index.html. Regenerate the hash whenever the module changes. -->
 <script src="modules/meta-connect.js?v=f8b03212de"></script>
-<script src="modules/prompt-builder.js?v=c2b44378af"></script>
+<script src="modules/prompt-builder.js?v=0e0be72e27"></script>
 <script src="modules/trial-status.js?v=223c7a9265"></script>
 <script src="modules/entitlements.js?v=b74def0132"></script>
 <script src="modules/model-picker.js?v=127461b4ab"></script>
 <script src="modules/partners-admin.js?v=476552c0e5"></script>
+<script src="modules/agent-role.js?v=abe8831ffd"></script>
+<script src="modules/followup-ai.js?v=b2263bb6ec"></script>
+<script src="modules/test-chat-v2.js?v=0e6032925b"></script>
 
 </html>

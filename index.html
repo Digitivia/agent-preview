@@ -42160,11 +42160,13 @@
             // setup wizard's Business step. One release, one marker: the card's title hosts it.
             'agent-role'          : { since: '2026-10-16', beta: true },
             // The rebuilt Test Chat (full-width on phones, full-screen mode, reset, real-agent replies).
-            // Hosted on the chat section's header button.
-            'test-chat-v2'        : { since: '2026-10-20' },
+            // Hosted on the chat section's header button. It is part of the agent
+            // configuration screen now, not a separate arrival, so it carries no marker.
+            'test-chat-v2'        : { since: '2026-10-20', quiet: true },
             // "AI-written" follow-up steps on the Follow-ups page (modules/followup-ai.js). Only offered to workspaces
-            // the backend enables it for; the marker sits on the first step's "AI-written" button.
-            'followup-ai'         : { since: '2026-10-21', beta: true },
+            // the backend enables it for; the marker sits on the first step's "AI-written" button. The step itself
+            // says what is and is not switched on, so it carries no marker either.
+            'followup-ai'         : { since: '2026-10-21', quiet: true },
         });
 
         /**
@@ -42175,7 +42177,11 @@
          */
         function featureBadgesHTML(key, compact, allowNew = true) {
             const entry = FEATURE_REGISTRY[key];
-            if (!entry) return '';
+            // `quiet` marks a feature that is part of a screen now, not an
+            // arrival to announce. It still has a registry entry (so the
+            // What's New list and the help keys can find it) but it carries no
+            // marker on the page.
+            if (!entry || entry.quiet) return '';
             const ar = currentLang === 'ar';
             const out = [];
 
@@ -46974,9 +46980,10 @@
                                 fallbackText: 'Test Chat Window',
                                 helpKey: 'agent.test_chat',
                                 isChat: true,
+                                isActive: true,
                                 agentId: agent.id
                             })}
-                            <div id="${agent.id}-chat-sec" class="section-content">
+                            <div id="${agent.id}-chat-sec" class="section-content open">
                                 ${renderHelpInlineMarkup('agent.test_chat', { className: 'agent-chat-inline' })}
                                 <div class="chat-container">
                                     <div id="chat-history-${agent.id}" class="chat-history">
@@ -99088,7 +99095,7 @@ body.hub-lock { overflow: hidden; }
 <script src="modules/model-picker.js?v=127461b4ab"></script>
 <script src="modules/partners-admin.js?v=476552c0e5"></script>
 <script src="modules/agent-role.js?v=1949d12779"></script>
-<script src="modules/agent-sim.js?v=9d9fb50fec"></script>
+<script src="modules/agent-sim.js?v=3c09ab9d2f"></script>
 <script src="modules/agent-studio.js?v=4d46251d43"></script>
 <script src="modules/followup-ai.js?v=b33b88a4a4"></script>
 <script src="modules/test-chat-v2.js?v=1ced9e4e80"></script>

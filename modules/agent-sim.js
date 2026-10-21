@@ -203,7 +203,7 @@
         }
         if (RX.salmon.test(text)) {
             return lang === 'ar'
-                ? `السمك الم Salmon خلص من المخزن دلوقتي. المتاح ${CATALOG.tilapia.ar} بـ ${money(CATALOG.tilapia.price, lang)}.`
+                ? `سلمون خلص من المخزن دلوقتي. المتاح ${CATALOG.tilapia.ar} بـ ${money(CATALOG.tilapia.price, lang)}.`
                 : `The salmon is out of stock right now. We have ${CATALOG.tilapia.en} at ${money(CATALOG.tilapia.price, lang)}.`;
         }
         if (RX.tilapia.test(text)) {
@@ -305,7 +305,14 @@
             : ctx.initiative === 'low' ? '' : (lang === 'ar' ? ' تحب أكمّل؟' : ' Want me to continue?');
 
         return {
-            text: (head + body + next + tail).replace(/\s+/g, ' ').trim(),
+            // The parts are joined with a space so two sentences never run into
+            // each other, then the double spaces are cleaned up.
+            text: [head, body, next, tail]
+                .map((p) => String(p || '').trim())
+                .filter(Boolean)
+                .join(' ')
+                .replace(/\s+/g, ' ')
+                .trim(),
             lang,
             intent,
             capability,

@@ -47,6 +47,16 @@
                 'ai_invalid:repeats_last_message': 'It repeated the last message.',
             },
             needFallback: 'Write a fixed message for each AI-written follow-up. It is sent if the AI is unavailable.',
+            aiLang: 'Language',
+            aiLangAuto: 'Match the customer',
+            aiLangAr: 'Arabic',
+            aiLangEn: 'English',
+            aiLangHelp: 'The follow-up speaks the customer\'s language unless you fix it here.',
+            previewTitle: 'Preview only',
+            previewNote: 'This is a sample. Nothing was scheduled, nothing was sent, and nothing was charged.',
+            executionOff: 'AI-written follow-ups are not switched on for sending yet. You can design and save them now; they will not be delivered until the switch is turned on.',
+            stops: 'The AI stops the sequence when the customer replies, opts out, the order or booking is done, the issue is solved, the chat goes quiet, or a human takes over.',
+            stopsTitle: 'When the AI stops',
             errors: {
                 unauthorized: 'Please sign in again and retry.',
                 forbidden: 'You do not have access to this workspace.',
@@ -88,6 +98,16 @@
                 'ai_invalid:repeats_last_message': 'كررت آخر رسالة.',
             },
             needFallback: 'اكتب رسالة ثابتة لكل متابعة بيكتبها الذكاء الاصطناعي. بتتبعت لو الذكاء الاصطناعي مش متاح.',
+            aiLang: 'اللغة',
+            aiLangAuto: 'زي العميل',
+            aiLangAr: 'العربية',
+            aiLangEn: 'الإنجليزية',
+            aiLangHelp: 'المتابعة بتتكلم بلغة العميل إلا لو ثبّتها هنا.',
+            previewTitle: 'معاينة فقط',
+            previewNote: 'دي عيّنة. مفيش حاجة اتجدولت، ومفيش حاجة اتبعتت، ومفيش حاجة اتحسبت.',
+            executionOff: 'متابعات الذكاء الاصطناعي لسه مش متفعّلة للإرسال. تقدر تصمّمها وتحفظها دلوقتي، وهتتبعت لما المفتاح يتشغّل.',
+            stops: 'الذكاء الاصطناعي بيوقف السلسلة لما العميل يرد، أو يوقف استقبال الرسايل، أو الطلب/الحجز يخلص، أو المشكلة تتحل، أو السكوت يطوّل، أو حد من الفريق يتسلّم.',
+            stopsTitle: 'الذكاء الاصطناعي بيقف إمتى',
             errors: {
                 unauthorized: 'سجّل دخول تاني وجرّب.',
                 forbidden: 'مفيش عندك صلاحية على مساحة العمل دي.',
@@ -106,7 +126,8 @@
 
     // ---- who may see it ---------------------------------------------------------------------------------
     let enabledFor = null; // org id the answer is for
-    let enabled = false;
+    let enabled = false;      // the configuration UI is offered here
+    let executionOn = false;  // the AI is actually allowed to send
     async function loadStatus() {
         const org = orgId();
         if (!org || !sb()) return false;
@@ -116,8 +137,14 @@
             const { data, error } = await sb().rpc('followup_ai_status', { p_org_id: org });
             on = !error && !!data && data.enabled === true;
         } catch (_) { on = false; }
-        enabledFor = org; enabled = on;
-        return on;
+        executionOn = on;
+        // The configuration is offered when the workspace may run AI follow-ups
+        // OR when the reviewer account may see the unfinished surface. Sending
+        // stays behind the server flag either way — executionOn is the only
+        // thing that decides that, and this file never changes it.
+        const reviewer = !!(window.AgentStudio && window.AgentStudio.enabled);
+        enabledFor = org; enabled = on || reviewer;
+        return enabled;
     }
 
     const getSteps = () => { try { return Array.isArray(fuSteps) ? fuSteps : null; } catch (_) { return null; } }; // eslint-disable-line no-undef
@@ -160,6 +187,26 @@
         goal.addEventListener('input', () => { const s = getSteps(); if (s && s[i]) s[i].ai_goal = goal.value.slice(0, 200); });
         box.appendChild(goal);
 
+        // Which language the follow-up speaks. "Match the customer" is the
+        // default: the AI writes in the language the customer used.
+        const langId = 'fuai-lang-' + i;
+        const langRow = el('div', { class: 'fuai-row' });
+        langRow.appendChild(el('label', { class: 'fuai-label', for: langId }, t.aiLang));
+        const langSel = el('select', { id: langId, class: 'fuai-scn' });
+        langSel.append(
+            el('option', { value: 'auto' }, t.aiLangAuto),
+            el('option', { value: 'ar' }, t.aiLangAr),
+            el('option', { value: 'en' }, t.aiLangEn),
+        );
+        langSel.value = ['auto', 'ar', 'en'].indexOf(String(step.ai_lang || 'auto')) >= 0 ? String(step.ai_lang || 'auto') : 'auto';
+        langSel.addEventListener('change', () => {
+            const s = getSteps();
+            if (s && s[i]) s[i].ai_lang = langSel.value;
+        });
+        langRow.appendChild(langSel);
+        box.appendChild(langRow);
+        box.appendChild(el('p', { class: 'fuai-small' }, t.aiLangHelp));
+
         const row = el('div', { class: 'fuai-row' });
         const selId = 'fuai-scn-' + i;
         row.appendChild(el('label', { class: 'fuai-label', for: selId }, t.scenario));
@@ -172,7 +219,20 @@
         const out = el('div', { class: 'fuai-out', 'aria-live': 'polite' });
         box.appendChild(out);
         box.appendChild(el('p', { class: 'fuai-small' }, t.notCharged));
-        btn.addEventListener('click', () => runPreview(i, sel.value, btn, out));
+        // The preview is a sample, never a scheduled message. Saying so here
+        // keeps nobody from reading it as "this will be sent".
+        box.appendChild(el('p', { class: 'fuai-small' }, t.previewNote));
+        // The stopping rules are part of the behaviour the owner is buying.
+        const stops = el('details', { class: 'fuai-stops' });
+        stops.appendChild(el('summary', {}, t.stopsTitle));
+        stops.appendChild(el('p', { class: 'fuai-small' }, t.stops));
+        box.appendChild(stops);
+        // The switch that decides whether an AI-written follow-up is actually
+        // delivered lives on the server. It is off, so the owner is told
+        // plainly that designing a step does not schedule it.
+        if (!executionOn) {
+            box.appendChild(el('p', { class: 'fuai-note' }, t.executionOff));
+        }        btn.addEventListener('click', () => runPreview(i, sel.value, btn, out, langSel.value));
         return box;
     }
 
@@ -180,8 +240,13 @@
         const steps = getSteps();
         if (!steps || !steps[i]) return;
         try { fuCaptureStepMessages(); } catch (_) { /* keep what was typed if the page can */ } // eslint-disable-line no-undef
-        if (mode === 'ai') { steps[i].mode = 'ai'; if (typeof steps[i].ai_goal !== 'string') steps[i].ai_goal = ''; }
-        else { delete steps[i].mode; delete steps[i].ai_goal; }
+        if (mode === 'ai') {
+            steps[i].mode = 'ai';
+            if (typeof steps[i].ai_goal !== 'string') steps[i].ai_goal = '';
+            if (typeof steps[i].ai_lang !== 'string') steps[i].ai_lang = 'auto';
+        } else {
+            delete steps[i].mode; delete steps[i].ai_goal; delete steps[i].ai_lang;
+        }
         try { window.fuRenderSteps(); } catch (_) { /* nothing to redraw */ }
     }
 
@@ -202,16 +267,18 @@
     }
 
     // The page's beta sentence (the feature registry says this feature is still in testing), only where it exists.
+    // During the review phase the state is explained where it matters — inside
+    // the AI control, next to the step it belongs to — so the page does not
+    // carry a banner about it.
     function ensureNotice() {
         const page = document.getElementById('followups');
         if (!page) return;
-        let host = page.querySelector(':scope > [data-feature-notice="followup-ai"]');
-        if (!enabled) { if (host) host.remove(); return; }
-        if (!host) { host = el('div', { 'data-feature-notice': 'followup-ai' }); page.insertBefore(host, page.firstChild); }
+        const host = page.querySelector(':scope > [data-feature-notice="followup-ai"]');
+        if (host) host.remove();
     }
 
     // ---- preview -------------------------------------------------------------------------------------
-    async function runPreview(i, scenario, btn, out) {
+    async function runPreview(i, scenario, btn, out, lang) {
         const t = T();
         const steps = getSteps();
         if (!steps || !steps[i]) return;
@@ -226,7 +293,11 @@
             const res = await fetch(supaUrl() + '/functions/v1/followup-ai', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, apikey: supaKey() },
-                body: JSON.stringify({ action: 'preview', org_id: orgId(), platform: activePlatform(), scenario, step_number: i + 1, ai_goal: String(steps[i].ai_goal || '').slice(0, 200) }),
+                body: JSON.stringify({
+                    action: 'preview', org_id: orgId(), platform: activePlatform(), scenario,
+                    step_number: i + 1, ai_goal: String(steps[i].ai_goal || '').slice(0, 200),
+                    language: lang || 'auto',
+                }),
             });
             let body = null;
             try { body = await res.json(); } catch (_) { body = null; }
@@ -238,6 +309,8 @@
             bubble.textContent = String(body.text || '');
             out.appendChild(bubble);
             out.appendChild(el('div', { class: 'fuai-small' }, t.lang + ': ' + (body.language === 'ar' ? t.ar : t.en)));
+            // The sample is clearly a sample: not scheduled, not sent, not charged.
+            out.appendChild(el('div', { class: 'fuai-preview-tag' }, t.previewTitle));
             if (body.valid === false) {
                 const why = (t.reasons && t.reasons[body.reason]) || '';
                 out.appendChild(el('div', { class: 'fuai-warn' }, t.rejected + (why ? ' ' + why : '')));
@@ -262,6 +335,14 @@
 .fuai-mode{min-height:36px;padding:6px 12px;border-radius:8px;border:1px solid var(--border-color,rgba(128,128,128,.4));background:transparent;color:inherit;font:inherit;cursor:pointer}
 .fuai-mode.active{background:var(--accent,#2f6bff);border-color:var(--accent,#2f6bff);color:#fff}
 .fuai-help,.fuai-small{font-size:.78rem;opacity:.75;margin:8px 0 0;line-height:1.5}
+.fuai-preview-tag{display:inline-block;margin-top:8px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(127,127,127,.14);border:1px solid rgba(127,127,127,.3);opacity:.9}
+.fuai-note{margin:10px 0 0;font-size:.76rem;line-height:1.55;padding:9px 11px;border-radius:10px;background:rgba(217,164,65,.12);border:1px solid rgba(217,164,65,.34);color:inherit}
+.fuai-stops{margin:10px 0 0}
+.fuai-stops>summary{cursor:pointer;list-style:none;font-size:.76rem;font-weight:600;opacity:.85;display:flex;align-items:center;gap:6px;user-select:none}
+.fuai-stops>summary::-webkit-details-marker{display:none}
+.fuai-stops>summary::before{content:"\\25B8";transition:transform .15s ease;font-size:.66rem}
+.fuai-stops[open]>summary::before{transform:rotate(90deg)}
+[dir="rtl"] .fuai-stops[open]>summary::before{transform:rotate(-90deg)}
 .fuai-label{display:block;font-size:.8rem;margin:10px 0 4px;opacity:.85}
 .fuai-goal{width:100%;box-sizing:border-box;min-height:38px;padding:6px 10px;border-radius:8px;border:1px solid var(--border-color,rgba(128,128,128,.4));background:transparent;color:inherit;font:inherit}
 .fuai-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
@@ -308,6 +389,13 @@
         addStopReasons();
         wrapRender();
         loadStatus().then(() => { try { decorate(); } catch (e) { console.warn('followup-ai', e); } });
+        // The studio answers the server's access question a moment later than
+        // this module starts. When it has an answer we may show the
+        // configuration controls too.
+        window.addEventListener('agent-studio:decided', () => {
+            enabledFor = null;   // ask again, now that the studio has decided
+            loadStatus().then(() => { try { decorate(); } catch (e) { console.warn('followup-ai', e); } });
+        });
     }
 
     window.fuAiRefresh = init;

@@ -1,0 +1,6 @@
+# Local Netlify folder
+.netlify
+
+# A live session for the reviewer account must never be committed
+.digitivia-review-session.json
+session.json

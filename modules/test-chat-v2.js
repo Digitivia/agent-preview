@@ -44,6 +44,7 @@
             src_merchant: 'Your instructions',
             src_draft: 'Your unsaved edits',
             src_none: 'No instructions yet. Pick a role above.',
+            src_simulation: 'Prepared answers, no AI called',
             reset_done: 'Chat cleared',
             err_generic: 'The agent could not reply. Try again.',
             err_network: 'No connection. Check your internet and try again.',
@@ -54,6 +55,12 @@
             err_ai_off: 'AI replies are not available for this workspace right now.',
             err_session: 'Your session expired. Sign in again.',
             copy: 'Copy',
+            mode_label: 'Test mode',
+            mode_sim: 'Simulation',
+            mode_ai: 'Real AI',
+            note_sim: 'Simulation. Safe prepared answers — no AI is called, nothing is sent, nothing is charged, and nothing is written anywhere.',
+            note_ai: 'Real AI. Uses your saved agent exactly as customers meet it. Nothing is sent to customers and no orders, bookings or records are created.',
+            sim_badge: 'Simulated',
         },
         ar: {
             greeting: 'أهلاً! اسألني أي حاجة زي ما العميل هيسأل.',
@@ -71,6 +78,7 @@
             src_merchant: 'تعليماتك',
             src_draft: 'تعديلاتك اللي لسه ما اتحفظتش',
             src_none: 'مفيش تعليمات لسه. اختار دور من فوق.',
+            src_simulation: 'ردود جاهزة، مفيش ذكاء اصطناعي',
             reset_done: 'المحادثة اتمسحت',
             err_generic: 'الوكيل ما قدرش يرد. جرّب تاني.',
             err_network: 'مفيش اتصال. اتأكد من الإنترنت وجرّب تاني.',
@@ -81,11 +89,62 @@
             err_ai_off: 'ردود الذكاء الاصطناعي مش متاحة لمساحة العمل دي دلوقتي.',
             err_session: 'الجلسة انتهت. سجّل دخول تاني.',
             copy: 'نسخ',
+            mode_label: 'نوع الاختبار',
+            mode_sim: 'محاكاة',
+            mode_ai: 'ذكاء اصطناعي حقيقي',
+            note_sim: 'محاكاة. ردود جاهزة وآمنة — مفيش ذكاء اصطناعي بيتنادى، ومفيش حاجة بتتبعت أو بتتحسب، ومفيش حاجة بتتسجل خالص.',
+            note_ai: 'ذكاء اصطناعي حقيقي. بيستخدم الوكيل المحفوظ زي ما العملاء بيقابلوه بالظبط. مفيش حاجة بتتبعت للعملاء ومفيش طلبات أو حجوزات أو سجلات بتتعمل.',
+            sim_badge: 'محاكاة',
         },
     };
     const T = (k) => (TXT[isAr() ? 'ar' : 'en'][k]);
 
-    const states = new Map(); // agent -> { busy, turns, sessionId, full, meta }
+    const states = new Map(); // agent -> { busy, turns, sessionId, full, meta, mode }
+
+    // ---- test mode -------------------------------------------------------------------------------
+    // Simulation answers with prepared text and touches nothing: no AI provider, no request, no
+    // database write, no charge. Real AI calls the same `agent-test-chat` function a live reply
+    // is built with, so the answer is the agent's real answer.
+    //
+    // The switch is only offered to accounts the server allows to use the upgraded configuration
+    // (window.AgentStudio), so an ordinary customer never sees an unfinished control.
+    const MODE_KEY = 'digitivia_test_mode';
+    function studioEnabled() { return !!(window.AgentStudio && window.AgentStudio.enabled); }
+    function mode(agent) {
+        const st = state(agent);
+        if (st.mode) return st.mode;
+        let saved = null;
+        try { saved = localStorage.getItem(MODE_KEY + ':' + agent); } catch (e) { /* ignore */ }
+        st.mode = saved === 'sim' ? 'sim' : 'ai';
+        return st.mode;
+    }
+    function setMode(agent, next) {
+        const st = state(agent);
+        st.mode = next === 'sim' ? 'sim' : 'ai';
+        try { localStorage.setItem(MODE_KEY + ':' + agent, st.mode); } catch (e) { /* ignore */ }
+        // A simulation never loads the stored transcript: it is not a record of anything.
+        if (st.mode === 'sim') { st.turns = []; st.sessionId = null; }
+    }
+    // The configuration the simulation should behave like: the live (possibly unsaved) studio
+    // state, so a merchant sees the effect of what they just changed.
+    function simConfig(agent) {
+        let cfg = null;
+        try {
+            const st = window.AgentStudio && window.AgentStudio.state && window.AgentStudio.state[agent];
+            if (st && st.layers) {
+                cfg = {
+                    role: st.layers.primary,
+                    name: '',
+                    tone: (st.savedTone || ''),
+                    capabilities: (st.layers.capabilities || ['sales']).slice(),
+                    style: st.layers.style || {},
+                    knowledge: st.layers.knowledge || {},
+                };
+            }
+        } catch (e) { /* fall through */ }
+        if (!cfg) cfg = { role: 'sales', capabilities: ['sales'], style: {}, knowledge: {} };
+        return cfg;
+    }
 
     // ---- styles -------------------------------------------------------------------------------------------
     function injectStyles() {
@@ -98,6 +157,12 @@
 .tc2-bar { display:flex; align-items:center; gap:8px; padding:10px 12px; border-block-end:1px solid var(--sp-line); background:var(--sp-surface-2); min-inline-size:0; }
 .tc2-badge { flex:1 1 auto; min-inline-size:0; font-size:0.8rem; color:var(--sp-ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .tc2-badge b { color:var(--sp-ink); font-weight:600; }
+.tc2-mode { display:inline-flex; gap:2px; padding:2px; border-radius:999px; background:var(--sp-surface-3); border:1px solid var(--sp-line); }
+.tc2-mode-btn { border:0; background:transparent; color:var(--sp-ink-2); font-size:0.72rem; font-weight:600; padding:4px 10px; border-radius:999px; cursor:pointer; min-height:28px; white-space:nowrap; }
+.tc2-mode-btn.on { background:var(--sp-accent); color:var(--sp-accent-ink); }
+.tc2-mode-btn:focus-visible { outline:2px solid var(--sp-focus); outline-offset:2px; }
+.tc2-sim .tc2-note { background:var(--sp-warn-soft); border-color:var(--sp-warn); }
+.tc2-sim .message.msg-ai { border-style:dashed; }
 .tc2-ib { flex:none; inline-size:40px; block-size:40px; display:inline-flex; align-items:center; justify-content:center; border-radius:var(--sp-r-md,10px);
   border:1px solid var(--sp-line-2); background:transparent; color:var(--sp-ink); cursor:pointer; }
 .tc2-ib:hover { background:var(--sp-surface-3); }
@@ -199,6 +264,11 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
         const badge = box.querySelector('.tc2-badge');
         if (!badge) return;
         badge.textContent = '';
+        if (mode(agent) === 'sim') {
+            badge.appendChild(el('b', null, T('sim_badge')));
+            badge.appendChild(document.createTextNode(' · ' + T('src_simulation')));
+            return;
+        }
         const m = badgeText(state(agent).meta);
         if (!m) { badge.textContent = T('note').split('.')[0]; return; }
         if (m.role) { const b = el('b', null, m.role); badge.appendChild(b); badge.appendChild(document.createTextNode(' · ')); }
@@ -290,43 +360,54 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
         for (let i = 0; i < 3; i++) dots.appendChild(el('i'));
         typing.appendChild(dots);
         scrollDown(log);
-        saveMessage(agent, 'inbound', text);
-        try {
-            const token = await accessToken();
-            if (!token) throw Object.assign(new Error('session'), { status: 401 });
-            const body = { org_id: orgId(), agent, messages: st.turns.slice(-MAX_TURNS_SENT) };
-            const ta = document.getElementById('prompt-' + agent);
-            if (ta && !ta.readOnly) body.draft_prompt = ta.value; // unsaved edits are what gets tested
-            const res = await fetch(supaUrl() + '/functions/v1/agent-test-chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, apikey: supaKey() },
-                body: JSON.stringify(body),
-            });
-            let data = null;
-            try { data = await res.json(); } catch (_) { data = null; }
-            if (!res.ok || !data || typeof data.reply !== 'string') {
-                typing.remove();
-                st.turns.pop(); // the failed message is not part of the conversation the agent has seen
-                addBubble(log, 'ai', errorText(res.status, data), 'tc2-err').setAttribute('role', 'alert');
-            } else {
-                typing.remove();
-                addBubble(log, 'ai', data.reply);
-                st.turns.push({ role: 'assistant', content: data.reply.slice(0, MAX_CHARS) });
-                st.meta = data.meta || null;
-                paintBadge(box, agent);
-                saveMessage(agent, 'outbound', data.reply, { source: 'agent-test-chat' });
-            }
-        } catch (e) {
+        if (mode(agent) === 'sim') {
+            // Simulation: prepared answers, no provider, no request, no write.
+            const out = window.AgentSim
+                ? window.AgentSim.reply(simConfig(agent), text)
+                : { text: T('err_generic') };
             typing.remove();
-            st.turns.pop();
-            const msg = e && e.status === 401 ? T('err_session') : T('err_network');
-            addBubble(log, 'ai', msg, 'tc2-err').setAttribute('role', 'alert');
-        } finally {
-            st.busy = false;
-            sendBtn.disabled = !input.value.trim();
-            scrollDown(log);
-            try { input.focus({ preventScroll: true }); } catch (_) { /* ignore */ }
+            addBubble(log, 'ai', out.text, 'tc2-sim');
+            st.turns.push({ role: 'assistant', content: out.text.slice(0, MAX_CHARS) });
+            st.meta = { role: (simConfig(agent).role || 'sales'), prompt_source: 'simulation' };
+            paintBadge(box, agent);
+        } else {
+            saveMessage(agent, 'inbound', text);
+            try {
+                const token = await accessToken();
+                if (!token) throw Object.assign(new Error('session'), { status: 401 });
+                const body = { org_id: orgId(), agent, messages: st.turns.slice(-MAX_TURNS_SENT) };
+                const ta = document.getElementById('prompt-' + agent);
+                if (ta && !ta.readOnly) body.draft_prompt = ta.value; // unsaved edits are what gets tested
+                const res = await fetch(supaUrl() + '/functions/v1/agent-test-chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token, apikey: supaKey() },
+                    body: JSON.stringify(body),
+                });
+                let data = null;
+                try { data = await res.json(); } catch (_) { data = null; }
+                if (!res.ok || !data || typeof data.reply !== 'string') {
+                    typing.remove();
+                    st.turns.pop(); // the failed message is not part of the conversation the agent has seen
+                    addBubble(log, 'ai', errorText(res.status, data), 'tc2-err').setAttribute('role', 'alert');
+                } else {
+                    typing.remove();
+                    addBubble(log, 'ai', data.reply);
+                    st.turns.push({ role: 'assistant', content: data.reply.slice(0, MAX_CHARS) });
+                    st.meta = data.meta || null;
+                    paintBadge(box, agent);
+                    saveMessage(agent, 'outbound', data.reply, { source: 'agent-test-chat' });
+                }
+            } catch (e) {
+                typing.remove();
+                st.turns.pop();
+                const msg = e && e.status === 401 ? T('err_session') : T('err_network');
+                addBubble(log, 'ai', msg, 'tc2-err').setAttribute('role', 'alert');
+            }
         }
+        st.busy = false;
+        sendBtn.disabled = !input.value.trim();
+        scrollDown(log);
+        try { input.focus({ preventScroll: true }); } catch (_) { /* ignore */ }
     }
 
     async function reset(agent, box) {
@@ -340,6 +421,8 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
         addBubble(log, 'ai', T('reset_done'), 'tc2-sys');
         box.querySelector('.tc2-chips').hidden = false;
         paintBadge(box, agent);
+        // A simulation wrote nothing, so there is nothing to delete.
+        if (mode(agent) === 'sim') return;
         try {
             const sid = await ensureSession(agent);
             if (sid) await sb().from('test_chat_messages').delete().eq('session_id', sid);
@@ -380,6 +463,21 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
     }
 
     // ---- mount --------------------------------------------------------------------------------------------
+    // Reflect the active test mode: the switch, the note under the composer and
+    // the badge. The mode is always visible — never a hidden state.
+    function applyMode(agent, box) {
+        const m = mode(agent);
+        box.querySelectorAll('.tc2-mode-btn').forEach((b) => {
+            const on = b.dataset.mode === m;
+            b.setAttribute('aria-checked', on ? 'true' : 'false');
+            b.classList.toggle('on', on);
+        });
+        const note = box.querySelector('.tc2-note');
+        if (note) note.textContent = m === 'sim' ? T('note_sim') : T('note_ai');
+        box.classList.toggle('tc2-sim', m === 'sim');
+        paintBadge(box, agent);
+    }
+
     function mount(agent, container) {
         if (container.dataset.tc2) return;
         container.dataset.tc2 = '1';
@@ -391,6 +489,25 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
 
         const bar = el('div', 'tc2-bar');
         bar.appendChild(el('span', 'tc2-badge'));
+        // The mode switch only exists for accounts that are allowed to use the
+        // upgraded configuration. Everyone else keeps the single real-AI chat.
+        if (studioEnabled()) {
+            const modeWrap = el('div', 'tc2-mode');
+            modeWrap.setAttribute('role', 'radiogroup');
+            modeWrap.setAttribute('aria-label', T('mode_label'));
+            [['ai', T('mode_ai')], ['sim', T('mode_sim')]].forEach(([val, label]) => {
+                const b = el('button', 'tc2-mode-btn', label);
+                b.type = 'button';
+                b.setAttribute('role', 'radio');
+                b.dataset.mode = val;
+                b.addEventListener('click', () => {
+                    setMode(agent, val);
+                    applyMode(agent, container);
+                });
+                modeWrap.appendChild(b);
+            });
+            bar.appendChild(modeWrap);
+        }
         const resetBtn = iconButton('tc2-reset', T('reset'), ICON.reset);
         const expandBtn = iconButton('tc2-expand', T('expand'), ICON.expand);
         const closeBtn = iconButton('tc2-close', T('close'), ICON.close);
@@ -432,6 +549,7 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
         const note = el('p', 'tc2-note', T('note'));
         container.append(bar, log, chips, form, note);
         paintBadge(container, agent);
+        applyMode(agent, container);
 
         form.addEventListener('submit', (e) => { e.preventDefault(); send(agent, container); });
         input.addEventListener('input', () => { autosize(input); sendBtn.disabled = st.busy || !input.value.trim(); });
@@ -451,7 +569,11 @@ body:has(.chat-container.tc2.tc2-full) :is(.theme-float-btn, .aiw-root, #sentry-
             window.visualViewport.addEventListener('resize', upd);
             window.visualViewport.addEventListener('scroll', upd);
         }
-        loadHistory(agent, container);
+        // A simulation keeps nothing, so it must not show a stored transcript.
+        if (mode(agent) === 'ai') loadHistory(agent, container);
+        // The prompt builder keeps the multi-model comparison; it needs to know
+        // about the new input this component just created.
+        try { if (typeof window.pbEnhanceTestChat === 'function') window.pbEnhanceTestChat(agent); } catch (e) { /* the comparison is optional */ }
     }
 
     function mountAll() {

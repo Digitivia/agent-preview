@@ -794,6 +794,7 @@
                 "btn_connect_channel": "Connect Channel",
                 "label_live": "LIVE",
                 "header_role": "Agent Role (System Prompt)",
+                "header_studio": "Agent setup",
                 "header_tone": "Agent Tone",
                 "header_personality": "AI Model & Personality",
                 "header_comments": "Comment Replies",
@@ -2973,6 +2974,7 @@
                 "btn_connect_channel": "ربط القناة",
                 "label_live": "نشط",
                 "header_role": "دور الوكيل (توجيهات النظام)",
+                "header_studio": "إعداد الوكيل",
                 "header_tone": "نبرة المحادثة",
                 "header_personality": "نموذج الذكاء الاصطناعي والشخصية",
                 "header_comments": "الرد على التعليقات",
@@ -83509,7 +83511,7 @@ body.hub-lock { overflow: hidden; }
                         .filter(([k, v]) => /^[0-9]+$/.test(String(k)) && typeof v === 'string'))
                     : {},
                 // AI-written step (modules/followup-ai.js). Absent on every ladder saved before it existed.
-                ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: typeof s.ai_goal === 'string' ? s.ai_goal.slice(0, 200) : '' } : {})
+                ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: typeof s.ai_goal === 'string' ? s.ai_goal.slice(0, 200) : '', ai_lang: ['auto', 'ar', 'en'].indexOf(String(s.ai_lang || 'auto')) >= 0 ? String(s.ai_lang || 'auto') : 'auto' } : {})
             }));
         }
         // legacy single-step: synthesize from the old delay + message fields
@@ -83576,7 +83578,7 @@ body.hub-lock { overflow: hidden; }
             template_name: (s.template_name || '').trim(),
             template_language: (s.template_language || '').trim(),
             template_variables: { ...fuStepVars(s) },
-            ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: String(s.ai_goal || '').trim().slice(0, 200) } : {})
+            ...(s.mode === 'ai' ? { mode: 'ai', ai_goal: String(s.ai_goal || '').trim().slice(0, 200), ai_lang: ['auto', 'ar', 'en'].indexOf(String(s.ai_lang || 'auto')) >= 0 ? String(s.ai_lang || 'auto') : 'auto' } : {})
         })).filter(s => s.message || s.message_ar);
         // A step past the 24h window sends as a template or not at all, so the
         // template has to be COMPLETE before it is saved. An unfilled {{n}} is
@@ -99080,14 +99082,16 @@ body.hub-lock { overflow: hidden; }
      returning customer keeps running the previous build against a new
      index.html. Regenerate the hash whenever the module changes. -->
 <script src="modules/meta-connect.js?v=f8b03212de"></script>
-<script src="modules/prompt-builder.js?v=0e0be72e27"></script>
+<script src="modules/prompt-builder.js?v=12ad44f9b4"></script>
 <script src="modules/trial-status.js?v=223c7a9265"></script>
 <script src="modules/entitlements.js?v=b74def0132"></script>
 <script src="modules/model-picker.js?v=127461b4ab"></script>
 <script src="modules/partners-admin.js?v=476552c0e5"></script>
-<script src="modules/agent-role.js?v=abe8831ffd"></script>
-<script src="modules/followup-ai.js?v=b2263bb6ec"></script>
-<script src="modules/test-chat-v2.js?v=0e6032925b"></script>
+<script src="modules/agent-role.js?v=1949d12779"></script>
+<script src="modules/agent-sim.js?v=9d9fb50fec"></script>
+<script src="modules/agent-studio.js?v=4d46251d43"></script>
+<script src="modules/followup-ai.js?v=b33b88a4a4"></script>
+<script src="modules/test-chat-v2.js?v=1ced9e4e80"></script>
 <script src="modules/demo-entry.js?v=1d4c2a984d"></script>
 
 </html>

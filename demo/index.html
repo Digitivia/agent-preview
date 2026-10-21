@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- UI Demo Mode. This page has NO route to any server: connect-src 'none' makes the browser itself refuse fetch, XHR,
+     WebSocket, EventSource and beacons, and only files from this folder and the preview's logo/fonts can load. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<title>UI Demo Mode - Digitivia AI Agent</title>
+<link rel="icon" href="../favicon.png">
+<link rel="stylesheet" href="demo.css">
+</head>
+<body>
+<div id="app" aria-live="off"></div>
+<noscript><p class="nojs">The UI demo needs JavaScript. Nothing is sent anywhere.</p></noscript>
+<script src="i18n.js"></script>
+<script src="engine.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

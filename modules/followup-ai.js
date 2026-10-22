@@ -57,6 +57,7 @@
             executionOff: 'AI-written follow-ups are not switched on for sending yet. You can design and save them now; they will not be delivered until the switch is turned on.',
             stops: 'The AI stops the sequence when the customer replies, opts out, the order or booking is done, the issue is solved, the chat goes quiet, or a human takes over.',
             stopsTitle: 'When the AI stops',
+            deliveryPaused: 'Automatic follow-up delivery is currently paused. You can design, save and preview follow-ups here, but nothing will be sent to customers until the pause is lifted.',
             errors: {
                 unauthorized: 'Please sign in again and retry.',
                 forbidden: 'You do not have access to this workspace.',
@@ -108,6 +109,7 @@
             executionOff: 'متابعات الذكاء الاصطناعي لسه مش متفعّلة للإرسال. تقدر تصمّمها وتحفظها دلوقتي، وهتتبعت لما المفتاح يتشغّل.',
             stops: 'الذكاء الاصطناعي بيوقف السلسلة لما العميل يرد، أو يوقف استقبال الرسايل، أو الطلب/الحجز يخلص، أو المشكلة تتحل، أو السكوت يطوّل، أو حد من الفريق يتسلّم.',
             stopsTitle: 'الذكاء الاصطناعي بيقف إمتى',
+            deliveryPaused: 'إرسال المتابعات الآلية متوقف حالياً. تقدر تصمّم المتابعات وتحفظها وتعاينها هنا، بس مش هتتبعت للعميل لحد ما التشغيل يرجع.',
             errors: {
                 unauthorized: 'سجّل دخول تاني وجرّب.',
                 forbidden: 'مفيش عندك صلاحية على مساحة العمل دي.',
@@ -275,6 +277,29 @@
         if (!page) return;
         const host = page.querySelector(':scope > [data-feature-notice="followup-ai"]');
         if (host) host.remove();
+        paintDeliveryPausedNotice(page);
+    }
+
+    // Delivery is paused by a server-side switch, and the workspace's own
+    // follow-up setting says so: followup_settings.enabled = false. The page
+    // says it plainly, because a saved configuration that will not be sent is
+    // the thing an owner most needs to know while the pause is in force.
+    const PAUSE_NOTICE_ID = 'fuai-delivery-paused';
+    async function paintDeliveryPausedNotice(page) {
+        try {
+            const org = orgId();
+            if (!org || !sb()) return;
+            const { data } = await sb().from('followup_settings')
+                .select('enabled').eq('org_id', org).maybeSingle();
+            const paused = !data || data.enabled !== true;
+            let node = document.getElementById(PAUSE_NOTICE_ID);
+            if (!paused) { if (node) node.remove(); return; }
+            if (!node) {
+                node = el('div', { id: PAUSE_NOTICE_ID, class: 'fuai-paused-notice', role: 'status' });
+                page.insertBefore(node, page.firstChild);
+            }
+            node.textContent = T().deliveryPaused;
+        } catch (_) { /* the page still works without the notice */ }
     }
 
     // ---- preview -------------------------------------------------------------------------------------
@@ -337,6 +362,7 @@
 .fuai-help,.fuai-small{font-size:.78rem;opacity:.75;margin:8px 0 0;line-height:1.5}
 .fuai-preview-tag{display:inline-block;margin-top:8px;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:rgba(127,127,127,.14);border:1px solid rgba(127,127,127,.3);opacity:.9}
 .fuai-note{margin:10px 0 0;font-size:.76rem;line-height:1.55;padding:9px 11px;border-radius:10px;background:rgba(217,164,65,.12);border:1px solid rgba(217,164,65,.34);color:inherit}
+.fuai-paused-notice{margin:0 0 14px;padding:11px 14px;border-radius:12px;font-size:.82rem;line-height:1.6;background:rgba(217,164,65,.12);border:1px solid rgba(217,164,65,.4);color:inherit}
 .fuai-stops{margin:10px 0 0}
 .fuai-stops>summary{cursor:pointer;list-style:none;font-size:.76rem;font-weight:600;opacity:.85;display:flex;align-items:center;gap:6px;user-select:none}
 .fuai-stops>summary::-webkit-details-marker{display:none}
